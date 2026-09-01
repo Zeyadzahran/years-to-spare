@@ -17,9 +17,12 @@ func physics_update(delta: float) -> StringName:
 
 	if not player.is_on_floor():
 		return &"Air"
-	if Input.is_action_just_pressed(&"attack"):
+	# Every exit restores the tall box, so nothing may leave while an overhang
+	# would trap it.
+	if not player.can_stand():
+		return &""
+	if player.wants_attack():
 		return &"Attack"
-	# Standing up under an overhang would shove him through it, so stay down.
-	if not Input.is_action_pressed(&"crouch") and player.can_stand():
+	if not Input.is_action_pressed(&"crouch"):
 		return &"Move" if not is_zero_approx(player.input_dir) else &"Idle"
 	return &""

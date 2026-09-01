@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dgrqs64rn14gk"
-path="res://.godot/imported/jumping.png-c3a9a44f239b14070e1c05322cf510d3.ctex"
+uid="uid://rhar23skielu"
+path="res://.godot/imported/East_0001.png-5f0c480aaf16b11493f8dc1d409edb2f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/player_teen/jump/jumping.png"
-dest_files=["res://.godot/imported/jumping.png-c3a9a44f239b14070e1c05322cf510d3.ctex"]
+source_file="res://assets/sprites/player_teen/boy-jump/East_0001.png"
+dest_files=["res://.godot/imported/East_0001.png-5f0c480aaf16b11493f8dc1d409edb2f.ctex"]
 
 [params]
 

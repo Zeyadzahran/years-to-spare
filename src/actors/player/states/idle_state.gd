@@ -9,7 +9,7 @@ func physics_update(delta: float) -> StringName:
 		return &"Air"
 	if not player.is_on_floor():
 		return &"Air"
-	if Input.is_action_just_pressed(&"attack"):
+	if player.wants_attack():
 		return &"Attack"
 	if Input.is_action_pressed(&"crouch"):
 		return &"Crouch"

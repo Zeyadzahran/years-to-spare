@@ -12,6 +12,7 @@ const GROUND_FRICTION := 7200.0
 const AIR_FRICTION := 1200.0
 const COYOTE_TIME := 0.1
 const JUMP_BUFFER := 0.12
+const ATTACK_BUFFER := 0.12
 
 @export var speed := 560.0
 @export var jump_velocity := -1250.0
@@ -35,6 +36,7 @@ var hurt_from := 1
 
 var _coyote_left := 0.0
 var _jump_buffered := 0.0
+var _attack_buffered := 0.0
 var _standing_size: Vector2
 var _standing_offset: float
 
@@ -58,6 +60,9 @@ func _physics_process(delta: float) -> void:
 	_jump_buffered = maxf(_jump_buffered - delta, 0.0)
 	if Input.is_action_just_pressed(&"jump"):
 		_jump_buffered = JUMP_BUFFER
+	_attack_buffered = maxf(_attack_buffered - delta, 0.0)
+	if Input.is_action_just_pressed(&"attack"):
+		_attack_buffered = ATTACK_BUFFER
 
 
 func apply_gravity(delta: float) -> void:
@@ -71,6 +76,15 @@ func apply_horizontal(delta: float) -> void:
 	velocity.x = move_toward(velocity.x, input_dir * speed, rate * delta)
 	if not is_zero_approx(input_dir):
 		facing = 1 if input_dir > 0.0 else -1
+
+
+## Buffered like the jump, so a press is never lost to frame timing.
+func wants_attack() -> bool:
+	return _attack_buffered > 0.0
+
+
+func consume_attack() -> void:
+	_attack_buffered = 0.0
 
 
 func can_jump() -> bool:
