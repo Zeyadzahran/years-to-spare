@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 EventBus="*res://autoload/event_bus.gd"
 TimeService="*res://autoload/time_service.gd"
 GameState="*res://autoload/game_state.gd"
+SettingsManager="*uid://dwgl36are84yv"
 
 [display]
 

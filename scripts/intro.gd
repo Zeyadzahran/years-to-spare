@@ -1,4 +1,7 @@
 extends Control
+
+var skip_intro := false
+
 var images = [
 	preload("res://assets/intro/1home.jpg"),
 	preload("res://assets/intro/2arrive.png"),
@@ -13,6 +16,11 @@ var images = [
 @onready var music: AudioStreamPlayer = $Music
 @onready var fade: ColorRect = $Fade
 var current_image := 0
+
+func _unhandled_input(event):
+	if event is InputEventKey and event.pressed and not event.echo:
+		skip_intro = true
+		start_game()
 
 var durations = [
 	6.0,  # Family
@@ -86,7 +94,7 @@ func play_scene(index: int):
 	await fade_out()
 
 func start_game():
-		get_tree().change_scene_to_file("res://src/levels/test_level.tscn")
+	get_tree().change_scene_to_file("res://src/levels/test_level.tscn")
 
 func show_title():
 	$Title.modulate.a = 0.0

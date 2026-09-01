@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://rewvckd3qxda"]
+
+[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="1_c2u1v"]
+[ext_resource type="Script" uid="uid://c8qd83uhbeny2" path="res://scripts/options.gd" id="1_yjkok"]
+[ext_resource type="AudioStream" uid="uid://et5f7gxdgvd7" path="res://assets/music/test.mp3" id="3_2iy26"]
+
+[node name="Options" type="Control" unique_id=845143586]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yjkok")
+
+[node name="Background" type="ColorRect" parent="." unique_id=995900662]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.019607844, 0.019607844, 0.019607844, 1)
+
+[node name="DarkOverlay" type="ColorRect" parent="." unique_id=921270506]
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.737193, 0.7371929, 0.7371929, 0)
+
+[node name="Title" type="Label" parent="." unique_id=1548604038]
+layout_mode = 0
+offset_left = 489.0
+offset_top = 187.0
+offset_right = 769.0
+offset_bottom = 270.0
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 40
+text = "OPTIONS
+"
+horizontal_alignment = 1
+
+[node name="Settings" type="VBoxContainer" parent="." unique_id=521903556]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -100.0
+offset_right = 260.0
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="VolumeRow" type="HBoxContainer" parent="Settings" unique_id=2001759764]
+custom_minimum_size = Vector2(500, 50)
+layout_mode = 2
+
+[node name="VolumeLabel" type="Label" parent="Settings/VolumeRow" unique_id=1252135515]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 20
+text = "VOLUME"
+horizontal_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="Settings/VolumeRow" unique_id=1380900185]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 80.0
+
+[node name="FullscreenRow" type="HBoxContainer" parent="Settings" unique_id=1120040230]
+custom_minimum_size = Vector2(500, 50)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="FullscreenLabel" type="Label" parent="Settings/FullscreenRow" unique_id=1191541013]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 20
+text = "FULLSCREEN"
+
+[node name="FullscreenCheck" type="CheckButton" parent="Settings/FullscreenRow" unique_id=1842129944]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_fonts/font = ExtResource("1_c2u1v")
+text = "ON"
+
+[node name="BackButton" type="Button" parent="Settings" unique_id=707791371]
+custom_minimum_size = Vector2(280, 60)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 22
+text = "BACK"
+
+[node name="TestAudio" type="AudioStreamPlayer" parent="." unique_id=1415176683]
+stream = ExtResource("3_2iy26")
+autoplay = true
+
+[connection signal="value_changed" from="Settings/VolumeRow/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="toggled" from="Settings/FullscreenRow/FullscreenCheck" to="." method="_on_fullscreen_check_toggled"]
+[connection signal="pressed" from="Settings/BackButton" to="." method="_on_back_button_pressed"]
