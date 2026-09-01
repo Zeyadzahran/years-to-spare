@@ -1,0 +1,165 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://dxem2db0sxkss"]
+
+[ext_resource type="Texture2D" uid="uid://dj3iqwls5svro" path="res://assets/sprites/player_teen/boy-idle-animation/East_0001.png" id="1_boy_idle_animation_East_0001"]
+[ext_resource type="Texture2D" uid="uid://dh60e1wjq3ho6" path="res://assets/sprites/player_teen/boy-idle-animation/East_0002.png" id="2_boy_idle_animation_East_0002"]
+[ext_resource type="Texture2D" uid="uid://bwabmu22cd6gy" path="res://assets/sprites/player_teen/boy-idle-animation/East_0003.png" id="3_boy_idle_animation_East_0003"]
+[ext_resource type="Texture2D" uid="uid://d36v7l1pluu73" path="res://assets/sprites/player_teen/boy-idle-animation/East_0004.png" id="4_boy_idle_animation_East_0004"]
+[ext_resource type="Texture2D" uid="uid://1sir30hcorhl" path="res://assets/sprites/player_teen/boy-idle-animation/East_0005.png" id="5_boy_idle_animation_East_0005"]
+[ext_resource type="Texture2D" uid="uid://du8nh27lywfoj" path="res://assets/sprites/player_teen/boy-idle-animation/East_0006.png" id="6_boy_idle_animation_East_0006"]
+[ext_resource type="Texture2D" uid="uid://bi300finf0aqa" path="res://assets/sprites/player_teen/boy-idle-animation/East_0007.png" id="7_boy_idle_animation_East_0007"]
+[ext_resource type="Texture2D" uid="uid://cpkmda8a0wd6s" path="res://assets/sprites/player_teen/boy-idle-animation/East_0008.png" id="8_boy_idle_animation_East_0008"]
+[ext_resource type="Texture2D" uid="uid://b4h2t25qbr0rx" path="res://assets/sprites/player_teen/boy-idle-animation/East_0009.png" id="9_boy_idle_animation_East_0009"]
+[ext_resource type="Texture2D" uid="uid://dk6qwmnwg5vj7" path="res://assets/sprites/player_teen/boy-running/East_0001.png" id="10_boy_running_East_0001"]
+[ext_resource type="Texture2D" uid="uid://bhvdsghmoe4px" path="res://assets/sprites/player_teen/boy-running/East_0002.png" id="11_boy_running_East_0002"]
+[ext_resource type="Texture2D" uid="uid://dav8dwg65vwfj" path="res://assets/sprites/player_teen/boy-running/East_0003.png" id="12_boy_running_East_0003"]
+[ext_resource type="Texture2D" uid="uid://bpyaw6hcf8jqv" path="res://assets/sprites/player_teen/boy-running/East_0004.png" id="13_boy_running_East_0004"]
+[ext_resource type="Texture2D" uid="uid://chtexfmmpnwo7" path="res://assets/sprites/player_teen/boy-running/East_0005.png" id="14_boy_running_East_0005"]
+[ext_resource type="Texture2D" uid="uid://cu2cntnbjl8rb" path="res://assets/sprites/player_teen/boy-running/East_0006.png" id="15_boy_running_East_0006"]
+[ext_resource type="Texture2D" uid="uid://borfkk8amx00d" path="res://assets/sprites/player_teen/boy-running/East_0007.png" id="16_boy_running_East_0007"]
+[ext_resource type="Texture2D" uid="uid://dwrt70wtrxlxl" path="res://assets/sprites/player_teen/boy-running/East_0008.png" id="17_boy_running_East_0008"]
+[ext_resource type="Texture2D" uid="uid://dcy4gti2x1el0" path="res://assets/sprites/player_teen/boy-running/East_0009.png" id="18_boy_running_East_0009"]
+[ext_resource type="Texture2D" uid="uid://civg4tsnox1tu" path="res://assets/sprites/player_teen/boy-crouch/East_0001.png" id="19_boy_crouch_East_0001"]
+[ext_resource type="Texture2D" uid="uid://db2nn53hu38ib" path="res://assets/sprites/player_teen/boy-crouch/East_0002.png" id="20_boy_crouch_East_0002"]
+[ext_resource type="Texture2D" uid="uid://c73sa1xo8rlo1" path="res://assets/sprites/player_teen/boy-crouch/East_0003.png" id="21_boy_crouch_East_0003"]
+[ext_resource type="Texture2D" uid="uid://opkb2shxc4fe" path="res://assets/sprites/player_teen/boy-crouch/East_0004.png" id="22_boy_crouch_East_0004"]
+[ext_resource type="Texture2D" uid="uid://dxqdx8kwdr7kj" path="res://assets/sprites/player_teen/boy-crouch/East_0005.png" id="23_boy_crouch_East_0005"]
+[ext_resource type="Texture2D" uid="uid://bcokemcb7emk4" path="res://assets/sprites/player_teen/boy-crouch/East_0006.png" id="24_boy_crouch_East_0006"]
+[ext_resource type="Texture2D" uid="uid://dds0xr3ma5n61" path="res://assets/sprites/player_teen/boy-crouch/East_0007.png" id="25_boy_crouch_East_0007"]
+[ext_resource type="Texture2D" uid="uid://d0p6ovex7iyum" path="res://assets/sprites/player_teen/boy-crouch/East_0008.png" id="26_boy_crouch_East_0008"]
+[ext_resource type="Texture2D" uid="uid://dsey81wujcd7n" path="res://assets/sprites/player_teen/boy-crouch/East_0009.png" id="27_boy_crouch_East_0009"]
+[ext_resource type="Texture2D" uid="uid://cdub0qod12vjg" path="res://assets/sprites/player_teen/hitting-with-sword/East_0001.png" id="28_hitting_with_sword_East_0001"]
+[ext_resource type="Texture2D" uid="uid://dhqaq4modk5rp" path="res://assets/sprites/player_teen/hitting-with-sword/East_0002.png" id="29_hitting_with_sword_East_0002"]
+[ext_resource type="Texture2D" uid="uid://bi1pr852pmls0" path="res://assets/sprites/player_teen/hitting-with-sword/East_0003.png" id="30_hitting_with_sword_East_0003"]
+[ext_resource type="Texture2D" uid="uid://b63sn5d53aekk" path="res://assets/sprites/player_teen/hitting-with-sword/East_0004.png" id="31_hitting_with_sword_East_0004"]
+[ext_resource type="Texture2D" uid="uid://cgifee0ed10kx" path="res://assets/sprites/player_teen/hitting-with-sword/East_0005.png" id="32_hitting_with_sword_East_0005"]
+[ext_resource type="Texture2D" uid="uid://8w05qn7ygxr1" path="res://assets/sprites/player_teen/hitting-with-sword/East_0006.png" id="33_hitting_with_sword_East_0006"]
+[ext_resource type="Texture2D" uid="uid://c0cm5bqap045k" path="res://assets/sprites/player_teen/hitting-with-sword/East_0007.png" id="34_hitting_with_sword_East_0007"]
+[ext_resource type="Texture2D" uid="uid://d1chrapcdn0j4" path="res://assets/sprites/player_teen/hitting-with-sword/East_0008.png" id="35_hitting_with_sword_East_0008"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("34_hitting_with_sword_East_0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_hitting_with_sword_East_0008")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_hitting_with_sword_East_0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_hitting_with_sword_East_0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_hitting_with_sword_East_0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_hitting_with_sword_East_0004")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_hitting_with_sword_East_0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_hitting_with_sword_East_0006")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_boy_crouch_East_0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_boy_crouch_East_0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_boy_crouch_East_0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_boy_crouch_East_0004")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_boy_crouch_East_0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_boy_crouch_East_0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_boy_crouch_East_0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_boy_crouch_East_0008")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_boy_crouch_East_0009")
+}],
+"loop": 0,
+"name": &"crouch",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_boy_idle_animation_East_0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_boy_idle_animation_East_0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_boy_idle_animation_East_0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_boy_idle_animation_East_0004")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_boy_idle_animation_East_0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_boy_idle_animation_East_0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_boy_idle_animation_East_0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_boy_idle_animation_East_0008")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_boy_idle_animation_East_0009")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_boy_running_East_0001")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_boy_running_East_0002")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_boy_running_East_0003")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_boy_running_East_0004")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_boy_running_East_0005")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_boy_running_East_0006")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_boy_running_East_0007")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_boy_running_East_0008")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_boy_running_East_0009")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 14.0
+}]

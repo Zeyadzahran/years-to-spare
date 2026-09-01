@@ -6,16 +6,16 @@ extends CharacterBody2D
 ## Movement numbers are first-pass placeholders. Combat lives in a future
 ## Attack state; the state machine is already the place to hang it.
 
-const GROUND_ACCEL := 2000.0
-const AIR_ACCEL := 1100.0
-const GROUND_FRICTION := 2400.0
-const AIR_FRICTION := 400.0
+const GROUND_ACCEL := 6000.0
+const AIR_ACCEL := 3300.0
+const GROUND_FRICTION := 7200.0
+const AIR_FRICTION := 1200.0
 const COYOTE_TIME := 0.1
 const JUMP_BUFFER := 0.12
 
-@export var speed := 195.0
-@export var jump_velocity := -430.0
-@export var gravity := 1400.0
+@export var speed := 560.0
+@export var jump_velocity := -1250.0
+@export var gravity := 4100.0
 
 @onready var health: HealthComponent = $Health
 @onready var age: AgeComponent = $Age

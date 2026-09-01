@@ -1,56 +1,67 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene format=3 uid="uid://s4thn3454mp1"]
 
-[ext_resource type="Script" path="res://src/actors/player/player.gd" id="1_player"]
-[ext_resource type="Script" path="res://src/components/health_component.gd" id="2_health"]
-[ext_resource type="Script" path="res://src/components/age_component.gd" id="3_age"]
-[ext_resource type="Script" path="res://src/components/time_powers.gd" id="4_powers"]
-[ext_resource type="Script" path="res://src/core/state_machine.gd" id="5_machine"]
-[ext_resource type="Script" path="res://src/actors/player/states/idle_state.gd" id="6_idle"]
-[ext_resource type="Script" path="res://src/actors/player/states/move_state.gd" id="7_move"]
-[ext_resource type="Script" path="res://src/actors/player/states/air_state.gd" id="8_air"]
+[ext_resource type="Script" uid="uid://cfwx6e6ysuwxx" path="res://src/actors/player/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://dp3hvo5k6qq50" path="res://src/components/health_component.gd" id="2_health"]
+[ext_resource type="Script" uid="uid://ugi5x5g3yjj5" path="res://src/components/age_component.gd" id="3_age"]
+[ext_resource type="Script" uid="uid://h6csol6q72yo" path="res://src/components/time_powers.gd" id="4_powers"]
+[ext_resource type="Script" uid="uid://dmaqf71oqcb33" path="res://src/core/state_machine.gd" id="5_machine"]
+[ext_resource type="Script" uid="uid://dwc1n52enlk78" path="res://src/actors/player/states/idle_state.gd" id="6_idle"]
+[ext_resource type="Script" uid="uid://p7j5dkl4ptf0" path="res://src/actors/player/states/move_state.gd" id="7_move"]
+[ext_resource type="Script" uid="uid://bj6ur4t1ru6x" path="res://src/actors/player/states/air_state.gd" id="8_air"]
+[ext_resource type="SpriteFrames" uid="uid://dxem2db0sxkss" path="res://src/actors/player/player_frames.tres" id="9_frames"]
+[ext_resource type="Script" uid="uid://dqlo34sw5o0i2" path="res://src/actors/player/player_animator.gd" id="10_animator"]
+[ext_resource type="Script" uid="uid://bny61eosmvjrb" path="res://src/actors/player/states/attack_state.gd" id="11_mfqm3"]
+[ext_resource type="Script" uid="uid://b6frbrnnc6m3v" path="res://src/actors/player/states/crouch_state.gd" id="12_yq53s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
-size = Vector2(20, 34)
+size = Vector2(36, 100)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=1426104633]
 collision_layer = 2
-collision_mask = 1
 script = ExtResource("1_player")
 
-[node name="Shape" type="CollisionShape2D" parent="."]
-position = Vector2(0, -17)
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1754253299]
+position = Vector2(0, -50)
 shape = SubResource("RectangleShape2D_body")
 
-[node name="Placeholder" type="ColorRect" parent="."]
-offset_left = -10.0
-offset_top = -34.0
-offset_right = 10.0
-offset_bottom = 0.0
-color = Color(0.85, 0.68, 0.44, 1)
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=897708578]
+scale = Vector2(0.45, 0.45)
+sprite_frames = ExtResource("9_frames")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(0, -120)
+script = ExtResource("10_animator")
 
-[node name="Health" type="Node" parent="."]
+[node name="Health" type="Node" parent="." unique_id=1673311975]
 script = ExtResource("2_health")
 
-[node name="Age" type="Node" parent="."]
+[node name="Age" type="Node" parent="." unique_id=203420279]
 script = ExtResource("3_age")
 
-[node name="TimePowers" type="Node" parent="."]
+[node name="TimePowers" type="Node" parent="." unique_id=293533504]
 script = ExtResource("4_powers")
 age = NodePath("../Age")
 
-[node name="StateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="." unique_id=437554025]
 script = ExtResource("5_machine")
 
-[node name="Idle" type="Node" parent="StateMachine"]
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1236453069]
 script = ExtResource("6_idle")
 
-[node name="Move" type="Node" parent="StateMachine"]
+[node name="Move" type="Node" parent="StateMachine" unique_id=947674479]
 script = ExtResource("7_move")
 
-[node name="Air" type="Node" parent="StateMachine"]
+[node name="Air" type="Node" parent="StateMachine" unique_id=129870146]
 script = ExtResource("8_air")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -40)
+[node name="Attack" type="Node" parent="StateMachine" unique_id=1085493394]
+script = ExtResource("11_mfqm3")
+
+[node name="Crouch" type="Node" parent="StateMachine" unique_id=2050269905]
+script = ExtResource("12_yq53s")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2118849440]
+position = Vector2(0, -110)
+zoom = Vector2(1.3, 1.3)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0

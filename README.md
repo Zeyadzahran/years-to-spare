@@ -28,6 +28,8 @@ src/
     time_powers.gd
   actors/
     player/           controller + Idle / Move / Air states
+                      player_frames.tres  the clip library
+                      player_animator.gd  state -> clip, and sprite flipping
     enemy/            base class to subclass
   world/platform.gd
   levels/level.gd
@@ -48,6 +50,7 @@ Anything the time powers should affect extends `TimeBody2D` or asks
 | To add | Do this |
 | --- | --- |
 | A player ability | New `State` script under `src/actors/player/states/`, add as a child of `StateMachine` |
+| An animation for a state | Add the clip to `player_frames.tres`, then map it in `PlayerAnimator.STATE_CLIPS` |
 | An enemy type | Extend `Enemy`, implement `_tick(delta)` |
 | A UI reaction | Add a signal to `EventBus` and listen for it |
 | A phase | Add an entry to `GameState.LEVELS` |

@@ -4,7 +4,7 @@ extends CharacterBody2D
 ## `world_delta` and call `move_in_time()` instead of `move_and_slide()`, which
 ## keeps velocity stored in real units while the world crawls or freezes.
 
-@export var gravity := 1400.0
+@export var gravity := 4100.0
 
 func world_delta(delta: float) -> float:
 	return TimeService.world_delta(delta)
