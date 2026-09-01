@@ -17,6 +17,11 @@ const JUMP_BUFFER := 0.12
 @export var jump_velocity := -1250.0
 @export var gravity := 4100.0
 
+## Crouched box height, from the sprite: the boy is ~71% of standing height
+## while ducked.
+const CROUCH_HEIGHT := 70.0
+
+@onready var shape: CollisionShape2D = $Shape
 @onready var health: HealthComponent = $Health
 @onready var age: AgeComponent = $Age
 @onready var powers: TimePowers = $TimePowers
@@ -25,15 +30,25 @@ const JUMP_BUFFER := 0.12
 var input_dir := 0.0
 var facing := 1
 
+## Which side the last hit came from, so Hurt knocks him the right way.
+var hurt_from := 1
+
 var _coyote_left := 0.0
 var _jump_buffered := 0.0
+var _standing_size: Vector2
+var _standing_offset: float
 
 func _ready() -> void:
 	add_to_group(&"player")
+	# Own the shape so resizing it for crouch cannot leak into other instances.
+	shape.shape = shape.shape.duplicate()
+	_standing_size = (shape.shape as RectangleShape2D).size
+	_standing_offset = shape.position.y
 	health.changed.connect(func(c, m): EventBus.player_health_changed.emit(c, m))
-	health.died.connect(_on_death)
+	health.damaged.connect(_on_damaged)
+	health.died.connect(_on_died)
 	age.changed.connect(func(a, d): EventBus.player_age_changed.emit(a, d))
-	age.died.connect(_on_death)
+	age.died.connect(_on_died)
 	EventBus.player_spawned.emit(self)
 
 
@@ -68,6 +83,37 @@ func consume_jump() -> void:
 	velocity.y = jump_velocity
 
 
-func _on_death() -> void:
+func set_crouched(crouched: bool) -> void:
+	var box := shape.shape as RectangleShape2D
+	box.size = Vector2(_standing_size.x, CROUCH_HEIGHT if crouched else _standing_size.y)
+	shape.position.y = -CROUCH_HEIGHT * 0.5 if crouched else _standing_offset
+
+
+## False when a ceiling would trap the standing box, so crouch cannot pop the
+## boy through an overhang.
+func can_stand() -> bool:
+	var box := shape.shape as RectangleShape2D
+	var size := box.size
+	var offset := shape.position.y
+	box.size = _standing_size
+	shape.position.y = _standing_offset
+	var blocked := test_move(global_transform, Vector2.ZERO)
+	box.size = size
+	shape.position.y = offset
+	return not blocked
+
+
+func is_down() -> bool:
+	return states.current_name == &"Dead"
+
+
+func _on_damaged(_amount: float, source: Node) -> void:
+	if is_down():
+		return
+	hurt_from = 1 if source != null and source.global_position.x > global_position.x else -1
+	states.travel(&"Hurt")
+
+
+func _on_died() -> void:
 	powers.cancel()
-	EventBus.player_died.emit()
+	states.travel(&"Dead")
