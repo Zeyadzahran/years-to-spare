@@ -1,7 +1,6 @@
 [gd_resource type="SpriteFrames" format=3 uid="uid://dxem2db0sxkss"]
 
 [ext_resource type="Texture2D" uid="uid://dj3iqwls5svro" path="res://assets/sprites/player_teen/boy-idle-animation/East_0001.png" id="1_boy_idle_animation_East_0001"]
-[ext_resource type="Texture2D" uid="uid://dgrqs64rn14gk" path="res://assets/sprites/player_teen/jump/jumping.png" id="1_gmj1t"]
 [ext_resource type="Texture2D" uid="uid://dh60e1wjq3ho6" path="res://assets/sprites/player_teen/boy-idle-animation/East_0002.png" id="2_boy_idle_animation_East_0002"]
 [ext_resource type="Texture2D" uid="uid://bwabmu22cd6gy" path="res://assets/sprites/player_teen/boy-idle-animation/East_0003.png" id="3_boy_idle_animation_East_0003"]
 [ext_resource type="Texture2D" uid="uid://d36v7l1pluu73" path="res://assets/sprites/player_teen/boy-idle-animation/East_0004.png" id="4_boy_idle_animation_East_0004"]
@@ -49,17 +48,14 @@
 [ext_resource type="Texture2D" uid="uid://8w05qn7ygxr1" path="res://assets/sprites/player_teen/hitting-with-sword/East_0006.png" id="33_hitting_with_sword_East_0006"]
 [ext_resource type="Texture2D" uid="uid://c0cm5bqap045k" path="res://assets/sprites/player_teen/hitting-with-sword/East_0007.png" id="34_hitting_with_sword_East_0007"]
 [ext_resource type="Texture2D" uid="uid://d1chrapcdn0j4" path="res://assets/sprites/player_teen/hitting-with-sword/East_0008.png" id="35_hitting_with_sword_East_0008"]
+[ext_resource type="Texture2D" uid="uid://cs27svupcfile" path="res://assets/sprites/player_teen/boy-jump/East_0005.png" id="40_w8bqn"]
+[ext_resource type="Texture2D" uid="uid://cbmejmlrudy8v" path="res://assets/sprites/player_teen/boy-jump/East_0006.png" id="41_gm01e"]
+[ext_resource type="Texture2D" uid="uid://cpwerov6ol5ch" path="res://assets/sprites/player_teen/boy-jump/East_0007.png" id="42_iqd73"]
+[ext_resource type="Texture2D" uid="uid://b5grn4rjw207d" path="res://assets/sprites/player_teen/boy-jump/East_0008.png" id="43_4p37v"]
+[ext_resource type="Texture2D" uid="uid://0bt31fifwhbm" path="res://assets/sprites/player_teen/boy-jump/East_0009.png" id="44_5a16a"]
 
 [resource]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_gmj1t")
-}],
-"loop": 1,
-"name": &"air",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("34_hitting_with_sword_East_0007")
@@ -201,6 +197,31 @@ animations = [{
 "loop": 1,
 "name": &"idle",
 "speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("40_w8bqn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_gm01e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_iqd73")
+}],
+"loop": 0,
+"name": &"jump",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("43_4p37v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_5a16a")
+}],
+"loop": 0,
+"name": &"land",
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
