@@ -28,7 +28,6 @@ window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
-
 [input]
 
 move_left={
@@ -116,4 +115,3 @@ crouch={
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.06, 0.05, 0.09, 1)
-
