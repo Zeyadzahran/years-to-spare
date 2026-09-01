@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://lhn2kua6vg2i"]
 
-[ext_resource type="Script" path="res://src/levels/level.gd" id="1_level"]
-[ext_resource type="PackedScene" path="res://src/world/platform.tscn" id="2_platform"]
-[ext_resource type="PackedScene" path="res://src/actors/player/player.tscn" id="3_player"]
-[ext_resource type="PackedScene" path="res://src/ui/hud.tscn" id="4_hud"]
+[ext_resource type="Script" uid="uid://be5vpy5llau5q" path="res://src/levels/level.gd" id="1_level"]
+[ext_resource type="PackedScene" uid="uid://cl3iefs77qrkk" path="res://src/world/platform.tscn" id="2_platform"]
+[ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="4_hud"]
 
 [node name="TestLevel" type="Node2D"]
 script = ExtResource("1_level")
@@ -11,24 +11,24 @@ script = ExtResource("1_level")
 [node name="World" type="Node2D" parent="."]
 
 [node name="Ground" parent="World" instance=ExtResource("2_platform")]
-position = Vector2(320, 300)
-size = Vector2(900, 40)
+position = Vector2(700, 640)
+size = Vector2(2000, 80)
 
 [node name="LedgeLow" parent="World" instance=ExtResource("2_platform")]
-position = Vector2(180, 236)
-size = Vector2(120, 20)
+position = Vector2(500, 470)
+size = Vector2(300, 40)
 
 [node name="LedgeHigh" parent="World" instance=ExtResource("2_platform")]
-position = Vector2(390, 180)
-size = Vector2(140, 20)
+position = Vector2(950, 330)
+size = Vector2(320, 40)
 
 [node name="Wall" parent="World" instance=ExtResource("2_platform")]
-position = Vector2(-140, 220)
-size = Vector2(40, 200)
+position = Vector2(-330, 400)
+size = Vector2(80, 560)
 
 [node name="Entities" type="Node2D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("3_player")]
-position = Vector2(60, 280)
+position = Vector2(150, 560)
 
 [node name="HUD" parent="." instance=ExtResource("4_hud")]
