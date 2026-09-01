@@ -1,0 +1,37 @@
+class_name AgeComponent
+extends Node
+## The game's real resource. Time powers burn years; killing Cad Corp troops
+## takes them back. Reaching `death_age` ends the run.
+
+signal changed(age: float, death_age: float)
+signal died
+
+@export var start_age := 14.0
+@export var death_age := 60.0
+
+var age: float
+
+func _ready() -> void:
+	age = start_age
+
+
+## 0 at the starting age, 1 at death. Meant to drive the "older and weaker"
+## stat falloff once movement and combat numbers are decided.
+func frailty() -> float:
+	return clampf((age - start_age) / maxf(death_age - start_age, 0.001), 0.0, 1.0)
+
+
+func spend(amount: float) -> void:
+	if amount <= 0.0 or age >= death_age:
+		return
+	age = minf(age + amount, death_age)
+	changed.emit(age, death_age)
+	if age >= death_age:
+		died.emit()
+
+
+func restore(amount: float) -> void:
+	if amount <= 0.0 or age >= death_age:
+		return
+	age = maxf(age - amount, start_age)
+	changed.emit(age, death_age)

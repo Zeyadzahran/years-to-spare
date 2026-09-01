@@ -1,0 +1,14 @@
+.godot/
+
+/android/
+
+/builds/
+/export/
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*~
+*.swp
+
