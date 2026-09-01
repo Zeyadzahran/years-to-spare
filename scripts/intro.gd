@@ -28,7 +28,7 @@ var subtitles = [
 	"Until they came.",
 	"Cad Corp took everything from me. My family, my home... all I have left is my dad's clock.",
 	"But I was lucky enough to survive.",
-	"Or that is what i thought.",
+	"Or that is what I thought.",
 	"My family is still out there. I can feel it. My journey begins now... and I will bring them home."
 ]
 
@@ -109,7 +109,7 @@ func play_intro():
 	for i in range(images.size()):
 		await play_scene(i)
 
-	show_title()
+	await show_title()
 
 func _ready():
 	fade.modulate.a = 1.0
@@ -119,4 +119,4 @@ func _ready():
 
 	await tween.finished
 
-	play_intro()
+	await play_intro()

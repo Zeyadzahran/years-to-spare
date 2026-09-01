@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://cmuhwapcdlbka"]
+
+[ext_resource type="Texture2D" uid="uid://56bak15n4n1h" path="res://assets/backgrounds/phase-one/ea8e4a54-3e3c-48a9-b353-0fea2fbcf12e.png" id="1_sky"]
+[ext_resource type="Texture2D" uid="uid://cbmbjiab8hwar" path="res://assets/backgrounds/phase-one/472ed12e-8a25-40df-884d-129b4d21693e.png" id="2_ruins"]
+[ext_resource type="Texture2D" uid="uid://d2wan2rvwcjqj" path="res://assets/backgrounds/phase-one/27f45046-c50c-460e-97f6-3665cd5863cf.png" id="3_scrap"]
+
+[node name="PhaseOneBackground" type="Node2D" unique_id=773687580]
+z_index = -100
+
+[node name="Sky" type="Parallax2D" parent="." unique_id=1599626262]
+texture_repeat = 1
+scroll_scale = Vector2(0.02, 0.01)
+repeat_size = Vector2(1672, 0)
+repeat_times = 6
+
+[node name="Sprite" type="Sprite2D" parent="Sky" unique_id=480742940]
+texture_filter = 1
+texture_repeat = 3
+position = Vector2(-163, -170)
+texture = ExtResource("1_sky")
+centered = false
+
+[node name="DistantRuins" type="Parallax2D" parent="." unique_id=1213776535]
+texture_repeat = 3
+scroll_scale = Vector2(0.08, 0.03)
+repeat_size = Vector2(1672, 0)
+repeat_times = 3
+
+[node name="Sprite" type="Sprite2D" parent="DistantRuins" unique_id=1451300322]
+texture_filter = 1
+position = Vector2(-341, -143)
+texture = ExtResource("2_ruins")
+centered = false
+
+[node name="ForegroundScrap" type="Parallax2D" parent="." unique_id=806383518]
+visible = false
+scroll_scale = Vector2(0.16, 0.07)
+
+[node name="Sprite" type="Sprite2D" parent="ForegroundScrap" unique_id=1625839677]
+texture_filter = 1
+position = Vector2(516.3077, 308.4231)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_scrap")
