@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Years to Spare"
-run/main_scene="res://src/levels/test_level.tscn"
+run/main_scene="uid://brqj1brlbwn1f"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -27,7 +27,6 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-
 
 [input]
 
@@ -116,4 +115,3 @@ crouch={
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.06, 0.05, 0.09, 1)
-

@@ -5,30 +5,30 @@
 [ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="3_player"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="4_hud"]
 
-[node name="TestLevel" type="Node2D"]
+[node name="TestLevel" type="Node2D" unique_id=1624667464]
 script = ExtResource("1_level")
 
-[node name="World" type="Node2D" parent="."]
+[node name="World" type="Node2D" parent="." unique_id=929233845]
 
-[node name="Ground" parent="World" instance=ExtResource("2_platform")]
+[node name="Ground" parent="World" unique_id=858168137 instance=ExtResource("2_platform")]
 position = Vector2(700, 640)
 size = Vector2(2000, 80)
 
-[node name="LedgeLow" parent="World" instance=ExtResource("2_platform")]
+[node name="LedgeLow" parent="World" unique_id=456045585 instance=ExtResource("2_platform")]
 position = Vector2(500, 470)
 size = Vector2(300, 40)
 
-[node name="LedgeHigh" parent="World" instance=ExtResource("2_platform")]
+[node name="LedgeHigh" parent="World" unique_id=1347992382 instance=ExtResource("2_platform")]
 position = Vector2(950, 330)
 size = Vector2(320, 40)
 
-[node name="Wall" parent="World" instance=ExtResource("2_platform")]
+[node name="Wall" parent="World" unique_id=1549410158 instance=ExtResource("2_platform")]
 position = Vector2(-330, 400)
 size = Vector2(80, 560)
 
-[node name="Entities" type="Node2D" parent="."]
+[node name="Entities" type="Node2D" parent="." unique_id=626505594]
 
-[node name="Player" parent="Entities" instance=ExtResource("3_player")]
+[node name="Player" parent="Entities" unique_id=1370257193 instance=ExtResource("3_player")]
 position = Vector2(150, 560)
 
-[node name="HUD" parent="." instance=ExtResource("4_hud")]
+[node name="HUD" parent="." unique_id=335678786 instance=ExtResource("4_hud")]
