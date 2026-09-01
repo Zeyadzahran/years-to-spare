@@ -1,6 +1,14 @@
 extends PlayerState
-## Held crouch. The clip does not loop, so it plays down and rests on its last
-## frame for as long as the button is held.
+## Held duck. Shrinks the collision box so the boy actually passes under low
+## cover - that is the whole point of the state, not the pose.
+
+func enter(_previous: StringName) -> void:
+	player.set_crouched(true)
+
+
+func exit() -> void:
+	player.set_crouched(false)
+
 
 func physics_update(delta: float) -> StringName:
 	player.apply_gravity(delta)
@@ -11,6 +19,7 @@ func physics_update(delta: float) -> StringName:
 		return &"Air"
 	if Input.is_action_just_pressed(&"attack"):
 		return &"Attack"
-	if not Input.is_action_pressed(&"crouch"):
+	# Standing up under an overhang would shove him through it, so stay down.
+	if not Input.is_action_pressed(&"crouch") and player.can_stand():
 		return &"Move" if not is_zero_approx(player.input_dir) else &"Idle"
 	return &""

@@ -10,6 +10,9 @@ const STATE_CLIPS := {
 	&"Move": &"run",
 	&"Attack": &"attack",
 	&"Crouch": &"crouch",
+	&"Air": &"air",
+	&"Hurt": &"hurt",
+	&"Dead": &"dying",
 }
 
 ## Defaults assume this node sits under the Player alongside its StateMachine.

@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://dqlo34sw5o0i2" path="res://src/actors/player/player_animator.gd" id="10_animator"]
 [ext_resource type="Script" uid="uid://bny61eosmvjrb" path="res://src/actors/player/states/attack_state.gd" id="11_mfqm3"]
 [ext_resource type="Script" uid="uid://b6frbrnnc6m3v" path="res://src/actors/player/states/crouch_state.gd" id="12_yq53s"]
+[ext_resource type="Script" uid="uid://dfgofmv6gtof3" path="res://src/actors/player/states/hurt_state.gd" id="13_tlp74"]
+[ext_resource type="Script" uid="uid://dguvps5uj5hg7" path="res://src/actors/player/states/dead_state.gd" id="14_ylekk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(36, 100)
@@ -59,6 +61,12 @@ script = ExtResource("11_mfqm3")
 
 [node name="Crouch" type="Node" parent="StateMachine" unique_id=2050269905]
 script = ExtResource("12_yq53s")
+
+[node name="Hurt" type="Node" parent="StateMachine" unique_id=1765311931]
+script = ExtResource("13_tlp74")
+
+[node name="Dead" type="Node" parent="StateMachine" unique_id=1186842690]
+script = ExtResource("14_ylekk")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2118849440]
 position = Vector2(0, -110)
