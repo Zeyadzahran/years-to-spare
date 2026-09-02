@@ -15,9 +15,10 @@ script = ExtResource("2_hazard")
 scale = Vector2(0.33333334, 0.33333334)
 texture = ExtResource("1_obstacles")
 offset = Vector2(0, -208.5)
+flip_h = true
 region_enabled = true
 region_rect = Rect2(997, 570, 363, 417)
 
 [node name="Shape" type="CollisionShape2D" parent="."]
-position = Vector2(29.6, -29.5)
+position = Vector2(-29.6, -29.5)
 shape = SubResource("Shape_ToxicPipe")
