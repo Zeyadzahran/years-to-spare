@@ -16,13 +16,13 @@ extends Area2D
 var _cooldowns: Dictionary[Node2D, float] = {}
 
 func _ready() -> void:
-	set_physics_process(false)
 	body_entered.connect(_on_body_entered)
 
 
+## Left running rather than toggled off when idle, so a subclass can drive
+## movement from here without the cooldown bookkeeping switching it off.
 func _physics_process(delta: float) -> void:
 	if _cooldowns.is_empty():
-		set_physics_process(false)
 		return
 	for body in _cooldowns.keys():
 		_cooldowns[body] -= delta
@@ -44,5 +44,4 @@ func _hurt(body: Node2D) -> void:
 	if health == null or not health.is_alive():
 		return
 	_cooldowns[body] = cooldown
-	set_physics_process(true)
 	health.take_damage(damage, self)
