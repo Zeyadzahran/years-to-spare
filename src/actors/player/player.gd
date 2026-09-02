@@ -37,6 +37,7 @@ var hurt_from := 1
 var _coyote_left := 0.0
 var _jump_buffered := 0.0
 var _attack_buffered := 0.0
+var _attack_hit_done := false
 var _standing_size: Vector2
 var _standing_offset: float
 
@@ -85,6 +86,19 @@ func wants_attack() -> bool:
 
 func consume_attack() -> void:
 	_attack_buffered = 0.0
+	_attack_hit_done = false
+
+
+func perform_attack_hit() -> void:
+	if _attack_hit_done:
+		return
+	_attack_hit_done = true
+	for enemy in get_tree().get_nodes_in_group(&"enemy"):
+		if not is_instance_valid(enemy) or not enemy.has_node("Health"):
+			continue
+		var offset: Vector2 = enemy.global_position - global_position
+		if absf(offset.x) <= 78.0 and absf(offset.y) <= 75.0 and signf(offset.x) == float(facing):
+			enemy.health.take_damage(1.0, self)
 
 
 func can_jump() -> bool:

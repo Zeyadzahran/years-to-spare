@@ -4,16 +4,22 @@ extends PlayerState
 
 ## Matches the attack clip: 8 frames at 16 fps.
 const DURATION := 0.5
+const HIT_TIME := 0.22
 
 var _elapsed := 0.0
+var _hit_done := false
 
 func enter(_previous: StringName) -> void:
 	_elapsed = 0.0
+	_hit_done = false
 	player.consume_attack()
 
 
 func physics_update(delta: float) -> StringName:
 	_elapsed += delta
+	if not _hit_done and _elapsed >= HIT_TIME:
+		_hit_done = true
+		player.perform_attack_hit()
 	player.apply_gravity(delta)
 	if player.is_on_floor():
 		player.velocity.x = move_toward(player.velocity.x, 0.0, Player.GROUND_FRICTION * delta)

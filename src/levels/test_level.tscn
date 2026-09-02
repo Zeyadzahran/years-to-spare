@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="4_hud"]
 [ext_resource type="PackedScene" uid="uid://cmuhwapcdlbka" path="res://src/world/phase_one_background.tscn" id="5_background"]
 [ext_resource type="PackedScene" uid="uid://duv0eed0vtxwh" path="res://src/world/phase_one_level_art.tscn" id="6_level_art"]
+[ext_resource type="PackedScene" path="res://src/actors/enemy/guard.tscn" id="7_guard"]
 
 [node name="TestLevel" type="Node2D" unique_id=1438961433]
 script = ExtResource("1_level")
@@ -50,5 +51,10 @@ color = Color(0, 0, 0, 0)
 [node name="Player" parent="Entities" unique_id=423622813 instance=ExtResource("3_player")]
 z_index = 10
 position = Vector2(150, 560)
+
+[node name="Guard" parent="Entities" instance=ExtResource("7_guard")]
+z_index = 10
+position = Vector2(720, 560)
+patrol_distance = 180.0
 
 [node name="HUD" parent="." unique_id=1946941701 instance=ExtResource("4_hud")]
