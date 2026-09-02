@@ -8,7 +8,8 @@ Skeleton only. The structure below runs; the gameplay is what gets built on top.
 
 ## Running
 
-Open in Godot 4.7 and press F5. Main scene is `src/levels/test_level.tscn`.
+Open in Godot 4.7 and press F5. Main scene is `src/levels/logo.tscn`; the
+playable level is `src/levels/level_01.tscn`.
 
 ## Structure
 

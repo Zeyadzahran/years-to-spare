@@ -115,5 +115,4 @@ crouch={
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.06, 0.05, 0.09, 1)
