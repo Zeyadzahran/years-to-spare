@@ -3,7 +3,6 @@
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="1_c2u1v"]
 [ext_resource type="Script" uid="uid://c8qd83uhbeny2" path="res://scripts/options.gd" id="1_yjkok"]
 [ext_resource type="Texture2D" uid="uid://bvj72uiog0d4l" path="res://assets/intro/background1.png" id="2_kv8mn"]
-[ext_resource type="AudioStream" uid="uid://et5f7gxdgvd7" path="res://assets/music/test.mp3" id="3_2iy26"]
 
 [node name="Options" type="Control" unique_id=845143586]
 layout_mode = 3
@@ -103,10 +102,6 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("1_c2u1v")
 theme_override_font_sizes/font_size = 22
 text = "BACK"
-
-[node name="TestAudio" type="AudioStreamPlayer" parent="." unique_id=1415176683]
-stream = ExtResource("3_2iy26")
-autoplay = true
 
 [connection signal="value_changed" from="Settings/VolumeRow/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
 [connection signal="toggled" from="Settings/FullscreenRow/FullscreenCheck" to="." method="_on_fullscreen_check_toggled"]
