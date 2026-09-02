@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://duv0eed0vtxwh"]
 
-[ext_resource type="Texture2D" uid="uid://cyhubvwgh0xhf" path="res://assets/tiles/phase1/tiles.png" id="1_tiles"]
-[ext_resource type="Texture2D" uid="uid://dby0inp0vtvxr" path="res://assets/tiles/phase1/obstacles.png" id="2_obstacles"]
-[ext_resource type="Texture2D" uid="uid://djf7yp60fxa75" path="res://assets/tiles/phase1/decorations.png" id="3_decorations"]
+[ext_resource type="Texture2D" uid="uid://dlw6qxbday0fi" path="res://assets/tiles/phase1/tiles.png" id="1_tiles"]
+[ext_resource type="Texture2D" uid="uid://bv1s2sairdq83" path="res://assets/tiles/phase1/obstacles.png" id="2_obstacles"]
+[ext_resource type="Texture2D" uid="uid://cq7g30j4pyjf2" path="res://assets/tiles/phase1/decorations.png" id="3_decorations"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_palm"]
 atlas = ExtResource("3_decorations")
@@ -222,14 +222,14 @@ region_enabled = true
 region_rect = Rect2(402.0001, 920.00006, 150.45462, 70.45453)
 
 [node name="Sprite2D11" type="Sprite2D" parent="Platforms" unique_id=1971708334]
-position = Vector2(252, 781.99994)
+position = Vector2(418, 709.99994)
 scale = Vector2(1, 1.1571429)
 texture = ExtResource("1_tiles")
 region_enabled = true
 region_rect = Rect2(402.0001, 920.00006, 150.45462, 70.45453)
 
 [node name="Sprite2D12" type="Sprite2D" parent="Platforms" unique_id=1192828703]
-position = Vector2(269, 694.99994)
+position = Vector2(93, 766.99994)
 scale = Vector2(1, 1.1571429)
 texture = ExtResource("1_tiles")
 flip_h = true
@@ -237,7 +237,7 @@ region_enabled = true
 region_rect = Rect2(402.0001, 920.00006, 150.45462, 70.45453)
 
 [node name="Sprite2D14" type="Sprite2D" parent="Platforms" unique_id=985349258]
-position = Vector2(444, 757.99994)
+position = Vector2(965, 755)
 scale = Vector2(1, 1.1571429)
 texture = ExtResource("1_tiles")
 flip_h = true
@@ -269,7 +269,7 @@ region_enabled = true
 region_rect = Rect2(402.0001, 920.00006, 150.45462, 70.45453)
 
 [node name="Sprite2D18" type="Sprite2D" parent="Platforms" unique_id=1643653531]
-position = Vector2(871, 679)
+position = Vector2(861, 710)
 scale = Vector2(1, 1.1571429)
 texture = ExtResource("1_tiles")
 region_enabled = true
