@@ -21,6 +21,7 @@ var current_image := 0
 
 func _unhandled_input(event):
 	if event is InputEventKey and event.pressed and not event.echo:
+		MusicManager.stop_music(1.0)
 		skip_intro = true
 		start_game()
 

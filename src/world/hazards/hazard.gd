@@ -13,6 +13,8 @@ extends Area2D
 ## drain a hit every frame.
 @export var cooldown := 0.75
 
+@onready var __audio: AudioStreamPlayer2D = get_node_or_null("FlowSound")
+
 ## Cooldown left per body, keyed by instance id rather than by the body itself:
 ## a typed Node2D key rejects every read and erase once that body is freed,
 ## which would strand the entry and error on each frame after.

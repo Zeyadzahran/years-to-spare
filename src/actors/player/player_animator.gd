@@ -21,6 +21,8 @@ const LAND_CLIP := &"land"
 ## Defaults assume this node sits under the Player alongside its StateMachine.
 @export var state_machine_path: NodePath = ^"../StateMachine"
 
+@onready var sword_audio: AudioStreamPlayer2D = $"../SwordAudio"
+
 @onready var player: Player = get_parent() as Player
 @onready var states: StateMachine = get_node(state_machine_path) as StateMachine
 
@@ -46,6 +48,10 @@ func _on_state_changed(from: StringName, to: StringName) -> void:
 		return
 	_after_landing = &""
 	_play(clip)
+	
+	if to == &"Attack":
+		if sword_audio:
+			sword_audio.play()
 
 
 func _on_animation_finished() -> void:
