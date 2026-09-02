@@ -2,6 +2,7 @@
 
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="1_c2u1v"]
 [ext_resource type="Script" uid="uid://c8qd83uhbeny2" path="res://scripts/options.gd" id="1_yjkok"]
+[ext_resource type="Texture2D" uid="uid://bvj72uiog0d4l" path="res://assets/intro/background1.png" id="2_kv8mn"]
 [ext_resource type="AudioStream" uid="uid://et5f7gxdgvd7" path="res://assets/music/test.mp3" id="3_2iy26"]
 
 [node name="Options" type="Control" unique_id=845143586]
@@ -13,14 +14,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yjkok")
 
-[node name="Background" type="ColorRect" parent="." unique_id=995900662]
+[node name="Background" type="TextureRect" parent="." unique_id=522566537]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.019607844, 0.019607844, 0.019607844, 1)
+texture = ExtResource("2_kv8mn")
+expand_mode = 1
 
 [node name="DarkOverlay" type="ColorRect" parent="." unique_id=921270506]
 custom_minimum_size = Vector2(160, 50)
@@ -30,13 +32,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.737193, 0.7371929, 0.7371929, 0)
+color = Color(0.7372549, 0.7372549, 0.7372549, 0.28235295)
 
 [node name="Title" type="Label" parent="." unique_id=1548604038]
 layout_mode = 0
-offset_left = 489.0
+offset_left = 498.0
 offset_top = 187.0
-offset_right = 769.0
+offset_right = 778.0
 offset_bottom = 270.0
 theme_override_fonts/font = ExtResource("1_c2u1v")
 theme_override_font_sizes/font_size = 40
