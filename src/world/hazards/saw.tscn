@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b7qk3n5xw2ta4"]
+[gd_scene format=3 uid="uid://b7qk3n5xw2ta4"]
 
 [ext_resource type="Texture2D" uid="uid://bv1s2sairdq83" path="res://assets/tiles/phase1/obstacles.png" id="1_obstacles"]
-[ext_resource type="Script" path="res://src/world/hazards/moving_hazard.gd" id="2_hazard"]
+[ext_resource type="Script" uid="uid://6uqu76xe7nn4" path="res://src/world/hazards/moving_hazard.gd" id="2_hazard"]
 
 [sub_resource type="CircleShape2D" id="Shape_Saw"]
 radius = 44.0

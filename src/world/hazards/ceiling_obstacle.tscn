@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bq8jt4mv6cz3h"]
+[gd_scene format=3 uid="uid://bq8jt4mv6c03h"]
 
 [ext_resource type="Texture2D" uid="uid://bv1s2sairdq83" path="res://assets/tiles/phase1/obstacles.png" id="1_obstacles"]
-[ext_resource type="Script" path="res://src/world/hazards/hazard.gd" id="2_hazard"]
+[ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="2_hazard"]
 
 [sub_resource type="RectangleShape2D" id="Shape_CeilingObstacle"]
 size = Vector2(120, 62)
