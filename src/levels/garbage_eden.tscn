@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://ccu7y00mo6osu"]
+
+[ext_resource type="Script" uid="uid://bejj7dum5nlxk" path="res://scripts/garbage_eden.gd" id="1_5uui7"]
+[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="1_xih65"]
+
+[node name="GarbageEden" type="Node2D" unique_id=150344343]
+script = ExtResource("1_5uui7")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2078578491]
+offset_right = 1281.0
+offset_bottom = 719.0
+color = Color(0, 0, 0, 1)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1246061587]
+
+[node name="LevelIntro" type="Control" parent="UI" unique_id=1755369050]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LevelTitle" type="Label" parent="UI/LevelIntro" unique_id=1938595458]
+layout_mode = 0
+offset_left = 578.0
+offset_top = 271.0
+offset_right = 738.0
+offset_bottom = 300.0
+theme_override_fonts/font = ExtResource("1_xih65")
+theme_override_font_sizes/font_size = 20
+text = "LEVEL 01"
+
+[node name="LevelName" type="Label" parent="UI/LevelIntro" unique_id=498003565]
+layout_mode = 0
+offset_left = 404.0
+offset_top = 376.0
+offset_right = 908.0
+offset_bottom = 419.0
+theme_override_fonts/font = ExtResource("1_xih65")
+theme_override_font_sizes/font_size = 42
+text = "GARBAGE EDEN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="UI/LevelIntro" unique_id=1203887356]
+layout_mode = 0
+offset_left = 455.0
+offset_top = 654.0
+offset_right = 847.0
+offset_bottom = 685.0
+text = "Where everything the city threw away came to die."

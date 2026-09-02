@@ -94,7 +94,7 @@ func play_scene(index: int):
 	await fade_out()
 
 func start_game():
-	get_tree().change_scene_to_file("res://src/levels/level_01.tscn")
+	get_tree().change_scene_to_file("res://src/levels/garbage_eden.tscn")
 
 func show_title():
 	$Title.modulate.a = 0.0
