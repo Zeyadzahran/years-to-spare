@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bq8jt4mv6cz3h"]
+
+[ext_resource type="Texture2D" uid="uid://bv1s2sairdq83" path="res://assets/tiles/phase1/obstacles.png" id="1_obstacles"]
+[ext_resource type="Script" path="res://src/world/hazards/hazard.gd" id="2_hazard"]
+
+[sub_resource type="RectangleShape2D" id="Shape_CeilingObstacle"]
+size = Vector2(120, 62)
+
+[node name="CeilingObstacle" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_hazard")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("1_obstacles")
+offset = Vector2(0, 144.5)
+region_enabled = true
+region_rect = Rect2(1009, 122, 388, 289)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, 62)
+shape = SubResource("Shape_CeilingObstacle")
