@@ -2,6 +2,8 @@ extends Control
 
 var skip_intro := false
 
+var intro_music = preload("res://assets/music/A_Bridge_to_Yesterday.mp3")
+
 var images = [
 	preload("res://assets/intro/1home.jpg"),
 	preload("res://assets/intro/2arrive.png"),
@@ -120,6 +122,7 @@ func play_intro():
 	await show_title()
 
 func _ready():
+	MusicManager.play_music(intro_music, 1.5)
 	fade.modulate.a = 1.0
 
 	var tween = create_tween()

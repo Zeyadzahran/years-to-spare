@@ -21,6 +21,7 @@ EventBus="*res://autoload/event_bus.gd"
 TimeService="*res://autoload/time_service.gd"
 GameState="*res://autoload/game_state.gd"
 SettingsManager="*uid://dwgl36are84yv"
+MusicManager="*uid://d15pmg7g3tj2c"
 
 [display]
 
