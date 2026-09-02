@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ii88k7wx5kfu"
-path="res://.godot/imported/27f45046-c50c-460e-97f6-3665cd5863cf.png-06daf158dff2311dc9c9f855c3efc6f2.ctex"
+uid="uid://dfg2mihij7hc1"
+path="res://.godot/imported/East_0002.png-c42ad838d609bec25c4ef4a4b9ce2653.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/assets/background/27f45046-c50c-460e-97f6-3665cd5863cf.png"
-dest_files=["res://.godot/imported/27f45046-c50c-460e-97f6-3665cd5863cf.png-06daf158dff2311dc9c9f855c3efc6f2.ctex"]
+source_file="res://assets/sprites/player_teen/boy-dying/East_0002.png"
+dest_files=["res://.godot/imported/East_0002.png-c42ad838d609bec25c4ef4a4b9ce2653.ctex"]
 
 [params]
 
