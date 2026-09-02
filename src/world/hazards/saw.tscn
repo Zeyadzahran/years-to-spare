@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b7qk3n5xw2ta4"]
 
-[ext_resource type="Texture2D" uid="uid://bv1s2sairdq83" path="res://assets/tiles/phase1/obstacles.png" id="1_obstacles"]
+[ext_resource type="SpriteFrames" uid="uid://c2n7wqhbladef" path="res://src/world/hazards/blade_frames.tres" id="1_blade"]
 [ext_resource type="Script" uid="uid://6uqu76xe7nn4" path="res://src/world/hazards/moving_hazard.gd" id="2_hazard"]
 
 [sub_resource type="CircleShape2D" id="Shape_Saw"]
@@ -11,13 +11,12 @@ collision_layer = 0
 collision_mask = 2
 script = ExtResource("2_hazard")
 
-[node name="Sprite" type="Sprite2D" parent="."]
-scale = Vector2(0.33333334, 0.33333334)
-texture = ExtResource("1_obstacles")
-offset = Vector2(0, -165.5)
-region_enabled = true
-region_rect = Rect2(426, 602, 472, 331)
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.63, 0.63)
+sprite_frames = ExtResource("1_blade")
+autoplay = "default"
+offset = Vector2(4, -117)
 
 [node name="Shape" type="CollisionShape2D" parent="."]
-position = Vector2(29.5, -55)
+position = Vector2(0, -104)
 shape = SubResource("Shape_Saw")

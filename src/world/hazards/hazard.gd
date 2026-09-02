@@ -20,13 +20,26 @@ extends Area2D
 ## which would strand the entry and error on each frame after.
 var _cooldowns: Dictionary[int, float] = {}
 
+## Animated art, if the hazard has any. Looping and frame rate are authored on
+## the AnimatedSprite2D itself; only the clock it runs on is decided here.
+var _animation: AnimatedSprite2D
+
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
+	for child in get_children():
+		if child is AnimatedSprite2D:
+			_animation = child
+			break
 
 
 ## Left running rather than toggled off when idle, so a subclass can drive
 ## movement from here without the cooldown bookkeeping switching it off.
 func _physics_process(delta: float) -> void:
+	# Hazard art runs on world time like hazard movement does, so a stopped
+	# world stops the blade spinning and the acid pouring. The damage volume
+	# stays live while frozen: a stopped blade still cuts.
+	if _animation != null:
+		_animation.speed_scale = TimeService.world_scale
 	if _cooldowns.is_empty():
 		return
 	for id in _cooldowns.keys():
