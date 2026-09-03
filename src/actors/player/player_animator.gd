@@ -22,6 +22,18 @@ const LAND_CLIP := &"land"
 ## The golden clock energy. A power is held rather than fired, so it loops.
 const POWER_CLIP := &"power"
 
+## jumb.mp3 is a sheet of several takes; the one we want starts two seconds in
+## and runs until the recording drops back to room tone. There is no sub-clip
+## resource for MP3, so playback starts at the offset and is cut at the end of
+## the take in _process.
+const JUMP_FROM := 2.0
+const JUMP_LENGTH := 0.95
+
+## One voice per body. The boy has not broken yet; the man and the elder share
+## the older take.
+const BOY_HURT := preload("res://assets/sounds/boy-hurt.mp3")
+const MAN_HURT := preload("res://assets/sounds/young-man-hurt.mp3")
+
 ## Defaults assume this node sits under the Player alongside its StateMachine.
 @export var state_machine_path: NodePath = ^"../StateMachine"
 
@@ -42,6 +54,9 @@ const POWER_CLIP := &"power"
 ## looping, so starting and stopping it is all this needs to do.
 @onready var run_audio: AudioStreamPlayer2D = $"../RunAudio"
 @onready var time_stop_audio: AudioStreamPlayer2D = $"../TimeStopAudio"
+## No stream authored on the node: which of him is heard is decided per hit.
+@onready var hurt_audio: AudioStreamPlayer2D = $"../HurtAudio"
+@onready var jump_audio: AudioStreamPlayer2D = $"../JumpAudio"
 
 @onready var player: Player = get_parent() as Player
 @onready var states: StateMachine = get_node(state_machine_path) as StateMachine
@@ -51,6 +66,7 @@ var _channelling := false
 
 func _ready() -> void:
 	states.state_changed.connect(_on_state_changed)
+	player.jumped.connect(_on_jumped)
 	animation_finished.connect(_on_animation_finished)
 	# Through the bus rather than the components: Player wires its own @onready
 	# references after its children are ready, so reaching for player.age from
@@ -65,6 +81,8 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	flip_h = player.facing < 0
+	if jump_audio.playing and jump_audio.get_playback_position() >= JUMP_FROM + JUMP_LENGTH:
+		jump_audio.stop()
 
 
 func _sync_form() -> void:
@@ -138,6 +156,22 @@ func _on_state_changed(from: StringName, to: StringName) -> void:
 
 	if to == &"Attack":
 		sword_audio.play()
+	elif to == &"Hurt":
+		# Restarted rather than left to finish: a second hit during the first
+		# grunt should sound like a second hit.
+		hurt_audio.stream = _hurt_stream()
+		hurt_audio.play()
+
+
+func _on_jumped() -> void:
+	jump_audio.play(JUMP_FROM)
+
+
+## The voice follows the body rather than the age directly, so whichever set of
+## frames he is wearing is the one heard - the two can never disagree, however
+## the age thresholds are retuned.
+func _hurt_stream() -> AudioStream:
+	return BOY_HURT if sprite_frames == teen_frames else MAN_HURT
 
 
 func _on_animation_finished() -> void:

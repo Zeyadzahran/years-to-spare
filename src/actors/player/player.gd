@@ -6,6 +6,10 @@ extends CharacterBody2D
 ## Movement numbers are first-pass placeholders. Combat lives in a future
 ## Attack state; the state machine is already the place to hang it.
 
+## For the animator: leaving the ground is not the same as jumping - he also
+## reaches Air by walking off a ledge - so the sound hangs off the push itself.
+signal jumped
+
 const GROUND_ACCEL := 6000.0
 const AIR_ACCEL := 3300.0
 const GROUND_FRICTION := 7200.0
@@ -140,6 +144,7 @@ func consume_jump() -> void:
 	_jump_buffered = 0.0
 	_coyote_left = 0.0
 	velocity.y = jump_velocity
+	jumped.emit()
 
 
 func set_crouched(crouched: bool) -> void:
