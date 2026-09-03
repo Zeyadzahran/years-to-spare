@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0hudstatbar01"]
+
+[ext_resource type="Script" uid="uid://csfht7ucik3dy" path="res://src/ui/stat_bar.gd" id="1_bar"]
+
+[node name="StatBar" type="Control"]
+custom_minimum_size = Vector2(280, 0)
+offset_right = 280.0
+offset_bottom = 46.0
+mouse_filter = 2
+script = ExtResource("1_bar")

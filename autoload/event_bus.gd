@@ -6,6 +6,7 @@ extends Node
 
 signal player_spawned(player: Node2D)
 signal player_health_changed(current: float, maximum: float)
+signal player_heals_changed(count: int)
 signal player_died
 
 signal player_age_changed(age: float, death_age: float)

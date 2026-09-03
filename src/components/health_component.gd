@@ -8,7 +8,7 @@ signal healed(amount: float)
 signal changed(current: float, maximum: float)
 signal died
 
-@export var max_health := 3.0
+@export var max_health := 100.0
 
 var current: float
 
