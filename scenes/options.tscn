@@ -215,9 +215,14 @@ text = "ON"
 [node name="Divider2" type="HSeparator" parent="Center/Panel/Margin/Content"]
 layout_mode = 2
 
-[node name="BackButton" type="Button" parent="Center/Panel/Margin/Content"]
+[node name="Buttons" type="HBoxContainer" parent="Center/Panel/Margin/Content"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="BackButton" type="Button" parent="Center/Panel/Margin/Content/Buttons"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(260, 56)
+custom_minimum_size = Vector2(200, 56)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
@@ -232,6 +237,42 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
 text = "BACK"
 
+[node name="MainMenuButton" type="Button" parent="Center/Panel/Margin/Content/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_colors/font_hover_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_colors/font_pressed_color = Color(0.0784314, 0.0705882, 0.0588235, 1)
+theme_override_colors/font_focus_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "MAIN MENU"
+
+[node name="QuitButton" type="Button" parent="Center/Panel/Margin/Content/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_colors/font_hover_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_colors/font_pressed_color = Color(0.0784314, 0.0705882, 0.0588235, 1)
+theme_override_colors/font_focus_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "QUIT"
+
 [connection signal="value_changed" from="Center/Panel/Margin/Content/Settings/VolumeRow/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
 [connection signal="toggled" from="Center/Panel/Margin/Content/Settings/FullscreenRow/FullscreenCheck" to="." method="_on_fullscreen_check_toggled"]
-[connection signal="pressed" from="Center/Panel/Margin/Content/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/Content/Buttons/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/Content/Buttons/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/Content/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]

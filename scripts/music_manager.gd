@@ -6,6 +6,9 @@ var fade_tween: Tween
 
 
 func _ready():
+	# Music keeps playing while the options overlay pauses the level, so the
+	# volume slider has something to be heard against.
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	player = AudioStreamPlayer.new()
 	add_child(player)
 
