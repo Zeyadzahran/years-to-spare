@@ -34,10 +34,14 @@ color = Color(0, 0, 0, 0.17254902)
 [node name="Title" type="TextureRect" parent="." unique_id=1100088561]
 layout_mode = 1
 anchors_preset = -1
-offset_left = 367.0
-offset_top = 80.0
-offset_right = 885.0
-offset_bottom = 282.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -259.0
+offset_top = -280.0
+offset_right = 259.0
+offset_bottom = -78.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_fxx5w")
@@ -45,11 +49,18 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1412082532]
-layout_mode = 0
-offset_left = 503.0
-offset_top = 287.0
-offset_right = 753.0
-offset_bottom = 506.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -73.0
+offset_right = 125.0
+offset_bottom = 146.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=1570370631]
 custom_minimum_size = Vector2(250, 60)
