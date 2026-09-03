@@ -14,6 +14,14 @@ const COYOTE_TIME := 0.1
 const JUMP_BUFFER := 0.12
 const ATTACK_BUFFER := 0.12
 
+## Three swings to down a Guard, on the 100-point scale.
+@export var attack_damage := 34.0
+
+@export_group("Healing")
+## Prickly pears the boy is carrying. `heal` (H) eats one.
+@export var heal_charges := 3
+## A third of the bar per fruit, so three of them are a full heal from nothing.
+@export var heal_amount := 34.0
 @export var speed := 560.0
 @export var jump_velocity := -1250.0
 @export var gravity := 4100.0
@@ -52,6 +60,7 @@ func _ready() -> void:
 	health.died.connect(_on_died)
 	age.changed.connect(func(a, d): EventBus.player_age_changed.emit(a, d))
 	age.died.connect(_on_died)
+	EventBus.player_heals_changed.emit(heal_charges)
 	EventBus.player_spawned.emit(self)
 
 
@@ -64,6 +73,8 @@ func _physics_process(delta: float) -> void:
 	_attack_buffered = maxf(_attack_buffered - delta, 0.0)
 	if Input.is_action_just_pressed(&"attack"):
 		_attack_buffered = ATTACK_BUFFER
+	if Input.is_action_just_pressed(&"heal"):
+		eat_pear()
 
 
 func apply_gravity(delta: float) -> void:
@@ -101,7 +112,24 @@ func perform_attack_hit() -> void:
 		# exactly level with the boy has signf(offset.x) == 0, which matched
 		# neither facing and let the swing pass straight through it.
 		if absf(offset.x) <= 78.0 and absf(offset.y) <= 75.0 and offset.x * facing >= 0.0:
-			enemy.health.take_damage(1.0, self)
+			enemy.health.take_damage(attack_damage, self)
+
+
+## Deliberately usable mid-stagger and mid-air: the fruit is the answer to
+## being caught out, so gating it behind a clean footing would waste it.
+func eat_pear() -> bool:
+	if is_down() or heal_charges <= 0 or health.current >= health.max_health:
+		return false
+	heal_charges -= 1
+	health.heal(heal_amount)
+	EventBus.player_heals_changed.emit(heal_charges)
+	return true
+
+
+## For a pickup to call once one exists.
+func add_pear(count := 1) -> void:
+	heal_charges += count
+	EventBus.player_heals_changed.emit(heal_charges)
 
 
 func can_jump() -> bool:

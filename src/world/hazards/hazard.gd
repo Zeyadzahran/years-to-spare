@@ -4,10 +4,11 @@ extends Area2D
 ## all use this; the sprite stays a plain child so the art and the danger can be
 ## adjusted independently.
 ##
-## Lethal by default - a phase-1 pit is meant to end the run, not chip at it.
-## Drop `damage` below the player's max health to turn one into a chip hazard.
+## Hazards chip rather than kill: a mistake costs a fifth of the bar and a
+## prickly pear, not the run. Raise `damage` past max health for the one pit
+## that is meant to be final.
 
-@export var damage := 99.0
+@export var damage := 20.0
 
 ## Seconds before the same body can be hurt again, so standing in acid does not
 ## drain a hit every frame.

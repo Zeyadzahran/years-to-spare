@@ -20,7 +20,7 @@ const GROUND_FRICTION := 1400.0
 @export var speed := 180.0
 @export var detection_range := 430.0
 @export var attack_range := 58.0
-@export var damage := 1.0
+@export var damage := 34.0
 @export var patrol_distance := 180.0
 
 @onready var sprite: AnimatedSprite2D = $Sprite
