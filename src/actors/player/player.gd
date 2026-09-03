@@ -97,7 +97,10 @@ func perform_attack_hit() -> void:
 		if not is_instance_valid(enemy) or not enemy.has_node("Health"):
 			continue
 		var offset: Vector2 = enemy.global_position - global_position
-		if absf(offset.x) <= 78.0 and absf(offset.y) <= 75.0 and signf(offset.x) == float(facing):
+		# `offset.x * facing >= 0` rather than comparing signs: an enemy standing
+		# exactly level with the boy has signf(offset.x) == 0, which matched
+		# neither facing and let the swing pass straight through it.
+		if absf(offset.x) <= 78.0 and absf(offset.y) <= 75.0 and offset.x * facing >= 0.0:
 			enemy.health.take_damage(1.0, self)
 
 
