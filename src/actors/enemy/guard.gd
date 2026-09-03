@@ -39,7 +39,8 @@ func _ready() -> void:
 
 func _tick(delta: float) -> void:
 	_state_elapsed += delta
-	target = get_tree().get_first_node_in_group(&"player") as Player
+	if target == null or not is_instance_valid(target):
+		target = get_tree().get_first_node_in_group(&"player") as Player
 
 	match state:
 		&"Idle":
