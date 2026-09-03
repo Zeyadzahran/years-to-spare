@@ -12,33 +12,44 @@ script = ExtResource("1_5uui7")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="LevelIntro" type="Control" parent="UI" unique_id=1755369050]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="LevelTitle" type="Label" parent="UI/LevelIntro" unique_id=1938595458]
-layout_mode = 0
-offset_left = 538.0
-offset_top = 190.0
-offset_right = 762.0
-offset_bottom = 219.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -162.0
+offset_bottom = -122.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_xih65")
 theme_override_font_sizes/font_size = 28
 text = "LEVEL 1"
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_trim_flags = 0
 
 [node name="LevelName" type="Label" parent="UI/LevelIntro" unique_id=498003565]
-layout_mode = 0
-offset_left = 382.0
-offset_top = 326.0
-offset_right = 958.0
-offset_bottom = 374.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -22.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_xih65")
 theme_override_font_sizes/font_size = 48
 text = "GARBAGE EDEN"
@@ -46,11 +57,15 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Subtitle" type="Label" parent="UI/LevelIntro" unique_id=1203887356]
-layout_mode = 0
-offset_left = 326.0
-offset_top = 655.0
-offset_right = 954.0
-offset_bottom = 686.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = 106.0
+offset_bottom = 126.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("1_xih65")
 theme_override_font_sizes/font_size = 12
 text = "Where everything the city threw away came to die."
