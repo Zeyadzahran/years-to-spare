@@ -38,6 +38,10 @@ const POWER_CLIP := &"power"
 @export var elder_age := 45.0
 
 @onready var sword_audio: AudioStreamPlayer2D = $"../SwordAudio"
+## Loops for as long as the run clip does; the stream itself is imported
+## looping, so starting and stopping it is all this needs to do.
+@onready var run_audio: AudioStreamPlayer2D = $"../RunAudio"
+@onready var time_stop_audio: AudioStreamPlayer2D = $"../TimeStopAudio"
 
 @onready var player: Player = get_parent() as Player
 @onready var states: StateMachine = get_node(state_machine_path) as StateMachine
@@ -100,7 +104,11 @@ func _on_age_changed(age: float, _death_age: float) -> void:
 	_wear(_frames_for(age))
 
 
-func _on_ability_changed(_ability_id: StringName, active: bool) -> void:
+func _on_ability_changed(ability_id: StringName, active: bool) -> void:
+	# Only holding the world still gets its own sound, and it is left to ring
+	# out rather than cut on release - a clipped whoosh reads as a glitch.
+	if active and ability_id == GameState.ABILITY_STOP:
+		time_stop_audio.play()
 	if _channelling == active:
 		return
 	_channelling = active
@@ -127,10 +135,9 @@ func _on_state_changed(from: StringName, to: StringName) -> void:
 		return
 	_after_landing = &""
 	_play(clip)
-	
+
 	if to == &"Attack":
-		if sword_audio:
-			sword_audio.play()
+		sword_audio.play()
 
 
 func _on_animation_finished() -> void:
@@ -144,3 +151,14 @@ func _on_animation_finished() -> void:
 func _play(clip: StringName) -> void:
 	if not clip.is_empty() and animation != clip:
 		play(clip)
+	_sync_footsteps()
+
+
+## Footsteps follow the run clip rather than the Move state, so the landing
+## frames the boy runs out of stay silent until the stride actually starts.
+func _sync_footsteps() -> void:
+	if animation == STATE_CLIPS[&"Move"]:
+		if not run_audio.playing:
+			run_audio.play()
+	else:
+		run_audio.stop()
