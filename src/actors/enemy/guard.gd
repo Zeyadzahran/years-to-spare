@@ -9,6 +9,11 @@ extends Enemy
 const KNOCKBACK := 200.0
 const ATTACK_DURATION := 0.56
 const ATTACK_HIT_TIME := 0.25
+## Breath between swings. The GDD's plan for the Guard is "dodge the attack,
+## then counter", which needs a window where he is not swinging - and it has to
+## outlast the boy's own swing (AttackState.DURATION, 0.5s), or the counter is
+## interrupted before it ever lands.
+const ATTACK_RECOVERY := 0.6
 const HURT_DURATION := 0.35
 const GROUND_FRICTION := 1400.0
 
@@ -55,6 +60,8 @@ func _tick(delta: float) -> void:
 				_change_state(&"Attack")
 		&"Attack":
 			_tick_attack(delta)
+		&"Recover":
+			_tick_recover(delta)
 		&"Hurt":
 			_tick_hurt(delta)
 		&"Dead":
@@ -81,8 +88,8 @@ func _tick_chase(delta: float) -> void:
 	_set_animation(&"run")
 
 
-func _tick_attack(_delta: float) -> void:
-	velocity.x = move_toward(velocity.x, 0.0, GROUND_FRICTION * _delta)
+func _tick_attack(delta: float) -> void:
+	velocity.x = move_toward(velocity.x, 0.0, GROUND_FRICTION * delta)
 	_set_animation(&"attack")
 
 	if target == null or target.is_down():
@@ -99,7 +106,28 @@ func _tick_attack(_delta: float) -> void:
 			target.health.take_damage(damage, self)
 
 	if _state_elapsed >= ATTACK_DURATION:
-		_change_state(&"Attack" if _in_attack_range() else &"Chase")
+		_change_state(&"Recover")
+
+
+## Baton down, still tracking the boy, briefly unable to swing. Coming back to
+## Attack from here is a real state change, which is also what re-arms the swing
+## timer and the hit flag - re-entering Attack directly could not, because
+## `_change_state` returns early when the state is unchanged.
+func _tick_recover(delta: float) -> void:
+	velocity.x = move_toward(velocity.x, 0.0, GROUND_FRICTION * delta)
+	_set_animation(&"idle")
+	if target != null and is_instance_valid(target):
+		var dx := target.global_position.x - global_position.x
+		if not is_zero_approx(dx):
+			facing = 1 if dx > 0.0 else -1
+	if _state_elapsed < ATTACK_RECOVERY:
+		return
+	if _in_attack_range():
+		_change_state(&"Attack")
+	elif _can_see_player():
+		_change_state(&"Chase")
+	else:
+		_change_state(&"Idle")
 
 
 func _tick_hurt(delta: float) -> void:
@@ -137,6 +165,7 @@ func _change_state(next: StringName) -> void:
 		&"Idle": _set_animation(&"idle")
 		&"Chase": _set_animation(&"run")
 		&"Attack": _set_animation(&"attack")
+		&"Recover": _set_animation(&"idle")
 		&"Hurt": _set_animation(&"hurt")
 		&"Dead": _set_animation(&"dying")
 
