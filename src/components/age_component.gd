@@ -30,6 +30,14 @@ func spend(amount: float) -> void:
 		died.emit()
 
 
+## Puts the boy at an exact age, for a checkpoint handing back the years he had
+## when he reached it. Announces the change like any other, so whatever listens
+## for `player_age_changed` - the HUD, and the body he is wearing - follows.
+func set_to(value: float) -> void:
+	age = clampf(value, start_age, death_age)
+	changed.emit(age, death_age)
+
+
 func restore(amount: float) -> void:
 	if amount <= 0.0 or age >= death_age:
 		return

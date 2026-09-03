@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="12_r3o47"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="16_buk32"]
 [ext_resource type="PackedScene" uid="uid://cf5roapb2wk7d" path="res://src/world/hazards/spike_strip_small.tscn" id="17_spksm"]
+[ext_resource type="PackedScene" uid="uid://b4kxq2wcheckp" path="res://src/world/checkpoint.tscn" id="18_chkpt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_70nlc"]
 size = Vector2(10400, 400)
@@ -269,6 +270,17 @@ texture = ExtResource("4_1tr31")
 offset = Vector2(0, -86)
 region_enabled = true
 region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Checkpoints" type="Node2D" parent="World"]
+
+[node name="Checkpoint1" parent="World/Checkpoints" instance=ExtResource("18_chkpt")]
+position = Vector2(1900, 600)
+
+[node name="Checkpoint2" parent="World/Checkpoints" instance=ExtResource("18_chkpt")]
+position = Vector2(2980, 480)
+
+[node name="Checkpoint3" parent="World/Checkpoints" instance=ExtResource("18_chkpt")]
+position = Vector2(4300, 600)
 
 [node name="Hazards" type="Node2D" parent="World" unique_id=160053923]
 
