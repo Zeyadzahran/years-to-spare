@@ -42,7 +42,7 @@ script = ExtResource("2_health")
 [node name="Age" type="Node" parent="." unique_id=203420279]
 script = ExtResource("3_age")
 
-[node name="TimePowers" type="Node" parent="." unique_id=293533504]
+[node name="TimePowers" type="Node" parent="." unique_id=293533504 node_paths=PackedStringArray("age")]
 script = ExtResource("4_powers")
 age = NodePath("../Age")
 
