@@ -53,6 +53,15 @@
 [ext_resource type="Texture2D" uid="uid://cpwerov6ol5ch" path="res://assets/sprites/player_teen/boy-jump/East_0007.png" id="42_iqd73"]
 [ext_resource type="Texture2D" uid="uid://b5grn4rjw207d" path="res://assets/sprites/player_teen/boy-jump/East_0008.png" id="43_4p37v"]
 [ext_resource type="Texture2D" uid="uid://0bt31fifwhbm" path="res://assets/sprites/player_teen/boy-jump/East_0009.png" id="44_5a16a"]
+[ext_resource type="Texture2D" uid="uid://dmxet0bqwvrt4" path="res://assets/sprites/player_teen/boy-power/East_0001.png" id="45_rd67l"]
+[ext_resource type="Texture2D" uid="uid://cnqduu80bi8r8" path="res://assets/sprites/player_teen/boy-power/East_0002.png" id="46_e7s34"]
+[ext_resource type="Texture2D" uid="uid://cuhouo8orheus" path="res://assets/sprites/player_teen/boy-power/East_0003.png" id="47_u0ebh"]
+[ext_resource type="Texture2D" uid="uid://d1b6mj7fyu3qm" path="res://assets/sprites/player_teen/boy-power/East_0004.png" id="48_sy57w"]
+[ext_resource type="Texture2D" uid="uid://d4njq72512f2x" path="res://assets/sprites/player_teen/boy-power/East_0005.png" id="49_34xrt"]
+[ext_resource type="Texture2D" uid="uid://bdfcxs4p21q5y" path="res://assets/sprites/player_teen/boy-power/East_0006.png" id="50_gflwl"]
+[ext_resource type="Texture2D" uid="uid://cihg0ctwddbqo" path="res://assets/sprites/player_teen/boy-power/East_0007.png" id="51_vpset"]
+[ext_resource type="Texture2D" uid="uid://b5bd1n3ad2kwi" path="res://assets/sprites/player_teen/boy-power/East_0008.png" id="52_x1xah"]
+[ext_resource type="Texture2D" uid="uid://b2tcbpuuyqr5q" path="res://assets/sprites/player_teen/boy-power/East_0009.png" id="53_0af8i"]
 
 [resource]
 animations = [{
@@ -222,6 +231,38 @@ animations = [{
 "loop": 0,
 "name": &"land",
 "speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("45_rd67l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_e7s34")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_u0ebh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_sy57w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_34xrt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_gflwl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_vpset")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_x1xah")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_0af8i")
+}],
+"loop": 1,
+"name": &"power",
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
