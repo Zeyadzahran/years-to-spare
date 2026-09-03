@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/A_Bridge_to_Yesterday.mp3-4d89ab76391436f5f87
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0

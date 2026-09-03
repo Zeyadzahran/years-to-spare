@@ -13,33 +13,35 @@ extends Area2D
 ## drain a hit every frame.
 @export var cooldown := 0.75
 
-@onready var __audio: AudioStreamPlayer2D = get_node_or_null("FlowSound")
-
 ## Cooldown left per body, keyed by instance id rather than by the body itself:
 ## a typed Node2D key rejects every read and erase once that body is freed,
 ## which would strand the entry and error on each frame after.
 var _cooldowns: Dictionary[int, float] = {}
 
-## Animated art, if the hazard has any. Looping and frame rate are authored on
-## the AnimatedSprite2D itself; only the clock it runs on is decided here.
+## Animated art and sound, if the hazard has any. Looping, frame rate and volume
+## are authored on those nodes; only the clock they run on is decided here.
 var _animation: AnimatedSprite2D
+var _audio: AudioStreamPlayer2D
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	for child in get_children():
-		if child is AnimatedSprite2D:
+		if _animation == null and child is AnimatedSprite2D:
 			_animation = child
-			break
+		elif _audio == null and child is AudioStreamPlayer2D:
+			_audio = child
 
 
 ## Left running rather than toggled off when idle, so a subclass can drive
 ## movement from here without the cooldown bookkeeping switching it off.
 func _physics_process(delta: float) -> void:
-	# Hazard art runs on world time like hazard movement does, so a stopped
-	# world stops the blade spinning and the acid pouring. The damage volume
-	# stays live while frozen: a stopped blade still cuts.
+	# Art and sound run on world time like hazard movement does, so a stopped
+	# world stops the blade spinning, the acid pouring and the saw howling. The
+	# damage volume stays live while frozen: a stopped blade still cuts.
 	if _animation != null:
 		_animation.speed_scale = TimeService.world_scale
+	if _audio != null:
+		_audio.stream_paused = TimeService.is_world_frozen()
 	if _cooldowns.is_empty():
 		return
 	for id in _cooldowns.keys():

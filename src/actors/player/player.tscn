@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://b6frbrnnc6m3v" path="res://src/actors/player/states/crouch_state.gd" id="12_yq53s"]
 [ext_resource type="Script" uid="uid://dfgofmv6gtof3" path="res://src/actors/player/states/hurt_state.gd" id="13_tlp74"]
 [ext_resource type="Script" uid="uid://dguvps5uj5hg7" path="res://src/actors/player/states/dead_state.gd" id="14_ylekk"]
+[ext_resource type="AudioStream" uid="uid://cymjc70po2h2b" path="res://assets/sounds/dragon-studio-sword-unsheathing-393851.mp3" id="15_ylekk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(36, 100)
@@ -73,3 +74,7 @@ position = Vector2(0, -110)
 zoom = Vector2(1.3, 1.3)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
+
+[node name="SwordAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764939]
+stream = ExtResource("15_ylekk")
+volume_db = -6.0

@@ -15,40 +15,32 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_leak1")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("2_leak2")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("3_leak3")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("4_leak4")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("5_leak5")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("6_leak6")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("7_leak7")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("8_leak8")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("9_leak9")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 12.0
 }]

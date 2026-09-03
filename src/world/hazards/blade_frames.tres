@@ -15,40 +15,32 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_blade1")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("2_blade2")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("3_blade3")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("4_blade4")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("5_blade5")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("6_blade6")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("7_blade7")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("8_blade8")
-},
-{
+}, {
 "duration": 1.0,
 "texture": ExtResource("9_blade9")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 20.0
 }]

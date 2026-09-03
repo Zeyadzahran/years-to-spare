@@ -2,22 +2,28 @@
 
 [ext_resource type="SpriteFrames" uid="uid://dq4xmvleakpip" path="res://src/world/hazards/toxic_pipe_frames.tres" id="1_leak"]
 [ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="2_hazard"]
+[ext_resource type="AudioStream" uid="uid://dpooxhmgpf0h1" path="res://assets/sounds/freesound_community-sewer-drain-23073.mp3" id="3_71dki"]
 
 [sub_resource type="RectangleShape2D" id="Shape_ToxicPipe"]
 size = Vector2(41, 51)
 
-[node name="ToxicPipe" type="Area2D"]
+[node name="ToxicPipe" type="Area2D" unique_id=1679839161]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("2_hazard")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="."]
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=2081253171]
 scale = Vector2(0.6, 0.6)
 sprite_frames = ExtResource("1_leak")
 autoplay = "default"
 offset = Vector2(1, -113)
 flip_h = true
 
-[node name="Shape" type="CollisionShape2D" parent="."]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1874129524]
 position = Vector2(-29.6, -29.5)
 shape = SubResource("Shape_ToxicPipe")
+
+[node name="FlowSound" type="AudioStreamPlayer2D" parent="." unique_id=571090612]
+stream = ExtResource("3_71dki")
+volume_db = -20.0
+autoplay = true
