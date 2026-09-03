@@ -1,0 +1,290 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://chwimex3b5ex1"]
+
+[ext_resource type="Texture2D" uid="uid://tf4ya806mhpk" path="res://assets/sprites/player_adult/man-attacking/frame_000.png" id="1_3dfvh"]
+[ext_resource type="Texture2D" uid="uid://bapcftc8liywy" path="res://assets/sprites/player_adult/man-attacking/frame_001.png" id="2_15hvy"]
+[ext_resource type="Texture2D" uid="uid://bxwv024rj3rd7" path="res://assets/sprites/player_adult/man-attacking/frame_002.png" id="3_23iji"]
+[ext_resource type="Texture2D" uid="uid://4c7psl6cys10" path="res://assets/sprites/player_adult/man-attacking/frame_003.png" id="4_bmvxs"]
+[ext_resource type="Texture2D" uid="uid://gkxciy5mg3kp" path="res://assets/sprites/player_adult/man-attacking/frame_004.png" id="5_nrajl"]
+[ext_resource type="Texture2D" uid="uid://cfdjwd3fxudti" path="res://assets/sprites/player_adult/man-attacking/frame_005.png" id="6_ranmj"]
+[ext_resource type="Texture2D" uid="uid://dau3wugo37gq0" path="res://assets/sprites/player_adult/man-attacking/frame_006.png" id="7_u14xn"]
+[ext_resource type="Texture2D" uid="uid://4c7lb7xld8oq" path="res://assets/sprites/player_adult/man-attacking/frame_007.png" id="8_pr3m0"]
+[ext_resource type="Texture2D" uid="uid://6hiqdkuhyff2" path="res://assets/sprites/player_adult/man-attacking/frame_008.png" id="9_uud1n"]
+[ext_resource type="Texture2D" uid="uid://dbygofpb7lwdd" path="res://assets/sprites/player_adult/man-crouch/frame_002.png" id="10_04prh"]
+[ext_resource type="Texture2D" uid="uid://d1wiw1lh1iil" path="res://assets/sprites/player_adult/man-crouch/frame_003.png" id="11_v71pn"]
+[ext_resource type="Texture2D" uid="uid://bhu1r73c1late" path="res://assets/sprites/player_adult/man-crouch/frame_004.png" id="12_5rq2g"]
+[ext_resource type="Texture2D" uid="uid://bsrjh0hvogg2e" path="res://assets/sprites/player_adult/man-crouch/frame_005.png" id="13_0j6cq"]
+[ext_resource type="Texture2D" uid="uid://dl3fkluvkoqfp" path="res://assets/sprites/player_adult/man-crouch/frame_006.png" id="14_vmep1"]
+[ext_resource type="Texture2D" uid="uid://5lpmegc8q7nm" path="res://assets/sprites/player_adult/man-dying/East_0001.png" id="15_3s323"]
+[ext_resource type="Texture2D" uid="uid://bgfn2nhoxunya" path="res://assets/sprites/player_adult/man-dying/East_0002.png" id="16_j1tdu"]
+[ext_resource type="Texture2D" uid="uid://tqopqutkq35c" path="res://assets/sprites/player_adult/man-dying/East_0003.png" id="17_td3gn"]
+[ext_resource type="Texture2D" uid="uid://bkqvfojgi1r5t" path="res://assets/sprites/player_adult/man-dying/East_0004.png" id="18_b2mrk"]
+[ext_resource type="Texture2D" uid="uid://bo4p8a150fdbt" path="res://assets/sprites/player_adult/man-dying/East_0005.png" id="19_ndfb1"]
+[ext_resource type="Texture2D" uid="uid://lockgtrr01mv" path="res://assets/sprites/player_adult/man-dying/East_0006.png" id="20_1edmn"]
+[ext_resource type="Texture2D" uid="uid://b46o7ukdxmgx5" path="res://assets/sprites/player_adult/man-dying/East_0007.png" id="21_fn0i0"]
+[ext_resource type="Texture2D" uid="uid://dbh3cu72dcgn7" path="res://assets/sprites/player_adult/man-dying/East_0008.png" id="22_gynpa"]
+[ext_resource type="Texture2D" uid="uid://dtg3vc5wcjssb" path="res://assets/sprites/player_adult/man-dying/East_0009.png" id="23_8fa3p"]
+[ext_resource type="Texture2D" uid="uid://box1irmhchai" path="res://assets/sprites/player_adult/man-hurt/frame_000.png" id="24_duecj"]
+[ext_resource type="Texture2D" uid="uid://b23xyjgxyjp20" path="res://assets/sprites/player_adult/man-hurt/frame_001.png" id="25_2qmer"]
+[ext_resource type="Texture2D" uid="uid://dlq5m5lroh4ye" path="res://assets/sprites/player_adult/man-hurt/frame_002.png" id="26_hm4pg"]
+[ext_resource type="Texture2D" uid="uid://dsahnkula2rhd" path="res://assets/sprites/player_adult/man-hurt/frame_003.png" id="27_8ueeh"]
+[ext_resource type="Texture2D" uid="uid://pft6tmckvtsv" path="res://assets/sprites/player_adult/man-hurt/frame_004.png" id="28_ksu3p"]
+[ext_resource type="Texture2D" uid="uid://dh0c7y4x0ivnu" path="res://assets/sprites/player_adult/man-hurt/frame_005.png" id="29_c5hcf"]
+[ext_resource type="Texture2D" uid="uid://df382wh3yn5in" path="res://assets/sprites/player_adult/man-hurt/frame_006.png" id="30_xy17c"]
+[ext_resource type="Texture2D" uid="uid://gw3p3yj347qo" path="res://assets/sprites/player_adult/man-hurt/frame_007.png" id="31_3kre3"]
+[ext_resource type="Texture2D" uid="uid://clqn0sx6elmv1" path="res://assets/sprites/player_adult/man-hurt/frame_008.png" id="32_ydyu6"]
+[ext_resource type="Texture2D" uid="uid://3rmptun7adyu" path="res://assets/sprites/player_adult/man-idle/frame_000.png" id="33_a3ebi"]
+[ext_resource type="Texture2D" uid="uid://qeapwhaspcnq" path="res://assets/sprites/player_adult/man-idle/frame_001.png" id="34_ui1ax"]
+[ext_resource type="Texture2D" uid="uid://37heu2a7eclb" path="res://assets/sprites/player_adult/man-idle/frame_002.png" id="35_ehegy"]
+[ext_resource type="Texture2D" uid="uid://dwi4dl1k38uif" path="res://assets/sprites/player_adult/man-idle/frame_003.png" id="36_jvg44"]
+[ext_resource type="Texture2D" uid="uid://c7ukegt82ma3f" path="res://assets/sprites/player_adult/man-idle/frame_004.png" id="37_qe56i"]
+[ext_resource type="Texture2D" uid="uid://binvl7fpv46u2" path="res://assets/sprites/player_adult/man-idle/frame_005.png" id="38_eygta"]
+[ext_resource type="Texture2D" uid="uid://dte6kckp1baqq" path="res://assets/sprites/player_adult/man-idle/frame_006.png" id="39_tpp3g"]
+[ext_resource type="Texture2D" uid="uid://b8fu6bqa2d40y" path="res://assets/sprites/player_adult/man-idle/frame_007.png" id="40_bvdr4"]
+[ext_resource type="Texture2D" uid="uid://dfis21ckcptj" path="res://assets/sprites/player_adult/man-idle/frame_008.png" id="41_7vyly"]
+[ext_resource type="Texture2D" uid="uid://ucd82olxkdx6" path="res://assets/sprites/player_adult/man-jump/frame_005.png" id="42_7g8jx"]
+[ext_resource type="Texture2D" uid="uid://ctmc2orkap3xo" path="res://assets/sprites/player_adult/man-jump/frame_006.png" id="43_iilcq"]
+[ext_resource type="Texture2D" uid="uid://btcao6esflye8" path="res://assets/sprites/player_adult/man-jump/frame_007.png" id="44_6e38a"]
+[ext_resource type="Texture2D" uid="uid://17tufnjqbk3g" path="res://assets/sprites/player_adult/man-jump/frame_008.png" id="45_iisyr"]
+[ext_resource type="Texture2D" uid="uid://dddrj31jj845" path="res://assets/sprites/player_adult/man-power/frame_003.png" id="46_y1f25"]
+[ext_resource type="Texture2D" uid="uid://dpa5h2shk8kfr" path="res://assets/sprites/player_adult/man-power/frame_004.png" id="47_n1et5"]
+[ext_resource type="Texture2D" uid="uid://cq7fqnbxrf3hw" path="res://assets/sprites/player_adult/man-power/frame_005.png" id="48_hm0ku"]
+[ext_resource type="Texture2D" uid="uid://cumdvtdol76hh" path="res://assets/sprites/player_adult/man-power/frame_006.png" id="49_pfn5r"]
+[ext_resource type="Texture2D" uid="uid://c1lbv1a5jl8jq" path="res://assets/sprites/player_adult/man-power/frame_007.png" id="50_uwoio"]
+[ext_resource type="Texture2D" uid="uid://dan03i78hqaew" path="res://assets/sprites/player_adult/man-power/frame_008.png" id="51_v0qra"]
+[ext_resource type="Texture2D" uid="uid://db0h7l2j1gv7d" path="res://assets/sprites/player_adult/man-running/frame_000.png" id="52_jat1d"]
+[ext_resource type="Texture2D" uid="uid://dhmcrd7sxgx2d" path="res://assets/sprites/player_adult/man-running/frame_001.png" id="53_ef775"]
+[ext_resource type="Texture2D" uid="uid://dei5n7hwmj8k5" path="res://assets/sprites/player_adult/man-running/frame_002.png" id="54_t26ow"]
+[ext_resource type="Texture2D" uid="uid://c2wm4n5ve4qh5" path="res://assets/sprites/player_adult/man-running/frame_003.png" id="55_mvn4p"]
+[ext_resource type="Texture2D" uid="uid://d1nbm3xkx5yps" path="res://assets/sprites/player_adult/man-running/frame_004.png" id="56_2odqq"]
+[ext_resource type="Texture2D" uid="uid://l70k1ge4f4rn" path="res://assets/sprites/player_adult/man-running/frame_005.png" id="57_dciqp"]
+[ext_resource type="Texture2D" uid="uid://m8vo2eb1c6u4" path="res://assets/sprites/player_adult/man-running/frame_006.png" id="58_tdyb5"]
+[ext_resource type="Texture2D" uid="uid://cl5oxu3uy6eqt" path="res://assets/sprites/player_adult/man-running/frame_007.png" id="59_adocu"]
+[ext_resource type="Texture2D" uid="uid://bjr5uurwis0pw" path="res://assets/sprites/player_adult/man-running/frame_008.png" id="60_0t3eb"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3dfvh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_15hvy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_23iji")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bmvxs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_nrajl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ranmj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_u14xn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_pr3m0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_uud1n")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 18.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_04prh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_v71pn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_5rq2g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_0j6cq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_vmep1")
+}],
+"loop": 0,
+"name": &"crouch",
+"speed": 18.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_3s323")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_j1tdu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_td3gn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_b2mrk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_ndfb1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_1edmn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_fn0i0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_gynpa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_8fa3p")
+}],
+"loop": 0,
+"name": &"dying",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("24_duecj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_2qmer")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_hm4pg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_8ueeh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_ksu3p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_c5hcf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_xy17c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_3kre3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_ydyu6")
+}],
+"loop": 0,
+"name": &"hurt",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("33_a3ebi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_ui1ax")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_ehegy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_jvg44")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_qe56i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_eygta")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_tpp3g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_bvdr4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_7vyly")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("42_7g8jx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_iilcq")
+}],
+"loop": 0,
+"name": &"jump",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("44_6e38a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_iisyr")
+}],
+"loop": 0,
+"name": &"land",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("46_y1f25")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_n1et5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_hm0ku")
+}, {
+"duration": 1.0,
+"texture": ExtResource("49_pfn5r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_uwoio")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_v0qra")
+}],
+"loop": 1,
+"name": &"power",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("52_jat1d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_ef775")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_t26ow")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_mvn4p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_2odqq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_dciqp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_tdyb5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_adocu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_0t3eb")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 14.0
+}]
