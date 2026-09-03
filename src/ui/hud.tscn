@@ -1,8 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bv8j3me4a5f5i"]
+[gd_scene format=3 uid="uid://bv8j3me4a5f5i"]
 
 [ext_resource type="Script" uid="uid://b285vas3qfemk" path="res://src/ui/hud.gd" id="1_hud"]
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="2_font"]
-[ext_resource type="PackedScene" uid="uid://c0hudstatbar01" path="res://src/ui/stat_bar.tscn" id="3_bar"]
+[ext_resource type="PackedScene" uid="uid://p2hng7rqfrto" path="res://src/ui/stat_bar.tscn" id="3_bar"]
 [ext_resource type="Texture2D" uid="uid://c5qdvan58j5kd" path="res://assets/sprites/health-bar.png" id="4_hbar"]
 [ext_resource type="Texture2D" uid="uid://bsiugok2jqr24" path="res://assets/sprites/powers-bar.png" id="5_pbar"]
 [ext_resource type="Texture2D" uid="uid://g3ftvedv8jnb" path="res://assets/sprites/health-object.png" id="6_pear"]
@@ -64,19 +64,17 @@ theme_override_constants/separation = 0
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Health" parent="Margin/Stats/HealthRow" instance=ExtResource("3_bar")]
+[node name="Health" parent="Margin/Stats/HealthRow" unique_id=447320003 instance=ExtResource("3_bar")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 frame = ExtResource("4_hbar")
-trough = Rect2(0.1514, 0.5098, 0.7517, 0.1709)
 fill_color = Color(0.780392, 0.239216, 0.278431, 1)
 ghost_color = Color(0.960784, 0.658824, 0.360784, 1)
 
 [node name="HealthValue" type="Label" parent="Margin/Stats/HealthRow" unique_id=1020896633]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.941176, 0.858824, 0.839216, 1)
 theme_override_colors/font_outline_color = Color(0.0431373, 0.0392157, 0.0352941, 0.901961)
 theme_override_constants/outline_size = 6
@@ -88,20 +86,19 @@ text = "100"
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="PowerLine" parent="Margin/Stats/PowerRow" instance=ExtResource("3_bar")]
+[node name="PowerLine" parent="Margin/Stats/PowerRow" unique_id=602500078 instance=ExtResource("3_bar")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 size_flags_vertical = 4
-frame = ExtResource("5_pbar")
 trough = Rect2(0.1519, 0.4332, 0.7491, 0.1717)
+frame = ExtResource("5_pbar")
 fill_color = Color(0.898039, 0.717647, 0.356863, 1)
 ghost_color = Color(0.988235, 0.87451, 0.6, 1)
 
 [node name="PowerValue" type="Label" parent="Margin/Stats/PowerRow" unique_id=1700145060]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.988235, 0.921569, 0.741176, 1)
 theme_override_colors/font_outline_color = Color(0.0431373, 0.0392157, 0.0352941, 0.901961)
 theme_override_constants/outline_size = 6
@@ -124,7 +121,6 @@ stretch_mode = 5
 [node name="PearCount" type="Label" parent="Margin/Stats/PearRow" unique_id=1347888951]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.941176, 0.858824, 0.839216, 1)
 theme_override_colors/font_outline_color = Color(0.0431373, 0.0392157, 0.0352941, 0.901961)
 theme_override_constants/outline_size = 6
@@ -135,7 +131,6 @@ text = "x3"
 [node name="Hint" type="Label" parent="Margin/Stats/PearRow" unique_id=1347888952]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.541176, 0.521569, 0.462745, 1)
 theme_override_colors/font_outline_color = Color(0.0431373, 0.0392157, 0.0352941, 0.901961)
 theme_override_constants/outline_size = 6
@@ -147,7 +142,6 @@ text = "[H]"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
-size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.701961, 0.678431, 0.611765, 1)
 theme_override_colors/font_outline_color = Color(0.0431373, 0.0392157, 0.0352941, 0.901961)
 theme_override_constants/outline_size = 6

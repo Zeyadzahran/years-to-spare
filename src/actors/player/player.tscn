@@ -17,6 +17,7 @@
 [ext_resource type="AudioStream" uid="uid://cymjc70po2h2b" path="res://assets/sounds/dragon-studio-sword-unsheathing-393851.mp3" id="15_ylekk"]
 [ext_resource type="AudioStream" uid="uid://2fuh7i6c18la" path="res://assets/sounds/run.mp3" id="16_run"]
 [ext_resource type="AudioStream" uid="uid://bb2f7h3flc4kf" path="res://assets/sounds/time-stop.mp3" id="17_stop"]
+[ext_resource type="AudioStream" uid="uid://bx74565dg5prb" path="res://assets/sounds/jumb.mp3" id="18_jump"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(36, 100)
@@ -89,3 +90,10 @@ volume_db = 6.0
 [node name="TimeStopAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764941]
 stream = ExtResource("17_stop")
 volume_db = -4.0
+
+[node name="HurtAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764942]
+volume_db = -6.0
+
+[node name="JumpAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764943]
+stream = ExtResource("18_jump")
+volume_db = -16.0
