@@ -9,7 +9,23 @@ func _ready() -> void:
 	TimeService.reset()
 	GameState.start_new_run()
 	EventBus.player_died.connect(_on_player_died)
+	_resume_from_checkpoint()
 	EventBus.level_started.emit(level_id)
+
+
+## A death reloads the whole level, so this runs on every load and is what turns
+## that reload into a respawn: the boy is moved to the checkpoint he reached and
+## handed back the age he had there, rather than starting the phase over.
+## Runs after the scene's children are ready, so the player and its components
+## exist and the age it announces reaches the HUD and his sprite set.
+func _resume_from_checkpoint() -> void:
+	if not GameState.has_checkpoint(level_id):
+		return
+	var player := get_tree().get_first_node_in_group(&"player") as Node2D
+	if player == null:
+		return
+	player.global_position = GameState.checkpoint_position
+	player.age.set_to(GameState.checkpoint_age)
 
 
 func _unhandled_input(event: InputEvent) -> void:

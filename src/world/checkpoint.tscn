@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://b4kxq2wcheckp"]
+
+[ext_resource type="Script" path="res://src/world/checkpoint.gd" id="1_checkpoint"]
+[ext_resource type="Texture2D" uid="uid://cq7g30j4pyjf2" path="res://assets/tiles/phase1/decorations.png" id="2_decorations"]
+
+[sub_resource type="RectangleShape2D" id="Shape_Checkpoint"]
+size = Vector2(64, 140)
+
+[node name="Checkpoint" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_checkpoint")
+
+[node name="Marker" type="Sprite2D" parent="."]
+modulate = Color(0.85, 0.95, 1.1, 1)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("2_decorations")
+offset = Vector2(0, -149.5)
+region_enabled = true
+region_rect = Rect2(700, 734, 269, 299)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -70)
+shape = SubResource("Shape_Checkpoint")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
