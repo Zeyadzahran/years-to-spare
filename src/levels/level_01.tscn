@@ -1,0 +1,323 @@
+[gd_scene format=4 uid="uid://chnxya2aqndys"]
+
+[ext_resource type="Script" uid="uid://be5vpy5llau5q" path="res://src/levels/level.gd" id="1_a7tag"]
+[ext_resource type="AudioStream" uid="uid://bx7o8vesdg803" path="res://assets/sounds/tanweraman-desert-wind-1-350398.mp3" id="2_1vujb"]
+[ext_resource type="PackedScene" uid="uid://cmuhwapcdlbka" path="res://src/world/phase_one_background.tscn" id="2_6yjdu"]
+[ext_resource type="AudioStream" uid="uid://b67vxnf3ogwax" path="res://assets/sounds/freesound_community-semi-desert-insects-ravens-birds-quiet-with-bad-mic-noise-badlands-ab-190818-7028.mp3" id="3_68m7i"]
+[ext_resource type="TileSet" uid="uid://ct8w2xk4bnq7f" path="res://src/world/phase1_tileset.tres" id="3_s7fgk"]
+[ext_resource type="Texture2D" uid="uid://cq7g30j4pyjf2" path="res://assets/tiles/phase1/decorations.png" id="4_1tr31"]
+[ext_resource type="PackedScene" uid="uid://cm4pv8hd3ry6e" path="res://src/world/hazards/toxic_pipe.tscn" id="5_bv8k8"]
+[ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="6_dmh6m"]
+[ext_resource type="PackedScene" uid="uid://dn2wg5kx7ftab" path="res://src/world/hazards/wall_trap.tscn" id="8_r1vef"]
+[ext_resource type="PackedScene" uid="uid://dh3xs6ly8vm4c" path="res://src/world/hazards/spike_strip_large.tscn" id="9_lscnh"]
+[ext_resource type="PackedScene" uid="uid://bq8jt4mv6c03h" path="res://src/world/hazards/ceiling_obstacle.tscn" id="10_eucyj"]
+[ext_resource type="PackedScene" uid="uid://b7qk3n5xw2ta4" path="res://src/world/hazards/saw.tscn" id="11_4r0fx"]
+[ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="12_r3o47"]
+[ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="16_buk32"]
+[ext_resource type="PackedScene" uid="uid://cf5roapb2wk7d" path="res://src/world/hazards/spike_strip_small.tscn" id="17_spksm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70nlc"]
+size = Vector2(10400, 400)
+
+[node name="Level01" type="Node2D" unique_id=2026904255]
+script = ExtResource("1_a7tag")
+
+[node name="DesertWind" type="AudioStreamPlayer" parent="." unique_id=905748870]
+stream = ExtResource("2_1vujb")
+volume_db = -20.0
+autoplay = true
+
+[node name="DesertAmbience" type="AudioStreamPlayer" parent="." unique_id=22267121]
+stream = ExtResource("3_68m7i")
+volume_db = -24.0
+autoplay = true
+
+[node name="Background" parent="." unique_id=773687580 instance=ExtResource("2_6yjdu")]
+position = Vector2(1369, 216)
+
+[node name="World" type="Node2D" parent="." unique_id=1609891126]
+
+[node name="Terrain" type="TileMapLayer" parent="World" unique_id=943537270]
+position = Vector2(0, -23.333334)
+scale = Vector2(0.33333334, 0.33333334)
+tile_map_data = PackedByteArray("AAAlAAEAAAAAAAAAAAAmAAEAAAACAAAAAAAlAAIAAAAAAAEAAAAmAAIAAAACAAEAAABLAAIAAAABAAAAAABMAAIAAAACAAAAAAAAAAMAAAAAAAAAAAABAAMAAAABAAAAAAAlAAMAAAAAAAIAAAAmAAMAAAACAAIAAAAzAAMAAAAAAAAAAAA0AAMAAAACAAAAAABLAAMAAAABAAEAAABMAAMAAAACAAEAAAAAAAQAAAAAAAEAAAABAAQAAAABAAEAAAAGAAQAAAAAAAAAAAAHAAQAAAABAAAAAAAYAAQAAAABAAAAAAAZAAQAAAABAAAAAAAaAAQAAAABAAAAAAAbAAQAAAABAAAAAAAcAAQAAAABAAAAAAAdAAQAAAABAAAAAAAeAAQAAAABAAAAAAAfAAQAAAABAAAAAAAgAAQAAAABAAAAAAArAAQAAAAAAAAAAAAsAAQAAAABAAAAAAAtAAQAAAABAAAAAAAuAAQAAAABAAAAABAvAAQAAAABAAAAAAAwAAQAAAABAAAAAAAzAAQAAAAAAAIAAAA0AAQAAAACAAIAAAA3AAQAAAABAAAAAAA4AAQAAAABAAAAAAA5AAQAAAABAAAAABA6AAQAAAACAAAAAAA8AAQAAAAAAAAAAAA9AAQAAAABAAAAAABLAAQAAAABAAEAAABMAAQAAAACAAEAAAAAAAUAAAAAAAEAAAABAAUAAAABAAEAAAACAAUAAAABAAAAAAADAAUAAAABAAAAAAAEAAUAAAABAAAAAAAFAAUAAAABAAAAAAAGAAUAAAABAAEAABAHAAUAAAABAAEAAAAIAAUAAAABAAAAABAJAAUAAAABAAAAABAKAAUAAAABAAAAABALAAUAAAABAAAAAAAMAAUAAAABAAAAAAAPAAUAAAABAAAAAAAQAAUAAAABAAAAABARAAUAAAABAAAAAAASAAUAAAABAAAAAAATAAUAAAABAAAAABAUAAUAAAABAAAAAAAVAAUAAAABAAAAAAAWAAUAAAACAAAAAAAYAAUAAAABAAEAAAAZAAUAAAABAAEAAAAaAAUAAAABAAEAABAbAAUAAAABAAEAAAAcAAUAAAABAAEAABAdAAUAAAABAAEAAAAeAAUAAAABAAEAABAfAAUAAAABAAEAAAAgAAUAAAABAAEAAAAjAAUAAAABAAAAAAAkAAUAAAABAAAAAAAlAAUAAAABAAAAABAmAAUAAAABAAAAABAnAAUAAAABAAAAAAAoAAUAAAABAAAAAAApAAUAAAACAAAAAAArAAUAAAAAAAEAAAAsAAUAAAABAAEAABAtAAUAAAABAAEAAAAuAAUAAAABAAEAABAvAAUAAAABAAEAABAwAAUAAAABAAEAAAA3AAUAAAABAAEAAAA4AAUAAAABAAEAAAA5AAUAAAABAAEAAAA6AAUAAAACAAEAAAA8AAUAAAAAAAEAAAA9AAUAAAABAAEAAAA+AAUAAAABAAAAAAA/AAUAAAABAAAAABBAAAUAAAABAAAAAABBAAUAAAABAAAAAABCAAUAAAABAAAAAABDAAUAAAABAAAAAABEAAUAAAABAAAAABBFAAUAAAABAAAAAABGAAUAAAABAAAAAABHAAUAAAABAAAAAABIAAUAAAABAAAAABBJAAUAAAABAAAAABBKAAUAAAABAAAAAABLAAUAAAABAAEAABBMAAUAAAACAAEAAAAAAAYAAAAAAAEAAAABAAYAAAABAAEAAAACAAYAAAABAAEAAAADAAYAAAABAAEAAAAEAAYAAAABAAEAAAAFAAYAAAABAAEAAAAGAAYAAAABAAEAAAAHAAYAAAABAAEAAAAIAAYAAAABAAEAABAJAAYAAAABAAEAAAAKAAYAAAABAAEAAAALAAYAAAABAAEAABAMAAYAAAABAAEAAAANAAYAAAABAAAAAAAOAAYAAAABAAAAAAAPAAYAAAABAAEAABAQAAYAAAABAAEAABARAAYAAAABAAEAAAASAAYAAAABAAEAABATAAYAAAABAAEAABAUAAYAAAABAAEAABAVAAYAAAABAAEAAAAWAAYAAAABAAEAAAAZAAYAAAABAAEAABAaAAYAAAABAAEAABAbAAYAAAABAAEAABAcAAYAAAABAAEAAAAdAAYAAAABAAEAABAeAAYAAAABAAEAAAAfAAYAAAABAAEAAAAgAAYAAAABAAEAAAAhAAYAAAABAAAAAAAiAAYAAAABAAAAAAAjAAYAAAABAAEAABAkAAYAAAABAAEAAAAlAAYAAAABAAEAABAmAAYAAAABAAEAABAnAAYAAAABAAEAAAAoAAYAAAABAAEAABApAAYAAAACAAEAAAArAAYAAAAAAAEAAAAsAAYAAAABAAEAABAtAAYAAAABAAEAAAAuAAYAAAABAAEAAAAvAAYAAAABAAEAAAAwAAYAAAABAAEAABAxAAYAAAABAAAAAAAyAAYAAAABAAAAABAzAAYAAAABAAAAAAA0AAYAAAABAAAAABA1AAYAAAABAAAAAAA2AAYAAAABAAAAAAA3AAYAAAABAAEAABA4AAYAAAABAAEAAAA5AAYAAAABAAEAABA6AAYAAAACAAEAAAA8AAYAAAAAAAEAAAA9AAYAAAABAAEAABA+AAYAAAABAAEAAAA/AAYAAAABAAEAABBAAAYAAAABAAEAABBBAAYAAAABAAEAAABCAAYAAAABAAEAABBDAAYAAAABAAEAABBEAAYAAAABAAEAABBFAAYAAAABAAEAAABGAAYAAAABAAEAABBHAAYAAAABAAEAABBIAAYAAAABAAEAABBJAAYAAAABAAEAABBKAAYAAAABAAEAAABLAAYAAAABAAEAABBMAAYAAAACAAEAAAAAAAcAAAAAAAIAAAABAAcAAAABAAIAAAACAAcAAAABAAIAABADAAcAAAABAAIAAAAEAAcAAAABAAIAABAFAAcAAAABAAIAAAAGAAcAAAABAAIAABAHAAcAAAABAAIAABAIAAcAAAABAAIAAAAJAAcAAAABAAEAABAKAAcAAAABAAEAAAALAAcAAAABAAEAAAAMAAcAAAABAAEAAAANAAcAAAABAAIAAAAOAAcAAAABAAIAAAAPAAcAAAABAAIAAAAQAAcAAAABAAIAABARAAcAAAABAAIAABASAAcAAAABAAIAAAATAAcAAAABAAIAABAUAAcAAAABAAIAABAVAAcAAAABAAEAABAWAAcAAAABAAEAAAAYAAcAAAABAAEAAAAZAAcAAAABAAIAABAaAAcAAAABAAIAABAbAAcAAAABAAIAAAAcAAcAAAABAAIAABAdAAcAAAABAAIAABAeAAcAAAABAAIAAAAfAAcAAAABAAIAAAAgAAcAAAABAAIAABAhAAcAAAABAAEAAAAiAAcAAAABAAEAAAAjAAcAAAABAAEAAAAkAAcAAAABAAEAABAlAAcAAAABAAEAAAAmAAcAAAABAAEAAAAnAAcAAAABAAEAAAAoAAcAAAABAAEAABApAAcAAAACAAEAAAArAAcAAAAAAAEAAAAsAAcAAAABAAEAAAAtAAcAAAABAAEAAAAuAAcAAAABAAEAABAvAAcAAAABAAEAAAAwAAcAAAABAAEAABAxAAcAAAABAAEAAAAyAAcAAAABAAEAABAzAAcAAAABAAEAAAA0AAcAAAABAAEAAAA1AAcAAAABAAEAAAA2AAcAAAABAAEAAAA3AAcAAAABAAEAAAA4AAcAAAABAAEAAAA5AAcAAAABAAEAAAA6AAcAAAACAAEAAAA8AAcAAAAAAAEAAAA9AAcAAAABAAEAABA+AAcAAAABAAEAAAA/AAcAAAABAAEAABBAAAcAAAABAAEAAABBAAcAAAABAAEAAABCAAcAAAABAAEAAABDAAcAAAABAAEAAABEAAcAAAABAAEAABBFAAcAAAABAAEAAABGAAcAAAABAAEAAABHAAcAAAABAAEAABBIAAcAAAABAAEAABBJAAcAAAABAAEAAABKAAcAAAABAAEAABBLAAcAAAABAAEAABBMAAcAAAACAAEAAAAJAAgAAAAAAAIAAAAKAAgAAAABAAIAABALAAgAAAABAAIAABAMAAgAAAACAAIAAAAVAAgAAAAAAAIAAAAWAAgAAAABAAIAAAAhAAgAAAAAAAIAAAAiAAgAAAABAAIAAAAjAAgAAAABAAIAAAAkAAgAAAABAAIAAAAlAAgAAAABAAIAAAAmAAgAAAABAAIAABAnAAgAAAABAAIAABAoAAgAAAABAAIAAAApAAgAAAACAAIAAAArAAgAAAAAAAIAAAAsAAgAAAABAAIAABAtAAgAAAABAAEAAAAuAAgAAAABAAEAABAvAAgAAAABAAEAAAAwAAgAAAABAAEAAAAxAAgAAAABAAEAAAAyAAgAAAABAAEAABAzAAgAAAABAAIAABA0AAgAAAABAAIAAAA1AAgAAAABAAEAABA2AAgAAAABAAIAAAA3AAgAAAABAAIAAAA4AAgAAAABAAIAAAA5AAgAAAABAAEAABA6AAgAAAACAAEAAAA8AAgAAAAAAAIAAAA9AAgAAAABAAIAAAA+AAgAAAABAAIAABA/AAgAAAABAAEAAABAAAgAAAABAAEAAABBAAgAAAABAAEAAABCAAgAAAABAAEAABBDAAgAAAABAAEAABBEAAgAAAABAAEAAABFAAgAAAABAAIAAABGAAgAAAABAAIAAABHAAgAAAABAAIAAABIAAgAAAABAAEAABBJAAgAAAABAAEAABBKAAgAAAABAAEAAABLAAgAAAABAAIAAABMAAgAAAACAAIAAAAtAAkAAAAAAAIAAAAuAAkAAAABAAIAABAvAAkAAAABAAIAABAwAAkAAAABAAIAAAAxAAkAAAABAAIAAAAyAAkAAAACAAIAAAA1AAkAAAACAAIAAAA5AAkAAAAAAAIAAAA6AAkAAAACAAIAAAA/AAkAAAAAAAIAAABAAAkAAAABAAIAAABBAAkAAAABAAIAAABCAAkAAAABAAIAABBDAAkAAAABAAIAABBEAAkAAAACAAIAAABIAAkAAAAAAAIAAABJAAkAAAABAAIAAABKAAkAAAACAAIAAAAXAAcAAAABAAEAAAAYAAYAAAABAAEAAAAXAAgAAAABAAIAAAAYAAgAAAABAAIAAAA=")
+tile_set = ExtResource("3_s7fgk")
+
+[node name="Platforms" type="Node2D" parent="World" unique_id=682298543]
+
+[node name="Decorations" type="Node2D" parent="World" unique_id=1870163253]
+
+[node name="Background" type="Node2D" parent="World/Decorations" unique_id=411218982]
+z_index = -5
+
+[node name="PalmTall" type="Sprite2D" parent="World/Decorations/Background" unique_id=131813122]
+position = Vector2(188, 366)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -295.5)
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="PalmLean" type="Sprite2D" parent="World/Decorations/Background" unique_id=329595974]
+position = Vector2(1200, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -201)
+region_enabled = true
+region_rect = Rect2(400, 231, 322, 402)
+
+[node name="DeadTree" type="Sprite2D" parent="World/Decorations/Background" unique_id=250620193]
+position = Vector2(2400, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -249)
+region_enabled = true
+region_rect = Rect2(756, 142, 307, 498)
+
+[node name="PalmLean2" type="Sprite2D" parent="World/Decorations/Background" unique_id=747326052]
+position = Vector2(7620, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -201)
+region_enabled = true
+region_rect = Rect2(400, 231, 322, 402)
+
+[node name="DeadTree2" type="Sprite2D" parent="World/Decorations/Background" unique_id=1092201695]
+position = Vector2(7900, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -249)
+region_enabled = true
+region_rect = Rect2(756, 142, 307, 498)
+
+[node name="PalmTall2" type="Sprite2D" parent="World/Decorations/Background" unique_id=540468626]
+position = Vector2(8600, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -295.5)
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="Foreground" type="Node2D" parent="World/Decorations" unique_id=1682266367]
+z_index = 1
+
+[node name="Bush" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=574045659]
+position = Vector2(77, 366)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Cactus" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1260164561]
+position = Vector2(288, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="DebrisSmall" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=679765341]
+position = Vector2(1394, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Bush2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1635163018]
+position = Vector2(2496, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="MachineryPile" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=193138749]
+position = Vector2(2661, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="Bush3" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=2087749316]
+position = Vector2(3426, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Cactus2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1330292291]
+position = Vector2(3675, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="DebrisSmall3" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1525846871]
+position = Vector2(3919, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="MachineryPile2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1191114729]
+position = Vector2(6941, 552.00006)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="BrokenPipe" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1357741256]
+position = Vector2(4881, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -149.5)
+region_enabled = true
+region_rect = Rect2(700, 734, 269, 299)
+
+[node name="DebrisSmall4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=250319511]
+position = Vector2(4760, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Bush4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=33283233]
+position = Vector2(5778, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="DebrisSmall5" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1062324894]
+position = Vector2(6780, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Cactus3" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1045414617]
+position = Vector2(9180, 280)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="Bush5" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=2035602107]
+position = Vector2(7385, 488)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="DebrisSmall6" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1431687057]
+position = Vector2(7962.001, 604.00006)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Cactus4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=740383432]
+position = Vector2(8980, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="MachineryPile3" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=2140674047]
+position = Vector2(8820, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="Bush6" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1168579539]
+position = Vector2(2180, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="MachineryPile4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=533979575]
+position = Vector2(3040, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="DebrisSmall7" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1035306034]
+position = Vector2(4350, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Hazards" type="Node2D" parent="World" unique_id=160053923]
+
+[node name="ToxicPipe" parent="World/Hazards" unique_id=1286587262 instance=ExtResource("5_bv8k8")]
+position = Vector2(700, 600)
+
+[node name="WallTrap" parent="World/Hazards" unique_id=1442286330 instance=ExtResource("8_r1vef")]
+position = Vector2(3943, 568)
+
+[node name="SpikePitSpikes" parent="World/Hazards" unique_id=654124209 instance=ExtResource("9_lscnh")]
+position = Vector2(4080, 720)
+
+[node name="CeilingSpikes" parent="World/Hazards" unique_id=1082918784 instance=ExtResource("10_eucyj")]
+position = Vector2(4560, 387)
+
+[node name="Saw" parent="World/Hazards" unique_id=635406207 instance=ExtResource("11_4r0fx")]
+position = Vector2(2133, 630)
+
+[node name="Saw2" parent="World/Hazards" unique_id=1280419766 instance=ExtResource("11_4r0fx")]
+position = Vector2(3181, 506)
+
+[node name="WallTrapPit" parent="World/Hazards" unique_id=22935594 instance=ExtResource("8_r1vef")]
+position = Vector2(5858, 600)
+
+[node name="BigPitSpikes1" parent="World/Hazards" unique_id=214192877 instance=ExtResource("9_lscnh")]
+position = Vector2(6054, 739)
+
+[node name="BigPitSpikes2" parent="World/Hazards" unique_id=27649839 instance=ExtResource("9_lscnh")]
+position = Vector2(1683, 745)
+
+[node name="BigPitSpikes3" parent="World/Hazards" unique_id=831989866 instance=ExtResource("9_lscnh")]
+position = Vector2(6470, 736)
+
+[node name="SpikeStripApproach" parent="World/Hazards" unique_id=1892247699 instance=ExtResource("17_spksm")]
+position = Vector2(2813, 812)
+
+[node name="FallZone" type="Area2D" parent="World/Hazards" unique_id=1738339328]
+position = Vector2(4600, 1500)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6_dmh6m")
+
+[node name="Shape" type="CollisionShape2D" parent="World/Hazards/FallZone" unique_id=1738994103]
+position = Vector2(165, -6)
+shape = SubResource("RectangleShape2D_70nlc")
+
+[node name="Entities" type="Node2D" parent="." unique_id=91379214]
+
+[node name="Player" parent="Entities" unique_id=1426104633 instance=ExtResource("12_r3o47")]
+z_index = 10
+position = Vector2(400, 590)
+
+[node name="HUD" parent="." unique_id=518270513 instance=ExtResource("16_buk32")]

@@ -1,0 +1,46 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://dq4xmvleakpip"]
+
+[ext_resource type="Texture2D" uid="uid://cc1xm1ik6lj7" path="res://assets/tiles/phase1/leaking-pipe/unknown_0001.png" id="1_leak1"]
+[ext_resource type="Texture2D" uid="uid://vk5m421hqtx4" path="res://assets/tiles/phase1/leaking-pipe/unknown_0002.png" id="2_leak2"]
+[ext_resource type="Texture2D" uid="uid://bqrlgsmkiahcd" path="res://assets/tiles/phase1/leaking-pipe/unknown_0003.png" id="3_leak3"]
+[ext_resource type="Texture2D" uid="uid://cxrpss3xvlbq" path="res://assets/tiles/phase1/leaking-pipe/unknown_0004.png" id="4_leak4"]
+[ext_resource type="Texture2D" uid="uid://b8ye2oiatc3in" path="res://assets/tiles/phase1/leaking-pipe/unknown_0005.png" id="5_leak5"]
+[ext_resource type="Texture2D" uid="uid://dgdyoidl36wlb" path="res://assets/tiles/phase1/leaking-pipe/unknown_0006.png" id="6_leak6"]
+[ext_resource type="Texture2D" uid="uid://0gp00foah5pl" path="res://assets/tiles/phase1/leaking-pipe/unknown_0007.png" id="7_leak7"]
+[ext_resource type="Texture2D" uid="uid://bvsed1cav7scl" path="res://assets/tiles/phase1/leaking-pipe/unknown_0008.png" id="8_leak8"]
+[ext_resource type="Texture2D" uid="uid://dldi3o7mu73k7" path="res://assets/tiles/phase1/leaking-pipe/unknown_0009.png" id="9_leak9"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_leak1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_leak2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_leak3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_leak4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_leak5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_leak6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_leak7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_leak8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_leak9")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 12.0
+}]

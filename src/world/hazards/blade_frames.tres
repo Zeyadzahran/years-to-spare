@@ -1,0 +1,46 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://c2n7wqhbladef"]
+
+[ext_resource type="Texture2D" uid="uid://bfcirtlqhsvw" path="res://assets/tiles/phase1/blade-animation/unknown_0001.png" id="1_blade1"]
+[ext_resource type="Texture2D" uid="uid://b180ebsf2x4pl" path="res://assets/tiles/phase1/blade-animation/unknown_0002.png" id="2_blade2"]
+[ext_resource type="Texture2D" uid="uid://qska0hfwycfb" path="res://assets/tiles/phase1/blade-animation/unknown_0003.png" id="3_blade3"]
+[ext_resource type="Texture2D" uid="uid://bj6jgk0fqvhwy" path="res://assets/tiles/phase1/blade-animation/unknown_0004.png" id="4_blade4"]
+[ext_resource type="Texture2D" uid="uid://ba4rm8xusvg02" path="res://assets/tiles/phase1/blade-animation/unknown_0005.png" id="5_blade5"]
+[ext_resource type="Texture2D" uid="uid://cl33b6rydwy6f" path="res://assets/tiles/phase1/blade-animation/unknown_0006.png" id="6_blade6"]
+[ext_resource type="Texture2D" uid="uid://duv7252te2uhi" path="res://assets/tiles/phase1/blade-animation/unknown_0007.png" id="7_blade7"]
+[ext_resource type="Texture2D" uid="uid://dfblmcjqiclnp" path="res://assets/tiles/phase1/blade-animation/unknown_0008.png" id="8_blade8"]
+[ext_resource type="Texture2D" uid="uid://khham8vy18d8" path="res://assets/tiles/phase1/blade-animation/unknown_0009.png" id="9_blade9"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_blade1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_blade2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_blade3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_blade4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_blade5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_blade6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_blade7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_blade8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_blade9")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 20.0
+}]
