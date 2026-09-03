@@ -8,6 +8,15 @@ const SETTINGS_FILE = "user://settings.cfg"
 
 func _ready():
 	load_settings()
+	apply_volume()
+
+
+## Pushes `volume` (0-100) onto the master bus. Call after changing it.
+func apply_volume():
+	AudioServer.set_bus_volume_db(
+		AudioServer.get_bus_index("Master"),
+		linear_to_db(volume / 100.0)
+	)
 
 
 func save_settings():
