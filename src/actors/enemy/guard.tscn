@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://drt0b4rcdaxpq"]
+
+[ext_resource type="Script" uid="uid://dr3t2p2g5x6pk" path="res://src/actors/enemy/guard.gd" id="1_guard"]
+[ext_resource type="Script" uid="uid://dp3hvo5k6qq50" path="res://src/components/health_component.gd" id="2_health"]
+[ext_resource type="SpriteFrames" uid="uid://bfaxh72gxcf6f" path="res://src/actors/enemy/guard_frames.tres" id="3_frames"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_guard"]
+size = Vector2(36, 100)
+
+[node name="Guard" type="CharacterBody2D" unique_id=456567813]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_guard")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=229559586]
+position = Vector2(0, -50)
+shape = SubResource("RectangleShape2D_guard")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=762949125]
+scale = Vector2(0.45, 0.45)
+sprite_frames = ExtResource("3_frames")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(0, -120)
+
+[node name="Health" type="Node" parent="." unique_id=1937779221]
+script = ExtResource("2_health")
