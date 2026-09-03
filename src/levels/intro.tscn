@@ -92,7 +92,3 @@ offset_top = 110.0
 offset_right = 232.0
 offset_bottom = 133.0
 text = "Years to Spare"
-
-[node name="Music" type="AudioStreamPlayer" parent="." unique_id=305146060]
-
-[node name="SFX" type="AudioStreamPlayer" parent="." unique_id=1627653100]

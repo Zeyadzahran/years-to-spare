@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var background = $Background
+@onready var background = $UI/Background
 @onready var level_intro = $UI/LevelIntro
 @onready var level_number = $UI/LevelIntro/LevelTitle
 @onready var level_name = $UI/LevelIntro/LevelName

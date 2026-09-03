@@ -15,13 +15,13 @@ var images = [
 
 @onready var image: TextureRect = $Image
 @onready var subtitle: Label = $Subtitle
-@onready var music: AudioStreamPlayer = $Music
 @onready var fade: ColorRect = $Fade
 var current_image := 0
 
 func _unhandled_input(event):
 	if event is InputEventKey and event.pressed and not event.echo:
-		MusicManager.stop_music(1.0)
+		if skip_intro:
+			return
 		skip_intro = true
 		start_game()
 
@@ -89,14 +89,19 @@ func play_scene(index: int):
 	subtitle.text = subtitles[index]
 
 	await fade_in()
+	if skip_intro:
+		return
 
 	await get_tree().create_timer(
 		durations[index]
 	).timeout
+	if skip_intro:
+		return
 
 	await fade_out()
 
 func start_game():
+	MusicManager.stop_music(1.0)
 	get_tree().change_scene_to_file("res://src/levels/garbage_eden.tscn")
 
 func show_title():
@@ -119,6 +124,8 @@ func show_title():
 func play_intro():
 	for i in range(images.size()):
 		await play_scene(i)
+		if skip_intro:
+			return
 
 	await show_title()
 

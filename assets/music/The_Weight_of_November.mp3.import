@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/The_Weight_of_November.mp3-b5c793490bb4d0bd23
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0
