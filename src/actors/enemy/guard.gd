@@ -60,11 +60,13 @@ func _tick(delta: float) -> void:
 			_tick_dead(delta)
 
 
-func _tick_patrol(delta: float) -> void:
+func _tick_patrol(_delta: float) -> void:
 	velocity.x = patrol_direction * speed * 0.45
 	if absf(global_position.x - patrol_origin_x) >= patrol_distance:
 		patrol_direction *= -1
-		facing = patrol_direction
+	# Every tick, not just on the turn: `facing` starts at -1 while the patrol
+	# starts heading +1, so the first leg used to be walked backwards.
+	facing = patrol_direction
 	_set_animation(&"run")
 
 
