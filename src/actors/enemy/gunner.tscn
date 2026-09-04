@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://djqbpdehfsnos"]
 
-[ext_resource type="Script" path="res://src/actors/enemy/gunner.gd" id="1_gunner"]
-[ext_resource type="Script" path="res://src/components/health_component.gd" id="2_health"]
-[ext_resource type="SpriteFrames" path="res://src/actors/enemy/gunner_frames.tres" id="3_frames"]
+[ext_resource type="Script" uid="uid://b8lr3l7ij8nys" path="res://src/actors/enemy/gunner.gd" id="1_gunner"]
+[ext_resource type="Script" uid="uid://dp3hvo5k6qq50" path="res://src/components/health_component.gd" id="2_health"]
+[ext_resource type="SpriteFrames" uid="uid://dtvlxv02epglg" path="res://src/actors/enemy/gunner_frames.tres" id="3_frames"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gunner"]
 size = Vector2(36, 100)
