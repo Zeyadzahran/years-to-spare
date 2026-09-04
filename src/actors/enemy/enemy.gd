@@ -9,7 +9,8 @@ extends TimeBody2D
 ## cannot drift apart the way Guard and Gunner already had.
 ##
 ## Everything runs from `_tick(delta)`, and `delta` is already scaled by
-## TimeService - stop the world mid-swing and the swing stops with it.
+## TimeService - stop the world mid-swing and the swing stops with it. Dying is
+## the one thing that is not: see `_physics_process`.
 
 const GROUND_FRICTION := 1400.0
 const CHASE_ACCELERATION := 1800.0
@@ -22,9 +23,14 @@ const WORLD_LAYER := 1
 ## Where a sight line aims on the boy: the middle of his 100-tall body rather
 ## than his feet, which sit level with the floor.
 const TARGET_CHEST_HEIGHT := -50.0
+## Past 1.0 on purpose: the hit should blow out to white, not merely brighten.
+const FLASH_TINT := Color(3.2, 2.7, 2.3)
 
-## Years the player takes back for killing this unit.
-@export var age_reward := 2.0
+## Years the player takes back for killing this unit. One apiece: a kill should
+## read as a year off, not as a refund big enough to make the powers free.
+## AgeComponent.restore floors at his starting age, so no amount of killing
+## takes him back below fourteen.
+@export var age_reward := 1.0
 
 @export_group("Ranges")
 @export var speed := 180.0
@@ -71,6 +77,9 @@ var state: StringName = &"Idle"
 var _state_elapsed := 0.0
 var _attack_fired := false
 var _hurt_from := 1
+## Blown white on contact and cooling off over the next tenth of a second, so a
+## blow that landed is legible on the unit itself and not only on its health.
+var _flash := 0.0
 ## Resolved once rather than walked for every frame, the way Hazard does it.
 var _animated: Array[AnimatedSprite2D] = []
 var _audio: Array[AudioStreamPlayer2D] = []
@@ -90,6 +99,21 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_sync_to_world_time()
+	# Raw delta, ahead of the frozen-world return: the boy can still swing while
+	# the world is held still, and the unit he hits still has to react.
+	if _flash > 0.0:
+		_flash = maxf(_flash - delta * 9.0, 0.0)
+		sprite.modulate = Color.WHITE.lerp(FLASH_TINT, _flash)
+	# A body he has already dropped falls on his clock, not the world's, and
+	# move_and_slide directly because move_in_time refuses to move anything
+	# while the world is stopped. Cutting a unit down inside the freeze is the
+	# one moment the power is doing exactly what it promises; leaving the corpse
+	# standing there until time restarts takes the kill away from him.
+	if state == &"Dead":
+		apply_gravity(delta)
+		_tick(delta)
+		move_and_slide()
+		return
 	var scaled := world_delta(delta)
 	if is_zero_approx(scaled):
 		return
@@ -105,12 +129,17 @@ func _physics_process(delta: float) -> void:
 ## what the unit does but not for what it shows. Audio needs it for the same
 ## reason in the other channel: a baton crack playing on over a still frame.
 func _sync_to_world_time() -> void:
+	# The dead are the exception, and they have to be: the dying clip is what
+	# clears the body, through `animation_finished`. Held at speed_scale 0 it
+	# never finishes, so a unit killed during a freeze would hang on its first
+	# dying frame - which is what standing there looking alive amounts to.
+	var falling := state == &"Dead"
 	# Named away from `scale`: Node2D already owns that property, and shadowing
 	# it here would silently read/write the wrong thing.
-	var time_scale := TimeService.world_scale
+	var time_scale := 1.0 if falling else TimeService.world_scale
 	for animated in _animated:
 		animated.speed_scale = time_scale
-	var frozen := TimeService.is_world_frozen()
+	var frozen := TimeService.is_world_frozen() and not falling
 	for audio in _audio:
 		audio.stream_paused = frozen
 
@@ -289,6 +318,7 @@ func play_hit_audio() -> void:
 func _on_damaged(_amount: float, source: Node) -> void:
 	if state == &"Dead":
 		return
+	_flash = 1.0
 	if source != null:
 		var from_right: bool = source.global_position.x > global_position.x
 		_hurt_from = 1 if from_right else -1

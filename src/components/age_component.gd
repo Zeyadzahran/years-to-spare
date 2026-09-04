@@ -15,8 +15,8 @@ func _ready() -> void:
 	age = start_age
 
 
-## 0 at the starting age, 1 at death. Meant to drive the "older and weaker"
-## stat falloff once movement and combat numbers are decided.
+## 0 at the starting age, 1 at death. Drives the "older and weaker" falloff -
+## currently his top speed, see Player.top_speed.
 func frailty() -> float:
 	return clampf((age - start_age) / maxf(death_age - start_age, 0.001), 0.0, 1.0)
 

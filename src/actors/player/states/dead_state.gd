@@ -21,5 +21,7 @@ func physics_update(delta: float) -> StringName:
 
 	if not _announced and _elapsed >= DURATION:
 		_announced = true
-		EventBus.player_died.emit()
+		# Which of the two clocks ran out decides whether the level gives him
+		# the marker back or starts the phase over.
+		EventBus.player_died.emit(player.age.age >= player.age.death_age)
 	return &""

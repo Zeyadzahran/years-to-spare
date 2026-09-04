@@ -19,7 +19,15 @@ const STATE_CLIPS := {
 ## Landing has its own clip, played over whichever ground state we land into.
 const LAND_CLIP := &"land"
 
-## The golden clock energy. A power is held rather than fired, so it loops.
+## The creep. Crouch is one state with two poses - held still, and covering
+## ground - and which one he is in is a question about his speed rather than
+## about the state machine, so it is asked every frame in `_tick_crouch`.
+const CROUCH_WALK_CLIP := &"crouch_walk"
+
+## The golden clock energy. All three libraries ship it looping, from when a
+## power was something you held down; a cast is one press, so it plays once and
+## hands the boy back to standing. Turned off here rather than in the three
+## .tres files so that re-exporting the art cannot quietly switch it back on.
 const POWER_CLIP := &"power"
 
 ## jumb.mp3 is a sheet of several takes; the one we want starts two seconds in
@@ -63,6 +71,9 @@ const MAN_HURT := preload("res://assets/sounds/young-man-hurt.mp3")
 
 var _after_landing: StringName = &""
 var _channelling := false
+## Whether this cast's flourish has already run. The world stays stopped for
+## seconds after it; the tint and the dial are what carry the rest of the window.
+var _power_spent := false
 
 func _ready() -> void:
 	states.state_changed.connect(_on_state_changed)
@@ -74,6 +85,18 @@ func _ready() -> void:
 	EventBus.player_age_changed.connect(_on_age_changed)
 	EventBus.ability_started.connect(_on_ability_changed.bind(true))
 	EventBus.ability_stopped.connect(_on_ability_changed.bind(false))
+	for frames in [teen_frames, adult_frames, elder_frames]:
+		if frames == null or not frames.has_animation(POWER_CLIP):
+			continue
+		frames.set_animation_loop(POWER_CLIP, false)
+		# The boy's set has nine frames and the two older ones have six, so a
+		# shared frame rate would make him wind up for half again as long as
+		# they do - and the world would stop somewhere in the middle of his.
+		# Fitted to TimePowers.WIND_UP instead, which is the number the freeze
+		# is actually scheduled against.
+		var count: int = frames.get_frame_count(POWER_CLIP)
+		if count > 0:
+			frames.set_animation_speed(POWER_CLIP, count / TimePowers.WIND_UP)
 	_on_state_changed(&"", states.current_name)
 	# A frame later every _ready upstream has run and the starting age is real.
 	_sync_form.call_deferred()
@@ -81,8 +104,23 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	flip_h = player.facing < 0
+	if states.current_name == &"Crouch":
+		_tick_crouch()
 	if jump_audio.playing and jump_audio.get_playback_position() >= JUMP_FROM + JUMP_LENGTH:
 		jump_audio.stop()
+
+
+func _tick_crouch() -> void:
+	var clip := _clip_for(&"Crouch")
+	if clip == animation:
+		return
+	var settling := animation == CROUCH_WALK_CLIP
+	_play(clip)
+	# `crouch` is the frames of him dropping into the pose, not the pose itself.
+	# Coming to a stop mid-creep he is already down, so playing them from the
+	# top would bob him every time he stopped: hold the settled frame instead.
+	if settling:
+		set_frame_and_progress(maxi(sprite_frames.get_frame_count(clip) - 1, 0), 0.0)
 
 
 func _sync_form() -> void:
@@ -130,6 +168,8 @@ func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 	if _channelling == active:
 		return
 	_channelling = active
+	if active:
+		_power_spent = false
 	# Only the standing pose gives way to the aura. He still runs, jumps and
 	# swings while the world is held still - that contrast is the whole game -
 	# so those clips are never taken over.
@@ -138,8 +178,10 @@ func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 
 
 func _clip_for(state: StringName) -> StringName:
-	if state == &"Idle" and _channelling:
+	if state == &"Idle" and _channelling and not _power_spent:
 		return POWER_CLIP
+	if state == &"Crouch" and player.is_crawling():
+		return CROUCH_WALK_CLIP
 	return STATE_CLIPS.get(state, &"")
 
 
@@ -175,6 +217,12 @@ func _hurt_stream() -> AudioStream:
 
 
 func _on_animation_finished() -> void:
+	if animation == POWER_CLIP:
+		# It has had its one time. Whatever he is doing now gets its own clip
+		# back, even though the power is still running.
+		_power_spent = true
+		_play(_clip_for(states.current_name))
+		return
 	if animation == LAND_CLIP and not _after_landing.is_empty():
 		# Recomputed rather than replayed: a power may have started during the
 		# landing frames.

@@ -10,29 +10,49 @@ extends CharacterBody2D
 ## reaches Air by walking off a ledge - so the sound hangs off the push itself.
 signal jumped
 
-const GROUND_ACCEL := 6000.0
-const AIR_ACCEL := 3300.0
-const GROUND_FRICTION := 7200.0
-const AIR_FRICTION := 1200.0
-const COYOTE_TIME := 0.1
-const JUMP_BUFFER := 0.12
-const ATTACK_BUFFER := 0.12
+## Everything below is the old feel run at four fifths speed. Slowing a
+## platformer by cutting the speed alone shortens every jump and quietly makes
+## the level's pits unclearable, so the whole of his motion is scaled instead:
+## velocities by 0.8, accelerations and gravity by 0.8 squared, times by 1/0.8.
+## Under that transform a trajectory keeps its exact shape - same jump height,
+## same distance across a gap - and only takes longer to draw. Nothing in phase
+## 1 became harder to reach; the game just stopped rushing.
+const GROUND_ACCEL := 3840.0
+const AIR_ACCEL := 2112.0
+const GROUND_FRICTION := 4608.0
+const AIR_FRICTION := 768.0
+const COYOTE_TIME := 0.125
+const JUMP_BUFFER := 0.15
+const ATTACK_BUFFER := 0.15
 
 ## Three swings to down a Guard, on the 100-point scale.
 @export var attack_damage := 34.0
 
-@export_group("Healing")
-## Prickly pears the boy is carrying. `heal` (H) eats one.
-@export var heal_charges := 3
-## A third of the bar per fruit, so three of them are a full heal from nothing.
-@export var heal_amount := 34.0
-@export var speed := 560.0
-@export var jump_velocity := -1250.0
-@export var gravity := 4100.0
+@export var speed := 450.0
+@export var jump_velocity := -1000.0
+@export var gravity := 2620.0
 
 ## Crouched box height, from the sprite: the boy is ~71% of standing height
 ## while ducked.
 const CROUCH_HEIGHT := 70.0
+
+## What ducking costs him in speed. He creeps under the overhang rather than
+## being pinned to the spot by it, which is what the crouch-walk frames are for.
+const CROUCH_SPEED := 0.42
+
+## Below this he is ducked but not going anywhere, and shows the held pose
+## instead of the creep. Set above zero so the last of the friction slide does
+## not leave him mouthing the walk cycle in place.
+const CRAWL_SPEED := 20.0
+
+## What is left of his top speed at sixty, reached smoothly as he ages. The
+## elder frames are drawn as a walk rather than a run and were being played at a
+## sprinter's pace; this is what makes the two agree.
+##
+## It cannot go much below this without breaking the level: phase 1's widest
+## spiked pit is 230 px across, and the reach this leaves the old man clears it
+## with about 50 px to spare - roughly what a human needs to time the jump.
+const ELDER_SPEED := 0.82
 
 @onready var shape: CollisionShape2D = $Shape
 @onready var health: HealthComponent = $Health
@@ -52,6 +72,8 @@ var _attack_buffered := 0.0
 var _attack_hit_done := false
 var _standing_size: Vector2
 var _standing_offset: float
+## Built rather than instanced: see src/actors/player/sword_effects.gd.
+var _effects: SwordEffects
 
 func _ready() -> void:
 	add_to_group(&"player")
@@ -64,7 +86,12 @@ func _ready() -> void:
 	health.died.connect(_on_died)
 	age.changed.connect(func(a, d): EventBus.player_age_changed.emit(a, d))
 	age.died.connect(_on_died)
-	EventBus.player_heals_changed.emit(heal_charges)
+	# Killing Cad Corp's troops is the only way to buy years back, which is what
+	# `age_reward` on a unit has always been for and what nothing was listening
+	# for. Wired here rather than in the level: they are his years.
+	EventBus.enemy_died.connect(_on_enemy_died)
+	_effects = SwordEffects.new()
+	add_child(_effects)
 	EventBus.player_spawned.emit(self)
 
 
@@ -77,21 +104,35 @@ func _physics_process(delta: float) -> void:
 	_attack_buffered = maxf(_attack_buffered - delta, 0.0)
 	if Input.is_action_just_pressed(&"attack"):
 		_attack_buffered = ATTACK_BUFFER
-	if Input.is_action_just_pressed(&"heal"):
-		eat_pear()
 
 
 func apply_gravity(delta: float) -> void:
 	velocity.y += gravity * delta
 
 
-func apply_horizontal(delta: float) -> void:
+## Top speed for the age he is at. `frailty` runs 0 at fourteen and 1 at sixty,
+## which is the "older and weaker" falloff AgeComponent was written for and
+## nothing had used yet. Continuous rather than stepped at the body changes: the
+## years are spent a few at a time, and the legs should go the same way.
+func top_speed() -> float:
+	return speed * lerpf(1.0, ELDER_SPEED, age.frailty())
+
+
+## `speed_scale` is how much of that the state allows. Only the target is
+## scaled: however slowly he is going, stopping should feel the same.
+func apply_horizontal(delta: float, speed_scale := 1.0) -> void:
 	var grounded := is_on_floor()
 	var rate := (GROUND_ACCEL if grounded else AIR_ACCEL) if not is_zero_approx(input_dir) \
 		else (GROUND_FRICTION if grounded else AIR_FRICTION)
-	velocity.x = move_toward(velocity.x, input_dir * speed, rate * delta)
+	velocity.x = move_toward(velocity.x, input_dir * top_speed() * speed_scale, rate * delta)
 	if not is_zero_approx(input_dir):
 		facing = 1 if input_dir > 0.0 else -1
+
+
+## Ducked and actually covering ground. Crouch is one state and two poses, and
+## this is what separates them - a question about his speed, not his state.
+func is_crawling() -> bool:
+	return absf(velocity.x) > CRAWL_SPEED
 
 
 ## Buffered like the jump, so a press is never lost to frame timing.
@@ -102,6 +143,13 @@ func wants_attack() -> bool:
 func consume_attack() -> void:
 	_attack_buffered = 0.0
 	_attack_hit_done = false
+
+
+## The blade going out, fired as the swing starts rather than when it lands: a
+## miss is still an attack and still has to look like one, and the lance has to
+## be most of the way out by the time the hit is actually tested.
+func begin_swing() -> void:
+	_effects.thrust(global_position, facing)
 
 
 func perform_attack_hit() -> void:
@@ -117,23 +165,11 @@ func perform_attack_hit() -> void:
 		# neither facing and let the swing pass straight through it.
 		if absf(offset.x) <= 78.0 and absf(offset.y) <= 75.0 and offset.x * facing >= 0.0:
 			enemy.health.take_damage(attack_damage, self)
-
-
-## Deliberately usable mid-stagger and mid-air: the fruit is the answer to
-## being caught out, so gating it behind a clean footing would waste it.
-func eat_pear() -> bool:
-	if is_down() or heal_charges <= 0 or health.current >= health.max_health:
-		return false
-	heal_charges -= 1
-	health.heal(heal_amount)
-	EventBus.player_heals_changed.emit(heal_charges)
-	return true
-
-
-## For a pickup to call once one exists.
-func add_pear(count := 1) -> void:
-	heal_charges += count
-	EventBus.player_heals_changed.emit(heal_charges)
+			# On the blade line rather than on the unit's middle: a thrust
+			# connects where the sword is, which is chest height off the floor
+			# the boy is standing on, not off wherever the unit's feet are.
+			_effects.impact(Vector2(enemy.global_position.x,
+				global_position.y + SwordEffects.THRUST_Y))
 
 
 func can_jump() -> bool:
@@ -176,6 +212,10 @@ func _on_damaged(_amount: float, source: Node) -> void:
 		return
 	hurt_from = 1 if source != null and source.global_position.x > global_position.x else -1
 	states.travel(&"Hurt")
+
+
+func _on_enemy_died(_enemy: Node2D, age_reward: float) -> void:
+	age.restore(age_reward)
 
 
 func _on_died() -> void:

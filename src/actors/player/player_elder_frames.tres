@@ -15,13 +15,22 @@
 [ext_resource type="Texture2D" uid="uid://8oy7jvbm8t1g" path="res://assets/sprites/player_elder/old-crouch/frame_005.png" id="13_pa6lk"]
 [ext_resource type="Texture2D" uid="uid://cpiy6m7288447" path="res://assets/sprites/player_elder/old-crouch/frame_006.png" id="14_0ep08"]
 [ext_resource type="Texture2D" uid="uid://b601gaolyryhq" path="res://assets/sprites/player_elder/old-dying/frame_000.png" id="15_8ix4o"]
+[ext_resource type="Texture2D" uid="uid://drhot2mtkcxs3" path="res://assets/sprites/player_elder/crouch-walk/East_0001.png" id="15_xxwxt"]
+[ext_resource type="Texture2D" uid="uid://2b5h5nxc7snb" path="res://assets/sprites/player_elder/crouch-walk/East_0002.png" id="16_7c1w2"]
 [ext_resource type="Texture2D" uid="uid://c336qt1v6y82y" path="res://assets/sprites/player_elder/old-dying/frame_001.png" id="16_kchkp"]
 [ext_resource type="Texture2D" uid="uid://fyjj7f6pl7bg" path="res://assets/sprites/player_elder/old-dying/frame_002.png" id="17_1jo5a"]
+[ext_resource type="Texture2D" uid="uid://cgobdss03x3xn" path="res://assets/sprites/player_elder/crouch-walk/East_0003.png" id="17_24vgy"]
 [ext_resource type="Texture2D" uid="uid://bv4crt8i2f4l1" path="res://assets/sprites/player_elder/old-dying/frame_003.png" id="18_nfg0g"]
+[ext_resource type="Texture2D" uid="uid://ciqd6u1r70gcm" path="res://assets/sprites/player_elder/crouch-walk/East_0004.png" id="18_pa6lk"]
+[ext_resource type="Texture2D" uid="uid://dxrvwarph0exe" path="res://assets/sprites/player_elder/crouch-walk/East_0005.png" id="19_0ep08"]
 [ext_resource type="Texture2D" uid="uid://cm5hn1pursdir" path="res://assets/sprites/player_elder/old-dying/frame_004.png" id="19_odr3o"]
 [ext_resource type="Texture2D" uid="uid://s4bb548uf2pf" path="res://assets/sprites/player_elder/old-dying/frame_005.png" id="20_0ukj2"]
+[ext_resource type="Texture2D" uid="uid://c76pace0xrj11" path="res://assets/sprites/player_elder/crouch-walk/East_0006.png" id="20_8ix4o"]
+[ext_resource type="Texture2D" uid="uid://blofbxukkxwal" path="res://assets/sprites/player_elder/crouch-walk/East_0007.png" id="21_kchkp"]
 [ext_resource type="Texture2D" uid="uid://cic5msicdgl74" path="res://assets/sprites/player_elder/old-dying/frame_006.png" id="21_s4ubd"]
+[ext_resource type="Texture2D" uid="uid://cjnir010sc7ii" path="res://assets/sprites/player_elder/crouch-walk/East_0008.png" id="22_1jo5a"]
 [ext_resource type="Texture2D" uid="uid://b6x40dxur4813" path="res://assets/sprites/player_elder/old-dying/frame_007.png" id="22_ieqno"]
+[ext_resource type="Texture2D" uid="uid://crbn1adjq6xcr" path="res://assets/sprites/player_elder/crouch-walk/East_0009.png" id="23_nfg0g"]
 [ext_resource type="Texture2D" uid="uid://ceh4dw6r40ov6" path="res://assets/sprites/player_elder/old-dying/frame_008.png" id="23_seo67"]
 [ext_resource type="Texture2D" uid="uid://bmcxufv348mw8" path="res://assets/sprites/player_elder/old-hurt/frame_000.png" id="24_ih7f3"]
 [ext_resource type="Texture2D" uid="uid://c54577yk5frba" path="res://assets/sprites/player_elder/old-hurt/frame_001.png" id="25_7oh13"]
@@ -42,7 +51,6 @@
 [ext_resource type="Texture2D" uid="uid://5v0kx20e7yde" path="res://assets/sprites/player_elder/old-idle/frame_007.png" id="40_eo0a4"]
 [ext_resource type="Texture2D" uid="uid://b5aqcuh523fas" path="res://assets/sprites/player_elder/old-idle/frame_008.png" id="41_damvp"]
 [ext_resource type="Texture2D" uid="uid://bahkhfncoudxo" path="res://assets/sprites/player_elder/old-jump/East_0007.png" id="42_a3xgs"]
-[ext_resource type="Texture2D" uid="uid://cgy4ndux1fyou" path="res://assets/sprites/player_elder/old-jump/East_0008.png" id="43_lsxkm"]
 [ext_resource type="Texture2D" uid="uid://b0oa31juqewpu" path="res://assets/sprites/player_elder/old-jump/East_0009.png" id="44_gsx1n"]
 [ext_resource type="Texture2D" uid="uid://d1iy8bgreg03g" path="res://assets/sprites/player_elder/old-power/frame_003.png" id="45_17vdk"]
 [ext_resource type="Texture2D" uid="uid://d1ljlukdixgnh" path="res://assets/sprites/player_elder/old-power/frame_004.png" id="46_ulape"]
@@ -113,6 +121,38 @@ animations = [{
 "loop": 0,
 "name": &"crouch",
 "speed": 18.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_xxwxt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_7c1w2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_24vgy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_pa6lk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_0ep08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_8ix4o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_kchkp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_1jo5a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_nfg0g")
+}],
+"loop": 1,
+"name": &"crouch_walk",
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -213,9 +253,6 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("42_a3xgs")
-}, {
-"duration": 1.0,
-"texture": ExtResource("43_lsxkm")
 }],
 "loop": 0,
 "name": &"jump",
