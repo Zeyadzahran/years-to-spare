@@ -81,8 +81,17 @@ func _ready() -> void:
 	EventBus.ability_started.connect(_on_ability_changed.bind(true))
 	EventBus.ability_stopped.connect(_on_ability_changed.bind(false))
 	for frames in [teen_frames, adult_frames, elder_frames]:
-		if frames != null and frames.has_animation(POWER_CLIP):
-			frames.set_animation_loop(POWER_CLIP, false)
+		if frames == null or not frames.has_animation(POWER_CLIP):
+			continue
+		frames.set_animation_loop(POWER_CLIP, false)
+		# The boy's set has nine frames and the two older ones have six, so a
+		# shared frame rate would make him wind up for half again as long as
+		# they do - and the world would stop somewhere in the middle of his.
+		# Fitted to TimePowers.WIND_UP instead, which is the number the freeze
+		# is actually scheduled against.
+		var count: int = frames.get_frame_count(POWER_CLIP)
+		if count > 0:
+			frames.set_animation_speed(POWER_CLIP, count / TimePowers.WIND_UP)
 	_on_state_changed(&"", states.current_name)
 	# A frame later every _ready upstream has run and the starting age is real.
 	_sync_form.call_deferred()

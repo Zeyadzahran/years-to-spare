@@ -17,7 +17,11 @@ signal player_age_changed(age: float, death_age: float)
 signal enemy_died(enemy: Node2D, age_reward: float)
 
 signal ability_unlocked(ability_id: StringName)
+## Pressed and paid for: the boy starts his flourish, the world still running.
 signal ability_started(ability_id: StringName)
+## The flourish has landed and the world has actually changed. This, not
+## `ability_started`, is the moment the screen should react to.
+signal ability_engaged(ability_id: StringName, duration: float)
 signal ability_stopped(ability_id: StringName)
 ## A press that could not be paid for. Carries how many more years the boy would
 ## have needed, so the HUD can say why nothing happened.

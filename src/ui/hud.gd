@@ -36,6 +36,7 @@ func _ready() -> void:
 	EventBus.player_spawned.connect(_read_player)
 	EventBus.ability_started.connect(_on_ability_changed.bind(true))
 	EventBus.ability_stopped.connect(_on_ability_changed.bind(false))
+	EventBus.ability_engaged.connect(_on_ability_engaged)
 	EventBus.ability_refused.connect(_on_ability_refused)
 	_overlay = TimeStopOverlay.new()
 	add_child(_overlay)
@@ -76,14 +77,17 @@ func _on_heals_changed(count: int) -> void:
 	pear_count.text = "x%d" % count
 
 
+## The press: the meter starts breathing while he winds up. The screen itself
+## stays put until the power actually lands.
 func _on_ability_changed(_ability_id: StringName, active: bool) -> void:
 	power_line.channelling = active
-	if _overlay == null:
-		return
-	if active and _powers != null and _powers.active != null:
-		_overlay.begin(_powers.active.duration)
-	elif not active:
+	if _overlay != null and not active:
 		_overlay.end()
+
+
+func _on_ability_engaged(_ability_id: StringName, duration: float) -> void:
+	if _overlay != null:
+		_overlay.begin(duration)
 
 
 func _on_ability_refused(_ability_id: StringName, missing_years: float) -> void:
@@ -101,9 +105,12 @@ func _process(_delta: float) -> void:
 		_overlay.set_remaining(_powers.time_left)
 		_overlay.set_focus(_focus_uv())
 		return
+	if _powers.is_winding_up():
+		time_label.text = "TIME  STOPPING"
+		return
 	var cooling := _powers.cooldown_left(GameState.ABILITY_STOP)
 	if cooling > 0.0:
-		time_label.text = "TIME  WINDING %.1f" % cooling
+		time_label.text = "TIME  COOLING %.1f" % cooling
 	elif GameState.has_ability(GameState.ABILITY_STOP):
 		# Doubles as where the key is taught. Nothing else in the game says it.
 		time_label.text = "TIME  [K] READY"

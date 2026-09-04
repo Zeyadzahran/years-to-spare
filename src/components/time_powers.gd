@@ -9,6 +9,12 @@ extends Node
 ## been paid, and gave the moment no shape: no start, no end, nothing to react
 ## to. A press with a known length and a known price is a decision.
 ##
+## A press does not stop the world on the frame it lands. The boy plays his
+## flourish first and the world stops on its last frame, because the alternative
+## reads backwards: the power has already taken hold while he is still visibly
+## reaching for it. It is half a second, and it is the difference between the
+## animation causing the freeze and merely accompanying it.
+##
 ## The cast is timed on the real clock, not the world one: the world's clock is
 ## the thing that has been stopped, so counting on it would never tick down.
 ##
@@ -34,6 +40,12 @@ class Power:
 		cost = p_cost
 		cooldown = p_cooldown
 
+## Seconds between the press and the world actually stopping - the boy's
+## flourish. PlayerAnimator stretches whichever of the three power clips he is
+## wearing to exactly this long, so the freeze always lands on its last frame
+## whatever body he is in.
+const WIND_UP := 0.5
+
 @export var age: AgeComponent
 
 ## The power currently running, and how much of its window is left.
@@ -42,6 +54,9 @@ var time_left := 0.0
 
 var _powers: Array[Power] = []
 var _cooldowns: Dictionary[StringName, float] = {}
+## Cast and paid for, still winding up. The world is untouched until it lands.
+var _pending: Power = null
+var _wind_left := 0.0
 
 func _ready() -> void:
 	# Numbers to be tuned by playing, not derived. The shape they are aiming
@@ -58,6 +73,12 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	for id in _cooldowns.keys():
 		_cooldowns[id] = maxf(_cooldowns[id] - delta, 0.0)
+
+	if _pending != null:
+		_wind_left = maxf(_wind_left - delta, 0.0)
+		if is_zero_approx(_wind_left):
+			_engage()
+		return
 
 	if active != null:
 		time_left = maxf(time_left - delta, 0.0)
@@ -77,18 +98,37 @@ func cooldown_left(id: StringName) -> float:
 
 
 func is_ready(id: StringName) -> bool:
-	return active == null and is_zero_approx(cooldown_left(id)) and GameState.has_ability(id)
+	return active == null and _pending == null \
+		and is_zero_approx(cooldown_left(id)) and GameState.has_ability(id)
 
 
+## Paid for and playing out his flourish, but the world is still running.
+func is_winding_up() -> bool:
+	return _pending != null
+
+
+## Ends a power, whether it had taken hold or was still winding up. The cooldown
+## runs either way: the years are spent the moment he commits.
 func cancel() -> void:
-	if active == null:
+	var stopped := active if active != null else _pending
+	if stopped == null:
 		return
-	var stopped := active
 	active = null
+	_pending = null
 	time_left = 0.0
+	_wind_left = 0.0
 	_cooldowns[stopped.id] = stopped.cooldown
 	TimeService.mode = TimeService.Mode.NORMAL
 	EventBus.ability_stopped.emit(stopped.id)
+
+
+## The flourish has finished. Now the world stops, and the window starts.
+func _engage() -> void:
+	active = _pending
+	_pending = null
+	time_left = active.duration
+	TimeService.mode = active.mode
+	EventBus.ability_engaged.emit(active.id, active.duration)
 
 
 func _try_cast(power: Power) -> void:
@@ -103,8 +143,9 @@ func _try_cast(power: Power) -> void:
 	if power.cost > affordable:
 		EventBus.ability_refused.emit(power.id, power.cost - affordable)
 		return
-	active = power
-	time_left = power.duration
+	# Charged on commitment rather than on arrival: he has decided, and the
+	# half second of flourish is not a window to change his mind in.
+	_pending = power
+	_wind_left = WIND_UP
 	age.spend(power.cost)
-	TimeService.mode = power.mode
 	EventBus.ability_started.emit(power.id)
