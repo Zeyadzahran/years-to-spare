@@ -2,7 +2,7 @@ class_name Bullet
 extends Area2D
 ## A Gunner's round - what actually carries his shot to the boy, since the
 ## shipped muzzle-flash art is cropped by its own canvas and never shows the
-## round leaving the frame. `Gunner._fire()` spawns one of these instead.
+## round leaving the frame. `Gunner._attack()` spawns one of these.
 ##
 ## Not a TimeBody2D: there's no gravity or floor to slide against, just a
 ## straight line at a fixed speed, so position is driven by hand off
@@ -45,21 +45,24 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 
 
-## Async so the round can wait out its own impact sound rather than cutting it
-## off - `queue_free()` would otherwise kill the AudioStreamPlayer2D the
-## instant it starts.
+## Stops on the first thing it meets, terrain included - the round masks the
+## world layer as well as the boy, so a Gunner can no longer shoot him through a
+## wall. Async so a round that found flesh can wait out its own impact sound
+## rather than cutting it off.
 func _on_body_entered(body: Node2D) -> void:
 	if _spent:
 		return
-	var health := body.get(&"health") as HealthComponent
-	if health == null or not health.is_alive():
-		return
 	_spent = true
-	health.take_damage(_damage, _shooter)
+	# The lifetime timer would otherwise keep running and free the round
+	# mid-await, cutting off the sound this await exists to protect.
+	set_physics_process(false)
 	_velocity = Vector2.ZERO
 	visible = false
 	set_deferred(&"monitoring", false)
-	if _impact_audio != null:
-		_impact_audio.play()
-		await _impact_audio.finished
+	var health := body.get(&"health") as HealthComponent
+	if health != null and health.is_alive():
+		health.take_damage(_damage, _shooter)
+		if _impact_audio != null:
+			_impact_audio.play()
+			await _impact_audio.finished
 	queue_free()
