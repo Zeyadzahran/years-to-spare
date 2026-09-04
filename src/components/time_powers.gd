@@ -45,11 +45,11 @@ var _cooldowns: Dictionary[StringName, float] = {}
 
 func _ready() -> void:
 	# Numbers to be tuned by playing, not derived. The shape they are aiming
-	# for: a stop is worth roughly two Guards, so a room cleared pays for the
-	# stop that cleared it, and a boy who spends without killing walks himself
-	# into his sixties in about eight presses.
+	# for: a stop is worth three of Cad Corp's troops, so a room cleared pays
+	# for the stop that cleared it and a little over, and a boy who spends
+	# without killing walks himself into his sixties in about fifteen presses.
 	_powers = [
-		Power.new(GameState.ABILITY_STOP, &"time_stop", TimeService.Mode.STOPPED, 5.0, 6.0, 3.0),
+		Power.new(GameState.ABILITY_STOP, &"time_stop", TimeService.Mode.STOPPED, 5.0, 3.0, 3.0),
 		Power.new(GameState.ABILITY_REWIND, &"time_rewind", TimeService.Mode.REWINDING, 2.0, 4.0, 6.0),
 		Power.new(GameState.ABILITY_SLOW, &"time_slow", TimeService.Mode.SLOWED, 6.0, 4.0, 4.0),
 	]
