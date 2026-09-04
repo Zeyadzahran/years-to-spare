@@ -4,20 +4,16 @@ extends Area2D
 ## when he first passed it, so dying costs him the ground he covered but not the
 ## years he spent covering it.
 ##
-## Detection, shape, art and both tints are authored in the scene and the
-## Inspector. The only part that needs code is handing the pair to GameState:
-## a death reloads the level, so the record has to outlive this node.
+## Detection, shape and art are authored in the scene. The only part that needs
+## code is handing the pair to GameState: a death reloads the level, so the
+## record has to outlive this node.
 
-## How the marker reads before and after it takes. Tune in the Inspector.
-@export var idle_tint := Color(0.85, 0.95, 1.1)
-@export var active_tint := Color(0.45, 1.35, 1.05)
-
-@onready var _marker: Sprite2D = $Marker
+@onready var _marker: AnimatedSprite2D = $Marker
 
 func _ready() -> void:
 	# Respawning rebuilds the level, so the one that is already recorded has to
 	# come back lit rather than dormant.
-	_marker.modulate = active_tint if GameState.is_active_checkpoint(name) else idle_tint
+	_marker.play(&"green" if GameState.is_active_checkpoint(name) else &"red")
 
 
 ## Wired from this Area2D's body_entered in the scene.
@@ -32,4 +28,4 @@ func _on_body_entered(body: Node2D) -> void:
 	if GameState.is_active_checkpoint(name):
 		return
 	GameState.set_checkpoint(name, global_position, age.age)
-	_marker.modulate = active_tint
+	_marker.play(&"green")

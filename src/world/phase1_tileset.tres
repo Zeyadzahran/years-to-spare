@@ -4,7 +4,7 @@
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kspeg"]
 texture = ExtResource("1_3b0dp")
-margins = Vector2i(38, 20)
+margins = Vector2i(38, 33)
 separation = Vector2i(49, 49)
 texture_region_size = Vector2i(360, 360)
 0:0/0 = 0
