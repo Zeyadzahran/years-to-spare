@@ -112,11 +112,11 @@ func consume_attack() -> void:
 	_attack_hit_done = false
 
 
-## The blade coming round, fired as the swing starts rather than when it lands:
-## a miss is still an attack and still has to look like one, and the crescent
-## has to be mid-arc by the time the hit is actually tested.
+## The blade going out, fired as the swing starts rather than when it lands: a
+## miss is still an attack and still has to look like one, and the lance has to
+## be most of the way out by the time the hit is actually tested.
 func begin_swing() -> void:
-	_effects.slash(global_position, facing)
+	_effects.thrust(global_position, facing)
 
 
 func perform_attack_hit() -> void:
@@ -132,9 +132,11 @@ func perform_attack_hit() -> void:
 		# neither facing and let the swing pass straight through it.
 		if absf(offset.x) <= 78.0 and absf(offset.y) <= 75.0 and offset.x * facing >= 0.0:
 			enemy.health.take_damage(attack_damage, self)
-			# Aimed at the middle of the unit rather than its feet, which sit
-			# level with the floor the blade never touched.
-			_effects.impact(enemy.global_position + Vector2(0.0, -50.0))
+			# On the blade line rather than on the unit's middle: a thrust
+			# connects where the sword is, which is chest height off the floor
+			# the boy is standing on, not off wherever the unit's feet are.
+			_effects.impact(Vector2(enemy.global_position.x,
+				global_position.y + SwordEffects.THRUST_Y))
 
 
 ## Deliberately usable mid-stagger and mid-air: the fruit is the answer to

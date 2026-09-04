@@ -1,8 +1,8 @@
 extends PlayerState
 ## One swing, on the ground or in the air. Drives the clip, blocks other actions
-## while it runs, and calls the hit through at HIT_TIME. The blade's crescent
-## starts with the clip so the two sweep together; only the impact burst waits
-## for the hit.
+## while it runs, and calls the hit through at HIT_TIME. The blade's lance goes
+## out with the clip so the two travel together; only the impact burst waits for
+## the hit.
 
 ## Matches the attack clip: 8 frames at 16 fps.
 const DURATION := 0.5

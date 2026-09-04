@@ -1,8 +1,13 @@
 class_name SwordEffects
 extends Node2D
 ## The swing you can actually see. Drawn rather than authored, so it needs no
-## art: a tapered crescent following the blade through its arc, and a burst of
-## sparks wherever it lands.
+## art: a lance of light running out along the blade, and a burst of sparks
+## wherever it lands.
+##
+## It is a lance and not an arc because that is what the animation does. The
+## attack frames hold the sword level at chest height and push it straight out -
+## a thrust, not an overhead cut - so an arc swept past him instead of following
+## the blade.
 ##
 ## Two separate readings, because a swing and a hit are different information.
 ## The crescent fires on every swing, hit or miss, so the attack always shows.
@@ -12,21 +17,20 @@ extends Node2D
 ## Ticks on the raw frame delta. The boy is exempt from his own time powers, so
 ## his sword is too: a swing while the world is held still still flashes.
 
-## How far the crescent reaches and where it is hinged, both measured off the
-## swing that Player.perform_attack_hit already tests - 78px forward of him,
-## a little over half his 100px height up from his feet.
-const REACH := 84.0
-const INNER := 40.0
-const PIVOT := Vector2(0.0, -56.0)
-## The arc is flattened, because he swings across the screen rather than around
-## a circle. Without this the top of it clears his own head by half his height.
-const SQUASH := 0.82
-
-## The arc the blade covers, in radians from straight ahead: starting high
-## behind the shoulder, finishing low in front.
-const SWING_FROM := -2.0
-const SWING_TO := 0.7
-## How far the trailing edge lags the blade, as a fraction of the swing.
+## Where the blade actually goes, measured off the attack frames rather than
+## guessed. Node space, from his feet: the tip sits between y -70 and -80 across
+## the thrust, and reaches the right edge of the 256px canvas on frames 3 and 4 -
+## which is to say the art is cropped there, the same way the Gunner's muzzle
+## flash is. The lance carries on to where the hit is actually tested (78px) and
+## a little past, since that is the reach the blade would have had.
+const THRUST_Y := -74.0
+const THRUST_FROM := 26.0
+const THRUST_TO := 126.0
+## Half-height of the lance at its widest.
+const THRUST_HALF := 14.0
+## Where the shoulders of the spearhead sit, as a fraction back from its point.
+const HEAD_LEN := 0.34
+## How far the back of the lance lags its point, as a fraction of the push.
 const TRAIL := 0.34
 
 ## Spans the swing from the clip's first frame to a little past the moment the
@@ -53,8 +57,8 @@ func _ready() -> void:
 	z_index = 20
 
 
-## One swing, wherever he was standing when the blade came round.
-func slash(at: Vector2, facing: int) -> void:
+## One swing, from wherever he was standing when the blade went out.
+func thrust(at: Vector2, facing: int) -> void:
 	_slashes.append({"at": at, "facing": facing, "age": 0.0})
 
 
@@ -78,37 +82,48 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	for slash_effect in _slashes:
-		_draw_slash(slash_effect)
+		_draw_thrust(slash_effect)
 	for impact_effect in _impacts:
 		_draw_impact(impact_effect)
 
 
-func _draw_slash(effect: Dictionary) -> void:
+func _draw_thrust(effect: Dictionary) -> void:
 	var progress: float = clampf(effect["age"] / SLASH_LIFE, 0.0, 1.0)
-	var centre: Vector2 = effect["at"] + PIVOT
+	var base: Vector2 = effect["at"]
 	var facing: int = effect["facing"]
-	# The blade leads and the trail chases it, so the crescent is a shape being
-	# drawn rather than a shape being faded in.
-	var head := _ease(progress)
-	var tail := _ease(maxf(progress - TRAIL, 0.0) / (1.0 - TRAIL))
-	if head <= tail:
+	# The point leads and the back of the lance chases it, so the shape is being
+	# driven forward rather than simply appearing at full length.
+	var head := lerpf(THRUST_FROM, THRUST_TO, _ease(progress))
+	var tail := lerpf(THRUST_FROM, THRUST_TO, _ease(maxf(progress - TRAIL, 0.0) / (1.0 - TRAIL)))
+	var length := head - tail
+	if length < 1.0:
 		return
 	var fade := 1.0 - progress * progress
+	# Thin while it is still short, so the first frames read as a point going
+	# out rather than a slab appearing at the hilt.
+	var half := THRUST_HALF * minf(length / 60.0, 1.0)
+	var shoulder := head - length * HEAD_LEN
 
-	var steps := 14
-	var outer := PackedVector2Array()
-	var inner := PackedVector2Array()
-	for i in steps + 1:
-		var along := float(i) / steps
-		var angle := _facing_angle(lerpf(SWING_FROM, SWING_TO, lerpf(tail, head, along)), facing)
-		var edge := Vector2.from_angle(angle)
-		edge.y *= SQUASH
-		# Fattest at the blade, tapering to nothing at the tail.
-		outer.append(centre + edge * REACH)
-		inner.append(centre + edge * lerpf(REACH, INNER, lerpf(0.15, 1.0, along)))
-	inner.reverse()
-	draw_colored_polygon(outer + inner, Color(BODY, 0.5 * fade))
-	draw_polyline(outer, Color(EDGE, 0.95 * fade), 3.0, true)
+	draw_colored_polygon(PackedVector2Array([
+		_point(base, facing, head, 0.0),
+		_point(base, facing, shoulder, -half),
+		_point(base, facing, tail, 0.0),
+		_point(base, facing, shoulder, half),
+	]), Color(BODY, 0.55 * fade))
+	# The blade line itself: white, thin, straight down the middle.
+	draw_line(_point(base, facing, tail, 0.0), _point(base, facing, head, 0.0),
+		Color(EDGE, 0.95 * fade), 3.0, true)
+	# A pair of streaks riding either side of the push.
+	for side: float in [-1.0, 1.0]:
+		var rise := half * 0.7 * side
+		draw_line(_point(base, facing, lerpf(tail, head, 0.3), rise),
+			_point(base, facing, head - length * 0.15, rise),
+			Color(EDGE, 0.45 * fade), 1.5, true)
+
+
+## A point on the blade line: `along` forward of him, `rise` off that line.
+func _point(base: Vector2, facing: int, along: float, rise: float) -> Vector2:
+	return base + Vector2(along * facing, THRUST_Y + rise)
 
 
 func _draw_impact(effect: Dictionary) -> void:
@@ -129,12 +144,6 @@ func _draw_impact(effect: Dictionary) -> void:
 		draw_circle(at, lerpf(16.0, 0.0, progress / 0.45), Color(EDGE, 0.9))
 
 
-## Mirrors the swing for a boy facing left. `flip_h` only mirrors his texture;
-## anything drawn here has to be turned by hand.
-func _facing_angle(angle: float, facing: int) -> float:
-	return angle if facing >= 0 else PI - angle
-
-
-## Fast out of the gate, easing into the follow-through - how a swing moves.
+## Fast out of the gate, easing into the follow-through - how a thrust moves.
 func _ease(x: float) -> float:
 	return 1.0 - pow(1.0 - clampf(x, 0.0, 1.0), 2.5)
