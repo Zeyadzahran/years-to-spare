@@ -52,6 +52,8 @@ var _attack_buffered := 0.0
 var _attack_hit_done := false
 var _standing_size: Vector2
 var _standing_offset: float
+## Built rather than instanced: see src/actors/player/sword_effects.gd.
+var _effects: SwordEffects
 
 func _ready() -> void:
 	add_to_group(&"player")
@@ -68,6 +70,8 @@ func _ready() -> void:
 	# `age_reward` on a unit has always been for and what nothing was listening
 	# for. Wired here rather than in the level: they are his years.
 	EventBus.enemy_died.connect(_on_enemy_died)
+	_effects = SwordEffects.new()
+	add_child(_effects)
 	EventBus.player_heals_changed.emit(heal_charges)
 	EventBus.player_spawned.emit(self)
 
@@ -108,6 +112,13 @@ func consume_attack() -> void:
 	_attack_hit_done = false
 
 
+## The blade coming round, fired as the swing starts rather than when it lands:
+## a miss is still an attack and still has to look like one, and the crescent
+## has to be mid-arc by the time the hit is actually tested.
+func begin_swing() -> void:
+	_effects.slash(global_position, facing)
+
+
 func perform_attack_hit() -> void:
 	if _attack_hit_done:
 		return
@@ -121,6 +132,9 @@ func perform_attack_hit() -> void:
 		# neither facing and let the swing pass straight through it.
 		if absf(offset.x) <= 78.0 and absf(offset.y) <= 75.0 and offset.x * facing >= 0.0:
 			enemy.health.take_damage(attack_damage, self)
+			# Aimed at the middle of the unit rather than its feet, which sit
+			# level with the floor the blade never touched.
+			_effects.impact(enemy.global_position + Vector2(0.0, -50.0))
 
 
 ## Deliberately usable mid-stagger and mid-air: the fruit is the answer to

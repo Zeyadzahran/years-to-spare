@@ -1,6 +1,8 @@
 extends PlayerState
-## One swing, on the ground or in the air. Combat is not designed yet, so this
-## drives the animation and blocks other actions while it runs - no hitbox.
+## One swing, on the ground or in the air. Drives the clip, blocks other actions
+## while it runs, and calls the hit through at HIT_TIME. The blade's crescent
+## starts with the clip so the two sweep together; only the impact burst waits
+## for the hit.
 
 ## Matches the attack clip: 8 frames at 16 fps.
 const DURATION := 0.5
@@ -13,6 +15,7 @@ func enter(_previous: StringName) -> void:
 	_elapsed = 0.0
 	_hit_done = false
 	player.consume_attack()
+	player.begin_swing()
 
 
 func physics_update(delta: float) -> StringName:
