@@ -45,10 +45,11 @@ func start_new_run() -> void:
 
 
 ## Called by a Checkpoint the first time the boy passes it.
-func set_checkpoint(id: StringName, position: Vector2) -> void:
+func set_checkpoint(id: StringName, position: Vector2, age: float) -> void:
 	checkpoint_id = id
 	checkpoint_level = current_level()["id"]
 	checkpoint_position = position
+	run_age = age
 
 
 ## Whether `id` names the checkpoint currently recorded. Checked by the marker
