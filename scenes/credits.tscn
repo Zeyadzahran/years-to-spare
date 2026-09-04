@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://cf36mv6ot2swa"]
+
+[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="1_pixel"]
+[ext_resource type="FontFile" uid="uid://dkfq35cacteag" path="res://assets/fonts/NotoSerif-Variable.ttf" id="2_serif"]
+[ext_resource type="Script" uid="uid://dcriilhvuwaps" path="res://scripts/credits.gd" id="3_script"]
+
+[node name="Credits" type="Control" unique_id=578489746]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_script")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2074008826]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BackButton" type="Button" parent="." unique_id=2048513127]
+custom_minimum_size = Vector2(140, 48)
+layout_mode = 0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 168.0
+offset_bottom = 72.0
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_colors/font_focus_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_colors/font_hover_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_pixel")
+theme_override_font_sizes/font_size = 16
+text = "BACK"
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1835046362]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Content" type="VBoxContainer" parent="Center" unique_id=1322384184]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="Center/Content" unique_id=1525660713]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_pixel")
+theme_override_font_sizes/font_size = 36
+text = "CREDITS"
+horizontal_alignment = 1
+
+[node name="Team" type="Label" parent="Center/Content" unique_id=1867058356]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.898039, 0.717647, 0.356863, 1)
+theme_override_fonts/font = ExtResource("2_serif")
+theme_override_font_sizes/font_size = 30
+text = "أهل قاع الهامور"
+horizontal_alignment = 1
+text_direction = 2
+language = "ar"
+
+[node name="Divider" type="HSeparator" parent="Center/Content" unique_id=1178560350]
+layout_mode = 2
+
+[node name="Names" type="Label" parent="Center/Content" unique_id=1308154162]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_constants/line_spacing = 8
+theme_override_fonts/font = ExtResource("1_pixel")
+theme_override_font_sizes/font_size = 18
+text = "Ahmed Elaidy
+Zeyad Zahran
+Ramez Medhat
+Tahany Emad
+Jana Tamer"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
