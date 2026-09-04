@@ -29,6 +29,15 @@ const ATTACK_BUFFER := 0.12
 ## while ducked.
 const CROUCH_HEIGHT := 70.0
 
+## What ducking costs him in speed. He creeps under the overhang rather than
+## being pinned to the spot by it, which is what the crouch-walk frames are for.
+const CROUCH_SPEED := 0.42
+
+## Below this he is ducked but not going anywhere, and shows the held pose
+## instead of the creep. Set above zero so the last of the friction slide does
+## not leave him mouthing the walk cycle in place.
+const CRAWL_SPEED := 24.0
+
 @onready var shape: CollisionShape2D = $Shape
 @onready var health: HealthComponent = $Health
 @onready var age: AgeComponent = $Age
@@ -85,13 +94,21 @@ func apply_gravity(delta: float) -> void:
 	velocity.y += gravity * delta
 
 
-func apply_horizontal(delta: float) -> void:
+## `speed_scale` is how much of his top speed the state allows. Only the target
+## is scaled: however slowly he is going, stopping should feel the same.
+func apply_horizontal(delta: float, speed_scale := 1.0) -> void:
 	var grounded := is_on_floor()
 	var rate := (GROUND_ACCEL if grounded else AIR_ACCEL) if not is_zero_approx(input_dir) \
 		else (GROUND_FRICTION if grounded else AIR_FRICTION)
-	velocity.x = move_toward(velocity.x, input_dir * speed, rate * delta)
+	velocity.x = move_toward(velocity.x, input_dir * speed * speed_scale, rate * delta)
 	if not is_zero_approx(input_dir):
 		facing = 1 if input_dir > 0.0 else -1
+
+
+## Ducked and actually covering ground. Crouch is one state and two poses, and
+## this is what separates them - a question about his speed, not his state.
+func is_crawling() -> bool:
+	return absf(velocity.x) > CRAWL_SPEED
 
 
 ## Buffered like the jump, so a press is never lost to frame timing.
