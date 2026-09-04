@@ -2,25 +2,28 @@
 
 [ext_resource type="Script" uid="uid://7vp55m0ln22g" path="res://src/actors/enemy/enemy.gd" id="1_enemy"]
 [ext_resource type="Script" uid="uid://dp3hvo5k6qq50" path="res://src/components/health_component.gd" id="2_health"]
+[ext_resource type="AudioStream" uid="uid://cs8q67g8a2077" path="res://assets/sounds/bullet-in-flesh.mp3" id="3_hit"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(22, 32)
 
-[node name="Enemy" type="CharacterBody2D"]
+[node name="Enemy" type="CharacterBody2D" unique_id=919252556]
 collision_layer = 4
-collision_mask = 1
 script = ExtResource("1_enemy")
 
-[node name="Shape" type="CollisionShape2D" parent="."]
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=478318121]
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_body")
 
-[node name="Placeholder" type="ColorRect" parent="."]
+[node name="Placeholder" type="ColorRect" parent="." unique_id=744972603]
 offset_left = -11.0
 offset_top = -32.0
 offset_right = 11.0
-offset_bottom = 0.0
 color = Color(0.72, 0.27, 0.32, 1)
 
-[node name="Health" type="Node" parent="."]
+[node name="Health" type="Node" parent="." unique_id=2047329724]
 script = ExtResource("2_health")
+
+[node name="HitAudio" type="AudioStreamPlayer2D" parent="." unique_id=542958799]
+stream = ExtResource("3_hit")
+volume_db = 2.0

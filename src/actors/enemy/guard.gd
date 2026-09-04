@@ -104,6 +104,7 @@ func _tick_attack(delta: float) -> void:
 		_attack_hit = true
 		if _in_attack_range():
 			target.health.take_damage(damage, self)
+			play_hit_audio()
 
 	if _state_elapsed >= ATTACK_DURATION:
 		_change_state(&"Recover")
