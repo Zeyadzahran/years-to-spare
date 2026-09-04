@@ -51,7 +51,6 @@
 [ext_resource type="Texture2D" uid="uid://5v0kx20e7yde" path="res://assets/sprites/player_elder/old-idle/frame_007.png" id="40_eo0a4"]
 [ext_resource type="Texture2D" uid="uid://b5aqcuh523fas" path="res://assets/sprites/player_elder/old-idle/frame_008.png" id="41_damvp"]
 [ext_resource type="Texture2D" uid="uid://bahkhfncoudxo" path="res://assets/sprites/player_elder/old-jump/East_0007.png" id="42_a3xgs"]
-[ext_resource type="Texture2D" uid="uid://cgy4ndux1fyou" path="res://assets/sprites/player_elder/old-jump/East_0008.png" id="43_lsxkm"]
 [ext_resource type="Texture2D" uid="uid://b0oa31juqewpu" path="res://assets/sprites/player_elder/old-jump/East_0009.png" id="44_gsx1n"]
 [ext_resource type="Texture2D" uid="uid://d1iy8bgreg03g" path="res://assets/sprites/player_elder/old-power/frame_003.png" id="45_17vdk"]
 [ext_resource type="Texture2D" uid="uid://d1ljlukdixgnh" path="res://assets/sprites/player_elder/old-power/frame_004.png" id="46_ulape"]
@@ -254,9 +253,6 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("42_a3xgs")
-}, {
-"duration": 1.0,
-"texture": ExtResource("43_lsxkm")
 }],
 "loop": 0,
 "name": &"jump",
