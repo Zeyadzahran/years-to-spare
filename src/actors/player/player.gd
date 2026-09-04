@@ -21,11 +21,6 @@ const ATTACK_BUFFER := 0.12
 ## Three swings to down a Guard, on the 100-point scale.
 @export var attack_damage := 34.0
 
-@export_group("Healing")
-## Prickly pears the boy is carrying. `heal` (H) eats one.
-@export var heal_charges := 3
-## A third of the bar per fruit, so three of them are a full heal from nothing.
-@export var heal_amount := 34.0
 @export var speed := 560.0
 @export var jump_velocity := -1250.0
 @export var gravity := 4100.0
@@ -52,6 +47,8 @@ var _attack_buffered := 0.0
 var _attack_hit_done := false
 var _standing_size: Vector2
 var _standing_offset: float
+## Built rather than instanced: see src/actors/player/sword_effects.gd.
+var _effects: SwordEffects
 
 func _ready() -> void:
 	add_to_group(&"player")
@@ -64,7 +61,12 @@ func _ready() -> void:
 	health.died.connect(_on_died)
 	age.changed.connect(func(a, d): EventBus.player_age_changed.emit(a, d))
 	age.died.connect(_on_died)
-	EventBus.player_heals_changed.emit(heal_charges)
+	# Killing Cad Corp's troops is the only way to buy years back, which is what
+	# `age_reward` on a unit has always been for and what nothing was listening
+	# for. Wired here rather than in the level: they are his years.
+	EventBus.enemy_died.connect(_on_enemy_died)
+	_effects = SwordEffects.new()
+	add_child(_effects)
 	EventBus.player_spawned.emit(self)
 
 
@@ -77,8 +79,6 @@ func _physics_process(delta: float) -> void:
 	_attack_buffered = maxf(_attack_buffered - delta, 0.0)
 	if Input.is_action_just_pressed(&"attack"):
 		_attack_buffered = ATTACK_BUFFER
-	if Input.is_action_just_pressed(&"heal"):
-		eat_pear()
 
 
 func apply_gravity(delta: float) -> void:
@@ -104,6 +104,13 @@ func consume_attack() -> void:
 	_attack_hit_done = false
 
 
+## The blade going out, fired as the swing starts rather than when it lands: a
+## miss is still an attack and still has to look like one, and the lance has to
+## be most of the way out by the time the hit is actually tested.
+func begin_swing() -> void:
+	_effects.thrust(global_position, facing)
+
+
 func perform_attack_hit() -> void:
 	if _attack_hit_done:
 		return
@@ -117,23 +124,11 @@ func perform_attack_hit() -> void:
 		# neither facing and let the swing pass straight through it.
 		if absf(offset.x) <= 78.0 and absf(offset.y) <= 75.0 and offset.x * facing >= 0.0:
 			enemy.health.take_damage(attack_damage, self)
-
-
-## Deliberately usable mid-stagger and mid-air: the fruit is the answer to
-## being caught out, so gating it behind a clean footing would waste it.
-func eat_pear() -> bool:
-	if is_down() or heal_charges <= 0 or health.current >= health.max_health:
-		return false
-	heal_charges -= 1
-	health.heal(heal_amount)
-	EventBus.player_heals_changed.emit(heal_charges)
-	return true
-
-
-## For a pickup to call once one exists.
-func add_pear(count := 1) -> void:
-	heal_charges += count
-	EventBus.player_heals_changed.emit(heal_charges)
+			# On the blade line rather than on the unit's middle: a thrust
+			# connects where the sword is, which is chest height off the floor
+			# the boy is standing on, not off wherever the unit's feet are.
+			_effects.impact(Vector2(enemy.global_position.x,
+				global_position.y + SwordEffects.THRUST_Y))
 
 
 func can_jump() -> bool:
@@ -176,6 +171,10 @@ func _on_damaged(_amount: float, source: Node) -> void:
 		return
 	hurt_from = 1 if source != null and source.global_position.x > global_position.x else -1
 	states.travel(&"Hurt")
+
+
+func _on_enemy_died(_enemy: Node2D, age_reward: float) -> void:
+	age.restore(age_reward)
 
 
 func _on_died() -> void:

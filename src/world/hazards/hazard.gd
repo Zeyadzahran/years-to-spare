@@ -4,9 +4,9 @@ extends Area2D
 ## all use this; the sprite stays a plain child so the art and the danger can be
 ## adjusted independently.
 ##
-## Hazards chip rather than kill: a mistake costs a fifth of the bar and a
-## prickly pear, not the run. Raise `damage` past max health for the one pit
-## that is meant to be final.
+## Hazards chip rather than kill: a mistake costs a fifth of the bar and the
+## walk back to the next fig, not the run. Raise `damage` past max health for
+## the one pit that is meant to be final.
 
 @export var damage := 20.0
 

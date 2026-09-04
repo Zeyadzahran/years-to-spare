@@ -18,15 +18,25 @@ const LEVELS: Array[Dictionary] = [
 var level_index := 0
 var unlocked: Array[StringName] = []
 
-## The checkpoint the boy goes back to, and the age he had when he reached it.
-## Deliberately not cleared by `start_new_run()`: that runs on every level load,
-## including the reload a death triggers, which is exactly when this is needed.
-## What does clear it is PLAY on the main menu, the one place that means a run
-## from the top rather than a retry.
+## What a death carries forward. Deliberately not cleared by `start_new_run()`:
+## that runs on every level load, including the reload a death triggers, which
+## is exactly when this is needed. What clears it is `clear_run_progress()` -
+## PLAY on the main menu, reaching the next phase, and dying of old age.
 var checkpoint_id: StringName = &""
 var checkpoint_level: StringName = &""
 var checkpoint_position := Vector2.ZERO
-var checkpoint_age := 0.0
+
+## The age the boy carries into his next attempt. Dying is not a fountain of
+## youth: the years he spent are spent, and only the ground he covered is lost.
+## Negative until he has died at least once, which means "leave him as the scene
+## starts him".
+var run_age := -1.0
+
+## Bodies he has already left behind, keyed "<level id>|<path inside the level>".
+## A retry is a retry, not a re-run: a Guard downed before the last checkpoint
+## stays down, so a hard stretch cannot be farmed for the years its troops pay
+## out - and so clearing a room actually means something.
+var cleared_enemies: Dictionary[String, bool] = {}
 
 func start_new_run() -> void:
 	level_index = 0
@@ -35,11 +45,10 @@ func start_new_run() -> void:
 
 
 ## Called by a Checkpoint the first time the boy passes it.
-func set_checkpoint(id: StringName, position: Vector2, age: float) -> void:
+func set_checkpoint(id: StringName, position: Vector2) -> void:
 	checkpoint_id = id
 	checkpoint_level = current_level()["id"]
 	checkpoint_position = position
-	checkpoint_age = age
 
 
 ## Whether `id` names the checkpoint currently recorded. Checked by the marker
@@ -54,11 +63,23 @@ func has_checkpoint(level_id: StringName) -> bool:
 	return checkpoint_id != &"" and checkpoint_level == level_id
 
 
-func clear_checkpoint() -> void:
+## Marks a unit as downed for the rest of the run.
+func clear_enemy(level_id: StringName, path: String) -> void:
+	cleared_enemies["%s|%s" % [level_id, path]] = true
+
+
+func is_enemy_cleared(level_id: StringName, path: String) -> bool:
+	return cleared_enemies.has("%s|%s" % [level_id, path])
+
+
+## Throws away everything a retry would have carried: the marker, the years
+## already spent, and the bodies. This is what "start over" means.
+func clear_run_progress() -> void:
 	checkpoint_id = &""
 	checkpoint_level = &""
 	checkpoint_position = Vector2.ZERO
-	checkpoint_age = 0.0
+	run_age = -1.0
+	cleared_enemies.clear()
 
 
 func current_level() -> Dictionary:
@@ -73,7 +94,7 @@ func advance() -> bool:
 	if level_index >= LEVELS.size() - 1:
 		return false
 	level_index += 1
-	clear_checkpoint()
+	clear_run_progress()
 	_grant_for_current_level()
 	return true
 
