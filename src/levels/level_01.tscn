@@ -380,6 +380,7 @@ position = Vector2(4600, 1500)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("6_dmh6m")
+damage = 999.0
 
 [node name="Shape" type="CollisionShape2D" parent="World/Hazards/FallZone" unique_id=1738994103]
 position = Vector2(59, -319)
