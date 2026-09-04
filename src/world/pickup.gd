@@ -30,5 +30,14 @@ func _take(body: Node2D) -> bool:
 	if health.current >= health.max_health:
 		return false
 	health.heal(heal_amount)
-	queue_free()
+	
+	$PickupAudio.play()
+	
+	# Hide/disable the fruit immediately cause they need to be synced
+	visible = false
+	set_physics_process(false)
+	monitoring = false
+
+	$PickupAudio.finished.connect(queue_free)
+	
 	return true

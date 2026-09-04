@@ -2,13 +2,14 @@
 
 [ext_resource type="Texture2D" uid="uid://g3ftvedv8jnb" path="res://assets/sprites/health-object.png" id="1_fruit"]
 [ext_resource type="Script" uid="uid://xhvomt3g6afu" path="res://src/world/pickup.gd" id="2_pickup"]
+[ext_resource type="AudioStream" uid="uid://c0r7qf3s6ir87" path="res://assets/sounds/fruit-sound.mp3" id="3_ehqkw"]
 
 [sub_resource type="CircleShape2D" id="Shape_Pickup"]
 radius = 31.0
 
 [sub_resource type="Animation" id="Animation_reset"]
 resource_name = "RESET"
-length = 0.0
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -58,8 +59,11 @@ texture = ExtResource("1_fruit")
 [node name="Shape" type="CollisionShape2D" parent="." unique_id=55102999]
 shape = SubResource("Shape_Pickup")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_pickup")
-}
-autoplay = "hover"
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=259202272]
+libraries/ = SubResource("AnimationLibrary_pickup")
+autoplay = &"hover"
+
+[node name="PickupAudio" type="AudioStreamPlayer2D" parent="." unique_id=101479201]
+process_mode = 3
+stream = ExtResource("3_ehqkw")
+volume_db = -6.0
