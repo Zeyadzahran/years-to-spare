@@ -10,20 +10,27 @@ extends CharacterBody2D
 ## reaches Air by walking off a ledge - so the sound hangs off the push itself.
 signal jumped
 
-const GROUND_ACCEL := 6000.0
-const AIR_ACCEL := 3300.0
-const GROUND_FRICTION := 7200.0
-const AIR_FRICTION := 1200.0
-const COYOTE_TIME := 0.1
-const JUMP_BUFFER := 0.12
-const ATTACK_BUFFER := 0.12
+## Everything below is the old feel run at four fifths speed. Slowing a
+## platformer by cutting the speed alone shortens every jump and quietly makes
+## the level's pits unclearable, so the whole of his motion is scaled instead:
+## velocities by 0.8, accelerations and gravity by 0.8 squared, times by 1/0.8.
+## Under that transform a trajectory keeps its exact shape - same jump height,
+## same distance across a gap - and only takes longer to draw. Nothing in phase
+## 1 became harder to reach; the game just stopped rushing.
+const GROUND_ACCEL := 3840.0
+const AIR_ACCEL := 2112.0
+const GROUND_FRICTION := 4608.0
+const AIR_FRICTION := 768.0
+const COYOTE_TIME := 0.125
+const JUMP_BUFFER := 0.15
+const ATTACK_BUFFER := 0.15
 
 ## Three swings to down a Guard, on the 100-point scale.
 @export var attack_damage := 34.0
 
-@export var speed := 560.0
-@export var jump_velocity := -1250.0
-@export var gravity := 4100.0
+@export var speed := 450.0
+@export var jump_velocity := -1000.0
+@export var gravity := 2620.0
 
 ## Crouched box height, from the sprite: the boy is ~71% of standing height
 ## while ducked.
@@ -36,7 +43,16 @@ const CROUCH_SPEED := 0.42
 ## Below this he is ducked but not going anywhere, and shows the held pose
 ## instead of the creep. Set above zero so the last of the friction slide does
 ## not leave him mouthing the walk cycle in place.
-const CRAWL_SPEED := 24.0
+const CRAWL_SPEED := 20.0
+
+## What is left of his top speed at sixty, reached smoothly as he ages. The
+## elder frames are drawn as a walk rather than a run and were being played at a
+## sprinter's pace; this is what makes the two agree.
+##
+## It cannot go much below this without breaking the level: phase 1's widest
+## spiked pit is 230 px across, and the reach this leaves the old man clears it
+## with about 50 px to spare - roughly what a human needs to time the jump.
+const ELDER_SPEED := 0.82
 
 @onready var shape: CollisionShape2D = $Shape
 @onready var health: HealthComponent = $Health
@@ -94,13 +110,21 @@ func apply_gravity(delta: float) -> void:
 	velocity.y += gravity * delta
 
 
-## `speed_scale` is how much of his top speed the state allows. Only the target
-## is scaled: however slowly he is going, stopping should feel the same.
+## Top speed for the age he is at. `frailty` runs 0 at fourteen and 1 at sixty,
+## which is the "older and weaker" falloff AgeComponent was written for and
+## nothing had used yet. Continuous rather than stepped at the body changes: the
+## years are spent a few at a time, and the legs should go the same way.
+func top_speed() -> float:
+	return speed * lerpf(1.0, ELDER_SPEED, age.frailty())
+
+
+## `speed_scale` is how much of that the state allows. Only the target is
+## scaled: however slowly he is going, stopping should feel the same.
 func apply_horizontal(delta: float, speed_scale := 1.0) -> void:
 	var grounded := is_on_floor()
 	var rate := (GROUND_ACCEL if grounded else AIR_ACCEL) if not is_zero_approx(input_dir) \
 		else (GROUND_FRICTION if grounded else AIR_FRICTION)
-	velocity.x = move_toward(velocity.x, input_dir * speed * speed_scale, rate * delta)
+	velocity.x = move_toward(velocity.x, input_dir * top_speed() * speed_scale, rate * delta)
 	if not is_zero_approx(input_dir):
 		facing = 1 if input_dir > 0.0 else -1
 
