@@ -23,8 +23,11 @@ const WORLD_LAYER := 1
 ## than his feet, which sit level with the floor.
 const TARGET_CHEST_HEIGHT := -50.0
 
-## Years the player takes back for killing this unit.
-@export var age_reward := 2.0
+## Years the player takes back for killing this unit. One apiece: a kill should
+## read as a year off, not as a refund big enough to make the powers free.
+## AgeComponent.restore floors at his starting age, so no amount of killing
+## takes him back below fourteen.
+@export var age_reward := 1.0
 
 @export_group("Ranges")
 @export var speed := 180.0
