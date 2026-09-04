@@ -9,7 +9,6 @@ extends CanvasLayer
 ## the charge on his abilities - hence the name.
 @onready var power_line: StatBar = %PowerLine
 @onready var power_value: Label = %PowerValue
-@onready var pear_count: Label = %PearCount
 @onready var time_label: Label = %TimeMode
 @onready var options_button: Button = %Options
 
@@ -31,7 +30,6 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	options_button.pressed.connect(_on_options_pressed)
 	EventBus.player_health_changed.connect(_on_health_changed)
-	EventBus.player_heals_changed.connect(_on_heals_changed)
 	EventBus.player_age_changed.connect(_on_age_changed)
 	EventBus.player_spawned.connect(_read_player)
 	EventBus.ability_started.connect(_on_ability_changed.bind(true))
@@ -56,7 +54,6 @@ func _read_player(player: Node) -> void:
 	_start_age = player.age.start_age
 	_on_health_changed(player.health.current, player.health.max_health)
 	_on_age_changed(player.age.age, player.age.death_age)
-	_on_heals_changed(player.heal_charges)
 
 
 func _on_health_changed(current: float, maximum: float) -> void:
@@ -71,10 +68,6 @@ func _on_age_changed(age: float, death_age: float) -> void:
 	var span := maxf(death_age - _start_age, 0.001)
 	power_line.set_value(age - _start_age, span)
 	power_value.text = "%d" % roundi(age)
-
-
-func _on_heals_changed(count: int) -> void:
-	pear_count.text = "x%d" % count
 
 
 ## The press: the meter starts breathing while he winds up. The screen itself
