@@ -29,6 +29,32 @@ func apply_fullscreen():
 	)
 
 
+## Esc drops the window out of fullscreen, the way every other fullscreen thing
+## on the machine behaves. The game now *starts* fullscreen, so without this the
+## only way back out is to find it in the options panel - and remembering the
+## choice matters as much as making it, or the next launch traps you again.
+##
+## Returns whether it actually did anything, so a caller that owns Esc for
+## something else can let this have first refusal and then carry on.
+func leave_fullscreen() -> bool:
+	if not fullscreen:
+		return false
+	fullscreen = false
+	apply_fullscreen()
+	save_settings()
+	return true
+
+
+## Scenes with nothing else bound to Esc - the menu, the intro - get the same
+## behaviour for free. Autoloads sit above the current scene in the tree and
+## unhandled input runs bottom-up, so anything in the scene that wants Esc for
+## itself still sees it first.
+func _unhandled_input(event):
+	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
+		if leave_fullscreen():
+			get_viewport().set_input_as_handled()
+
+
 func save_settings():
 	var config = ConfigFile.new()
 
