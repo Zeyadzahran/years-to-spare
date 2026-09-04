@@ -21,15 +21,29 @@ extends Node2D
 ## guessed. Node space, from his feet: the tip sits between y -70 and -80 across
 ## the thrust, and reaches the right edge of the 256px canvas on frames 3 and 4 -
 ## which is to say the art is cropped there, the same way the Gunner's muzzle
-## flash is. The lance carries on to where the hit is actually tested (78px) and
-## a little past, since that is the reach the blade would have had.
+## flash is.
+##
+## Deliberately kept to the blade and a little past its point. Carried out to
+## the full 78px the hit is tested at, it stopped reading as a sword and started
+## reading as something the sword had fired - a bolt leaving the tip and passing
+## clean through whatever it hit. What the swing wants is a gleam running down
+## the edge, not a projectile.
 const THRUST_Y := -74.0
-const THRUST_FROM := 26.0
-const THRUST_TO := 126.0
-## Half-height of the lance at its widest.
-const THRUST_HALF := 14.0
+const THRUST_FROM := 38.0
+const THRUST_TO := 86.0
+## Half-height of the gleam at its widest. Thin: it rides the blade rather than
+## replacing it.
+const THRUST_HALF := 7.0
 ## Where the shoulders of the spearhead sit, as a fraction back from its point.
 const HEAD_LEN := 0.34
+## A star struck at the point of the blade at full extension. The smear alone
+## sits on top of an already-white sword and so reads as almost nothing; this is
+## the part that is actually visible, and because it stays on the tip instead of
+## travelling, it cannot be mistaken for something the sword fired.
+const GLINT := 15.0
+## Where in the push the glint peaks - roughly the frame the blade is furthest
+## out, which is also where the hit is tested.
+const GLINT_AT := 0.45
 ## How far the back of the lance lags its point, as a fraction of the push.
 const TRAIL := 0.34
 
@@ -101,7 +115,7 @@ func _draw_thrust(effect: Dictionary) -> void:
 	var fade := 1.0 - progress * progress
 	# Thin while it is still short, so the first frames read as a point going
 	# out rather than a slab appearing at the hilt.
-	var half := THRUST_HALF * minf(length / 60.0, 1.0)
+	var half := THRUST_HALF * minf(length / 30.0, 1.0)
 	var shoulder := head - length * HEAD_LEN
 
 	draw_colored_polygon(PackedVector2Array([
@@ -109,16 +123,27 @@ func _draw_thrust(effect: Dictionary) -> void:
 		_point(base, facing, shoulder, -half),
 		_point(base, facing, tail, 0.0),
 		_point(base, facing, shoulder, half),
-	]), Color(BODY, 0.55 * fade))
+	]), Color(BODY, 0.5 * fade))
 	# The blade line itself: white, thin, straight down the middle.
 	draw_line(_point(base, facing, tail, 0.0), _point(base, facing, head, 0.0),
-		Color(EDGE, 0.95 * fade), 3.0, true)
+		Color(EDGE, 0.95 * fade), 2.0, true)
 	# A pair of streaks riding either side of the push.
 	for side: float in [-1.0, 1.0]:
 		var rise := half * 0.7 * side
 		draw_line(_point(base, facing, lerpf(tail, head, 0.3), rise),
 			_point(base, facing, head - length * 0.15, rise),
-			Color(EDGE, 0.45 * fade), 1.5, true)
+			Color(EDGE, 0.4 * fade), 1.0, true)
+
+	var glint := 1.0 - absf(progress - GLINT_AT) / GLINT_AT
+	if glint <= 0.0:
+		return
+	var tip := _point(base, facing, head, 0.0)
+	var reach := GLINT * glint
+	draw_line(tip - Vector2(reach * 1.7, 0.0), tip + Vector2(reach * 1.7, 0.0),
+		Color(EDGE, 0.9 * glint), 2.0, true)
+	draw_line(tip - Vector2(0.0, reach), tip + Vector2(0.0, reach),
+		Color(EDGE, 0.85 * glint), 2.0, true)
+	draw_circle(tip, reach * 0.4, Color(EDGE, 0.95 * glint))
 
 
 ## A point on the blade line: `along` forward of him, `rise` off that line.
