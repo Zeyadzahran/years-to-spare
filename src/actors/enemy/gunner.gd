@@ -32,6 +32,9 @@ func _init() -> void:
 	# still not a whole screen: he should not be shooting at a boy on the floor
 	# below him.
 	attack_height_tolerance = 110.0
+	# He sights along the barrel, so the line he checks is the line the round
+	# will actually fly.
+	eye_height = MUZZLE_HEIGHT
 	# The clip runs to frame 7 and the flash appears on frame 6, which is when
 	# the round leaves the barrel.
 	attack_duration = 0.6667
@@ -51,6 +54,13 @@ func _init() -> void:
 ## has not been done; until it is, this is what actually carries the shot.
 func _attack() -> void:
 	if target == null or not is_instance_valid(target):
+		return
+	# Checked again at the moment of firing, not just on the way into Attack:
+	# the boy has half a second of wind-up to duck behind something, and a
+	# Gunner who keeps shooting the rock he watched him step behind reads as
+	# broken. Range is deliberately not re-checked - backing out of range
+	# still earns the shot, it just has further to travel.
+	if not has_line_of_sight():
 		return
 	var bullet := BULLET_SCENE.instantiate() as Bullet
 	get_tree().current_scene.add_child(bullet)

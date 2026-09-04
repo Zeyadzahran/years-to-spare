@@ -16,6 +16,12 @@ const CHASE_ACCELERATION := 1800.0
 ## How far past `detection_range` the boy has to get before a chase gives up,
 ## so standing exactly on the edge does not flip the unit between states.
 const CHASE_GIVE_UP := 1.35
+## `2d_physics/layer_1` in project.godot - terrain, and the only thing that
+## counts as cover.
+const WORLD_LAYER := 1
+## Where a sight line aims on the boy: the middle of his 100-tall body rather
+## than his feet, which sit level with the floor.
+const TARGET_CHEST_HEIGHT := -50.0
 
 ## Years the player takes back for killing this unit.
 @export var age_reward := 2.0
@@ -29,6 +35,10 @@ const CHASE_GIVE_UP := 1.35
 ## get to him - and a ranged one opens fire through the floor.
 @export var detection_height_tolerance := 180.0
 @export var attack_height_tolerance := 70.0
+## Where this unit looks from, measured up from its feet. The sight line is
+## cast from here rather than from the origin, which sits on the ground and
+## would graze the floor it is standing on.
+@export var eye_height := -70.0
 
 @export_group("Attack")
 @export var damage := 34.0
@@ -217,14 +227,35 @@ func _can_see_player() -> bool:
 	if target == null or not is_instance_valid(target) or target.is_down():
 		return false
 	var to := target.global_position - global_position
-	return absf(to.x) <= detection_range and absf(to.y) <= detection_height_tolerance
+	if absf(to.x) > detection_range or absf(to.y) > detection_height_tolerance:
+		return false
+	return has_line_of_sight()
 
 
 func _in_attack_range() -> bool:
 	if target == null or not is_instance_valid(target):
 		return false
 	var to := target.global_position - global_position
-	return absf(to.x) <= attack_range and absf(to.y) <= attack_height_tolerance
+	if absf(to.x) > attack_range or absf(to.y) > attack_height_tolerance:
+		return false
+	return has_line_of_sight()
+
+
+## Whether the boy is actually visible from here, or whether there is rock in
+## the way. Cast eye to chest against the world layer only: another unit is not
+## cover, and the boy is not his own obstacle.
+##
+## This is what stops a Gunner opening up on someone he cannot see. The round
+## already dies against terrain, so a blocked shot cost nothing - it just made
+## him look like he was firing at a wall, because he was.
+func has_line_of_sight() -> bool:
+	if target == null or not is_instance_valid(target):
+		return false
+	var query := PhysicsRayQueryParameters2D.create(
+		global_position + Vector2(0.0, eye_height),
+		target.global_position + Vector2(0.0, TARGET_CHEST_HEIGHT),
+		WORLD_LAYER)
+	return get_world_2d().direct_space_state.intersect_ray(query).is_empty()
 
 
 func _change_state(next: StringName) -> void:
