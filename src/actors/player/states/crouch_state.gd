@@ -1,6 +1,7 @@
 extends PlayerState
 ## Held duck. Shrinks the collision box so the boy actually passes under low
-## cover - that is the whole point of the state, not the pose.
+## cover - that is the whole point of the state, not the pose - and lets him
+## creep along at a fraction of his speed rather than parking him under it.
 
 func enter(_previous: StringName) -> void:
 	player.set_crouched(true)
@@ -12,7 +13,7 @@ func exit() -> void:
 
 func physics_update(delta: float) -> StringName:
 	player.apply_gravity(delta)
-	player.velocity.x = move_toward(player.velocity.x, 0.0, Player.GROUND_FRICTION * delta)
+	player.apply_horizontal(delta, Player.CROUCH_SPEED)
 	player.move_and_slide()
 
 	if not player.is_on_floor():
