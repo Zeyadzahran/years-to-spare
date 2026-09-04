@@ -16,7 +16,7 @@ extends Hazard
 @export var travel := Vector2(240.0, 0.0)
 
 ## Pixels per second along that line.
-@export var speed := 90.0
+@export var speed := 400
 
 ## Starting point on the line: 0 at the placed position, 1 at the far end.
 ## Lets several hazards share a rhythm without moving in lockstep.
