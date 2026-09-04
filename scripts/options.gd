@@ -55,11 +55,7 @@ func _on_volume_slider_value_changed(value):
 
 func _on_fullscreen_check_toggled(toggled_on):
 	SettingsManager.fullscreen = toggled_on
-	if toggled_on:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-
+	SettingsManager.apply_fullscreen()
 	_update_fullscreen_label(toggled_on)
 	SettingsManager.save_settings()
 

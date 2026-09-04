@@ -30,4 +30,3 @@ script = ExtResource("2_health")
 [node name="HitAudio" type="AudioStreamPlayer2D" parent="." unique_id=456567814]
 stream = ExtResource("4_hit")
 volume_db = 8.0
-autoplay = true

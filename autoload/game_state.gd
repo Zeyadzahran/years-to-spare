@@ -21,6 +21,8 @@ var unlocked: Array[StringName] = []
 ## The checkpoint the boy goes back to, and the age he had when he reached it.
 ## Deliberately not cleared by `start_new_run()`: that runs on every level load,
 ## including the reload a death triggers, which is exactly when this is needed.
+## What does clear it is PLAY on the main menu, the one place that means a run
+## from the top rather than a retry.
 var checkpoint_id: StringName = &""
 var checkpoint_level: StringName = &""
 var checkpoint_position := Vector2.ZERO
@@ -40,8 +42,10 @@ func set_checkpoint(id: StringName, position: Vector2, age: float) -> void:
 	checkpoint_age = age
 
 
+## Whether `id` names the checkpoint currently recorded. Checked by the marker
+## itself, so it asks about the level it is standing in.
 func is_active_checkpoint(id: StringName) -> bool:
-	return checkpoint_id != &"" and checkpoint_id == id
+	return has_checkpoint(current_level()["id"]) and checkpoint_id == id
 
 
 ## True once a checkpoint in this level has been reached; until then a death
