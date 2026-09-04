@@ -6,6 +6,7 @@ extends Node
 
 signal player_spawned(player: Node2D)
 signal player_health_changed(current: float, maximum: float)
+signal player_heals_changed(count: int)
 ## `of_old_age` separates the two ways the run can end. Running out of health
 ## costs the boy the ground he covered; running out of years is the end of him,
 ## and the level starts over from the top rather than from a checkpoint.

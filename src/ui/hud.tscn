@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://p2hng7rqfrto" path="res://src/ui/stat_bar.tscn" id="3_bar"]
 [ext_resource type="Texture2D" uid="uid://c5qdvan58j5kd" path="res://assets/sprites/health-bar.png" id="4_hbar"]
 [ext_resource type="Texture2D" uid="uid://bsiugok2jqr24" path="res://assets/sprites/powers-bar.png" id="5_pbar"]
+[ext_resource type="Texture2D" uid="uid://g3ftvedv8jnb" path="res://assets/sprites/health-object.png" id="6_pear"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
 content_margin_left = 12.0
@@ -105,11 +106,39 @@ theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 11
 text = "46"
 
-[node name="TimeRow" type="HBoxContainer" parent="Margin/Stats" unique_id=1347888949]
+[node name="PearRow" type="HBoxContainer" parent="Margin/Stats" unique_id=1347888949]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="TimeMode" type="Label" parent="Margin/Stats/TimeRow" unique_id=1847813554]
+[node name="PearIcon" type="TextureRect" parent="Margin/Stats/PearRow" unique_id=1347888950]
+custom_minimum_size = Vector2(26, 26)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("6_pear")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PearCount" type="Label" parent="Margin/Stats/PearRow" unique_id=1347888951]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.941176, 0.858824, 0.839216, 1)
+theme_override_colors/font_outline_color = Color(0.0431373, 0.0392157, 0.0352941, 0.901961)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 11
+text = "x3"
+
+[node name="Hint" type="Label" parent="Margin/Stats/PearRow" unique_id=1347888952]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.541176, 0.521569, 0.462745, 1)
+theme_override_colors/font_outline_color = Color(0.0431373, 0.0392157, 0.0352941, 0.901961)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "[Q]"
+
+[node name="TimeMode" type="Label" parent="Margin/Stats/PearRow" unique_id=1847813554]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
