@@ -18,12 +18,30 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# The sprite runs on its own clock (AnimatedSprite2D advances every process
+	# frame, not just physics ticks the AI takes), so it has to be leashed to
+	# world time explicitly here. Otherwise a Guard frozen mid-swing or a
+	# Gunner frozen mid-shot keeps flipping frames while the boy walks past -
+	# time stops for what the unit *does*, but not for what it *shows*.
+	_sync_sprite_to_world_time()
 	var scaled := world_delta(delta)
 	if is_zero_approx(scaled):
 		return
 	apply_gravity(scaled)
 	_tick(scaled)
 	move_in_time()
+
+
+## Every AnimatedSprite2D child is leashed to TimeService rather than just the
+## one subclasses happen to name `sprite`, so this keeps working even for a
+## unit with a second sprite (a muzzle flash, a weapon overlay, ...).
+func _sync_sprite_to_world_time() -> void:
+	# Named away from `scale`: Node2D already owns that property, and shadowing
+	# it here would silently read/write the wrong thing.
+	var time_scale := TimeService.world_scale
+	for child in get_children():
+		if child is AnimatedSprite2D:
+			child.speed_scale = time_scale
 
 
 ## Subclass AI. `delta` is already scaled by the player's time powers.

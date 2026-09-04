@@ -1,0 +1,210 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/idle/frame_000.png" id="idle_1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/idle/frame_001.png" id="idle_2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/idle/frame_002.png" id="idle_3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/idle/frame_003.png" id="idle_4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/idle/frame_004.png" id="idle_5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/idle/frame_005.png" id="idle_6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/idle/frame_006.png" id="idle_7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/idle/frame_007.png" id="idle_8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/idle/frame_008.png" id="idle_9"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/run/frame_000.png" id="run_1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/run/frame_001.png" id="run_2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/run/frame_002.png" id="run_3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/run/frame_003.png" id="run_4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/run/frame_004.png" id="run_5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/run/frame_005.png" id="run_6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/run/frame_006.png" id="run_7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/run/frame_007.png" id="run_8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/run/frame_008.png" id="run_9"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/shoot/frame_000.png" id="shoot_1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/shoot/frame_001.png" id="shoot_2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/shoot/frame_002.png" id="shoot_3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/shoot/frame_003.png" id="shoot_4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/shoot/frame_004.png" id="shoot_5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/shoot/frame_005.png" id="shoot_6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/shoot/frame_006.png" id="shoot_7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/shoot/frame_007.png" id="shoot_8"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/hurt/frame_000.png" id="hurt_1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/hurt/frame_001.png" id="hurt_2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/hurt/frame_002.png" id="hurt_3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/hurt/frame_003.png" id="hurt_4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/hurt/frame_004.png" id="hurt_5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/hurt/frame_005.png" id="hurt_6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/hurt/frame_006.png" id="hurt_7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/hurt/frame_007.png" id="hurt_8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/hurt/frame_008.png" id="hurt_9"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/dying/frame_000.png" id="dying_1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/dying/frame_001.png" id="dying_2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/dying/frame_002.png" id="dying_3"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/dying/frame_003.png" id="dying_4"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/dying/frame_004.png" id="dying_5"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/dying/frame_005.png" id="dying_6"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/dying/frame_006.png" id="dying_7"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/dying/frame_007.png" id="dying_8"]
+[ext_resource type="Texture2D" path="res://assets/sprites/gunner/dying/frame_008.png" id="dying_9"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("idle_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("idle_9")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 9.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("run_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("run_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("run_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("run_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("run_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("run_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("run_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("run_8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("run_9")
+}],
+"loop": true,
+"name": &"run",
+"speed": 14.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("shoot_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("shoot_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("shoot_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("shoot_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("shoot_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("shoot_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("shoot_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("shoot_8")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("hurt_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("hurt_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("hurt_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("hurt_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("hurt_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("hurt_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("hurt_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("hurt_8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("hurt_9")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("dying_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("dying_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("dying_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("dying_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("dying_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("dying_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("dying_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("dying_8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("dying_9")
+}],
+"loop": false,
+"name": &"dying",
+"speed": 14.0
+}]
