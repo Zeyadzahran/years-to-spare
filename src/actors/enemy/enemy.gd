@@ -7,6 +7,10 @@ extends TimeBody2D
 @export var age_reward := 2.0
 
 @onready var health: HealthComponent = $Health
+## Optional: the noise this unit makes when its own attack lands on the boy.
+## Each scene brings its own take - a baton across the back is not a round going
+## into flesh - so the stream lives on the node, not here.
+@onready var hit_audio: AudioStreamPlayer2D = get_node_or_null(^"HitAudio")
 
 func _ready() -> void:
 	add_to_group(&"enemy")
@@ -25,6 +29,13 @@ func _physics_process(delta: float) -> void:
 ## Subclass AI. `delta` is already scaled by the player's time powers.
 func _tick(_delta: float) -> void:
 	pass
+
+
+## For subclasses to call the moment their attack connects. Restarted rather
+## than left to finish, so a second blow sounds like a second blow.
+func play_hit_audio() -> void:
+	if hit_audio != null:
+		hit_audio.play()
 
 
 func _on_died() -> void:
