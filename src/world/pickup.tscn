@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://qjopd3ftflm4"]
 
 [ext_resource type="Texture2D" uid="uid://g3ftvedv8jnb" path="res://assets/sprites/health-object.png" id="1_fruit"]
-[ext_resource type="Script" path="res://src/world/pickup.gd" id="2_pickup"]
+[ext_resource type="Script" uid="uid://xhvomt3g6afu" path="res://src/world/pickup.gd" id="2_pickup"]
 
 [sub_resource type="CircleShape2D" id="Shape_Pickup"]
 radius = 20.0
