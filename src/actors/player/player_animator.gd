@@ -19,7 +19,10 @@ const STATE_CLIPS := {
 ## Landing has its own clip, played over whichever ground state we land into.
 const LAND_CLIP := &"land"
 
-## The golden clock energy. A power is held rather than fired, so it loops.
+## The golden clock energy. All three libraries ship it looping, from when a
+## power was something you held down; a cast is one press, so it plays once and
+## hands the boy back to standing. Turned off here rather than in the three
+## .tres files so that re-exporting the art cannot quietly switch it back on.
 const POWER_CLIP := &"power"
 
 ## jumb.mp3 is a sheet of several takes; the one we want starts two seconds in
@@ -63,6 +66,9 @@ const MAN_HURT := preload("res://assets/sounds/young-man-hurt.mp3")
 
 var _after_landing: StringName = &""
 var _channelling := false
+## Whether this cast's flourish has already run. The world stays stopped for
+## seconds after it; the tint and the dial are what carry the rest of the window.
+var _power_spent := false
 
 func _ready() -> void:
 	states.state_changed.connect(_on_state_changed)
@@ -74,6 +80,9 @@ func _ready() -> void:
 	EventBus.player_age_changed.connect(_on_age_changed)
 	EventBus.ability_started.connect(_on_ability_changed.bind(true))
 	EventBus.ability_stopped.connect(_on_ability_changed.bind(false))
+	for frames in [teen_frames, adult_frames, elder_frames]:
+		if frames != null and frames.has_animation(POWER_CLIP):
+			frames.set_animation_loop(POWER_CLIP, false)
 	_on_state_changed(&"", states.current_name)
 	# A frame later every _ready upstream has run and the starting age is real.
 	_sync_form.call_deferred()
@@ -130,6 +139,8 @@ func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 	if _channelling == active:
 		return
 	_channelling = active
+	if active:
+		_power_spent = false
 	# Only the standing pose gives way to the aura. He still runs, jumps and
 	# swings while the world is held still - that contrast is the whole game -
 	# so those clips are never taken over.
@@ -138,7 +149,7 @@ func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 
 
 func _clip_for(state: StringName) -> StringName:
-	if state == &"Idle" and _channelling:
+	if state == &"Idle" and _channelling and not _power_spent:
 		return POWER_CLIP
 	return STATE_CLIPS.get(state, &"")
 
@@ -175,6 +186,12 @@ func _hurt_stream() -> AudioStream:
 
 
 func _on_animation_finished() -> void:
+	if animation == POWER_CLIP:
+		# It has had its one time. Whatever he is doing now gets its own clip
+		# back, even though the power is still running.
+		_power_spent = true
+		_play(_clip_for(states.current_name))
+		return
 	if animation == LAND_CLIP and not _after_landing.is_empty():
 		# Recomputed rather than replayed: a power may have started during the
 		# landing frames.
