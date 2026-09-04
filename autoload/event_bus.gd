@@ -7,7 +7,10 @@ extends Node
 signal player_spawned(player: Node2D)
 signal player_health_changed(current: float, maximum: float)
 signal player_heals_changed(count: int)
-signal player_died
+## `of_old_age` separates the two ways the run can end. Running out of health
+## costs the boy the ground he covered; running out of years is the end of him,
+## and the level starts over from the top rather than from a checkpoint.
+signal player_died(of_old_age: bool)
 
 signal player_age_changed(age: float, death_age: float)
 
@@ -16,6 +19,9 @@ signal enemy_died(enemy: Node2D, age_reward: float)
 signal ability_unlocked(ability_id: StringName)
 signal ability_started(ability_id: StringName)
 signal ability_stopped(ability_id: StringName)
+## A press that could not be paid for. Carries how many more years the boy would
+## have needed, so the HUD can say why nothing happened.
+signal ability_refused(ability_id: StringName, missing_years: float)
 
 signal time_mode_changed(mode: int)
 
