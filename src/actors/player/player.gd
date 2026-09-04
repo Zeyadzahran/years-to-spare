@@ -64,6 +64,10 @@ func _ready() -> void:
 	health.died.connect(_on_died)
 	age.changed.connect(func(a, d): EventBus.player_age_changed.emit(a, d))
 	age.died.connect(_on_died)
+	# Killing Cad Corp's troops is the only way to buy years back, which is what
+	# `age_reward` on a unit has always been for and what nothing was listening
+	# for. Wired here rather than in the level: they are his years.
+	EventBus.enemy_died.connect(_on_enemy_died)
 	EventBus.player_heals_changed.emit(heal_charges)
 	EventBus.player_spawned.emit(self)
 
@@ -176,6 +180,10 @@ func _on_damaged(_amount: float, source: Node) -> void:
 		return
 	hurt_from = 1 if source != null and source.global_position.x > global_position.x else -1
 	states.travel(&"Hurt")
+
+
+func _on_enemy_died(_enemy: Node2D, age_reward: float) -> void:
+	age.restore(age_reward)
 
 
 func _on_died() -> void:
