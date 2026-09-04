@@ -19,13 +19,12 @@ func _ready() -> void:
 
 ## Wired from this Area2D's body_entered in the scene.
 func _on_body_entered(body: Node2D) -> void:
-	# Anything carrying an AgeComponent can arm these; anything else walks
-	# through without touching them.
-	if body.get(&"age") as AgeComponent == null:
+	var age_component := body.get(&"age") as AgeComponent
+	if age_component == null:
 		return
 	# The boy respawns standing inside the one already recorded, so re-entering
 	# it is not news.
 	if GameState.is_active_checkpoint(name):
 		return
-	GameState.set_checkpoint(name, global_position, age.age)
+	GameState.set_checkpoint(name, global_position, age_component.age)
 	_marker.play(&"green")
