@@ -19,6 +19,11 @@ const STATE_CLIPS := {
 ## Landing has its own clip, played over whichever ground state we land into.
 const LAND_CLIP := &"land"
 
+## The creep. Crouch is one state with two poses - held still, and covering
+## ground - and which one he is in is a question about his speed rather than
+## about the state machine, so it is asked every frame in `_tick_crouch`.
+const CROUCH_WALK_CLIP := &"crouch_walk"
+
 ## The golden clock energy. All three libraries ship it looping, from when a
 ## power was something you held down; a cast is one press, so it plays once and
 ## hands the boy back to standing. Turned off here rather than in the three
@@ -99,8 +104,23 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	flip_h = player.facing < 0
+	if states.current_name == &"Crouch":
+		_tick_crouch()
 	if jump_audio.playing and jump_audio.get_playback_position() >= JUMP_FROM + JUMP_LENGTH:
 		jump_audio.stop()
+
+
+func _tick_crouch() -> void:
+	var clip := _clip_for(&"Crouch")
+	if clip == animation:
+		return
+	var settling := animation == CROUCH_WALK_CLIP
+	_play(clip)
+	# `crouch` is the frames of him dropping into the pose, not the pose itself.
+	# Coming to a stop mid-creep he is already down, so playing them from the
+	# top would bob him every time he stopped: hold the settled frame instead.
+	if settling:
+		set_frame_and_progress(maxi(sprite_frames.get_frame_count(clip) - 1, 0), 0.0)
 
 
 func _sync_form() -> void:
@@ -160,6 +180,8 @@ func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 func _clip_for(state: StringName) -> StringName:
 	if state == &"Idle" and _channelling and not _power_spent:
 		return POWER_CLIP
+	if state == &"Crouch" and player.is_crawling():
+		return CROUCH_WALK_CLIP
 	return STATE_CLIPS.get(state, &"")
 
 

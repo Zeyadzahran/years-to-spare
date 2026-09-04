@@ -9,7 +9,9 @@ extends Enemy
 
 const BULLET_SCENE := preload("res://src/actors/enemy/bullet.tscn")
 
-const BULLET_SPEED := 900.0
+## Slowed alongside the boy: he lost a fifth of his speed, and a round that
+## kept all of its would have made the same dodge harder than it was.
+const BULLET_SPEED := 720.0
 ## Where the barrel actually is, measured off the shoot frames rather than
 ## guessed: the Sprite is scale 0.45 with offset (0, -120), so texture pixel
 ## (px, py) sits at node ((px - 128) * 0.45, (py - 128) * 0.45 - 54). The flash
