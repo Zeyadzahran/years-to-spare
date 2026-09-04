@@ -10,10 +10,14 @@ extends Enemy
 const BULLET_SCENE := preload("res://src/actors/enemy/bullet.tscn")
 
 const BULLET_SPEED := 900.0
-## How far above the gunner's feet the round leaves the barrel, roughly
-## shoulder height on the sprite.
-const MUZZLE_HEIGHT := -78.0
-const MUZZLE_FORWARD := 34.0
+## Where the barrel actually is, measured off the shoot frames rather than
+## guessed: the Sprite is scale 0.45 with offset (0, -120), so texture pixel
+## (px, py) sits at node ((px - 128) * 0.45, (py - 128) * 0.45 - 54). The flash
+## on frames 6 and 7 runs to the right edge of the 256px canvas at texture rows
+## 37-62, which lands here. The earlier pair put the round 23px back and 11px
+## low - inside his chest instead of at the muzzle.
+const MUZZLE_HEIGHT := -89.0
+const MUZZLE_FORWARD := 57.0
 
 func _init() -> void:
 	speed = 150.0
