@@ -9,8 +9,8 @@ extends Hazard
 ## replacement for a plain Hazard.
 ##
 ## Movement runs on TimeService's clock rather than the raw frame delta, so a
-## saw freezes with the rest of the world when the boy stops time. The damage
-## volume stays live while it is frozen: a stopped blade still cuts.
+## saw freezes with the rest of the world when the boy stops time. Individual
+## scenes decide whether their damage also switches off while frozen.
 
 ## Offset from the placed position to the far end of the patrol, in pixels.
 @export var travel := Vector2(240.0, 0.0)
