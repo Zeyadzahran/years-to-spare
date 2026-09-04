@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dyannuof76km5"]
 
 [ext_resource type="Script" uid="uid://dcefyqo4e0by" path="res://scripts/intro.gd" id="1_srsgo"]
+[ext_resource type="AudioStream" uid="uid://cd42k1rx7boxw" path="res://assets/sounds/intro.mp3" id="2_odh74"]
 
 [node name="Intro" type="Control" unique_id=680897614]
 layout_mode = 3
@@ -92,3 +93,7 @@ offset_top = 110.0
 offset_right = 232.0
 offset_bottom = 133.0
 text = "Years to Spare"
+
+[node name="VoiceOver" type="AudioStreamPlayer" parent="." unique_id=972531369]
+stream = ExtResource("2_odh74")
+volume_db = -3.0
