@@ -15,7 +15,9 @@
 [ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="12_r3o47"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="16_buk32"]
 [ext_resource type="PackedScene" uid="uid://cf5roapb2wk7d" path="res://src/world/hazards/spike_strip_small.tscn" id="17_spksm"]
+[ext_resource type="PackedScene" uid="uid://drt0b4rcdaxpq" path="res://src/actors/enemy/guard.tscn" id="18_1tr31"]
 [ext_resource type="PackedScene" uid="uid://b4kxq2wcheckp" path="res://src/world/checkpoint.tscn" id="18_chkpt"]
+[ext_resource type="PackedScene" uid="uid://djqbpdehfsnos" path="res://src/actors/enemy/gunner.tscn" id="19_bv8k8"]
 [ext_resource type="Texture2D" uid="uid://dlw6qxbday0fi" path="res://assets/tiles/phase1/tiles.png" id="19_seampatch"]
 [ext_resource type="PackedScene" uid="uid://qjopd3ftflm4" path="res://src/world/pickup.tscn" id="20_pickup"]
 
@@ -391,5 +393,22 @@ shape = SubResource("RectangleShape2D_70nlc")
 [node name="Player" parent="Entities" unique_id=1426104633 instance=ExtResource("12_r3o47")]
 z_index = 10
 position = Vector2(400, 590)
+
+[node name="Enemies" type="Node2D" parent="." unique_id=261374960]
+
+[node name="Guard1" parent="Enemies" unique_id=456567813 instance=ExtResource("18_1tr31")]
+position = Vector2(1239, 602)
+
+[node name="Gunner1" parent="Enemies" unique_id=1974821315 instance=ExtResource("19_bv8k8")]
+position = Vector2(3500, 482)
+
+[node name="Guard2" parent="Enemies" unique_id=1817446925 instance=ExtResource("18_1tr31")]
+position = Vector2(4850, 602)
+
+[node name="Gunner2" parent="Enemies" unique_id=1294749773 instance=ExtResource("19_bv8k8")]
+position = Vector2(6800, 482)
+
+[node name="Gunner3" parent="Enemies" unique_id=1527131330 instance=ExtResource("19_bv8k8")]
+position = Vector2(8300, 602)
 
 [node name="HUD" parent="." unique_id=518270513 instance=ExtResource("16_buk32")]

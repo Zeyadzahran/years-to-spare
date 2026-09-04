@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b1oyjqk5oltkm"]
+
+[ext_resource type="Script" uid="uid://5vel0ic1g363" path="res://src/actors/enemy/bullet.gd" id="1_bullet"]
+[ext_resource type="Texture2D" uid="uid://bs0kaxv4d6u4k" path="res://assets/sprites/gunner/fx/bullet.png" id="2_tex"]
+[ext_resource type="AudioStream" uid="uid://cs8q67g8a2077" path="res://assets/sounds/bullet-in-flesh.mp3" id="3_hit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bullet"]
+size = Vector2(22, 8)
+
+[node name="Bullet" type="Area2D" unique_id=995129138]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_bullet")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=812799388]
+texture = ExtResource("2_tex")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=603252991]
+shape = SubResource("RectangleShape2D_bullet")
+
+[node name="ImpactAudio" type="AudioStreamPlayer2D" parent="." unique_id=91099103]
+stream = ExtResource("3_hit")
+volume_db = 2.0
