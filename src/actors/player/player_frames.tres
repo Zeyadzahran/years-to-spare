@@ -13,29 +13,27 @@
 [ext_resource type="Texture2D" uid="uid://bhvdsghmoe4px" path="res://assets/sprites/player_teen/boy-running/East_0002.png" id="11_boy_running_East_0002"]
 [ext_resource type="Texture2D" uid="uid://dav8dwg65vwfj" path="res://assets/sprites/player_teen/boy-running/East_0003.png" id="12_boy_running_East_0003"]
 [ext_resource type="Texture2D" uid="uid://bpyaw6hcf8jqv" path="res://assets/sprites/player_teen/boy-running/East_0004.png" id="13_boy_running_East_0004"]
-[ext_resource type="Texture2D" uid="uid://b4mnx0she3882" path="res://assets/sprites/player_teen/crouch-walk/East_0001.png" id="13_l5w40"]
+[ext_resource type="Texture2D" uid="uid://rpww2efvf18o" path="res://assets/sprites/player_teen/crouch-walk/Frame 1.png" id="13_x1xah"]
+[ext_resource type="Texture2D" uid="uid://cd5vswy6g2s0m" path="res://assets/sprites/player_teen/crouch-walk/Frame 2.png" id="14_0af8i"]
 [ext_resource type="Texture2D" uid="uid://chtexfmmpnwo7" path="res://assets/sprites/player_teen/boy-running/East_0005.png" id="14_boy_running_East_0005"]
 [ext_resource type="Texture2D" uid="uid://b7euob5fc52d1" path="res://assets/sprites/player_teen/boy-dying/East_0001.png" id="14_gmj1t"]
-[ext_resource type="Texture2D" uid="uid://dxhab60s34gqc" path="res://assets/sprites/player_teen/crouch-walk/East_0002.png" id="14_w2bvb"]
 [ext_resource type="Texture2D" uid="uid://cu2cntnbjl8rb" path="res://assets/sprites/player_teen/boy-running/East_0006.png" id="15_boy_running_East_0006"]
+[ext_resource type="Texture2D" uid="uid://ddhponxacohgh" path="res://assets/sprites/player_teen/crouch-walk/Frame 3.png" id="15_l5w40"]
 [ext_resource type="Texture2D" uid="uid://dfg2mihij7hc1" path="res://assets/sprites/player_teen/boy-dying/East_0002.png" id="15_vmv3k"]
-[ext_resource type="Texture2D" uid="uid://ch1m01cd4d2kd" path="res://assets/sprites/player_teen/crouch-walk/East_0003.png" id="15_wpncf"]
 [ext_resource type="Texture2D" uid="uid://bjyrirg6yl2em" path="res://assets/sprites/player_teen/boy-dying/East_0003.png" id="16_7ik21"]
 [ext_resource type="Texture2D" uid="uid://borfkk8amx00d" path="res://assets/sprites/player_teen/boy-running/East_0007.png" id="16_boy_running_East_0007"]
-[ext_resource type="Texture2D" uid="uid://cpswvbsu2tlfu" path="res://assets/sprites/player_teen/crouch-walk/East_0004.png" id="16_q3rca"]
+[ext_resource type="Texture2D" uid="uid://b1aobwhlq0cyf" path="res://assets/sprites/player_teen/crouch-walk/Frame 4.png" id="16_w2bvb"]
 [ext_resource type="Texture2D" uid="uid://dwrt70wtrxlxl" path="res://assets/sprites/player_teen/boy-running/East_0008.png" id="17_boy_running_East_0008"]
-[ext_resource type="Texture2D" uid="uid://clawaufprw5mg" path="res://assets/sprites/player_teen/crouch-walk/East_0005.png" id="17_ik03n"]
 [ext_resource type="Texture2D" uid="uid://bv81e8ab5rgge" path="res://assets/sprites/player_teen/boy-dying/East_0004.png" id="17_otbd3"]
+[ext_resource type="Texture2D" uid="uid://brnpv0lbxjrnv" path="res://assets/sprites/player_teen/crouch-walk/Frame 5.png" id="17_wpncf"]
 [ext_resource type="Texture2D" uid="uid://dcy4gti2x1el0" path="res://assets/sprites/player_teen/boy-running/East_0009.png" id="18_boy_running_East_0009"]
-[ext_resource type="Texture2D" uid="uid://ckmykxijyrnjx" path="res://assets/sprites/player_teen/crouch-walk/East_0006.png" id="18_gm103"]
+[ext_resource type="Texture2D" uid="uid://f7bfmr74tioc" path="res://assets/sprites/player_teen/crouch-walk/Frame 6.png" id="18_q3rca"]
 [ext_resource type="Texture2D" uid="uid://ds6q6e2n2u8ux" path="res://assets/sprites/player_teen/boy-dying/East_0005.png" id="18_w8bqn"]
 [ext_resource type="Texture2D" uid="uid://ctal60oarxn8b" path="res://assets/sprites/player_teen/boy-dying/East_0006.png" id="19_gm01e"]
-[ext_resource type="Texture2D" uid="uid://dtymp87t0xpvi" path="res://assets/sprites/player_teen/crouch-walk/East_0007.png" id="19_w786j"]
+[ext_resource type="Texture2D" uid="uid://c5gsyumw3riy7" path="res://assets/sprites/player_teen/crouch-walk/Frame 7.png" id="19_ik03n"]
 [ext_resource type="Texture2D" uid="uid://c3b1j2mtpq6j8" path="res://assets/sprites/player_teen/boy-dying/East_0007.png" id="20_iqd73"]
-[ext_resource type="Texture2D" uid="uid://dw6c1krhojurd" path="res://assets/sprites/player_teen/crouch-walk/East_0008.png" id="20_mwekq"]
 [ext_resource type="Texture2D" uid="uid://dxo87w3pg3hsm" path="res://assets/sprites/player_teen/boy-dying/East_0008.png" id="21_4p37v"]
 [ext_resource type="Texture2D" uid="uid://c73sa1xo8rlo1" path="res://assets/sprites/player_teen/boy-crouch/East_0003.png" id="21_boy_crouch_East_0003"]
-[ext_resource type="Texture2D" uid="uid://detsgprd5vxp1" path="res://assets/sprites/player_teen/crouch-walk/East_0009.png" id="21_xajle"]
 [ext_resource type="Texture2D" uid="uid://mn0lycyqic2n" path="res://assets/sprites/player_teen/boy-dying/East_0009.png" id="22_5a16a"]
 [ext_resource type="Texture2D" uid="uid://opkb2shxc4fe" path="res://assets/sprites/player_teen/boy-crouch/East_0004.png" id="22_boy_crouch_East_0004"]
 [ext_resource type="Texture2D" uid="uid://dxqdx8kwdr7kj" path="res://assets/sprites/player_teen/boy-crouch/East_0005.png" id="23_boy_crouch_East_0005"]
@@ -122,31 +120,25 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("13_l5w40")
+"texture": ExtResource("13_x1xah")
 }, {
 "duration": 1.0,
-"texture": ExtResource("14_w2bvb")
+"texture": ExtResource("14_0af8i")
 }, {
 "duration": 1.0,
-"texture": ExtResource("15_wpncf")
+"texture": ExtResource("15_l5w40")
 }, {
 "duration": 1.0,
-"texture": ExtResource("16_q3rca")
+"texture": ExtResource("16_w2bvb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("17_ik03n")
+"texture": ExtResource("17_wpncf")
 }, {
 "duration": 1.0,
-"texture": ExtResource("18_gm103")
+"texture": ExtResource("18_q3rca")
 }, {
 "duration": 1.0,
-"texture": ExtResource("19_w786j")
-}, {
-"duration": 1.0,
-"texture": ExtResource("20_mwekq")
-}, {
-"duration": 1.0,
-"texture": ExtResource("21_xajle")
+"texture": ExtResource("19_ik03n")
 }],
 "loop": 1,
 "name": &"crouch_walk",
