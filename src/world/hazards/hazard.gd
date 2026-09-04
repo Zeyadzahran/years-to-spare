@@ -14,6 +14,9 @@ extends Area2D
 ## drain a hit every frame.
 @export var cooldown := 0.75
 
+## Disable for hazards whose danger comes from motion, such as a spinning saw.
+@export var hurts_while_frozen := true
+
 ## Cooldown left per body, keyed by instance id rather than by the body itself:
 ## a typed Node2D key rejects every read and erase once that body is freed,
 ## which would strand the entry and error on each frame after.
@@ -37,14 +40,11 @@ func _ready() -> void:
 ## movement from here without the cooldown bookkeeping switching it off.
 func _physics_process(delta: float) -> void:
 	# Art and sound run on world time like hazard movement does, so a stopped
-	# world stops the blade spinning, the acid pouring and the saw howling. The
-	# damage volume stays live while frozen: a stopped blade still cuts.
+	# world stops the blade spinning, the acid pouring and the saw howling.
 	if _animation != null:
 		_animation.speed_scale = TimeService.world_scale
 	if _audio != null:
 		_audio.stream_paused = TimeService.is_world_frozen()
-	if _cooldowns.is_empty():
-		return
 	for id in _cooldowns.keys():
 		_cooldowns[id] -= delta
 		if _cooldowns[id] <= 0.0:
@@ -59,6 +59,8 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func _hurt(body: Node2D) -> void:
+	if not hurts_while_frozen and TimeService.is_world_frozen():
+		return
 	var id := body.get_instance_id()
 	if _cooldowns.has(id):
 		return
