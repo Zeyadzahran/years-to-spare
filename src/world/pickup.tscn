@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://qjopd3ftflm4"]
+
+[ext_resource type="Texture2D" uid="uid://g3ftvedv8jnb" path="res://assets/sprites/health-object.png" id="1_fruit"]
+[ext_resource type="Script" path="res://src/world/pickup.gd" id="2_pickup"]
+
+[sub_resource type="CircleShape2D" id="Shape_Pickup"]
+radius = 20.0
+
+[node name="Pickup" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_pickup")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("1_fruit")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape_Pickup")
