@@ -28,11 +28,6 @@ func _resume_from_checkpoint() -> void:
 	player.age.set_to(GameState.checkpoint_age)
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"restart"):
-		reload()
-
-
 func complete() -> void:
 	EventBus.level_completed.emit(level_id)
 
