@@ -1,0 +1,58 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://fbe7xc2pvbw7"]
+
+[ext_resource type="Texture2D" uid="uid://cbtp6nowyfhh7" path="res://assets/sprites/checkpoint-flag.png" id="1_flag"]
+
+[sub_resource type="AtlasTexture" id="Atlas_green_1"]
+atlas = ExtResource("1_flag")
+region = Rect2(0, 640, 320, 512)
+
+[sub_resource type="AtlasTexture" id="Atlas_green_2"]
+atlas = ExtResource("1_flag")
+region = Rect2(320, 640, 320, 512)
+
+[sub_resource type="AtlasTexture" id="Atlas_green_3"]
+atlas = ExtResource("1_flag")
+region = Rect2(640, 640, 320, 512)
+
+[sub_resource type="AtlasTexture" id="Atlas_red_1"]
+atlas = ExtResource("1_flag")
+region = Rect2(0, 64, 320, 512)
+
+[sub_resource type="AtlasTexture" id="Atlas_red_2"]
+atlas = ExtResource("1_flag")
+region = Rect2(320, 64, 320, 512)
+
+[sub_resource type="AtlasTexture" id="Atlas_red_3"]
+atlas = ExtResource("1_flag")
+region = Rect2(640, 64, 320, 512)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_green_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_green_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_green_3")
+}],
+"loop": 1,
+"name": &"green",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_red_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_red_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_red_3")
+}],
+"loop": 1,
+"name": &"red",
+"speed": 5.0
+}]
