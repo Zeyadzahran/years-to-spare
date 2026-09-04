@@ -53,8 +53,8 @@ const MAN_HURT := preload("res://assets/sounds/young-man-hurt.mp3")
 @export var teen_frames: SpriteFrames = preload("res://src/actors/player/player_frames.tres")
 @export var adult_frames: SpriteFrames = preload("res://src/actors/player/player_adult_frames.tres")
 @export var elder_frames: SpriteFrames = preload("res://src/actors/player/player_elder_frames.tres")
-## Roughly even thirds of the 14-to-60 run. Picked to be tuned, not measured.
-@export var adult_age := 30.0
+## The boy grows into the adult set at 25, then the elder set at 45.
+@export var adult_age := 25.0
 @export var elder_age := 45.0
 
 @onready var sword_audio: AudioStreamPlayer2D = $"../SwordAudio"
