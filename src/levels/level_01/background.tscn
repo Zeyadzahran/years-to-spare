@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://cmuhwapcdlbka"]
+
+[ext_resource type="Texture2D" uid="uid://56bak15n4n1h" path="res://src/levels/level_01/art/background/sky.png" id="1_sky"]
+[ext_resource type="Texture2D" uid="uid://cbmbjiab8hwar" path="res://src/levels/level_01/art/background/distant_ruins.png" id="2_ruins"]
+[ext_resource type="Texture2D" uid="uid://d2wan2rvwcjqj" path="res://src/levels/level_01/art/background/scrap.png" id="3_scrap"]
+
+[node name="PhaseOneBackground" type="Node2D" unique_id=773687580]
+z_index = -100
+
+[node name="Sky" type="Parallax2D" parent="." unique_id=1599626262]
+texture_repeat = 1
+scroll_scale = Vector2(0.02, 0.01)
+repeat_size = Vector2(1672, 0)
+repeat_times = 21
+
+[node name="Sprite" type="Sprite2D" parent="Sky" unique_id=480742940]
+texture_filter = 1
+texture_repeat = 3
+position = Vector2(566.37, -258.72)
+texture = ExtResource("1_sky")
+centered = false
+
+[node name="MirroredSprite" type="Sprite2D" parent="Sky" unique_id=483704008]
+texture_filter = 1
+texture_repeat = 3
+position = Vector2(-141.84, 683.9)
+texture = ExtResource("1_sky")
+centered = false
+flip_v = true
+
+[node name="MirroredSprite2" type="Sprite2D" parent="Sky" unique_id=1993553720]
+texture_filter = 1
+texture_repeat = 3
+position = Vector2(-141.84, 683.9)
+texture = ExtResource("1_sky")
+centered = false
+offset = Vector2(0, -1866.85)
+flip_v = true
+
+[node name="DistantRuins" type="Parallax2D" parent="." unique_id=1213776535]
+texture_repeat = 3
+scroll_scale = Vector2(0.08, 0.03)
+scroll_offset = Vector2(0, -29)
+repeat_size = Vector2(1672, 0)
+repeat_times = 20
+
+[node name="Sprite" type="Sprite2D" parent="DistantRuins" unique_id=1451300322]
+texture_filter = 1
+position = Vector2(108, -124)
+texture = ExtResource("2_ruins")
+centered = false
+
+[node name="ForegroundScrap" type="Parallax2D" parent="." unique_id=806383518]
+scroll_scale = Vector2(0.16, 0.07)
+repeat_size = Vector2(1337.12, 0)
+repeat_times = 21
+
+[node name="Sprite" type="Sprite2D" parent="ForegroundScrap" unique_id=1625839677]
+texture_filter = 1
+position = Vector2(58.16, 361.34)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_scrap")
+
+[node name="ForegroundScrap2" type="Parallax2D" parent="." unique_id=11789600]
+scroll_scale = Vector2(0.16, 0.07)
+repeat_size = Vector2(1337.12, 0)
+repeat_times = 25
+
+[node name="Sprite" type="Sprite2D" parent="ForegroundScrap2" unique_id=331750823]
+texture_filter = 1
+position = Vector2(58.16, 361.34)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_scrap")

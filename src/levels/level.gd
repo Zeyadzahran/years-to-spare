@@ -77,18 +77,3 @@ func _on_player_died(of_old_age: bool) -> void:
 		if player != null:
 			GameState.run_age = player.age.age
 	reload()
-
-var triggered := false
-
-func _on_city_transition_body_entered(body: Node2D) -> void:
-	if triggered:
-		return
-
-	if not body.is_in_group("player"):
-		return
-
-	triggered = true
-
-	get_tree().change_scene_to_file(
-		"res://src/levels/city_of_time.tscn"
-	)

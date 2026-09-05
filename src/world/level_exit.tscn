@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/world/level_exit.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_644ry"]
+size = Vector2(124, 83)
+
+
+[node name="LevelExit" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2021103884]
+position = Vector2(29, -1)
+shape = SubResource("RectangleShape2D_644ry")
+
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
