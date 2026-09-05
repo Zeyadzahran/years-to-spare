@@ -1,0 +1,320 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/palm_tall.tscn" id="palm_tall"]
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/palm_lean.tscn" id="palm_lean"]
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/dead_tree.tscn" id="dead_tree"]
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/bush.tscn" id="bush"]
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/cactus.tscn" id="cactus"]
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/debris_small.tscn" id="debris_small"]
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/machinery_pile.tscn" id="machinery_pile"]
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/broken_pipe.tscn" id="broken_pipe"]
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/rock_cluster.tscn" id="rock_cluster"]
+[ext_resource type="PackedScene" path="res://src/levels/level_01/props/dirt_patch.tscn" id="dirt_patch"]
+
+[node name="Decorations" type="Node2D"]
+
+[node name="Entrance" type="Node2D" parent="."]
+
+[node name="Middle" type="Node2D" parent="Entrance"]
+z_index = 0
+
+[node name="PalmTall" parent="Entrance/Middle" unique_id=131813122 instance=ExtResource("palm_tall")]
+position = Vector2(156.00002, 612.00006)
+
+[node name="Dirt5" parent="Entrance/Middle" unique_id=570681937 instance=ExtResource("dirt_patch")]
+position = Vector2(755, 581.00006)
+
+[node name="Dirt6" parent="Entrance/Middle" unique_id=1845617182 instance=ExtResource("dirt_patch")]
+position = Vector2(751, 593.00006)
+
+[node name="Dirt10" parent="Entrance/Middle" unique_id=1427954643 instance=ExtResource("dirt_patch")]
+position = Vector2(18, 699)
+
+[node name="Dirt11" parent="Entrance/Middle" unique_id=1799033009 instance=ExtResource("dirt_patch")]
+position = Vector2(46, 703.00006)
+
+[node name="Dirt12" parent="Entrance/Middle" unique_id=218166003 instance=ExtResource("dirt_patch")]
+position = Vector2(124.00001, 618.00006)
+
+[node name="Dirt7" parent="Entrance/Middle" unique_id=543023204 instance=ExtResource("dirt_patch")]
+position = Vector2(767, 583)
+rotation = -0.9660679
+
+[node name="Dirt8" parent="Entrance/Middle" unique_id=14986413 instance=ExtResource("dirt_patch")]
+position = Vector2(722, 625)
+rotation = -0.9660679
+
+[node name="Dirt9" parent="Entrance/Middle" unique_id=1721903468 instance=ExtResource("dirt_patch")]
+position = Vector2(962, 629.00006)
+rotation = -2.2806525
+
+[node name="Front" type="Node2D" parent="Entrance"]
+z_index = 1
+
+[node name="PalmLean" parent="Entrance/Front" unique_id=329595974 instance=ExtResource("palm_lean")]
+position = Vector2(1200, 606)
+
+[node name="DeadTree" parent="Entrance/Front" unique_id=250620193 instance=ExtResource("dead_tree")]
+position = Vector2(2400, 606)
+
+[node name="Bush" parent="Entrance/Front" unique_id=574045659 instance=ExtResource("bush")]
+position = Vector2(54, 611.00006)
+
+[node name="Bush7" parent="Entrance/Front" unique_id=1903983155 instance=ExtResource("bush")]
+position = Vector2(1011, 611.00006)
+
+[node name="Cactus" parent="Entrance/Front" unique_id=1260164561 instance=ExtResource("cactus")]
+position = Vector2(281.00003, 612.00006)
+
+[node name="DebrisSmall" parent="Entrance/Front" unique_id=679765341 instance=ExtResource("debris_small")]
+position = Vector2(1394, 606)
+
+[node name="Bush2" parent="Entrance/Front" unique_id=1635163018 instance=ExtResource("bush")]
+position = Vector2(2496, 606)
+
+[node name="Bush6" parent="Entrance/Front" unique_id=1168579539 instance=ExtResource("bush")]
+position = Vector2(2180, 606)
+
+[node name="RockDirt" parent="Entrance/Front" unique_id=180782626 instance=ExtResource("rock_cluster")]
+position = Vector2(956, 586)
+
+[node name="RockDirt8" parent="Entrance/Front" unique_id=1486147092 instance=ExtResource("rock_cluster")]
+position = Vector2(1444, 614)
+
+[node name="RockDirt9" parent="Entrance/Front" unique_id=1782032919 instance=ExtResource("rock_cluster")]
+position = Vector2(1545.0001, 698)
+
+[node name="RockDirt10" parent="Entrance/Front" unique_id=211222851 instance=ExtResource("rock_cluster")]
+position = Vector2(1523, 699)
+
+[node name="RockDirt11" parent="Entrance/Front" unique_id=1706486970 instance=ExtResource("rock_cluster")]
+position = Vector2(1824, 701.00006)
+
+[node name="RockDirt12" parent="Entrance/Front" unique_id=458819150 instance=ExtResource("rock_cluster")]
+position = Vector2(1843, 701)
+flip_h = true
+
+[node name="RockDirt7" parent="Entrance/Front" unique_id=395973529 instance=ExtResource("rock_cluster")]
+position = Vector2(840, 489.00003)
+
+[node name="RockDirt2" parent="Entrance/Front" unique_id=2096249057 instance=ExtResource("rock_cluster")]
+position = Vector2(731, 585)
+
+[node name="RockDirt3" parent="Entrance/Front" unique_id=1298657882 instance=ExtResource("rock_cluster")]
+position = Vector2(731, 585)
+
+[node name="RockDirt4" parent="Entrance/Front" unique_id=105188297 instance=ExtResource("rock_cluster")]
+position = Vector2(936, 602)
+flip_h = true
+
+[node name="RockDirt5" parent="Entrance/Front" unique_id=1322289947 instance=ExtResource("rock_cluster")]
+position = Vector2(961.00006, 607)
+flip_h = true
+
+[node name="RockDirt6" parent="Entrance/Front" unique_id=967112875 instance=ExtResource("rock_cluster")]
+position = Vector2(730, 605.00006)
+flip_h = true
+
+[node name="Dirt" parent="Entrance/Front" unique_id=2098239608 instance=ExtResource("dirt_patch")]
+position = Vector2(933.00006, 581.00006)
+
+[node name="Dirt2" parent="Entrance/Front" unique_id=944662353 instance=ExtResource("dirt_patch")]
+position = Vector2(916.375, 578.9723)
+scale = Vector2(0.13888882, 0.14532983)
+
+[node name="Dirt4" parent="Entrance/Front" unique_id=1123033624 instance=ExtResource("dirt_patch")]
+position = Vector2(907.1875, 577.98615)
+scale = Vector2(0.16574077, 0.17411385)
+flip_h = true
+
+[node name="Trench" type="Node2D" parent="."]
+
+[node name="Front" type="Node2D" parent="Trench"]
+z_index = 1
+
+[node name="MachineryPile" parent="Trench/Front" unique_id=193138749 instance=ExtResource("machinery_pile")]
+position = Vector2(2661, 606)
+
+[node name="Bush3" parent="Trench/Front" unique_id=2087749316 instance=ExtResource("bush")]
+position = Vector2(3426, 486)
+
+[node name="Cactus2" parent="Trench/Front" unique_id=1330292291 instance=ExtResource("cactus")]
+position = Vector2(3675, 486)
+
+[node name="DebrisSmall3" parent="Trench/Front" unique_id=1525846871 instance=ExtResource("debris_small")]
+position = Vector2(3919, 486)
+
+[node name="BrokenPipe" parent="Trench/Front" unique_id=1357741256 instance=ExtResource("broken_pipe")]
+position = Vector2(4881, 606)
+
+[node name="DebrisSmall4" parent="Trench/Front" unique_id=250319511 instance=ExtResource("debris_small")]
+position = Vector2(4760, 606)
+
+[node name="MachineryPile4" parent="Trench/Front" unique_id=533979575 instance=ExtResource("machinery_pile")]
+position = Vector2(3040, 486)
+
+[node name="DebrisSmall7" parent="Trench/Front" unique_id=1035306034 instance=ExtResource("debris_small")]
+position = Vector2(4350, 606)
+
+[node name="RockDirt13" parent="Trench/Front" unique_id=839349469 instance=ExtResource("rock_cluster")]
+position = Vector2(3943.0002, 705)
+flip_h = true
+
+[node name="RockDirt14" parent="Trench/Front" unique_id=208963131 instance=ExtResource("rock_cluster")]
+position = Vector2(3942, 724)
+
+[node name="RockDirt16" parent="Trench/Front" unique_id=1550731567 instance=ExtResource("rock_cluster")]
+position = Vector2(4217, 702)
+
+[node name="RockDirt17" parent="Trench/Front" unique_id=718804596 instance=ExtResource("rock_cluster")]
+position = Vector2(4247, 702)
+flip_h = true
+
+[node name="RockDirt18" parent="Trench/Front" unique_id=421657962 instance=ExtResource("rock_cluster")]
+position = Vector2(4217.0005, 722)
+flip_h = true
+flip_v = true
+
+[node name="RockDirt15" parent="Trench/Front" unique_id=1451247530 instance=ExtResource("rock_cluster")]
+position = Vector2(3916.0002, 704)
+flip_v = true
+
+[node name="BigPit" type="Node2D" parent="."]
+
+[node name="Back" type="Node2D" parent="BigPit"]
+z_index = -1
+
+[node name="DebrisSmall6" parent="BigPit/Back" unique_id=1431687057 instance=ExtResource("debris_small")]
+position = Vector2(7962.001, 604.00006)
+
+[node name="Middle" type="Node2D" parent="BigPit"]
+z_index = 0
+
+[node name="DeadTree2" parent="BigPit/Middle" unique_id=1092201695 instance=ExtResource("dead_tree")]
+position = Vector2(7900, 606)
+
+[node name="RockDirt24" parent="BigPit/Middle" unique_id=1039295215 instance=ExtResource("rock_cluster")]
+position = Vector2(5651.0005, 484)
+flip_h = true
+flip_v = true
+
+[node name="Dirt13" parent="BigPit/Middle" unique_id=356693627 instance=ExtResource("dirt_patch")]
+position = Vector2(5644, 501.00003)
+
+[node name="Front" type="Node2D" parent="BigPit"]
+z_index = 1
+
+[node name="PalmLean2" parent="BigPit/Front" unique_id=747326052 instance=ExtResource("palm_lean")]
+position = Vector2(7620, 606)
+
+[node name="MachineryPile2" parent="BigPit/Front" unique_id=1191114729 instance=ExtResource("machinery_pile")]
+position = Vector2(6939, 494)
+
+[node name="Bush4" parent="BigPit/Front" unique_id=33283233 instance=ExtResource("bush")]
+position = Vector2(5688, 366)
+
+[node name="DebrisSmall5" parent="BigPit/Front" unique_id=1062324894 instance=ExtResource("debris_small")]
+position = Vector2(6780, 486)
+
+[node name="Bush5" parent="BigPit/Front" unique_id=2035602107 instance=ExtResource("bush")]
+position = Vector2(7385, 488)
+
+[node name="RockDirt19" parent="BigPit/Front" unique_id=1830761856 instance=ExtResource("rock_cluster")]
+position = Vector2(5652, 463.99997)
+
+[node name="RockDirt25" parent="BigPit/Front" unique_id=872305781 instance=ExtResource("rock_cluster")]
+position = Vector2(5849.0005, 460)
+
+[node name="RockDirt26" parent="BigPit/Front" unique_id=1788478719 instance=ExtResource("rock_cluster")]
+position = Vector2(5849, 573)
+flip_h = true
+
+[node name="RockDirt20" parent="BigPit/Front" unique_id=1699581350 instance=ExtResource("rock_cluster")]
+position = Vector2(5868, 704)
+flip_h = true
+
+[node name="RockDirt22" parent="BigPit/Front" unique_id=337335700 instance=ExtResource("rock_cluster")]
+position = Vector2(5839, 701.00006)
+flip_v = true
+
+[node name="RockDirt23" parent="BigPit/Front" unique_id=687182847 instance=ExtResource("rock_cluster")]
+position = Vector2(5867, 725)
+flip_h = true
+
+[node name="RockDirt27" parent="BigPit/Front" unique_id=1397919667 instance=ExtResource("rock_cluster")]
+position = Vector2(7432, 583)
+flip_h = true
+
+[node name="RockDirt28" parent="BigPit/Front" unique_id=893880072 instance=ExtResource("rock_cluster")]
+position = Vector2(7431, 599)
+rotation = 0.7820672
+flip_h = true
+
+[node name="RockDirt29" parent="BigPit/Front" unique_id=1504231879 instance=ExtResource("rock_cluster")]
+position = Vector2(7406.0005, 584)
+rotation = 0.7820672
+flip_h = true
+flip_v = true
+
+[node name="RockDirt30" parent="BigPit/Front" unique_id=1158118284 instance=ExtResource("rock_cluster")]
+position = Vector2(7227.9995, 581.00024)
+rotation = 0.7820672
+flip_h = true
+flip_v = true
+
+[node name="RockDirt21" parent="BigPit/Front" unique_id=1688113079 instance=ExtResource("rock_cluster")]
+position = Vector2(5684, 464.00003)
+flip_h = true
+
+[node name="Dirt14" parent="BigPit/Front" unique_id=757589668 instance=ExtResource("dirt_patch")]
+position = Vector2(5849.125, 716)
+scale = Vector2(0.20555449, 0.20370373)
+
+[node name="Dirt15" parent="BigPit/Front" unique_id=862772869 instance=ExtResource("dirt_patch")]
+position = Vector2(6612, 703)
+
+[node name="Dirt16" parent="BigPit/Front" unique_id=1463522986 instance=ExtResource("dirt_patch")]
+position = Vector2(6629, 705.00006)
+flip_h = true
+
+[node name="Dirt18" parent="BigPit/Front" unique_id=303065950 instance=ExtResource("dirt_patch")]
+position = Vector2(6626, 578)
+flip_h = true
+
+[node name="Dirt19" parent="BigPit/Front" unique_id=1043246097 instance=ExtResource("dirt_patch")]
+position = Vector2(7058, 701.00006)
+flip_h = true
+
+[node name="Dirt20" parent="BigPit/Front" unique_id=336326015 instance=ExtResource("dirt_patch")]
+position = Vector2(7037, 699.00006)
+flip_h = true
+
+[node name="Dirt21" parent="BigPit/Front" unique_id=405885786 instance=ExtResource("dirt_patch")]
+position = Vector2(7228, 701.00006)
+flip_h = true
+
+[node name="Dirt22" parent="BigPit/Front" unique_id=1296716944 instance=ExtResource("dirt_patch")]
+position = Vector2(7245, 699.00006)
+flip_h = true
+
+[node name="Dirt17" parent="BigPit/Front" unique_id=1737370360 instance=ExtResource("dirt_patch")]
+position = Vector2(6648, 701.00006)
+flip_h = true
+flip_v = true
+
+[node name="Exit" type="Node2D" parent="."]
+
+[node name="Front" type="Node2D" parent="Exit"]
+z_index = 1
+
+[node name="PalmTall2" parent="Exit/Front" unique_id=540468626 instance=ExtResource("palm_tall")]
+position = Vector2(8600, 606)
+
+[node name="Cactus3" parent="Exit/Front" unique_id=1045414617 instance=ExtResource("cactus")]
+position = Vector2(9126.001, 608)
+
+[node name="Cactus4" parent="Exit/Front" unique_id=740383432 instance=ExtResource("cactus")]
+position = Vector2(8980, 606)
+
+[node name="MachineryPile3" parent="Exit/Front" unique_id=2140674047 instance=ExtResource("machinery_pile")]
+position = Vector2(8820, 606)

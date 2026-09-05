@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://b7qk3n5xw2ta4"]
+
+[ext_resource type="SpriteFrames" uid="uid://c2n7wqhbladef" path="res://src/levels/level_01/hazards/blade_frames.tres" id="1_blade"]
+[ext_resource type="Script" uid="uid://6uqu76xe7nn4" path="res://src/world/hazards/moving_hazard.gd" id="2_hazard"]
+[ext_resource type="AudioStream" uid="uid://bnqvaaw8oc30d" path="res://assets/sounds/bubba4827-chainsaw-cutting-long-414979.mp3" id="3_0cfj7"]
+
+[sub_resource type="CircleShape2D" id="Shape_Saw"]
+radius = 51.009804
+
+[node name="Saw" type="Area2D" unique_id=470332106]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_hazard")
+hurts_while_frozen = false
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1173130649]
+scale = Vector2(0.63, 0.63)
+sprite_frames = ExtResource("1_blade")
+autoplay = "default"
+offset = Vector2(4, -117)
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1524560631]
+position = Vector2(0, -97)
+shape = SubResource("Shape_Saw")
+
+[node name="SawAudio" type="AudioStreamPlayer2D" parent="." unique_id=203958126]
+stream = ExtResource("3_0cfj7")
+volume_db = -8.0

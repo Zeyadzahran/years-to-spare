@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://cq7g30j4pyjf2" path="res://src/levels/level_01/art/props/decorations.png" id="4_1tr31"]
+
+[node name="PalmTall" type="Sprite2D"]
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -295.5)
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)

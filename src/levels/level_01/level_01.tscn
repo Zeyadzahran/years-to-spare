@@ -1,0 +1,363 @@
+[gd_scene format=4 uid="uid://chnxya2aqndys"]
+
+[ext_resource type="Script" uid="uid://be5vpy5llau5q" path="res://src/levels/level.gd" id="1_a7tag"]
+[ext_resource type="AudioStream" uid="uid://bx7o8vesdg803" path="res://src/levels/level_01/audio/desert_wind.mp3" id="2_1vujb"]
+[ext_resource type="PackedScene" uid="uid://cmuhwapcdlbka" path="res://src/levels/level_01/background.tscn" id="2_6yjdu"]
+[ext_resource type="AudioStream" uid="uid://b67vxnf3ogwax" path="res://src/levels/level_01/audio/desert_ambience.mp3" id="3_68m7i"]
+[ext_resource type="TileSet" uid="uid://ct8w2xk4bnq7f" path="res://src/levels/level_01/terrain_tileset.tres" id="3_s7fgk"]
+[ext_resource type="PackedScene" uid="uid://cm4pv8hd3ry6e" path="res://src/levels/level_01/hazards/toxic_pipe.tscn" id="5_bv8k8"]
+[ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="6_dmh6m"]
+[ext_resource type="PackedScene" uid="uid://dn2wg5kx7ftab" path="res://src/levels/level_01/hazards/wall_trap.tscn" id="8_r1vef"]
+[ext_resource type="PackedScene" uid="uid://dh3xs6ly8vm4c" path="res://src/levels/level_01/hazards/spike_strip_large.tscn" id="9_lscnh"]
+[ext_resource type="PackedScene" uid="uid://bq8jt4mv6c03h" path="res://src/levels/level_01/hazards/ceiling_obstacle.tscn" id="10_eucyj"]
+[ext_resource type="PackedScene" uid="uid://b7qk3n5xw2ta4" path="res://src/levels/level_01/hazards/saw.tscn" id="11_4r0fx"]
+[ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="12_r3o47"]
+[ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="16_buk32"]
+[ext_resource type="PackedScene" uid="uid://cf5roapb2wk7d" path="res://src/levels/level_01/hazards/spike_strip_small.tscn" id="17_spksm"]
+[ext_resource type="PackedScene" uid="uid://drt0b4rcdaxpq" path="res://src/actors/enemy/guard.tscn" id="18_1tr31"]
+[ext_resource type="PackedScene" uid="uid://b4kxq2wcheckp" path="res://src/world/checkpoint.tscn" id="18_chkpt"]
+[ext_resource type="PackedScene" uid="uid://djqbpdehfsnos" path="res://src/actors/enemy/gunner.tscn" id="19_bv8k8"]
+[ext_resource type="Texture2D" uid="uid://dlw6qxbday0fi" path="res://src/levels/level_01/art/terrain/tiles.png" id="19_seampatch"]
+[ext_resource type="PackedScene" uid="uid://qjopd3ftflm4" path="res://src/world/pickup.tscn" id="20_pickup"]
+[ext_resource type="Texture2D" uid="uid://de4yqyvggfy0c" path="res://assets/keys/W.png" id="22_lscnh"]
+[ext_resource type="Texture2D" uid="uid://butlj0b1ndwln" path="res://assets/keys/A.png" id="23_eucyj"]
+[ext_resource type="Texture2D" uid="uid://dgenlq4l22n5r" path="res://assets/keys/S.png" id="24_4r0fx"]
+[ext_resource type="Texture2D" uid="uid://bxlb43e0xdi17" path="res://assets/keys/D.png" id="25_r3o47"]
+[ext_resource type="Texture2D" uid="uid://dtk1udcysrmd8" path="res://assets/keys/J.png" id="26_eucyj"]
+[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="26_r3o47"]
+[ext_resource type="Texture2D" uid="uid://d3phh6mhrfc4b" path="res://assets/keys/K.png" id="29_tsq7e"]
+
+[ext_resource type="PackedScene" path="res://src/levels/level_01/decorations.tscn" id="decorations"]
+[ext_resource type="PackedScene" path="res://src/world/level_exit.tscn" id="level_exit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70nlc"]
+size = Vector2(14097, 400)
+
+[sub_resource type="FontVariation" id="FontVariation_gihc7"]
+base_font = ExtResource("26_r3o47")
+
+[node name="Level01" type="Node2D" unique_id=2026904255]
+script = ExtResource("1_a7tag")
+
+[node name="Ambience" type="Node" parent="."]
+
+[node name="DesertWind" type="AudioStreamPlayer" parent="Ambience" unique_id=905748870]
+stream = ExtResource("2_1vujb")
+volume_db = -20.0
+autoplay = true
+
+[node name="DesertAmbience" type="AudioStreamPlayer" parent="Ambience" unique_id=22267121]
+stream = ExtResource("3_68m7i")
+volume_db = -24.0
+autoplay = true
+
+[node name="Background" parent="." unique_id=773687580 instance=ExtResource("2_6yjdu")]
+position = Vector2(4000, 304.86)
+scale = Vector2(0.5, 0.5)
+
+[node name="World" type="Node2D" parent="." unique_id=1609891126]
+
+[node name="Terrain" type="Node2D" parent="World"]
+
+[node name="Surface" type="TileMapLayer" parent="World/Terrain" unique_id=943537270]
+position = Vector2(0, -23.333334)
+scale = Vector2(0.33333334, 0.33333334)
+tile_map_data = PackedByteArray("AAAlAAEAAAAAAAAAAAAmAAEAAAACAAAAAAAlAAIAAAAAAAEAAAAmAAIAAAACAAEAAAAlAAMAAAAAAAIAAAAmAAMAAAACAAIAAAAwAAMAAAACAAAAAAAzAAMAAAAAAAAAAAA0AAMAAAACAAAAAAAGAAQAAAAAAAAAAAAZAAQAAAABAAAAAAAaAAQAAAABAAAAAAAbAAQAAAABAAAAAAAcAAQAAAABAAAAAAAdAAQAAAABAAAAAAAeAAQAAAABAAAAAAAfAAQAAAABAAAAAAArAAQAAAAAAAAAAAAsAAQAAAABAAAAAAAtAAQAAAABAAAAAAAuAAQAAAABAAAAABAwAAQAAAACAAEAAAAzAAQAAAAAAAIAAAA0AAQAAAACAAIAAAA4AAQAAAABAAAAAAA5AAQAAAABAAAAABA6AAQAAAACAAAAAAA8AAQAAAAAAAAAAAAGAAUAAAABAAEAABAIAAUAAAABAAAAABAJAAUAAAABAAAAABAKAAUAAAABAAAAABALAAUAAAABAAAAAAAQAAUAAAABAAAAABARAAUAAAABAAAAAAASAAUAAAABAAAAAAATAAUAAAABAAAAABAUAAUAAAABAAAAAAAVAAUAAAABAAAAAAAWAAUAAAACAAAAAAAZAAUAAAABAAEAAAAaAAUAAAABAAEAABAbAAUAAAABAAEAAAAcAAUAAAABAAEAABAdAAUAAAABAAEAAAAeAAUAAAABAAEAABAfAAUAAAABAAEAAAAkAAUAAAABAAAAAAAlAAUAAAABAAAAABAmAAUAAAABAAAAABAnAAUAAAABAAAAAAAoAAUAAAABAAAAAAApAAUAAAACAAAAAAArAAUAAAAAAAEAAAAsAAUAAAABAAEAABAtAAUAAAABAAEAAAAuAAUAAAABAAEAABAvAAUAAAABAAEAABA4AAUAAAABAAEAAAA5AAUAAAABAAEAAAA6AAUAAAACAAEAAAA8AAUAAAAAAAEAAAA9AAUAAAABAAEAAAA+AAUAAAABAAAAAAA/AAUAAAABAAAAABBAAAUAAAABAAAAAABBAAUAAAABAAAAAABCAAUAAAABAAAAAABDAAUAAAABAAAAAABEAAUAAAABAAAAABBFAAUAAAABAAAAAABGAAUAAAABAAAAAABHAAUAAAABAAAAAABIAAUAAAABAAAAABBJAAUAAAABAAAAABBKAAUAAAABAAAAAAAAAAYAAAAAAAEAAAAIAAYAAAABAAEAABAJAAYAAAABAAEAAAAKAAYAAAABAAEAAAALAAYAAAABAAEAABAQAAYAAAABAAEAABARAAYAAAABAAEAAAASAAYAAAABAAEAABATAAYAAAABAAEAABAUAAYAAAABAAEAABAVAAYAAAABAAEAAAAZAAYAAAABAAEAABAaAAYAAAABAAEAABAbAAYAAAABAAEAABAcAAYAAAABAAEAAAAdAAYAAAABAAEAABAeAAYAAAABAAEAAAAfAAYAAAABAAEAAAAgAAYAAAABAAEAAAAhAAYAAAABAAAAAAAiAAYAAAABAAAAAAAkAAYAAAABAAEAAAAlAAYAAAABAAEAABAmAAYAAAABAAEAABAnAAYAAAABAAEAAAAoAAYAAAABAAEAABApAAYAAAACAAEAAAArAAYAAAAAAAEAAAAsAAYAAAABAAEAABAtAAYAAAABAAEAAAAuAAYAAAABAAEAAAAvAAYAAAABAAEAAAAwAAYAAAABAAEAABAxAAYAAAABAAAAAAAyAAYAAAABAAAAABAzAAYAAAABAAAAAAA0AAYAAAABAAAAABA1AAYAAAABAAAAAAA2AAYAAAABAAAAAAA3AAYAAAABAAEAABA4AAYAAAABAAEAAAA5AAYAAAABAAEAABA6AAYAAAABAAEAAAA7AAYAAAABAAEAAAA8AAYAAAABAAEAAAA9AAYAAAABAAEAABA+AAYAAAABAAEAAAA/AAYAAAABAAEAABBAAAYAAAABAAEAABBBAAYAAAABAAEAAABCAAYAAAABAAEAABBDAAYAAAABAAEAABBEAAYAAAABAAEAABBFAAYAAAABAAEAAABGAAYAAAABAAEAABBHAAYAAAABAAEAABBIAAYAAAABAAEAABBJAAYAAAABAAEAABBKAAYAAAABAAEAAABLAAYAAAABAAEAABBMAAYAAAACAAEAAAAAAAcAAAAAAAIAAAABAAcAAAABAAIAAAACAAcAAAABAAIAABADAAcAAAABAAIAAAAEAAcAAAABAAIAABAFAAcAAAABAAIAAAAGAAcAAAABAAIAABAHAAcAAAABAAIAABAIAAcAAAABAAIAAAANAAcAAAABAAIAAAAOAAcAAAABAAIAAAAPAAcAAAABAAIAAAAQAAcAAAABAAIAABARAAcAAAABAAIAABASAAcAAAABAAIAAAATAAcAAAABAAIAABAUAAcAAAABAAIAABAZAAcAAAABAAIAABAaAAcAAAABAAIAABAbAAcAAAABAAIAAAAcAAcAAAABAAIAABAdAAcAAAABAAIAABAeAAcAAAABAAIAAAAfAAcAAAABAAIAAAAgAAcAAAABAAIAABAlAAcAAAABAAEAAAAmAAcAAAABAAEAAAAnAAcAAAABAAEAAAAoAAcAAAABAAEAABApAAcAAAABAAEAAAAqAAcAAAABAAEAAAArAAcAAAABAAEAAAAsAAcAAAABAAEAAAAtAAcAAAABAAEAAAAuAAcAAAABAAEAABAvAAcAAAABAAEAAAAwAAcAAAABAAEAABAxAAcAAAABAAEAAAAyAAcAAAABAAEAABAzAAcAAAABAAEAAAA0AAcAAAABAAEAAAA1AAcAAAABAAEAAAA2AAcAAAABAAEAAAA3AAcAAAABAAEAAAA4AAcAAAABAAEAAAA5AAcAAAABAAEAAAA6AAcAAAABAAEAAAA7AAcAAAABAAEAAAA8AAcAAAABAAEAAAA9AAcAAAABAAEAABA+AAcAAAABAAEAAAA/AAcAAAABAAEAABBAAAcAAAABAAEAAABBAAcAAAABAAEAAABCAAcAAAABAAEAAABDAAcAAAABAAEAAABEAAcAAAABAAEAABBFAAcAAAABAAEAAABGAAcAAAABAAEAAABHAAcAAAABAAEAABBIAAcAAAABAAEAABBJAAcAAAABAAEAAABKAAcAAAABAAEAABBLAAcAAAABAAEAABBMAAcAAAACAAEAAAAlAAgAAAABAAIAAAAmAAgAAAABAAIAABAnAAgAAAABAAIAABAoAAgAAAABAAIAAAApAAgAAAABAAIAAAAqAAgAAAABAAIAAAArAAgAAAABAAIAAAAsAAgAAAABAAIAABAzAAgAAAABAAIAABA0AAgAAAABAAIAAAA2AAgAAAABAAIAAAA3AAgAAAABAAIAAAA4AAgAAAABAAIAAAA6AAgAAAABAAIAAAA7AAgAAAABAAIAAAA8AAgAAAABAAIAAAA9AAgAAAABAAIAAAA+AAgAAAABAAIAABBFAAgAAAABAAIAAABGAAgAAAABAAIAAABHAAgAAAABAAIAAABLAAgAAAABAAIAAABMAAgAAAACAAIAAAAMAAUAAAACAAAAAAAPAAUAAAAAAAAAAAAPAAYAAAABAAEAAAANAAYAAAABAAEAAAAMAAYAAAABAAEAAAAOAAYAAAABAAEAAAAFAAUAAAABAAAAAAAEAAUAAAABAAAAAAADAAUAAAABAAAAAAACAAUAAAABAAAAAAABAAYAAAABAAEAAAACAAYAAAABAAEAAAADAAYAAAABAAEAAAAEAAYAAAABAAEAAAAFAAYAAAABAAEAAAAGAAYAAAABAAEAAAAHAAYAAAABAAEAAAABAAUAAAABAAAAAAAAAAUAAAAAAAAAAAAHAAQAAAACAAAAAAAHAAUAAAABAAEAAAAJAAcAAAABAAIAAAAKAAcAAAABAAIAAAALAAcAAAABAAIAAAAMAAcAAAABAAIAAAAVAAcAAAABAAIAAAAWAAcAAAABAAIAAAAXAAcAAAABAAIAAAAYAAcAAAABAAIAAAAYAAQAAAAAAAAAAAAYAAUAAAAAAAEAAAAYAAYAAAAAAAEAAAAWAAYAAAACAAEAAAAjAAUAAAAAAAAAAAAjAAYAAAABAAEAAAAgAAQAAAACAAAAAAAgAAUAAAACAAEAAAAvAAMAAAAAAAAAAAAvAAQAAAABAAEAAAAwAAUAAAACAAEAAAA3AAQAAAAAAAAAAAA3AAUAAAAAAAEAAAA9AAQAAAACAAAAAABLAAUAAAABAAAAAABMAAUAAAACAAAAAAAhAAcAAAABAAIAAAAiAAcAAAABAAIAAAAjAAcAAAABAAIAAAAkAAcAAAABAAIAAAAyAAgAAAABAAIAAAAxAAgAAAABAAIAAAAwAAgAAAABAAIAAAAvAAgAAAABAAIAAAAuAAgAAAABAAIAAAAtAAgAAAABAAIAAAA1AAgAAAABAAIAAAA5AAgAAAABAAIAAAA/AAgAAAABAAIAAABAAAgAAAABAAIAAABBAAgAAAABAAIAAABCAAgAAAABAAIAAABDAAgAAAABAAIAAABEAAgAAAABAAIAAABKAAgAAAABAAIAAABJAAgAAAABAAIAAABIAAgAAAABAAIAAABJAAIAAAAAAAEAAABJAAEAAAAAAAAAAABKAAEAAAACAAAAAABKAAIAAAACAAEAAABJAAMAAAAAAAEAAABKAAMAAAACAAEAAABOAAUAAAAAAAIAAABPAAUAAAACAAIAAABPAAQAAAACAAAAAABOAAQAAAAAAAAAAABRAAQAAAAAAAIAAABSAAQAAAACAAIAAABSAAMAAAACAAAAAABRAAMAAAAAAAAAAABUAAMAAAAAAAAAAABVAAMAAAABAAAAAABUAAQAAAAAAAIAAABVAAQAAAABAAIAAABWAAQAAAABAAIAAABXAAQAAAABAAIAAABWAAMAAAABAAAAAABXAAMAAAABAAAAAABYAAMAAAACAAAAAABYAAQAAAACAAIAAABUAAEAAAAAAAIAAABVAAEAAAABAAIAAABWAAEAAAABAAIAAABXAAEAAAABAAIAAABYAAEAAAACAAIAAABUAAAAAAAAAAAAAABVAAAAAAABAAAAAABWAAAAAAABAAAAAABXAAAAAAABAAAAAABYAAAAAAACAAAAAABaAAIAAAAAAAAAAABbAAIAAAABAAAAAABcAAIAAAABAAAAAABdAAIAAAABAAAAAABeAAIAAAABAAAAAABfAAIAAAABAAAAAABgAAIAAAABAAAAAABhAAIAAAACAAAAAABaAAMAAAAAAAEAAABaAAQAAAAAAAEAAABaAAUAAAAAAAIAAABbAAMAAAABAAEAAABcAAMAAAABAAEAAABdAAMAAAABAAEAAABeAAMAAAABAAEAAABfAAMAAAABAAEAAABgAAMAAAABAAEAAABgAAQAAAABAAEAAABfAAQAAAABAAEAAABeAAQAAAABAAEAAABdAAQAAAABAAEAAABcAAQAAAABAAEAAABbAAQAAAABAAEAAABbAAUAAAABAAIAAABcAAUAAAABAAIAAABdAAUAAAABAAIAAABeAAUAAAABAAIAAABfAAUAAAABAAIAAABgAAUAAAABAAIAAABhAAMAAAACAAEAAABhAAQAAAACAAEAAABhAAUAAAACAAIAAABjAAIAAAAAAAAAAABjAAMAAAAAAAEAAABkAAIAAAABAAAAAABkAAMAAAABAAEAAABlAAMAAAABAAEAAABmAAMAAAABAAEAAABkAAQAAAABAAEAAABlAAQAAAABAAEAAABmAAQAAAABAAEAAABnAAMAAAABAAEAAABoAAMAAAABAAEAAABpAAMAAAABAAEAAABqAAMAAAABAAEAAABnAAQAAAABAAEAAABoAAQAAAABAAEAAABpAAQAAAABAAEAAABqAAQAAAABAAEAAABrAAQAAAABAAEAAABrAAMAAAABAAEAAABsAAMAAAACAAEAAABsAAQAAAACAAEAAABsAAIAAAACAAAAAABrAAIAAAABAAAAAABqAAIAAAABAAAAAABpAAIAAAABAAAAAABoAAIAAAABAAAAAABnAAIAAAABAAAAAABmAAIAAAABAAAAAABlAAIAAAABAAAAAABjAAQAAAAAAAEAAABjAAUAAAAAAAIAAABkAAUAAAABAAIAAABlAAUAAAABAAIAAABmAAUAAAABAAIAAABnAAUAAAABAAIAAABoAAUAAAABAAIAAABpAAUAAAABAAIAAABqAAUAAAABAAIAAABrAAUAAAABAAIAAABsAAUAAAACAAIAAAA=")
+tile_set = ExtResource("3_s7fgk")
+
+[node name="Platforms" type="Node2D" parent="World" unique_id=682298543]
+
+[node name="Decorations" parent="World" instance=ExtResource("decorations")]
+
+[node name="Checkpoints" type="Node2D" parent="World" unique_id=565383630]
+
+[node name="Checkpoint1" parent="World/Checkpoints" unique_id=1429956542 instance=ExtResource("18_chkpt")]
+position = Vector2(1877, 613)
+
+[node name="Checkpoint2" parent="World/Checkpoints" unique_id=1183018733 instance=ExtResource("18_chkpt")]
+position = Vector2(2980, 480)
+
+[node name="Checkpoint3" parent="World/Checkpoints" unique_id=1466357679 instance=ExtResource("18_chkpt")]
+position = Vector2(4300, 600)
+
+[node name="Checkpoint" parent="World/Checkpoints" unique_id=1071873066 instance=ExtResource("18_chkpt")]
+position = Vector2(9198, 604)
+
+[node name="TerrainSeamPatch" type="Node2D" parent="World/Terrain" unique_id=1641584744]
+
+[node name="Left" type="Sprite2D" parent="World/Terrain/TerrainSeamPatch" unique_id=268153937]
+position = Vector2(4500, 337)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("19_seampatch")
+region_enabled = true
+region_rect = Rect2(38, 670, 360, 24)
+
+[node name="Right" type="Sprite2D" parent="World/Terrain/TerrainSeamPatch" unique_id=1927967452]
+position = Vector2(4620, 337)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("19_seampatch")
+region_enabled = true
+region_rect = Rect2(856, 670, 360, 24)
+
+[node name="Pickups" type="Node2D" parent="World" unique_id=1362628233]
+
+[node name="PickupSidePath" parent="World/Pickups" unique_id=112632347 instance=ExtResource("20_pickup")]
+position = Vector2(2278, 574)
+
+[node name="PickupAfterTrench" parent="World/Pickups" unique_id=2008552602 instance=ExtResource("20_pickup")]
+position = Vector2(3371, 454)
+
+[node name="PickupAfterCeilingSpikes" parent="World/Pickups" unique_id=388230253 instance=ExtResource("20_pickup")]
+z_index = 1
+position = Vector2(4760, 555)
+
+[node name="PickupBeforeBigPit" parent="World/Pickups" unique_id=1938836808 instance=ExtResource("20_pickup")]
+position = Vector2(5760, 315)
+
+[node name="Pickup" parent="World/Pickups" unique_id=927801749 instance=ExtResource("20_pickup")]
+position = Vector2(1450, 548)
+
+[node name="Pickup2" parent="World/Pickups" unique_id=1349153118 instance=ExtResource("20_pickup")]
+position = Vector2(8395, 553)
+
+[node name="Pickup3" parent="World/Pickups" unique_id=495002536 instance=ExtResource("20_pickup")]
+position = Vector2(9074, 558)
+
+[node name="Hazards" type="Node2D" parent="World" unique_id=160053923]
+
+[node name="SpikeStripLarge" parent="World/Hazards" unique_id=75637107 instance=ExtResource("9_lscnh")]
+position = Vector2(8880, 455)
+rotation = -3.1415925
+
+[node name="Saw3" parent="World/Hazards" unique_id=470332106 instance=ExtResource("11_4r0fx")]
+z_index = -1
+position = Vector2(10201, 443)
+
+[node name="ToxicPipe" parent="World/Hazards" unique_id=1286587262 instance=ExtResource("5_bv8k8")]
+z_index = 2
+position = Vector2(670, 615)
+
+[node name="WallTrap" parent="World/Hazards" unique_id=1442286330 instance=ExtResource("8_r1vef")]
+position = Vector2(3943, 575)
+
+[node name="SpikePitSpikes" parent="World/Hazards" unique_id=654124209 instance=ExtResource("9_lscnh")]
+position = Vector2(4105, 733)
+
+[node name="SpikePitSpikes2" parent="World/Hazards" unique_id=1235375965 instance=ExtResource("17_spksm")]
+position = Vector2(5064, 819)
+
+[node name="SpikePitSpikes3" parent="World/Hazards" unique_id=356109604 instance=ExtResource("17_spksm")]
+position = Vector2(5136, 819)
+
+[node name="CeilingSpikes" parent="World/Hazards" unique_id=1082918784 instance=ExtResource("10_eucyj")]
+z_index = -1
+position = Vector2(4560, 330)
+travel = Vector2(0, 175)
+
+[node name="Saw" parent="World/Hazards" unique_id=635406207 instance=ExtResource("11_4r0fx")]
+z_index = -1
+position = Vector2(2133, 630)
+
+[node name="Saw2" parent="World/Hazards" unique_id=1280419766 instance=ExtResource("11_4r0fx")]
+position = Vector2(3181, 506)
+
+[node name="WallTrapPit" parent="World/Hazards" unique_id=22935594 instance=ExtResource("8_r1vef")]
+position = Vector2(5858, 600)
+
+[node name="BigPitSpikes1" parent="World/Hazards" unique_id=214192877 instance=ExtResource("9_lscnh")]
+position = Vector2(5983, 739)
+
+[node name="BigPitSpikes2" parent="World/Hazards" unique_id=27649839 instance=ExtResource("9_lscnh")]
+position = Vector2(1658, 698)
+
+[node name="BigPitSpikes3" parent="World/Hazards" unique_id=831989866 instance=ExtResource("9_lscnh")]
+position = Vector2(6511, 734)
+
+[node name="BigPitSpikes4" parent="World/Hazards" unique_id=777042625 instance=ExtResource("17_spksm")]
+position = Vector2(7104, 700)
+
+[node name="BigPitSpikes5" parent="World/Hazards" unique_id=1745344489 instance=ExtResource("17_spksm")]
+position = Vector2(7176, 700)
+
+[node name="SpikeStripApproach" parent="World/Hazards" unique_id=1892247699 instance=ExtResource("17_spksm")]
+position = Vector2(2787, 821)
+
+[node name="SpikeStripApproach3" parent="World/Hazards" unique_id=1328317338 instance=ExtResource("17_spksm")]
+position = Vector2(2845, 820)
+
+[node name="SpikeStripApproach5" parent="World/Hazards" unique_id=369287117 instance=ExtResource("17_spksm")]
+position = Vector2(6108, 738)
+
+[node name="SpikeStripApproach4" parent="World/Hazards" unique_id=1133257456 instance=ExtResource("17_spksm")]
+position = Vector2(3988, 734)
+
+[node name="SpikeStripApproach2" parent="World/Hazards" unique_id=1054363977 instance=ExtResource("17_spksm")]
+position = Vector2(1770, 699)
+
+[node name="FallZone" type="Area2D" parent="World/Hazards" unique_id=1738339328]
+position = Vector2(4600, 1500)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6_dmh6m")
+damage = 999.0
+
+[node name="Shape" type="CollisionShape2D" parent="World/Hazards/FallZone" unique_id=1738994103]
+position = Vector2(1907.5, -319)
+shape = SubResource("RectangleShape2D_70nlc")
+
+[node name="Saw4" parent="World/Hazards" unique_id=417954091 instance=ExtResource("11_4r0fx")]
+z_index = -1
+position = Vector2(10403, 94)
+rotation = 3.1415927
+
+[node name="SpikeStripSmall" parent="World/Hazards" unique_id=794019762 instance=ExtResource("17_spksm")]
+position = Vector2(11176, 243)
+
+[node name="SpikeStripSmall2" parent="World/Hazards" unique_id=2042232225 instance=ExtResource("17_spksm")]
+position = Vector2(11325, 241)
+
+[node name="SpikeStripSmall3" parent="World/Hazards" unique_id=1735205700 instance=ExtResource("17_spksm")]
+position = Vector2(11457, 241)
+
+[node name="CityTransition" parent="World" instance=ExtResource("level_exit")]
+position = Vector2(12488, 242)
+destination = "res://src/ui/level_title/city_of_time_title.tscn"
+
+[node name="Entities" type="Node2D" parent="." unique_id=91379214]
+
+[node name="Player" parent="Entities" unique_id=1426104633 instance=ExtResource("12_r3o47")]
+z_index = 10
+position = Vector2(337, 606)
+
+[node name="Enemies" type="Node2D" parent="." unique_id=261374960]
+
+[node name="Guard1" parent="Enemies" unique_id=456567813 instance=ExtResource("18_1tr31")]
+position = Vector2(1239, 602)
+
+[node name="Gunner1" parent="Enemies" unique_id=1974821315 instance=ExtResource("19_bv8k8")]
+position = Vector2(3500, 482)
+
+[node name="Guard2" parent="Enemies" unique_id=1817446925 instance=ExtResource("18_1tr31")]
+position = Vector2(4850, 602)
+
+[node name="Gunner2" parent="Enemies" unique_id=1294749773 instance=ExtResource("19_bv8k8")]
+position = Vector2(6800, 482)
+
+[node name="Gunner3" parent="Enemies" unique_id=1527131330 instance=ExtResource("19_bv8k8")]
+position = Vector2(8198, 601)
+
+[node name="Gunner4" parent="Enemies" unique_id=334027704 instance=ExtResource("19_bv8k8")]
+position = Vector2(8112, 597)
+
+[node name="Guard" parent="Enemies" unique_id=1791530447 instance=ExtResource("18_1tr31")]
+position = Vector2(8157, 599)
+
+[node name="Gunner" parent="Enemies" unique_id=991729530 instance=ExtResource("19_bv8k8")]
+position = Vector2(11637, 241)
+
+[node name="HUD" parent="." unique_id=518270513 instance=ExtResource("16_buk32")]
+
+[node name="Tutorial" type="Node2D" parent="." unique_id=1961595322]
+
+[node name="Moving" type="Node2D" parent="Tutorial" unique_id=1766385866]
+position = Vector2(205.45, 108.38)
+
+[node name="W_Key" type="Sprite2D" parent="Tutorial/Moving" unique_id=402322831]
+position = Vector2(284, 269)
+scale = Vector2(2.125, 2.125)
+texture = ExtResource("22_lscnh")
+
+[node name="W_Key2" type="Sprite2D" parent="Tutorial/Moving" unique_id=640866474]
+position = Vector2(245, 305)
+scale = Vector2(2.125, 2.125)
+texture = ExtResource("23_eucyj")
+
+[node name="W_Key3" type="Sprite2D" parent="Tutorial/Moving" unique_id=1284003775]
+position = Vector2(284.0625, 305)
+scale = Vector2(2.125, 2.125)
+texture = ExtResource("24_4r0fx")
+
+[node name="W_Key4" type="Sprite2D" parent="Tutorial/Moving" unique_id=1491559429]
+position = Vector2(322, 305)
+scale = Vector2(2.125, 2.125)
+texture = ExtResource("25_r3o47")
+
+[node name="Label" type="Label" parent="Tutorial/Moving" unique_id=1729971843]
+modulate = Color(0.32941177, 0.3137255, 0.34901962, 1)
+offset_left = 129.29999
+offset_top = 214.41998
+offset_right = 449.3
+offset_bottom = 237.41998
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+text = "Press to move around"
+
+[node name="Attack" type="Node2D" parent="Tutorial" unique_id=490550816]
+position = Vector2(705.49, 44.28)
+
+[node name="W_Key" type="Sprite2D" parent="Tutorial/Attack" unique_id=11081603]
+position = Vector2(102.48, 266.8)
+scale = Vector2(2.125, 2.125)
+texture = ExtResource("26_eucyj")
+
+[node name="Label" type="Label" parent="Tutorial/Attack" unique_id=1236557497]
+modulate = Color(0.32941177, 0.3137255, 0.34901962, 1)
+offset_left = -10.690002
+offset_top = 260.41998
+offset_right = 469.31
+offset_bottom = 283.41998
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+text = "Press    To Attack"
+
+[node name="Stopping time" type="Node2D" parent="Tutorial" unique_id=283377863]
+position = Vector2(1395.88, 33.58)
+
+[node name="W_Key" type="Sprite2D" parent="Tutorial/Stopping time" unique_id=1724015047]
+position = Vector2(650.46, 324.42)
+scale = Vector2(2.125, 2.125)
+texture = ExtResource("29_tsq7e")
+
+[node name="Label" type="Label" parent="Tutorial/Stopping time" unique_id=2000792672]
+modulate = Color(0.32941177, 0.3137255, 0.34901962, 1)
+offset_left = 533.13007
+offset_top = 315.41998
+offset_right = 965.13007
+offset_bottom = 338.41998
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+text = "Press    , It costs you AGE"
+
+[node name="Label2" type="Label" parent="Tutorial/Stopping time" unique_id=2113377984]
+modulate = Color(0.32941177, 0.3137255, 0.34901962, 1)
+offset_left = 474.31
+offset_top = 283.41998
+offset_right = 938.31
+offset_bottom = 306.41998
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+text = "Your first power is STOPPING TIME "
+
+[node name="Heal2" type="Node2D" parent="Tutorial" unique_id=1160545644]
+position = Vector2(761.91, 65.71)
+
+[node name="Label2" type="Label" parent="Tutorial/Heal2" unique_id=545088210]
+modulate = Color(0.32941177, 0.3137255, 0.34901962, 1)
+offset_left = 455.09003
+offset_top = 312.29
+offset_right = 816.21014
+offset_bottom = 347.29
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+text = "Cuctus fruit heals you
+When you're damaged"
+horizontal_alignment = 1
+
+[node name="Checkpoint" type="Node2D" parent="Tutorial" unique_id=1846970696]
+position = Vector2(1210.82, 33.58)
+
+[node name="Label2" type="Label" parent="Tutorial/Checkpoint" unique_id=768755556]
+modulate = Color(0.32941177, 0.3137255, 0.34901962, 1)
+offset_left = 588.18005
+offset_top = 365.41998
+offset_right = 764.18005
+offset_bottom = 400.41998
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+text = "flags Are
+Checkpoints"
+horizontal_alignment = 1
