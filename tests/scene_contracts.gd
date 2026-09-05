@@ -46,6 +46,12 @@ func run() -> void:
 	await scene_changed
 	await scene_changed
 	check(current_scene.scene_file_path == "res://src/ui/main_menu/main_menu.tscn", "Startup did not reach main menu")
+	current_scene.get_node("VBoxContainer/Credits").pressed.emit()
+	await scene_changed
+	check(current_scene.scene_file_path == "res://src/ui/credits/credits.tscn", "Credits button destination changed")
+	current_scene._on_back_button_pressed()
+	await scene_changed
+	check(current_scene.scene_file_path == "res://src/ui/main_menu/main_menu.tscn", "Credits did not return to main menu")
 	current_scene.free()
 	var state := root.get_node("GameState")
 	state.clear_run_progress()

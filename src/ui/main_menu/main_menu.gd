@@ -21,3 +21,7 @@ func _on_quit_button_pressed():
 
 func _ready():
 	MusicManager.play_music(menu_music, 1.5)
+
+
+func _on_credits_pressed() -> void:
+	get_tree().change_scene_to_file("res://src/ui/credits/credits.tscn")

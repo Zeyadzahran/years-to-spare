@@ -37,3 +37,9 @@ The final headless test reports two leaked objects and one resource still in use
 Browser execution remains unverified because browser access was unavailable. Visual evidence is from native Compatibility rendering. Existing web-performance edits were preserved and included in the PR handoff.
 
 Authoring instructions are in `docs/level-authoring.md`. Original files, the move map, property snapshots, PNG comparisons and execution logs are under `/tmp/years-refactor`; these temporary artifacts may be removed by the operating system.
+
+## Integration with newer main
+
+Merged `61011f3` (intro dialogue and credits). The updated intro and main menu are preserved exactly apart from resource-path changes. Credits now lives in `src/ui/credits`, with the menu/back paths updated and its script UID corrected to match the supplied sidecar. Retained both the upstream input setting and the PR's renderer settings.
+
+After integration, all 37 scenes load and the scene contract assertions pass, including the new credits/menu round trip. The same two-object/one-resource shutdown diagnostic remains. The original 26 visual comparisons describe the Level 1 refactor; they do not claim that the intentionally updated intro and menu are unchanged from the old baseline.

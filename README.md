@@ -85,7 +85,7 @@ src/
       audio/             Level ambience
       background.tscn    Parallax background
       terrain_tileset.tres
-  ui/                    HUD, options, main menu, and configurable level titles
+  ui/                    HUD, options, credits, main menu, and configurable level titles
   world/                 Shared checkpoints, pickups, platforms, exits, hazard scripts
 docs/                    Level authoring guide and refactor validation notes
 tests/                   Scene loading, retry progress, and navigation checks
