@@ -51,6 +51,10 @@ func _tick_idle(_delta: float) -> void:
 		# standing well outside his patch flips every frame and shivers on the
 		# spot instead of going home.
 		patrol_direction = -1 if offset > 0.0 else 1
+	elif is_on_floor() and not has_floor_ahead(float(patrol_direction)):
+		# The beat also ends where the ground does, so a post on a two-tile step
+		# is walked end to end instead of stepped off.
+		patrol_direction = -patrol_direction
 	velocity.x = patrol_direction * speed * PATROL_PACE
 	# Every tick, not just on the turn: `facing` starts at -1 while the patrol
 	# starts heading +1, so the first leg used to be walked backwards.
