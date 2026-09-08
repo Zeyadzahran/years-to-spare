@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://rvysjnvgwjru"]
+
+[ext_resource type="Script" uid="uid://dvqcmws188k8s" path="res://src/world/hazards/toxic_water.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://cfnjaapnck6fw" path="res://src/world/hazards/toxic_water.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_water"]
+shader = ExtResource("2_shader")
+shader_parameter/time = 0.0
+shader_parameter/depth = 120.0
+shader_parameter/amplitude = 7.0
+shader_parameter/deep_color = Color(0.09, 0.2, 0.17, 0.95)
+shader_parameter/mid_color = Color(0.18, 0.36, 0.29, 0.92)
+shader_parameter/surface_color = Color(0.4, 0.5, 0.3, 0.88)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_water"]
+size = Vector2(249, 120)
+
+[node name="ToxicWater" type="Area2D" unique_id=1804796530]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="Body" type="Polygon2D" parent="." unique_id=1800155342]
+material = SubResource("ShaderMaterial_water")
+polygon = PackedVector2Array(-123, -119, -110, -119, -98, -120, -85.526, -120, -72.368, -120, -59.211, -120, -46.053, -120, -32.895, -120, -19.737, -120, -6.579, -120, 6.579, -120, 19.737, -120, 32.895, -120, 46.053, -120, 59.211, -120, 73.09039, -119.35008, 86.726746, -120.25917, 99, -120, 112, -120, 125, -119, 124, -3, -123, -3)
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=2097048082]
+position = Vector2(1, -63)
+shape = SubResource("RectangleShape2D_water")
