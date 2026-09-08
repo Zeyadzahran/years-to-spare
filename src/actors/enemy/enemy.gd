@@ -23,6 +23,10 @@ const WORLD_LAYER := 1
 ## Where a sight line aims on the boy: the middle of his 100-tall body rather
 ## than his feet, which sit level with the floor.
 const TARGET_CHEST_HEIGHT := -50.0
+## How far ahead of the feet the ground is tested, and how far down that test
+## reaches: about one body width out and a bit over one tile down.
+const STEP_AHEAD := 46.0
+const GROUND_PROBE := 140.0
 ## Past 1.0 on purpose: the hit should blow out to white, not merely brighten.
 const FLASH_TINT := Color(3.2, 2.7, 2.3)
 
@@ -74,6 +78,8 @@ var target: Player
 var facing := -1
 var state: StringName = &"Idle"
 
+## Where the unit started, so a body knocked into a pit can be cleaned up.
+var _spawn_y := 0.0
 var _state_elapsed := 0.0
 var _attack_fired := false
 var _hurt_from := 1
@@ -86,6 +92,7 @@ var _audio: Array[AudioStreamPlayer2D] = []
 
 func _ready() -> void:
 	add_to_group(&"enemy")
+	_spawn_y = global_position.y
 	health.died.connect(_on_died)
 	health.damaged.connect(_on_damaged)
 	sprite.animation_finished.connect(_on_animation_finished)
@@ -97,7 +104,18 @@ func _ready() -> void:
 	_set_animation(&"idle")
 
 
+## How far a unit may fall below its post before it counts as gone. The kill
+## volumes only watch the player, so without this a trooper shoved off a ledge
+## accelerates forever: an invisible node burning physics for the rest of the
+## run, and a kill the boy can never collect.
+const PIT_DEPTH := 2200.0
+
+
 func _physics_process(delta: float) -> void:
+	if state != &"Dead" and global_position.y > _spawn_y + PIT_DEPTH:
+		# Silently, and without paying out years: the pit took him, not the boy.
+		queue_free()
+		return
 	_sync_to_world_time()
 	# Raw delta, ahead of the frozen-world return: the boy can still swing while
 	# the world is held still, and the unit he hits still has to react.
@@ -183,7 +201,12 @@ func _tick_chase(delta: float) -> void:
 	var dx := target.global_position.x - global_position.x
 	var direction: float = signf(dx)
 	facing = 1 if direction > 0.0 else -1 if direction < 0.0 else facing
-	velocity.x = move_toward(velocity.x, direction * speed, CHASE_ACCELERATION * delta)
+	# Only a unit with its feet down gets to refuse the step; one already in the
+	# air keeps its momentum, or it would stall mid-fall.
+	if is_on_floor() and not has_floor_ahead(direction):
+		velocity.x = move_toward(velocity.x, 0.0, GROUND_FRICTION * delta)
+	else:
+		velocity.x = move_toward(velocity.x, direction * speed, CHASE_ACCELERATION * delta)
 	_set_animation(&"run")
 
 
@@ -285,6 +308,19 @@ func has_line_of_sight() -> bool:
 		target.global_position + Vector2(0.0, TARGET_CHEST_HEIGHT),
 		WORLD_LAYER)
 	return get_world_2d().direct_space_state.intersect_ray(query).is_empty()
+
+
+## Whether the unit's next step lands on anything. Cad Corp hold a line; they do
+## not march off a gantry chasing the boy. The fork's tiers and the yard's
+## staircase are two tiles wide, so without this a chase walks most of the
+## level's troops into the nearest pit - and hands the boy free years for it.
+func has_floor_ahead(direction: float) -> bool:
+	if is_zero_approx(direction):
+		return true
+	var from := global_position + Vector2(STEP_AHEAD * signf(direction), -10.0)
+	var query := PhysicsRayQueryParameters2D.create(
+		from, from + Vector2(0.0, GROUND_PROBE), WORLD_LAYER)
+	return not get_world_2d().direct_space_state.intersect_ray(query).is_empty()
 
 
 func _change_state(next: StringName) -> void:

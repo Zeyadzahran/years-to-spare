@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://dipvbr4hlnk2j"]
+
+[ext_resource type="Script" uid="uid://c36tp271uiaqi" path="res://src/world/exits/level_exit.gd" id="1_script"]
+[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="3_font"]
+
+[sub_resource type="RectangleShape2D" id="Shape_exit"]
+size = Vector2(90, 220)
+
+[sub_resource type="StyleBoxFlat" id="Style_panel"]
+content_margin_left = 32.0
+content_margin_top = 32.0
+content_margin_right = 32.0
+content_margin_bottom = 32.0
+bg_color = Color(0.047, 0.039, 0.031, 0.97)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.9, 0.65, 0.25, 1)
+
+[node name="LevelExit" type="Area2D" unique_id=1446590263]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=883090496]
+position = Vector2(0, -110)
+shape = SubResource("Shape_exit")
+
+[node name="Sign" type="Label" parent="." unique_id=150457110]
+offset_left = -60.0
+offset_top = -175.0
+offset_right = 60.0
+offset_bottom = -145.0
+theme_override_colors/font_color = Color(1, 0.94, 0.75, 1)
+theme_override_colors/font_outline_color = Color(0.16, 0.12, 0.08, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 18
+text = "EXIT"
+horizontal_alignment = 1
+
+[node name="Completion" type="CanvasLayer" parent="." unique_id=186540910]
+process_mode = 3
+layer = 70
+
+[node name="Panel" type="PanelContainer" parent="Completion" unique_id=1125143492]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -390.0
+offset_top = -145.0
+offset_right = 390.0
+offset_bottom = 145.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Style_panel")
+
+[node name="Copy" type="VBoxContainer" parent="Completion/Panel" unique_id=1311729061]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Kicker" type="Label" parent="Completion/Panel/Copy" unique_id=986476268]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.64, 0.24, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 13
+text = "GARBAGE EDEN"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Completion/Panel/Copy" unique_id=1138247064]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.91, 0.74, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 26
+text = "LEVEL 1 COMPLETE"
+horizontal_alignment = 1
+
+[node name="ReturnButton" type="Button" parent="Completion/Panel/Copy" unique_id=939913695]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 14
+text = "Return to menu"

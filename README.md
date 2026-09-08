@@ -15,8 +15,11 @@ The project is an in-development prototype with a playable first level,
 - Responsive platforming, crouching, and melee combat
 - A five-second time-stop ability with an age cost and cooldown
 - Melee Guards and ranged Gunners
+- A compact salvage yard: shuttle ride, freight lift, and two-deck transfer
+- A fast, timed transfer above a spike pit and an optional healing ledge
 - Checkpoints that preserve age and defeated enemies between retries
 - Hazards, moving traps, and healing fig pickups
+- A marked exit gate and completion screen; no Warden fight
 - Intro, main menu, HUD, music, sound effects, and persistent settings
 
 Only time stop is available in the current level. Rewind and slow-time inputs
@@ -40,6 +43,42 @@ second level has not been added yet.
 
 The game starts at `src/cinematics/logo/logo.tscn`. The playable level is
 `src/levels/level_01/level_01.tscn`.
+
+All Level 01 layout is stored in that one scene. `World/SalvageYard` is a
+normal node group inside it, containing the later sections. Reusable actors,
+platforms, hazards, and the background remain separate reusable scenes.
+
+For level work, open `src/levels/level_01/level_01.tscn` and use **Run Current Scene**
+(F6), which skips the menu and story. To capture 15 views of this level directly:
+
+```bash
+python3 tools/capture_level.py
+```
+
+This uses Godot to render at the gameplay camera zoom and Python's standard
+library to build `builds/level-review/index.html`. No Python packages are needed.
+Use `--godot /path/to/godot` if Godot is not on your PATH or in `/Applications`.
+Captures need a graphical session; use headless mode for the physics checks.
+
+The final transfer has two fast decks around a permanent middle platform.
+Time the stop so the incoming deck is high enough to reach the middle platform,
+but still low enough to board from the bank. One well-timed five-second cast
+(cost: three years) can cross both decks. The middle platform is safe to wait on
+if another cast is needed. Spikes cover the pit and remain lethal while frozen;
+a missed jump returns to the transfer checkpoint, preserving spent years.
+
+For the current transfer challenge:
+
+```bash
+godot --headless --path . --fixed-fps 60 tests/level_01/verify_transfer_timing.tscn
+python3 tools/capture_level.py --only 05,06,07 --output builds/transfer-review
+```
+
+The test uses the real input, wind-up, player controller, and five-second power
+window at starting ages 23 and 53. It also checks that mistimed frozen positions
+are unreachable and that the spike floor has no safe gaps. All previews load
+Level 01 directly. The layout draft tool exports the current scene, including
+manual edits, instead of rebuilding an older copy of the layout.
 
 ## Controls
 
@@ -78,7 +117,7 @@ src/
     level.gd             Shared level lifecycle and retry handling
     level_01/
       level_01.tscn      Gameplay layout: terrain, hazards, actors, and checkpoints
-      decorations.tscn   Placed decorations, grouped by location and drawing depth
+      shaders/           Scrap background depth shader
       props/             Reusable decoration scenes
       hazards/           Level 1 hazard scenes and animation resources
       art/               Background, terrain, prop, and hazard images
@@ -86,19 +125,25 @@ src/
       background.tscn    Parallax background
       terrain_tileset.tres
   ui/                    HUD, options, credits, main menu, and configurable level titles
-  world/                 Shared checkpoints, pickups, platforms, exits, hazard scripts
+  world/
+    checkpoints/         Checkpoint scene, script, and marker animation
+    pickups/             Healing pickup scene and script
+    platforms/           Static, moving, falling, and blinking decks
+    exits/               Exit gate and completion screen
+    hazards/             Shared hazard behavior
 docs/                    Level authoring guide and refactor validation notes
-tests/                   Scene loading, retry progress, and navigation checks
+tests/                   Scene contracts and Level 1 physics checks
+tools/                   Python preview command and grouped authoring helpers
 ```
 
 See [Level authoring](docs/level-authoring.md) for where to place decorations,
 how the layers work, and which names must remain stable.
 
-For Level 1, edit `level_01.tscn` to place gameplay objects and
-`decorations.tscn` to arrange scenery. Decorations are grouped into Entrance,
-Trench, BigPit, and Exit sections. Drag reusable scenes from `props/` into a
-section instead of copying texture crops by hand. Edit a source prop to change
-every copy, or move and flip an instance to change just that placement.
+All gameplay and decoration placements stay in `level_01/level_01.tscn`.
+Use `World/Decorations` for the opening and `World/SalvageYard/Decorations`
+for the later section. Reusable scenes in `props/` are available for new scenery.
+Ambience, terrain seam patches, checkpoints, and salvage-yard objects have
+separate scene-tree groups. The exit checkpoint has its own unique name.
 
 Keep existing enemy paths and checkpoint names stable: retry progress uses them
 to remember defeated enemies and the active checkpoint.
@@ -108,12 +153,14 @@ to remember defeated enemies and the active checkpoint.
 After importing the project, run the scene checks from the project root:
 
 ```bash
-godot --headless --path . --script tests/scene_contracts.gd
+godot --headless --path . --script tests/scene_contracts.gd -- --level-only
 ```
 
-The checks cover scene loading, startup, checkpoint recovery, defeated enemies,
-and title/exit navigation. The current headless run passes its assertions but
-reports resource warnings at shutdown; see [validation notes](docs/refactor-plan.md).
+The command checks scene loading, retry identities, checkpoint recovery, and
+completion while running Level 1 directly. Omit `-- --level-only` to include
+startup, credits, and title navigation. Focused physics checks live in
+`tests/level_01/`; authoring helpers live in `tools/level_01/`. Existing shutdown
+resource diagnostics are separate from assertion failures.
 
 Install the export templates matching your Godot version, then use the `Web`
 preset in **Project → Export**, or run:
@@ -145,8 +192,8 @@ raw delta when it needs to continue during a time stop.
 | A player state or ability | Add a `State` under `src/actors/player/states/` and register it in the player's `StateMachine` |
 | A player animation | Add the clip to `player_frames.tres` and map it in `PlayerAnimator.STATE_CLIPS` |
 | An enemy type | Extend `Enemy`, configure its stats, and implement `_attack()` |
-| A Level 1 decoration | Add a reusable scene under `src/levels/level_01/props/`, then place it in `decorations.tscn` |
-| A level exit | Instance `src/world/level_exit.tscn` and set its `destination` |
+| A Level 1 decoration | Add a reusable scene under `src/levels/level_01/props/`, then place it in a decoration group in `level_01.tscn` |
+| A level exit | Instance `src/world/exits/level_exit.tscn` under a `Level` root to show completion when crossed |
 | A level title | Use the scenes under `src/ui/level_title/` and set the root's `next_scene` |
 | A time-aware world object | Extend `TimeBody2D` or request scaled delta from `TimeService` |
 | A cross-system event | Add a signal to `EventBus` and connect the interested systems |

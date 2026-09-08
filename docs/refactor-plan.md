@@ -1,5 +1,8 @@
 # Project organization refactor
 
+Historical validation of the initial refactor. For the current single-scene
+layout and file locations, see [Level authoring](level-authoring.md).
+
 ## Purpose and constraints
 Group Level 1 assets, create reusable decorations, and colocate scenes/scripts without changing appearance or gameplay. Governed by the user-provided AGENTS instructions. Preserve the existing web-performance changes. Following review, the user authorized updating the README and creating a PR.
 
