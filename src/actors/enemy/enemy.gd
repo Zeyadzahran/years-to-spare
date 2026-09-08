@@ -189,7 +189,7 @@ func _tick_chase(delta: float) -> void:
 
 func _tick_attack(delta: float) -> void:
 	velocity.x = move_toward(velocity.x, 0.0, GROUND_FRICTION * delta)
-	_set_animation(attack_animation)
+	_set_animation(_attack_clip())
 
 	if target == null or target.is_down():
 		_change_state(&"Idle")
@@ -208,6 +208,14 @@ func _tick_attack(delta: float) -> void:
 ## The one move that differs between units: a hitbox check, a spawned round.
 func _attack() -> void:
 	pass
+
+
+## Which clip an attack plays. A plain field for most units - Gunner overrides
+## this to pick between his standing shot and a kneeling one depending on
+## whether the boy is crouched, so the choice can change frame to frame while
+## he is lining up rather than being locked in on the way into Attack.
+func _attack_clip() -> StringName:
+	return attack_animation
 
 
 ## Whether the unit is still allowed to turn once the attack has started.
@@ -296,7 +304,7 @@ func _change_state(next: StringName) -> void:
 	match state:
 		&"Idle": _set_animation(&"idle")
 		&"Chase": _set_animation(&"run")
-		&"Attack": _set_animation(attack_animation)
+		&"Attack": _set_animation(_attack_clip())
 		&"Recover": _set_animation(&"idle")
 		&"Hurt": _set_animation(&"hurt")
 		&"Dead": _set_animation(&"dying")

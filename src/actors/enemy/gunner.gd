@@ -21,6 +21,15 @@ const BULLET_SPEED := 720.0
 const MUZZLE_HEIGHT := -89.0
 const MUZZLE_FORWARD := 57.0
 
+## Where the barrel sits in the kneeling shot instead. A crouched boy's box
+## runs from 0 to -70 rather than 0 to -100 (see Player.CROUCH_HEIGHT), so the
+## standing MUZZLE_HEIGHT flies clean over his head - which is the exploit
+## this pose exists to close. Re-measured the same way as the standing pair:
+## East_0006-0007.png put the barrel tip at texture pixel (239, 88), giving
+## node ((239 - 128) * 0.45, (88 - 128) * 0.45 - 54).
+const CROUCH_MUZZLE_HEIGHT := -72.0
+const CROUCH_MUZZLE_FORWARD := 50.0
+
 func _init() -> void:
 	speed = 150.0
 	# Both ranges have to stay inside the frame. The player camera is zoom 1.6
@@ -49,6 +58,17 @@ func _init() -> void:
 	attack_animation = &"shoot"
 
 
+## Which pose plays: kneeling and aiming low the moment the boy is crouched,
+## standing otherwise. Read every tick rather than latched on entering Attack,
+## so ducking mid wind-up still drops him to a knee in time for the shot -
+## which is the whole point: a boy who crouches next to a Gunner to swing at
+## him free no longer gets to, because the Gunner drops with him.
+func _attack_clip() -> StringName:
+	if target != null and is_instance_valid(target) and target.is_crouched():
+		return &"crouch_shoot"
+	return &"shoot"
+
+
 ## Spawns the round that the sprite itself cannot show. The shipped muzzle-flash
 ## art is cropped by its own canvas - frames 1, 6 and 7 all still have opaque
 ## pixels in the last column of the 256px source - so the flash never reads as
@@ -64,10 +84,16 @@ func _attack() -> void:
 	# still earns the shot, it just has further to travel.
 	if not has_line_of_sight():
 		return
+	# Same check the clip itself just made, so the round leaves from wherever
+	# the barrel is actually drawn rather than from the standing spot on a
+	# crouched shot.
+	var low := target.is_crouched()
 	var bullet := BULLET_SCENE.instantiate() as Bullet
 	get_tree().current_scene.add_child(bullet)
 	# `sprite.flip_h` mirrors the drawn texture only; it does not mirror child
 	# transforms. The barrel's world position has to be rebuilt from `facing`
 	# by hand rather than read off a marker under the sprite.
-	bullet.global_position = global_position + Vector2(facing * MUZZLE_FORWARD, MUZZLE_HEIGHT)
+	var muzzle_height := CROUCH_MUZZLE_HEIGHT if low else MUZZLE_HEIGHT
+	var muzzle_forward := CROUCH_MUZZLE_FORWARD if low else MUZZLE_FORWARD
+	bullet.global_position = global_position + Vector2(facing * muzzle_forward, muzzle_height)
 	bullet.setup(Vector2(facing, 0.0) * BULLET_SPEED, damage, self)

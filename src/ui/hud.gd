@@ -3,6 +3,7 @@ extends CanvasLayer
 ## being wired to it. The one exception is the player's TimePowers, held from
 ## `player_spawned`: the time line is a clock and has to be polled.
 
+@onready var hearts_row: HBoxContainer = %HeartsRow
 @onready var health_bar: StatBar = %Health
 @onready var health_value: Label = %HealthValue
 ## The years meter. Every power the boy casts spends from it, so it doubles as
@@ -13,6 +14,8 @@ extends CanvasLayer
 @onready var options_button: Button = %Options
 
 const OPTIONS_SCENE := preload("res://src/ui/options/options.tscn")
+const HEART_FULL := preload("res://assets/sprites/heart-full.png")
+const HEART_EMPTY := preload("res://assets/sprites/heart-empty.png")
 
 var _options_panel: Control = null
 ## Built rather than instanced: see src/ui/time_stop_overlay.gd.
@@ -30,6 +33,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	options_button.pressed.connect(_on_options_pressed)
 	EventBus.player_health_changed.connect(_on_health_changed)
+	EventBus.player_hearts_changed.connect(_on_hearts_changed)
 	EventBus.player_age_changed.connect(_on_age_changed)
 	EventBus.player_spawned.connect(_read_player)
 	EventBus.ability_started.connect(_on_ability_changed.bind(true))
@@ -44,6 +48,10 @@ func _ready() -> void:
 	# The player may already exist: pull the starting values instead of waiting
 	# for the first change.
 	_read_player(get_tree().get_first_node_in_group(&"player"))
+	# Hearts live on GameState rather than the player, and GameState already
+	# has a real count by the time the HUD shows up - no spawn signal to wait
+	# on the way health and age get one.
+	_on_hearts_changed(GameState.hearts, GameState.MAX_HEARTS)
 
 
 func _read_player(player: Node) -> void:
@@ -59,6 +67,19 @@ func _read_player(player: Node) -> void:
 func _on_health_changed(current: float, maximum: float) -> void:
 	health_bar.set_value(current, maximum)
 	health_value.text = "%d" % roundi(current)
+
+
+## One icon per heart the run started with, lit up to however many are left.
+## `max_hearts` sizing the row rather than a fixed three, so it still reads
+## correctly if that number is ever tuned.
+func _on_hearts_changed(current: int, max_hearts: int) -> void:
+	var icons := hearts_row.get_children()
+	for i in icons.size():
+		var icon := icons[i] as TextureRect
+		if icon == null:
+			continue
+		icon.visible = i < max_hearts
+		icon.texture = HEART_FULL if i < current else HEART_EMPTY
 
 
 ## The clock plate reads as the boy's age, not as a stock of years: it starts at

@@ -12,6 +12,9 @@ signal player_health_changed(current: float, maximum: float)
 signal player_died(of_old_age: bool)
 
 signal player_age_changed(age: float, death_age: float)
+## A heart lost or the count restored to full - GameState.hearts is the source
+## of truth, this is just what tells the HUD to redraw it.
+signal player_hearts_changed(current: int, max_hearts: int)
 
 signal enemy_died(enemy: Node2D, age_reward: float)
 
