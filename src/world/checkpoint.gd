@@ -12,6 +12,8 @@ extends Area2D
 @onready var _marker: AnimatedSprite2D = $Marker
 
 func _ready() -> void:
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
 	# Respawning rebuilds the level, so the one that is already recorded has to
 	# come back lit rather than dormant.
 	_marker.play(&"green" if GameState.is_active_checkpoint(name) else &"red")

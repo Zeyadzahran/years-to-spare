@@ -22,5 +22,3 @@ offset = Vector2(0, -256)
 [node name="Shape" type="CollisionShape2D" parent="." unique_id=64028517]
 position = Vector2(0, -70)
 shape = SubResource("Shape_Checkpoint")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

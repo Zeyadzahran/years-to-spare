@@ -15,8 +15,13 @@ The project is an in-development prototype with a playable first level,
 - Responsive platforming, crouching, and melee combat
 - A five-second time-stop ability with an age cost and cooldown
 - Melee Guards and ranged Gunners
+- A branching late-level route: a hazardous time-stop shortcut or a longer
+  combat path that can restore spent years
+- A multi-stage salvage yard with changing elevation, mixed encounters, and
+  optional fights
 - Checkpoints that preserve age and defeated enemies between retries
 - Hazards, moving traps, and healing fig pickups
+- A clear end-of-level relay and completion screen
 - Intro, main menu, HUD, music, sound effects, and persistent settings
 
 Only time stop is available in the current level. Rewind and slow-time inputs
