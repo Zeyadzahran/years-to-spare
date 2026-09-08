@@ -38,6 +38,8 @@ const SCRAP_SCALE := 0.30
 const SKY_TOP := 197.0
 const RUINS_TOP := 211.0
 const SCRAP_TOP := 221.0
+## Editor repeats cover the authored level with room for the camera.
+const COVERAGE_RIGHT := 42000.0
 
 
 var _root: Node2D
@@ -67,12 +69,16 @@ func _build() -> void:
 
 	var scrap := _layer("ForegroundScrap", Vector2(0.45, 0.10), 10, SCRAP_SCALE)
 	_plate(scrap, SCRAP, Vector2(0.0, SCRAP_TOP), SCRAP_SCALE)
-	# The heap's bottom row is opaque, so without this it ends on a hard
-	# horizontal seam wherever the camera sits above the terrain that would
-	# normally hide it. Carry its base colour down instead.
+	# Extend the existing rubble below the silhouette instead of a flat colour.
 	_bleed(scrap, "BaseFill",
 		Rect2(0.0, SCRAP_TOP + PLATE.y * SCRAP_SCALE - 2.0,
-			PLATE.x * SCRAP_SCALE, 2400.0), Color("2e1f1a"))
+			PLATE.x * SCRAP_SCALE, 2400.0), Color.WHITE)
+	var depth := ShaderMaterial.new()
+	depth.shader = load("res://src/world/scrap_depth.gdshader")
+	depth.set_shader_parameter("scrap_texture", load(SCRAP))
+	depth.set_shader_parameter("top", SCRAP_TOP + PLATE.y * SCRAP_SCALE - 2.0)
+	depth.set_shader_parameter("tile_width", PLATE.x * SCRAP_SCALE)
+	(scrap.get_node(^"BaseFill") as Polygon2D).material = depth
 
 	var packed := PackedScene.new()
 	assert(packed.pack(_root) == OK)
@@ -88,7 +94,9 @@ func _layer(layer_name: String, scroll: Vector2, times: int, plate_scale: float)
 	# Horizontal tiling only. A vertical repeat would stack a second horizon on
 	# top of the first, which is what the old mirrored plates were doing.
 	layer.repeat_size = Vector2(PLATE.x * plate_scale, 0.0)
-	layer.repeat_times = times
+	# Copies spread on both sides of the origin. Cover the entire level even
+	# when viewing its full layout in the editor, as well as the runtime camera.
+	layer.repeat_times = maxi(times, 2 * ceili(COVERAGE_RIGHT / layer.repeat_size.x) - 1)
 	_own(layer, _root)
 	return layer
 

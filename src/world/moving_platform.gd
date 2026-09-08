@@ -10,7 +10,7 @@ enum MotionMode { LINEAR, ORBIT }
 @export var one_way := false: set = _set_one_way
 @export var motion_mode: MotionMode = MotionMode.LINEAR
 @export var travel := Vector2(300.0, 0.0)
-@export var speed := 150.0
+@export var speed := 500.0
 @export_range(0.0, 1.0) var start_at := 0.0
 @export_group("Orbit")
 @export var orbit_radii := Vector2(260.0, 130.0)

@@ -2,13 +2,13 @@ extends Node
 ## Soaks every production-layout enemy against a nearby invulnerable player.
 # A valid post must begin grounded and must not let its owner walk into a pit.
 
-const EXTENSION := "res://src/levels/level_01_production_extension.tscn"
+const FIXTURE = preload("res://tools/level_01_fixture.gd")
 const PLAYER := "res://src/actors/player/player.tscn"
 const FALL_TOLERANCE := 170.0
 
 
 func _ready() -> void:
-	var extension := (load(EXTENSION) as PackedScene).instantiate()
+	var extension := FIXTURE.late_sections()
 	add_child(extension)
 	var player := (load(PLAYER) as PackedScene).instantiate() as Player
 	add_child(player)
@@ -45,8 +45,7 @@ func _ready() -> void:
 			get_tree().quit(1)
 			return
 
-	# No camera-width slice should open with a mob wall. Four is the ceiling and
-	# only occurs where the optional shortcut crosses above the Long Way.
+	# Combat follows each traversal beat, with one enemy per camera-width slice.
 	var max_in_slice := 0
 	for pivot in enemies:
 		if not is_instance_valid(pivot):
@@ -56,7 +55,8 @@ func _ready() -> void:
 			if is_instance_valid(other) and absf(other.global_position.x - pivot.global_position.x) <= 400.0:
 				count += 1
 		max_in_slice = maxi(max_in_slice, count)
-	assert(max_in_slice <= 4)
+	assert(not enemies.is_empty())
+	assert(max_in_slice == 1)
 	print("PRODUCTION_ENEMY_FOOTING_OK units=%d max_per_camera=%d" % [
 		enemies.size(), max_in_slice,
 	])

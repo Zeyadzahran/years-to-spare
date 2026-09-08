@@ -1,8 +1,13 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://be6vd4fiw07ao"]
 
-[ext_resource type="Texture2D" path="res://assets/backgrounds/phase-one/ea8e4a54-3e3c-48a9-b353-0fea2fbcf12e.png" id="1_ap2ib"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/phase-one/472ed12e-8a25-40df-884d-129b4d21693e.png" id="2_hl4qq"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/phase-one/27f45046-c50c-460e-97f6-3665cd5863cf.png" id="3_re44o"]
+[ext_resource type="Texture2D" uid="uid://56bak15n4n1h" path="res://assets/backgrounds/phase-one/ea8e4a54-3e3c-48a9-b353-0fea2fbcf12e.png" id="1_ap2ib"]
+[ext_resource type="Texture2D" uid="uid://cbmbjiab8hwar" path="res://assets/backgrounds/phase-one/472ed12e-8a25-40df-884d-129b4d21693e.png" id="2_hl4qq"]
+[ext_resource type="Texture2D" uid="uid://d2wan2rvwcjqj" path="res://assets/backgrounds/phase-one/27f45046-c50c-460e-97f6-3665cd5863cf.png" id="3_re44o"]
+[ext_resource type="Shader" path="res://src/world/scrap_depth.gdshader" id="4_depth"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_depth"]
+shader = ExtResource("4_depth")
+shader_parameter/scrap_texture = ExtResource("3_re44o")
 
 [node name="PhaseOneBackground" type="Node2D" unique_id=1298165574]
 z_index = -100
@@ -10,7 +15,7 @@ z_index = -100
 [node name="Sky" type="Parallax2D" parent="." unique_id=643419438]
 scroll_scale = Vector2(0.08, 0.04)
 repeat_size = Vector2(836, 0)
-repeat_times = 14
+repeat_times = 101
 
 [node name="AboveFill" type="Polygon2D" parent="Sky" unique_id=1878800377]
 color = Color(0.89411765, 0.654902, 0.46666667, 1)
@@ -30,7 +35,7 @@ polygon = PackedVector2Array(0, 667.5, 836, 667.5, 836, 3067.5, 0, 3067.5)
 [node name="DistantRuins" type="Parallax2D" parent="." unique_id=144921991]
 scroll_scale = Vector2(0.25, 0.07)
 repeat_size = Vector2(635.36, 0)
-repeat_times = 12
+repeat_times = 133
 
 [node name="Plate" type="Sprite2D" parent="DistantRuins" unique_id=1418666119]
 texture_filter = 1
@@ -42,7 +47,7 @@ centered = false
 [node name="ForegroundScrap" type="Parallax2D" parent="." unique_id=671558826]
 scroll_scale = Vector2(0.45, 0.1)
 repeat_size = Vector2(501.6, 0)
-repeat_times = 10
+repeat_times = 167
 
 [node name="Plate" type="Sprite2D" parent="ForegroundScrap" unique_id=494644589]
 texture_filter = 1
@@ -52,5 +57,5 @@ texture = ExtResource("3_re44o")
 centered = false
 
 [node name="BaseFill" type="Polygon2D" parent="ForegroundScrap" unique_id=539296794]
-color = Color(0.18039216, 0.12156863, 0.101960786, 1)
+material = SubResource("ShaderMaterial_depth")
 polygon = PackedVector2Array(0, 501.3, 501.6, 501.3, 501.6, 2901.3, 0, 2901.3)

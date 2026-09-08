@@ -20,6 +20,7 @@ var _overlay: TimeStopOverlay = null
 
 var _player: Node2D = null
 var _powers: TimePowers = null
+var _level_complete := false
 
 ## The age the run started at - the power line's zero point. The age signal
 ## only carries the current and the death age, so this is read off the player.
@@ -36,6 +37,7 @@ func _ready() -> void:
 	EventBus.ability_stopped.connect(_on_ability_changed.bind(false))
 	EventBus.ability_engaged.connect(_on_ability_engaged)
 	EventBus.ability_refused.connect(_on_ability_refused)
+	EventBus.level_completed.connect(_on_level_completed)
 	_overlay = TimeStopOverlay.new()
 	add_child(_overlay)
 	# First child, so the freeze is drawn under the meters. It replaces every
@@ -122,6 +124,8 @@ func _focus_uv() -> Vector2:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _level_complete:
+		return
 	# The panel closes itself on the same key, so only open when it is gone.
 	if is_instance_valid(_options_panel):
 		return
@@ -135,7 +139,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_options_pressed() -> void:
-	if is_instance_valid(_options_panel):
+	if _level_complete or is_instance_valid(_options_panel):
 		return
 	_options_panel = OPTIONS_SCENE.instantiate()
 	_options_panel.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -144,6 +148,11 @@ func _on_options_pressed() -> void:
 	_options_panel.tree_exited.connect(_on_options_closed)
 	add_child(_options_panel)
 	get_tree().paused = true
+
+
+func _on_level_completed(_level_id: StringName) -> void:
+	_level_complete = true
+	options_button.disabled = true
 
 
 func _on_options_closed() -> void:

@@ -15,13 +15,11 @@ The project is an in-development prototype with a playable first level,
 - Responsive platforming, crouching, and melee combat
 - A five-second time-stop ability with an age cost and cooldown
 - Melee Guards and ranged Gunners
-- A branching late-level route: a hazardous time-stop shortcut or a longer
-  combat path that can restore spent years
-- A multi-stage salvage yard with changing elevation, mixed encounters, and
-  optional fights
+- A compact salvage yard: shuttle ride, freight lift, and two-deck transfer
+- A fast, timed transfer above a spike pit and an optional healing ledge
 - Checkpoints that preserve age and defeated enemies between retries
 - Hazards, moving traps, and healing fig pickups
-- A clear end-of-level relay and completion screen
+- A marked exit gate and completion screen; no Warden fight
 - Intro, main menu, HUD, music, sound effects, and persistent settings
 
 Only time stop is available in the current level. Rewind and slow-time inputs
@@ -42,6 +40,42 @@ exist in the project, but their gameplay is not yet available.
 
 The game starts at `src/levels/logo.tscn`. The playable level is
 `src/levels/level_01.tscn`.
+
+All Level 01 layout is stored in that one scene. `World/FiveActExtension` is a
+normal node group inside it, containing the later sections. Reusable actors,
+platforms, hazards, and the background remain separate reusable scenes.
+
+For level work, open `src/levels/level_01.tscn` and use **Run Current Scene**
+(F6), which skips the menu and story. To capture 15 views of this level directly:
+
+```bash
+python3 tools/capture_level.py
+```
+
+This uses Godot to render at the gameplay camera zoom and Python's standard
+library to build `builds/level-review/index.html`. No Python packages are needed.
+Use `--godot /path/to/godot` if Godot is not on your PATH or in `/Applications`.
+Captures need a graphical session; use headless mode for the physics checks.
+
+The final transfer has two fast decks around a permanent middle platform.
+Time the stop so the incoming deck is high enough to reach the middle platform,
+but still low enough to board from the bank. One well-timed five-second cast
+(cost: three years) can cross both decks. The middle platform is safe to wait on
+if another cast is needed. Spikes cover the pit and remain lethal while frozen;
+a missed jump returns to the transfer checkpoint, preserving spent years.
+
+For the current transfer challenge:
+
+```bash
+godot --headless --path . --fixed-fps 60 tools/verify_transfer_timing.tscn
+python3 tools/capture_level.py --only 05,06,07 --output builds/transfer-review
+```
+
+The test uses the real input, wind-up, player controller, and five-second power
+window at starting ages 23 and 53. It also checks that mistimed frozen positions
+are unreachable and that the spike floor has no safe gaps. All previews load
+Level 01 directly. The layout draft tool exports the current scene, including
+manual edits, instead of rebuilding an older copy of the layout.
 
 ## Controls
 

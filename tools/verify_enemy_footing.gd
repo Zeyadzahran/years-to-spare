@@ -22,14 +22,12 @@ func _ready() -> void:
 	# only bait for the chase, so give him a bar nothing can empty.
 	player.health.max_health = 1.0e9
 	player.health.current = 1.0e9
-	# Only the troops posted on narrow ledges can fall off one; testing the units
-	# standing on open ground would triple the runtime to prove nothing.
+	# Use the authored group so removing or renaming a route cannot silently
+	# turn this into a zero-enemy pass.
 	var watched: Array = []
-	for enemy in get_tree().get_nodes_in_group(&"enemy"):
-		var n := String(enemy.name)
-		if n.begins_with("Long") or n.begins_with("Yard") or n.begins_with("Firing") \
-				or n.begins_with("LowRoad") or n.begins_with("WardenGunner"):
-			watched.append({"node": enemy, "name": enemy.name, "y": enemy.global_position.y})
+	for enemy in level.get_node(^"World/FiveActExtension/Enemies").get_children():
+		watched.append({"node": enemy, "name": enemy.name, "y": enemy.global_position.y})
+	assert(not watched.is_empty())
 
 	var failures := 0
 	for entry: Dictionary in watched:
@@ -38,7 +36,7 @@ func _ready() -> void:
 			continue
 		# Stand the boy just inside detection range so the unit commits to a
 		# chase, and out of baton reach so the fight does not end the test.
-		player.global_position = enemy.global_position + Vector2(300.0, -40.0)
+		player.global_position = enemy.global_position + Vector2(-280.0, -40.0)
 		player.velocity = Vector2.ZERO
 		var frames := int(SECONDS * 60.0)
 		for _f in frames:

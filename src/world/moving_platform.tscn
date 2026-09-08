@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://yfrmkarwqwn4"]
 
-[ext_resource type="Script" path="res://src/world/moving_platform.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/sprites/platforms.png" id="2_platforms"]
+[ext_resource type="Script" uid="uid://ouevtjytkj6l" path="res://src/world/moving_platform.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b8w5ea6b7b88x" path="res://assets/sprites/platforms.png" id="2_platforms"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_slab"]
 atlas = ExtResource("2_platforms")
@@ -17,9 +17,11 @@ script = ExtResource("1_script")
 
 [node name="Art" type="Sprite2D" parent="." unique_id=1580518701]
 z_index = -1
-position = Vector2(0, 13.508091)
-scale = Vector2(0.1618123, 0.1618123)
+position = Vector2(0, 8.202949)
+scale = Vector2(0.17346054, 0.17346054)
 texture = SubResource("AtlasTexture_slab")
 
 [node name="Shape" type="CollisionShape2D" parent="." unique_id=955848119]
+position = Vector2(1, 15)
 shape = SubResource("RectangleShape2D_uvoki")
+one_way_collision_margin = 16.0
