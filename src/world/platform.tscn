@@ -1,8 +1,13 @@
-[gd_scene format=3 uid="uid://cl3iefs77qrkk"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://bt4676o4v08uj" path="res://src/world/platform.gd" id="1_platform"]
+[ext_resource type="Script" path="res://src/world/platform.gd" id="1_platform"]
+[ext_resource type="Texture2D" path="res://assets/sprites/platforms.png" id="2_platforms"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_slab"]
+atlas = ExtResource("2_platforms")
+region = Rect2(430, 56, 677, 260)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2kfk7"]
 resource_local_to_scene = true
 size = Vector2(160, 24)
 
@@ -10,12 +15,11 @@ size = Vector2(160, 24)
 collision_mask = 0
 script = ExtResource("1_platform")
 
-[node name="Rect" type="ColorRect" parent="." unique_id=2127265375]
-offset_left = -80.0
-offset_top = -12.0
-offset_right = 80.0
-offset_bottom = 12.0
-color = Color(0.16, 0.16, 0.24, 1)
+[node name="Art" type="Sprite2D" parent="." unique_id=2127265375]
+z_index = -1
+position = Vector2(0, 18.143541)
+scale = Vector2(0.19138756, 0.19138756)
+texture = SubResource("AtlasTexture_slab")
 
 [node name="Shape" type="CollisionShape2D" parent="." unique_id=808724689]
-shape = SubResource("RectangleShape2D_platform")
+shape = SubResource("RectangleShape2D_2kfk7")

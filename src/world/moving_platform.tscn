@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/world/moving_platform.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/platforms.png" id="2_platforms"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slab"]
+atlas = ExtResource("2_platforms")
+region = Rect2(190, 383, 1153, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uvoki"]
+resource_local_to_scene = true
+size = Vector2(200, 28)
+
+[node name="MovingPlatform" type="AnimatableBody2D" unique_id=460172544]
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Art" type="Sprite2D" parent="." unique_id=1580518701]
+z_index = -1
+position = Vector2(0, 13.508091)
+scale = Vector2(0.1618123, 0.1618123)
+texture = SubResource("AtlasTexture_slab")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=955848119]
+shape = SubResource("RectangleShape2D_uvoki")

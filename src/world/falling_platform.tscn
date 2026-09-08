@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/world/falling_platform.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/platforms.png" id="2_platforms"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slab"]
+atlas = ExtResource("2_platforms")
+region = Rect2(26, 701, 1484, 243)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k3mxr"]
+resource_local_to_scene = true
+size = Vector2(180, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6vvvs"]
+resource_local_to_scene = true
+size = Vector2(180, 18)
+
+[node name="FallingPlatform" type="AnimatableBody2D" unique_id=235994601]
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Art" type="Sprite2D" parent="." unique_id=879177400]
+z_index = -1
+position = Vector2(0, 6.0390625)
+scale = Vector2(0.1171875, 0.1171875)
+texture = SubResource("AtlasTexture_slab")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=2101961067]
+shape = SubResource("RectangleShape2D_k3mxr")
+
+[node name="RiderZone" type="Area2D" parent="." unique_id=624621240]
+collision_layer = 0
+collision_mask = 2
+
+[node name="Shape" type="CollisionShape2D" parent="RiderZone" unique_id=314232447]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_6vvvs")
