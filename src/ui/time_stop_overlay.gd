@@ -38,7 +38,7 @@ const TITLE_FADE := 0.45
 const SHADER := """
 shader_type canvas_item;
 
-uniform sampler2D screen : hint_screen_texture, filter_linear_mipmap;
+uniform sampler2D screen : hint_screen_texture, filter_linear;
 uniform float strength : hint_range(0.0, 1.0) = 0.0;
 uniform float burst : hint_range(0.0, 1.0) = 0.0;
 uniform float clock = 0.0;
@@ -143,11 +143,13 @@ func _ready() -> void:
 	_title.add_theme_constant_override(&"outline_size", 10)
 	_title.modulate.a = 0.0
 	add_child(_title)
+	set_process(false)
 
 
 ## One press has landed. Runs the shockwave, pulls the colour out of the world
 ## and starts the dial.
 func begin(duration: float) -> void:
+	set_process(true)
 	_duration = maxf(duration, 0.001)
 	_remaining = _duration
 	_target = 1.0
@@ -158,6 +160,7 @@ func begin(duration: float) -> void:
 ## The window has run out. A smaller wave going the other way, so the world
 ## visibly starts again instead of the tint simply being switched off.
 func end() -> void:
+	set_process(true)
 	_target = 0.0
 	_burst = maxf(_burst, 0.5)
 	_remaining = 0.0
@@ -178,6 +181,7 @@ func refuse(missing_years: float) -> void:
 
 
 func _say(text: String, colour: Color, hold: float) -> void:
+	set_process(true)
 	_title.text = text
 	_title.add_theme_color_override(&"font_color", colour)
 	_title_span = hold + TITLE_FADE
@@ -210,6 +214,8 @@ func _process(delta: float) -> void:
 		_title.modulate.a = minf(_title_left / TITLE_FADE, 1.0)
 
 	_dial.queue_redraw()
+	if not live and _title_left <= 0.0:
+		set_process(false)
 
 
 ## The window, as a clock hand sweeping back to noon over the boy's head.

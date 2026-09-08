@@ -1,0 +1,1740 @@
+[gd_scene format=4 uid="uid://chnxya2aqndys"]
+
+[ext_resource type="Script" uid="uid://be5vpy5llau5q" path="res://src/levels/level.gd" id="1_a7tag"]
+[ext_resource type="AudioStream" uid="uid://bx7o8vesdg803" path="res://src/levels/level_01/audio/desert_wind.mp3" id="2_1vujb"]
+[ext_resource type="PackedScene" uid="uid://be6vd4fiw07ao" path="res://src/levels/level_01/background.tscn" id="2_6yjdu"]
+[ext_resource type="AudioStream" uid="uid://b67vxnf3ogwax" path="res://src/levels/level_01/audio/desert_ambience.mp3" id="3_68m7i"]
+[ext_resource type="TileSet" uid="uid://ct8w2xk4bnq7f" path="res://src/levels/level_01/terrain_tileset.tres" id="3_s7fgk"]
+[ext_resource type="Texture2D" uid="uid://cq7g30j4pyjf2" path="res://src/levels/level_01/art/props/decorations.png" id="4_1tr31"]
+[ext_resource type="PackedScene" uid="uid://cm4pv8hd3ry6e" path="res://src/levels/level_01/hazards/toxic_pipe.tscn" id="5_bv8k8"]
+[ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="6_dmh6m"]
+[ext_resource type="Texture2D" uid="uid://b2j4qyiy3tqb3" path="res://src/levels/level_01/art/props/rocks_and_dirt.png" id="7_bv8k8"]
+[ext_resource type="PackedScene" uid="uid://dn2wg5kx7ftab" path="res://src/levels/level_01/hazards/wall_trap.tscn" id="8_r1vef"]
+[ext_resource type="PackedScene" uid="uid://dh3xs6ly8vm4c" path="res://src/levels/level_01/hazards/spike_strip_large.tscn" id="9_lscnh"]
+[ext_resource type="PackedScene" uid="uid://bq8jt4mv6c03h" path="res://src/levels/level_01/hazards/ceiling_obstacle.tscn" id="10_eucyj"]
+[ext_resource type="PackedScene" uid="uid://b7qk3n5xw2ta4" path="res://src/levels/level_01/hazards/saw.tscn" id="11_4r0fx"]
+[ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="12_r3o47"]
+[ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="16_buk32"]
+[ext_resource type="PackedScene" uid="uid://cf5roapb2wk7d" path="res://src/levels/level_01/hazards/spike_strip_small.tscn" id="17_spksm"]
+[ext_resource type="PackedScene" uid="uid://drt0b4rcdaxpq" path="res://src/actors/enemy/guard.tscn" id="18_1tr31"]
+[ext_resource type="PackedScene" uid="uid://b4kxq2wcheckp" path="res://src/world/checkpoints/checkpoint.tscn" id="18_chkpt"]
+[ext_resource type="PackedScene" uid="uid://djqbpdehfsnos" path="res://src/actors/enemy/gunner.tscn" id="19_bv8k8"]
+[ext_resource type="Texture2D" uid="uid://dlw6qxbday0fi" path="res://src/levels/level_01/art/terrain/tiles.png" id="19_seampatch"]
+[ext_resource type="PackedScene" uid="uid://qjopd3ftflm4" path="res://src/world/pickups/pickup.tscn" id="20_pickup"]
+[ext_resource type="Texture2D" uid="uid://de4yqyvggfy0c" path="res://assets/keys/W.png" id="22_lscnh"]
+[ext_resource type="Texture2D" uid="uid://butlj0b1ndwln" path="res://assets/keys/A.png" id="23_eucyj"]
+[ext_resource type="Texture2D" uid="uid://dgenlq4l22n5r" path="res://assets/keys/S.png" id="24_4r0fx"]
+[ext_resource type="Texture2D" uid="uid://bxlb43e0xdi17" path="res://assets/keys/D.png" id="25_r3o47"]
+[ext_resource type="Texture2D" uid="uid://dtk1udcysrmd8" path="res://assets/keys/J.png" id="26_eucyj"]
+[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="26_r3o47"]
+[ext_resource type="Texture2D" uid="uid://d3phh6mhrfc4b" path="res://assets/keys/K.png" id="29_tsq7e"]
+[ext_resource type="PackedScene" uid="uid://dipvbr4hlnk2j" path="res://src/world/exits/level_exit.tscn" id="compact_15_53ogl"]
+[ext_resource type="PackedScene" uid="uid://yfrmkarwqwn4" path="res://src/world/platforms/moving_platform.tscn" id="late_2_3h2n3"]
+[ext_resource type="PackedScene" uid="uid://drfu0r2a1beyg" path="res://src/world/platforms/platform.tscn" id="late_4_uf5ar"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_70nlc"]
+size = Vector2(23386, 400)
+
+[sub_resource type="FontVariation" id="FontVariation_gihc7"]
+base_font = ExtResource("26_r3o47")
+
+[node name="Level01" type="Node2D" unique_id=2026904255]
+script = ExtResource("1_a7tag")
+
+[node name="Ambience" type="Node" parent="."]
+
+[node name="DesertWind" type="AudioStreamPlayer" parent="Ambience" unique_id=905748870]
+stream = ExtResource("2_1vujb")
+volume_db = -20.0
+autoplay = true
+
+[node name="DesertAmbience" type="AudioStreamPlayer" parent="Ambience" unique_id=22267121]
+stream = ExtResource("3_68m7i")
+volume_db = -24.0
+autoplay = true
+
+[node name="Background" parent="." unique_id=773687580 instance=ExtResource("2_6yjdu")]
+
+[node name="World" type="Node2D" parent="." unique_id=1609891126]
+
+[node name="Terrain" type="Node2D" parent="World"]
+
+[node name="Surface" type="TileMapLayer" parent="World/Terrain" unique_id=943537270]
+position = Vector2(0, -23.333334)
+scale = Vector2(0.33333334, 0.33333334)
+tile_map_data = PackedByteArray("AAAlAAEAAAAAAAAAAAAmAAEAAAACAAAAAAAlAAIAAAAAAAEAAAAmAAIAAAACAAEAAAAlAAMAAAAAAAIAAAAmAAMAAAACAAIAAAAwAAMAAAACAAAAAAAzAAMAAAAAAAAAAAA0AAMAAAACAAAAAAAGAAQAAAAAAAAAAAAZAAQAAAABAAAAAAAaAAQAAAABAAAAAAAbAAQAAAABAAAAAAAcAAQAAAABAAAAAAAdAAQAAAABAAAAAAAeAAQAAAABAAAAAAAfAAQAAAABAAAAAAArAAQAAAAAAAAAAAAsAAQAAAABAAAAAAAtAAQAAAABAAAAAAAuAAQAAAABAAAAABAwAAQAAAACAAEAAAAzAAQAAAAAAAIAAAA0AAQAAAACAAIAAAA4AAQAAAABAAAAAAA5AAQAAAABAAAAABA6AAQAAAACAAAAAAA8AAQAAAAAAAAAAAAGAAUAAAABAAEAABAIAAUAAAABAAAAABAJAAUAAAABAAAAABAKAAUAAAABAAAAABALAAUAAAABAAAAAAAQAAUAAAABAAAAABARAAUAAAABAAAAAAASAAUAAAABAAAAAAATAAUAAAABAAAAABAUAAUAAAABAAAAAAAVAAUAAAABAAAAAAAWAAUAAAACAAAAAAAZAAUAAAABAAEAAAAaAAUAAAABAAEAABAbAAUAAAABAAEAAAAcAAUAAAABAAEAABAdAAUAAAABAAEAAAAeAAUAAAABAAEAABAfAAUAAAABAAEAAAAkAAUAAAABAAAAAAAlAAUAAAABAAAAABAmAAUAAAABAAAAABAnAAUAAAABAAAAAAAoAAUAAAABAAAAAAApAAUAAAACAAAAAAArAAUAAAAAAAEAAAAsAAUAAAABAAEAABAtAAUAAAABAAEAAAAuAAUAAAABAAEAABAvAAUAAAABAAEAABA4AAUAAAABAAEAAAA5AAUAAAABAAEAAAA6AAUAAAACAAEAAAA8AAUAAAAAAAEAAAA9AAUAAAABAAEAAAA+AAUAAAABAAAAAAA/AAUAAAABAAAAABBAAAUAAAABAAAAAABBAAUAAAABAAAAAABCAAUAAAABAAAAAABDAAUAAAABAAAAAABEAAUAAAABAAAAABBFAAUAAAABAAAAAABGAAUAAAABAAAAAABHAAUAAAABAAAAAABIAAUAAAABAAAAABBJAAUAAAABAAAAABBKAAUAAAABAAAAAAAAAAYAAAAAAAEAAAAIAAYAAAABAAEAABAJAAYAAAABAAEAAAAKAAYAAAABAAEAAAALAAYAAAABAAEAABAQAAYAAAABAAEAABARAAYAAAABAAEAAAASAAYAAAABAAEAABATAAYAAAABAAEAABAUAAYAAAABAAEAABAVAAYAAAABAAEAAAAZAAYAAAABAAEAABAaAAYAAAABAAEAABAbAAYAAAABAAEAABAcAAYAAAABAAEAAAAdAAYAAAABAAEAABAeAAYAAAABAAEAAAAfAAYAAAABAAEAAAAgAAYAAAABAAEAAAAhAAYAAAABAAAAAAAiAAYAAAABAAAAAAAkAAYAAAABAAEAAAAlAAYAAAABAAEAABAmAAYAAAABAAEAABAnAAYAAAABAAEAAAAoAAYAAAABAAEAABApAAYAAAACAAEAAAArAAYAAAAAAAEAAAAsAAYAAAABAAEAABAtAAYAAAABAAEAAAAuAAYAAAABAAEAAAAvAAYAAAABAAEAAAAwAAYAAAABAAEAABAxAAYAAAABAAAAAAAyAAYAAAABAAAAABAzAAYAAAABAAAAAAA0AAYAAAABAAAAABA1AAYAAAABAAAAAAA2AAYAAAABAAAAAAA3AAYAAAABAAEAABA4AAYAAAABAAEAAAA5AAYAAAABAAEAABA6AAYAAAABAAEAAAA7AAYAAAABAAEAAAA8AAYAAAABAAEAAAA9AAYAAAABAAEAABA+AAYAAAABAAEAAAA/AAYAAAABAAEAABBAAAYAAAABAAEAABBBAAYAAAABAAEAAABCAAYAAAABAAEAABBDAAYAAAABAAEAABBEAAYAAAABAAEAABBFAAYAAAABAAEAAABGAAYAAAABAAEAABBHAAYAAAABAAEAABBIAAYAAAABAAEAABBJAAYAAAABAAEAABBKAAYAAAABAAEAAABLAAYAAAABAAEAABBMAAYAAAACAAEAAAAAAAcAAAAAAAIAAAABAAcAAAABAAIAAAACAAcAAAABAAIAABADAAcAAAABAAIAAAAEAAcAAAABAAIAABAFAAcAAAABAAIAAAAGAAcAAAABAAIAABAHAAcAAAABAAIAABAIAAcAAAABAAIAAAANAAcAAAABAAIAAAAOAAcAAAABAAIAAAAPAAcAAAABAAIAAAAQAAcAAAABAAIAABARAAcAAAABAAIAABASAAcAAAABAAIAAAATAAcAAAABAAIAABAUAAcAAAABAAIAABAZAAcAAAABAAIAABAaAAcAAAABAAIAABAbAAcAAAABAAIAAAAcAAcAAAABAAIAABAdAAcAAAABAAIAABAeAAcAAAABAAIAAAAfAAcAAAABAAIAAAAgAAcAAAABAAIAABAlAAcAAAABAAEAAAAmAAcAAAABAAEAAAAnAAcAAAABAAEAAAAoAAcAAAABAAEAABApAAcAAAABAAEAAAAqAAcAAAABAAEAAAArAAcAAAABAAEAAAAsAAcAAAABAAEAAAAtAAcAAAABAAEAAAAuAAcAAAABAAEAABAvAAcAAAABAAEAAAAwAAcAAAABAAEAABAxAAcAAAABAAEAAAAyAAcAAAABAAEAABAzAAcAAAABAAEAAAA0AAcAAAABAAEAAAA1AAcAAAABAAEAAAA2AAcAAAABAAEAAAA3AAcAAAABAAEAAAA4AAcAAAABAAEAAAA5AAcAAAABAAEAAAA6AAcAAAABAAEAAAA7AAcAAAABAAEAAAA8AAcAAAABAAEAAAA9AAcAAAABAAEAABA+AAcAAAABAAEAAAA/AAcAAAABAAEAABBAAAcAAAABAAEAAABBAAcAAAABAAEAAABCAAcAAAABAAEAAABDAAcAAAABAAEAAABEAAcAAAABAAEAABBFAAcAAAABAAEAAABGAAcAAAABAAEAAABHAAcAAAABAAEAABBIAAcAAAABAAEAABBJAAcAAAABAAEAAABKAAcAAAABAAEAABBLAAcAAAABAAEAABBMAAcAAAACAAEAAAAlAAgAAAABAAIAAAAmAAgAAAABAAIAABAnAAgAAAABAAIAABAoAAgAAAABAAIAAAApAAgAAAABAAIAAAAqAAgAAAABAAIAAAArAAgAAAABAAIAAAAsAAgAAAABAAIAABAzAAgAAAABAAIAABA0AAgAAAABAAIAAAA2AAgAAAABAAIAAAA3AAgAAAABAAIAAAA4AAgAAAABAAIAAAA6AAgAAAABAAIAAAA7AAgAAAABAAIAAAA8AAgAAAABAAIAAAA9AAgAAAABAAIAAAA+AAgAAAABAAIAABBFAAgAAAABAAIAAABGAAgAAAABAAIAAABHAAgAAAABAAIAAABLAAgAAAABAAIAAABMAAgAAAACAAIAAAAMAAUAAAACAAAAAAAPAAUAAAAAAAAAAAAPAAYAAAABAAEAAAANAAYAAAABAAEAAAAMAAYAAAABAAEAAAAOAAYAAAABAAEAAAAFAAUAAAABAAAAAAAEAAUAAAABAAAAAAADAAUAAAABAAAAAAACAAUAAAABAAAAAAABAAYAAAABAAEAAAACAAYAAAABAAEAAAADAAYAAAABAAEAAAAEAAYAAAABAAEAAAAFAAYAAAABAAEAAAAGAAYAAAABAAEAAAAHAAYAAAABAAEAAAABAAUAAAABAAAAAAAAAAUAAAAAAAAAAAAHAAQAAAACAAAAAAAHAAUAAAABAAEAAAAJAAcAAAABAAIAAAAKAAcAAAABAAIAAAALAAcAAAABAAIAAAAMAAcAAAABAAIAAAAVAAcAAAABAAIAAAAWAAcAAAABAAIAAAAXAAcAAAABAAIAAAAYAAcAAAABAAIAAAAYAAQAAAAAAAAAAAAYAAUAAAAAAAEAAAAYAAYAAAAAAAEAAAAWAAYAAAACAAEAAAAjAAUAAAAAAAAAAAAjAAYAAAABAAEAAAAgAAQAAAACAAAAAAAgAAUAAAACAAEAAAAvAAMAAAAAAAAAAAAvAAQAAAABAAEAAAAwAAUAAAACAAEAAAA3AAQAAAAAAAAAAAA3AAUAAAAAAAEAAAA9AAQAAAACAAAAAABLAAUAAAABAAAAAABMAAUAAAACAAAAAAAhAAcAAAABAAIAAAAiAAcAAAABAAIAAAAjAAcAAAABAAIAAAAkAAcAAAABAAIAAAAyAAgAAAABAAIAAAAxAAgAAAABAAIAAAAwAAgAAAABAAIAAAAvAAgAAAABAAIAAAAuAAgAAAABAAIAAAAtAAgAAAABAAIAAAA1AAgAAAABAAIAAAA5AAgAAAABAAIAAAA/AAgAAAABAAIAAABAAAgAAAABAAIAAABBAAgAAAABAAIAAABCAAgAAAABAAIAAABDAAgAAAABAAIAAABEAAgAAAABAAIAAABKAAgAAAABAAIAAABJAAgAAAABAAIAAABIAAgAAAABAAIAAABJAAIAAAAAAAEAAABJAAEAAAAAAAAAAABKAAEAAAACAAAAAABKAAIAAAACAAEAAABJAAMAAAAAAAEAAABKAAMAAAACAAEAAABOAAUAAAAAAAIAAABPAAUAAAACAAIAAABPAAQAAAACAAAAAABOAAQAAAAAAAAAAABRAAQAAAAAAAIAAABSAAQAAAACAAIAAABSAAMAAAACAAAAAABRAAMAAAAAAAAAAABUAAMAAAAAAAAAAABUAAQAAAAAAAIAAABVAAQAAAABAAIAAABWAAQAAAABAAIAAABXAAQAAAABAAIAAABWAAMAAAABAAAAAABXAAMAAAABAAAAAABYAAMAAAACAAAAAABYAAQAAAACAAIAAABfAAIAAAABAAAAAABgAAIAAAABAAAAAABaAAMAAAAAAAEAAABaAAQAAAAAAAEAAABaAAUAAAAAAAIAAABbAAMAAAABAAEAAABcAAMAAAABAAEAAABdAAMAAAABAAEAAABeAAMAAAABAAEAAABfAAMAAAABAAEAAABgAAMAAAABAAEAAABgAAQAAAABAAEAAABfAAQAAAABAAEAAABeAAQAAAABAAEAAABdAAQAAAABAAEAAABcAAQAAAABAAEAAABbAAQAAAABAAEAAABbAAUAAAABAAIAAABcAAUAAAABAAIAAABdAAUAAAABAAIAAABeAAUAAAABAAIAAABfAAUAAAABAAIAAABgAAUAAAABAAIAAABhAAMAAAABAAEAAABhAAQAAAABAAEAAABUAP//AAAAAAAAAABVAP//AAABAAAAAABWAP//AAABAAAAAABXAP//AAABAAAAAABUAAAAAAAAAAIAAABVAAAAAAABAAIAAABWAAAAAAABAAIAAABYAP//AAACAAAAAABYAAAAAAACAAIAAABXAAAAAAABAAIAAABaAAIAAAAAAAAAAABbAAIAAAABAAAAAABcAAIAAAABAAAAAABdAAIAAAABAAAAAABeAAIAAAABAAAAAABVAAMAAAABAAAAAABiAAMAAAABAAEAAABiAAQAAAABAAEAAABhAAUAAAABAAIAAABiAAUAAAABAAIAAABhAAIAAAABAAAAAABiAAIAAAABAAAAAAA=")
+tile_set = ExtResource("3_s7fgk")
+
+[node name="Platforms" type="Node2D" parent="World" unique_id=682298543]
+
+[node name="Decorations" type="Node2D" parent="World" unique_id=1870163253]
+
+[node name="Foreground" type="Node2D" parent="World/Decorations" unique_id=1682266367]
+z_index = 1
+
+[node name="PalmTall" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=131813122]
+z_index = -1
+position = Vector2(156.00002, 612.00006)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -295.5)
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="PalmLean" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=329595974]
+position = Vector2(1200, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -201)
+region_enabled = true
+region_rect = Rect2(400, 231, 322, 402)
+
+[node name="DeadTree" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=250620193]
+position = Vector2(2400, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -249)
+region_enabled = true
+region_rect = Rect2(756, 142, 307, 498)
+
+[node name="PalmLean2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=747326052]
+position = Vector2(7620, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -201)
+region_enabled = true
+region_rect = Rect2(400, 231, 322, 402)
+
+[node name="DeadTree2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1092201695]
+z_index = -1
+position = Vector2(7900, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -249)
+region_enabled = true
+region_rect = Rect2(756, 142, 307, 498)
+
+[node name="PalmTall2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=540468626]
+position = Vector2(8600, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -295.5)
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="Bush" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=574045659]
+position = Vector2(54, 611.00006)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Bush7" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1903983155]
+position = Vector2(1011, 611.00006)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Cactus" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1260164561]
+position = Vector2(281.00003, 612.00006)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="DebrisSmall" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=679765341]
+position = Vector2(1394, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Bush2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1635163018]
+position = Vector2(2496, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="MachineryPile" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=193138749]
+position = Vector2(2661, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="Bush3" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=2087749316]
+position = Vector2(3426, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Cactus2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1330292291]
+position = Vector2(3675, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="DebrisSmall3" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1525846871]
+position = Vector2(3919, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="MachineryPile2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1191114729]
+position = Vector2(6939, 494)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="BrokenPipe" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1357741256]
+position = Vector2(4881, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -149.5)
+region_enabled = true
+region_rect = Rect2(700, 734, 269, 299)
+
+[node name="DebrisSmall4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=250319511]
+position = Vector2(4760, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Bush4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=33283233]
+position = Vector2(5688, 366)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="DebrisSmall5" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1062324894]
+position = Vector2(6780, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Cactus3" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1045414617]
+position = Vector2(9126.001, 608)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="Bush5" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=2035602107]
+position = Vector2(7385, 488)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="DebrisSmall6" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1431687057]
+z_index = -2
+position = Vector2(7962.001, 604.00006)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Cactus4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=740383432]
+position = Vector2(8980, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="MachineryPile3" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=2140674047]
+position = Vector2(8820, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="Bush6" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1168579539]
+position = Vector2(2180, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="MachineryPile4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=533979575]
+position = Vector2(3040, 486)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="DebrisSmall7" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1035306034]
+position = Vector2(4350, 606)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="RockDirt" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=180782626]
+position = Vector2(956, 586)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt13" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=839349469]
+position = Vector2(3943.0002, 705)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt14" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=208963131]
+position = Vector2(3942, 724)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt16" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1550731567]
+position = Vector2(4217, 702)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt17" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=718804596]
+position = Vector2(4247, 702)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt18" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=421657962]
+position = Vector2(4217.0005, 722)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+flip_v = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt15" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1451247530]
+position = Vector2(3916.0002, 704)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_v = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt8" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1486147092]
+position = Vector2(1444, 614)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt9" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1782032919]
+position = Vector2(1545.0001, 698)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt10" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=211222851]
+position = Vector2(1523, 699)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt11" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1706486970]
+position = Vector2(1824, 701.00006)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt12" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=458819150]
+position = Vector2(1843, 701)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt7" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=395973529]
+position = Vector2(840, 489.00003)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=2096249057]
+position = Vector2(731, 585)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt19" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1830761856]
+position = Vector2(5652, 463.99997)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt24" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1039295215]
+z_index = -1
+position = Vector2(5651.0005, 484)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+flip_v = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt25" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=872305781]
+position = Vector2(5849.0005, 460)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt26" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1788478719]
+position = Vector2(5849, 573)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt20" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1699581350]
+position = Vector2(5868, 704)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt22" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=337335700]
+position = Vector2(5839, 701.00006)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_v = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt23" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=687182847]
+position = Vector2(5867, 725)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt27" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1397919667]
+position = Vector2(7432, 583)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt28" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=893880072]
+position = Vector2(7431, 599)
+rotation = 0.7820672
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt29" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1504231879]
+position = Vector2(7406.0005, 584)
+rotation = 0.7820672
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+flip_v = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt30" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1158118284]
+position = Vector2(7227.9995, 581.00024)
+rotation = 0.7820672
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+flip_v = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt21" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1688113079]
+position = Vector2(5684, 464.00003)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt3" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1298657882]
+position = Vector2(731, 585)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=105188297]
+position = Vector2(936, 602)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt5" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1322289947]
+position = Vector2(961.00006, 607)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RockDirt6" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=967112875]
+position = Vector2(730, 605.00006)
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Dirt" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=2098239608]
+position = Vector2(933.00006, 581.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt5" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=570681937]
+z_index = -1
+position = Vector2(755, 581.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt6" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1845617182]
+z_index = -1
+position = Vector2(751, 593.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt10" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1427954643]
+z_index = -1
+position = Vector2(18, 699)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt11" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1799033009]
+z_index = -1
+position = Vector2(46, 703.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt12" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=218166003]
+z_index = -1
+position = Vector2(124.00001, 618.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt13" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=356693627]
+z_index = -1
+position = Vector2(5644, 501.00003)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt14" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=757589668]
+position = Vector2(5849.125, 716)
+scale = Vector2(0.20555449, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt15" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=862772869]
+position = Vector2(6612, 703)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt16" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1463522986]
+position = Vector2(6629, 705.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt18" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=303065950]
+position = Vector2(6626, 578)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt19" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1043246097]
+position = Vector2(7058, 701.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt20" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=336326015]
+position = Vector2(7037, 699.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt21" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=405885786]
+position = Vector2(7228, 701.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt22" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1296716944]
+position = Vector2(7245, 699.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt17" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1737370360]
+position = Vector2(6648, 701.00006)
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+flip_v = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt7" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=543023204]
+z_index = -1
+position = Vector2(767, 583)
+rotation = -0.9660679
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt8" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=14986413]
+z_index = -1
+position = Vector2(722, 625)
+rotation = -0.9660679
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt9" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1721903468]
+z_index = -1
+position = Vector2(962, 629.00006)
+rotation = -2.2806525
+scale = Vector2(0.2037037, 0.20370373)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt2" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=944662353]
+position = Vector2(916.375, 578.9723)
+scale = Vector2(0.13888882, 0.14532983)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Dirt4" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1123033624]
+position = Vector2(907.1875, 577.98615)
+scale = Vector2(0.16574077, 0.17411385)
+texture = ExtResource("7_bv8k8")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Sprite2D" type="Sprite2D" parent="World/Decorations/Foreground" unique_id=1196710683]
+position = Vector2(14636, 106)
+scale = Vector2(0.28540772, 0.28540772)
+texture = ExtResource("4_1tr31")
+region_enabled = true
+region_rect = Rect2(316.82587, 812.9323, 360.55927, 233.30316)
+
+[node name="Checkpoints" type="Node2D" parent="World" unique_id=565383630]
+
+[node name="Checkpoint1" parent="World/Checkpoints" unique_id=1429956542 instance=ExtResource("18_chkpt")]
+position = Vector2(1877, 613)
+
+[node name="Checkpoint2" parent="World/Checkpoints" unique_id=1183018733 instance=ExtResource("18_chkpt")]
+position = Vector2(2980, 480)
+
+[node name="Checkpoint3" parent="World/Checkpoints" unique_id=1466357679 instance=ExtResource("18_chkpt")]
+position = Vector2(4300, 600)
+
+[node name="Checkpoint" parent="World/Checkpoints" unique_id=1071873066 instance=ExtResource("18_chkpt")]
+position = Vector2(9198, 604)
+
+[node name="TerrainSeamPatch" type="Node2D" parent="World/Terrain" unique_id=1641584744]
+
+[node name="Left" type="Sprite2D" parent="World/Terrain/TerrainSeamPatch" unique_id=268153937]
+position = Vector2(4500, 337)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("19_seampatch")
+region_enabled = true
+region_rect = Rect2(38, 670, 360, 24)
+
+[node name="Right" type="Sprite2D" parent="World/Terrain/TerrainSeamPatch" unique_id=1927967452]
+position = Vector2(4620, 337)
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("19_seampatch")
+region_enabled = true
+region_rect = Rect2(856, 670, 360, 24)
+
+[node name="Pickups" type="Node2D" parent="World" unique_id=1362628233]
+
+[node name="PickupSidePath" parent="World/Pickups" unique_id=112632347 instance=ExtResource("20_pickup")]
+position = Vector2(2278, 574)
+
+[node name="PickupAfterTrench" parent="World/Pickups" unique_id=2008552602 instance=ExtResource("20_pickup")]
+position = Vector2(3371, 454)
+
+[node name="PickupAfterCeilingSpikes" parent="World/Pickups" unique_id=388230253 instance=ExtResource("20_pickup")]
+z_index = 1
+position = Vector2(4760, 555)
+
+[node name="PickupBeforeBigPit" parent="World/Pickups" unique_id=1938836808 instance=ExtResource("20_pickup")]
+position = Vector2(5760, 315)
+
+[node name="Pickup" parent="World/Pickups" unique_id=927801749 instance=ExtResource("20_pickup")]
+position = Vector2(1450, 548)
+
+[node name="Pickup2" parent="World/Pickups" unique_id=1349153118 instance=ExtResource("20_pickup")]
+position = Vector2(8395, 553)
+
+[node name="Pickup3" parent="World/Pickups" unique_id=495002536 instance=ExtResource("20_pickup")]
+position = Vector2(9074, 558)
+
+[node name="Hazards" type="Node2D" parent="World" unique_id=160053923]
+
+[node name="SpikeStripLarge" parent="World/Hazards" unique_id=75637107 instance=ExtResource("9_lscnh")]
+position = Vector2(8880, 455)
+rotation = -3.1415925
+
+[node name="Saw3" parent="World/Hazards" unique_id=470332106 instance=ExtResource("11_4r0fx")]
+z_index = -1
+position = Vector2(10201, 443)
+
+[node name="ToxicPipe" parent="World/Hazards" unique_id=1286587262 instance=ExtResource("5_bv8k8")]
+z_index = 2
+position = Vector2(670, 615)
+
+[node name="WallTrap" parent="World/Hazards" unique_id=1442286330 instance=ExtResource("8_r1vef")]
+position = Vector2(3943, 575)
+
+[node name="SpikePitSpikes" parent="World/Hazards" unique_id=654124209 instance=ExtResource("9_lscnh")]
+position = Vector2(4105, 733)
+
+[node name="SpikePitSpikes2" parent="World/Hazards" unique_id=1235375965 instance=ExtResource("17_spksm")]
+position = Vector2(5064, 819)
+
+[node name="SpikePitSpikes3" parent="World/Hazards" unique_id=356109604 instance=ExtResource("17_spksm")]
+position = Vector2(5136, 819)
+
+[node name="CeilingSpikes" parent="World/Hazards" unique_id=1082918784 instance=ExtResource("10_eucyj")]
+z_index = -1
+position = Vector2(4560, 330)
+travel = Vector2(0, 175)
+
+[node name="Saw" parent="World/Hazards" unique_id=635406207 instance=ExtResource("11_4r0fx")]
+z_index = -1
+position = Vector2(2133, 630)
+
+[node name="Saw2" parent="World/Hazards" unique_id=1280419766 instance=ExtResource("11_4r0fx")]
+position = Vector2(3181, 506)
+
+[node name="WallTrapPit" parent="World/Hazards" unique_id=22935594 instance=ExtResource("8_r1vef")]
+position = Vector2(5858, 600)
+
+[node name="BigPitSpikes1" parent="World/Hazards" unique_id=214192877 instance=ExtResource("9_lscnh")]
+position = Vector2(5983, 739)
+
+[node name="BigPitSpikes2" parent="World/Hazards" unique_id=27649839 instance=ExtResource("9_lscnh")]
+position = Vector2(1658, 698)
+
+[node name="BigPitSpikes3" parent="World/Hazards" unique_id=831989866 instance=ExtResource("9_lscnh")]
+position = Vector2(6511, 734)
+
+[node name="BigPitSpikes4" parent="World/Hazards" unique_id=777042625 instance=ExtResource("17_spksm")]
+position = Vector2(7104, 700)
+
+[node name="BigPitSpikes5" parent="World/Hazards" unique_id=1745344489 instance=ExtResource("17_spksm")]
+position = Vector2(7176, 700)
+
+[node name="SpikeStripApproach" parent="World/Hazards" unique_id=1892247699 instance=ExtResource("17_spksm")]
+position = Vector2(2787, 821)
+
+[node name="SpikeStripApproach3" parent="World/Hazards" unique_id=1328317338 instance=ExtResource("17_spksm")]
+position = Vector2(2845, 820)
+
+[node name="SpikeStripApproach5" parent="World/Hazards" unique_id=369287117 instance=ExtResource("17_spksm")]
+position = Vector2(6108, 738)
+
+[node name="SpikeStripApproach4" parent="World/Hazards" unique_id=1133257456 instance=ExtResource("17_spksm")]
+position = Vector2(3988, 734)
+
+[node name="SpikeStripApproach2" parent="World/Hazards" unique_id=1054363977 instance=ExtResource("17_spksm")]
+position = Vector2(1770, 699)
+
+[node name="FallZone" type="Area2D" parent="World/Hazards" unique_id=1738339328]
+position = Vector2(4600, 1500)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6_dmh6m")
+damage = 999.0
+
+[node name="Shape" type="CollisionShape2D" parent="World/Hazards/FallZone" unique_id=1738994103]
+position = Vector2(6187, 500)
+shape = SubResource("RectangleShape2D_70nlc")
+
+[node name="Saw4" parent="World/Hazards" unique_id=417954091 instance=ExtResource("11_4r0fx")]
+z_index = -1
+position = Vector2(10389, 13)
+rotation = 3.1415927
+
+[node name="SpikeStripSmall" parent="World/Hazards" unique_id=794019762 instance=ExtResource("17_spksm")]
+position = Vector2(11075, 243)
+
+[node name="SpikeStripSmall2" parent="World/Hazards" unique_id=2042232225 instance=ExtResource("17_spksm")]
+position = Vector2(11257, 243)
+
+[node name="SpikeStripSmall3" parent="World/Hazards" unique_id=1735205700 instance=ExtResource("17_spksm")]
+position = Vector2(11442, 245)
+
+[node name="SalvageYard" type="Node2D" parent="World" unique_id=2109772328]
+
+[node name="Terrain" type="TileMapLayer" parent="World/SalvageYard" unique_id=1050389481]
+position = Vector2(0, -23.333334)
+scale = Vector2(0.33333334, 0.33333334)
+tile_map_data = PackedByteArray("AAB0AAAAAAAAAAAAAAB1AAAAAAABAAAAAAB2AAAAAAABAAAAABB3AAAAAAABAAAAAAB4AAAAAAABAAAAABB5AAAAAAACAAAAAAB0AAEAAAAAAAEAAAB1AAEAAAABAAEAABB2AAEAAAABAAEAAAB3AAEAAAABAAEAABB4AAEAAAABAAEAAAB5AAEAAAABAAEAABB6AAEAAAABAAAAAAB7AAEAAAABAAAAABB8AAEAAAABAAAAAAB9AAEAAAACAAAAAACFAAEAAAAAAAAAAACGAAEAAAABAAAAAACHAAEAAAABAAAAABCIAAEAAAABAAAAAACJAAEAAAABAAAAABCKAAEAAAABAAAAAACLAAEAAAABAAAAABBjAAIAAAABAAAAAABkAAIAAAABAAAAABBsAAIAAAABAAAAABBtAAIAAAABAAAAAABuAAIAAAABAAAAABBvAAIAAAABAAAAAABwAAIAAAACAAAAAAB0AAIAAAAAAAEAAAB1AAIAAAABAAEAAAB2AAIAAAABAAEAABB3AAIAAAABAAEAAAB4AAIAAAABAAEAABB5AAIAAAABAAEAAAB6AAIAAAABAAEAABB7AAIAAAABAAEAAAB8AAIAAAABAAEAABB9AAIAAAACAAEAAACFAAIAAAAAAAEAAACGAAIAAAABAAEAABCHAAIAAAABAAEAAACIAAIAAAABAAEAABCJAAIAAAABAAEAAACKAAIAAAABAAEAABCLAAIAAAABAAEAAABjAAMAAAABAAEAABBkAAMAAAABAAEAAABtAAMAAAABAAEAABBuAAMAAAABAAEAAABvAAMAAAABAAEAABBzAAMAAAABAAEAAAB0AAMAAAABAAEAAAB1AAMAAAABAAEAABB2AAMAAAABAAEAAAB3AAMAAAABAAEAABB4AAMAAAABAAEAAAB5AAMAAAABAAEAABB6AAMAAAABAAEAAAB7AAMAAAABAAEAABB8AAMAAAABAAEAAAB9AAMAAAABAAEAAACFAAMAAAABAAEAAACGAAMAAAABAAEAAACHAAMAAAABAAEAABCIAAMAAAABAAEAAACJAAMAAAABAAEAABCKAAMAAAABAAEAAACLAAMAAAABAAEAABBjAAQAAAABAAEAAABkAAQAAAABAAEAABBsAAQAAAABAAEAABBtAAQAAAABAAEAAABvAAQAAAABAAEAAABwAAQAAAABAAEAABBxAAQAAAABAAEAAAByAAQAAAABAAEAABBzAAQAAAABAAEAAAB0AAQAAAABAAEAABB1AAQAAAABAAEAAAB2AAQAAAABAAEAABB3AAQAAAABAAEAAAB4AAQAAAABAAEAABB5AAQAAAABAAEAAAB6AAQAAAABAAEAABB7AAQAAAABAAEAAAB8AAQAAAABAAEAABB9AAQAAAABAAEAAAB+AAQAAAABAAEAAAB/AAQAAAABAAEAAACAAAQAAAABAAEAAACBAAQAAAABAAEAAACCAAQAAAABAAEAAACDAAQAAAABAAEAAACEAAQAAAABAAEAAACFAAQAAAABAAEAAACGAAQAAAABAAEAABCHAAQAAAABAAEAAACIAAQAAAABAAEAABCJAAQAAAABAAEAAACKAAQAAAABAAEAABCLAAQAAAABAAEAAABsAAUAAAABAAEAAABvAAUAAAABAAEAABBwAAUAAAABAAEAAABxAAUAAAABAAEAABByAAUAAAABAAEAAABzAAUAAAABAAEAABB0AAUAAAABAAEAAAB1AAUAAAABAAEAABB2AAUAAAABAAEAAAB3AAUAAAABAAEAABB4AAUAAAABAAEAAAB5AAUAAAABAAEAABB6AAUAAAABAAEAAAB7AAUAAAABAAEAABB8AAUAAAABAAEAAAB9AAUAAAABAAEAABB+AAUAAAABAAEAAAB/AAUAAAABAAEAABCAAAUAAAABAAEAAACBAAUAAAABAAEAABCCAAUAAAABAAEAAACDAAUAAAABAAEAABCEAAUAAAABAAEAAACFAAUAAAABAAEAABCGAAUAAAABAAEAAACHAAUAAAABAAEAABCIAAUAAAABAAEAAACJAAUAAAABAAEAABCKAAUAAAABAAEAAACLAAUAAAABAAEAABBsAAYAAAABAAEAAABvAAYAAAABAAEAAABwAAYAAAABAAEAABBxAAYAAAABAAEAAAByAAYAAAABAAEAABBzAAYAAAABAAEAAAB0AAYAAAABAAEAABB1AAYAAAABAAEAAAB2AAYAAAABAAEAABB3AAYAAAABAAEAAAB4AAYAAAABAAEAABB5AAYAAAABAAEAAAB6AAYAAAABAAEAABB7AAYAAAABAAEAAAB8AAYAAAABAAEAABB9AAYAAAABAAEAAAB+AAYAAAABAAEAABB/AAYAAAABAAEAAACAAAYAAAABAAEAABCBAAYAAAABAAEAAACCAAYAAAABAAEAABCDAAYAAAABAAEAAACEAAYAAAABAAEAABCFAAYAAAABAAEAAACGAAYAAAABAAEAABCHAAYAAAABAAEAAACIAAYAAAABAAEAABCJAAYAAAABAAEAAACKAAYAAAABAAEAABCLAAYAAAABAAEAAABvAAcAAAABAAEAABBwAAcAAAABAAEAAABxAAcAAAABAAEAABByAAcAAAABAAEAAABzAAcAAAABAAEAABB0AAcAAAABAAEAAAB1AAcAAAABAAEAABB2AAcAAAABAAEAAAB3AAcAAAABAAEAABB4AAcAAAABAAEAAAB5AAcAAAABAAEAABB6AAcAAAABAAEAAAB7AAcAAAABAAEAABB8AAcAAAABAAEAAAB9AAcAAAABAAEAABB+AAcAAAABAAEAAAB/AAcAAAABAAEAABCAAAcAAAABAAEAAACBAAcAAAABAAEAABCCAAcAAAABAAEAAACDAAcAAAABAAEAABCEAAcAAAABAAEAAACFAAcAAAABAAEAABCGAAcAAAABAAEAAACHAAcAAAABAAEAABCIAAcAAAABAAEAAACJAAcAAAABAAEAABCKAAcAAAABAAEAAACLAAcAAAABAAEAABCMAAcAAAABAAEAAABvAAgAAAABAAEAAABwAAgAAAABAAEAABBxAAgAAAABAAEAAAByAAgAAAABAAEAABBzAAgAAAABAAEAAAB0AAgAAAABAAEAABB1AAgAAAABAAEAAAB2AAgAAAABAAEAABB3AAgAAAABAAEAAAB4AAgAAAABAAEAABB5AAgAAAABAAEAAAB6AAgAAAABAAEAABB7AAgAAAABAAEAAAB8AAgAAAABAAEAABB9AAgAAAABAAEAAAB+AAgAAAABAAEAABB/AAgAAAABAAEAAACAAAgAAAABAAEAABCBAAgAAAABAAEAAACCAAgAAAABAAEAABCDAAgAAAABAAEAAACEAAgAAAABAAEAABCFAAgAAAABAAEAAACGAAgAAAABAAEAABCHAAgAAAABAAEAAACIAAgAAAABAAEAABCJAAgAAAABAAEAAACKAAgAAAABAAEAABCLAAgAAAABAAEAAACMAAgAAAABAAEAABCNAAgAAAABAAEAAACOAAgAAAACAAEAAABjAAUAAAABAAIAAABkAAUAAAABAAIAAABlAAUAAAACAAIAAABlAAIAAAACAAAAAABlAAMAAAACAAEAAABlAAQAAAACAAEAAABwAAMAAAABAAEAAABxAAMAAAABAAEAAAByAAMAAAABAAEAAABuAAQAAAABAAEAAABuAAUAAAABAAEAAABuAAYAAAABAAEAAABuAAcAAAABAAEAAABuAAgAAAABAAEAAABtAAgAAAABAAEAAABtAAcAAAABAAEAAABtAAYAAAABAAEAAABtAAUAAAABAAEAAABsAAcAAAABAAEAAABsAAgAAAABAAEAAACOAAkAAAACAAIAAACNAAkAAAABAAIAAACMAAkAAAABAAIAAACLAAkAAAABAAIAAACKAAkAAAABAAIAAACJAAkAAAABAAIAAACIAAkAAAABAAIAAACHAAkAAAABAAIAAACGAAkAAAABAAIAAACFAAkAAAABAAIAAACEAAkAAAABAAIAAACDAAkAAAABAAIAAACCAAkAAAABAAIAAACBAAkAAAABAAIAAACAAAkAAAABAAIAAAB/AAkAAAABAAIAAAB+AAkAAAABAAIAAAB9AAkAAAABAAIAAAB8AAkAAAABAAIAAAB7AAkAAAABAAIAAAB6AAkAAAABAAIAAAB5AAkAAAABAAIAAAB4AAkAAAABAAIAAAB3AAkAAAABAAIAAAB2AAkAAAABAAIAAAB1AAkAAAABAAIAAAB0AAkAAAABAAIAAABzAAkAAAABAAIAAAByAAkAAAABAAIAAABxAAkAAAABAAIAAABwAAkAAAABAAIAAABvAAkAAAABAAIAAABuAAkAAAABAAIAAABtAAkAAAABAAIAAABsAAkAAAABAAIAAACOAAEAAAACAAAAAACOAAIAAAACAAEAAACOAAMAAAACAAEAAACOAAQAAAACAAEAAACOAAUAAAACAAEAAACOAAYAAAACAAEAAACOAAcAAAACAAEAAACNAAcAAAABAAEAABCNAAYAAAABAAEAAACMAAYAAAABAAEAABCMAAUAAAABAAEAAACMAAQAAAABAAEAABCMAAMAAAABAAEAAACMAAIAAAABAAEAABCMAAEAAAABAAAAAACNAAEAAAABAAAAABCNAAIAAAABAAEAAACNAAMAAAABAAEAABCNAAQAAAABAAEAAACNAAUAAAABAAEAABCRAAQAAAAAAAAAAACSAAQAAAABAAAAAACTAAQAAAABAAAAAACUAAQAAAABAAAAAACVAAQAAAABAAAAAACWAAQAAAABAAAAAACXAAQAAAABAAAAAACYAAQAAAABAAAAAACZAAQAAAABAAAAAACaAAQAAAABAAAAAACbAAQAAAABAAAAAACcAAQAAAABAAAAAACdAAQAAAACAAAAAACRAAUAAAAAAAEAAACRAAYAAAAAAAEAAACRAAcAAAAAAAEAAACRAAgAAAAAAAEAAACRAAkAAAAAAAIAAACSAAkAAAABAAIAAACTAAkAAAABAAIAAACUAAkAAAABAAIAAACVAAkAAAABAAIAAACWAAkAAAABAAIAAACXAAkAAAABAAIAAACYAAkAAAABAAIAAACZAAkAAAABAAIAAACaAAkAAAABAAIAAACbAAkAAAABAAIAAACcAAkAAAABAAIAAACdAAkAAAACAAIAAACdAAUAAAACAAEAAACdAAYAAAACAAEAAACdAAcAAAACAAEAAACdAAgAAAACAAEAAACcAAUAAAABAAEAAACbAAUAAAABAAEAAACaAAUAAAABAAEAAACZAAUAAAABAAEAAACYAAUAAAABAAEAAACXAAUAAAABAAEAAACWAAUAAAABAAEAAACVAAUAAAABAAEAAACUAAUAAAABAAEAAACTAAUAAAABAAEAAACSAAUAAAABAAEAAACSAAYAAAABAAEAAACSAAcAAAABAAEAAACTAAcAAAABAAEAAACUAAYAAAABAAEAAACVAAYAAAABAAEAAACWAAYAAAABAAEAAACXAAcAAAABAAEAAACYAAcAAAABAAEAAACZAAcAAAABAAEAAACaAAcAAAABAAEAAACbAAcAAAABAAEAAACcAAcAAAABAAEAAACcAAYAAAABAAEAAACbAAYAAAABAAEAAACaAAYAAAABAAEAAACZAAYAAAABAAEAAACYAAYAAAABAAEAAACXAAYAAAABAAEAAACTAAYAAAABAAEAAACUAAcAAAABAAEAAACVAAcAAAABAAEAAACWAAcAAAABAAEAAACXAAgAAAABAAEAAACYAAgAAAABAAEAAACZAAgAAAABAAEAAACaAAgAAAABAAEAAACbAAgAAAABAAEAAACcAAgAAAABAAEAAACWAAgAAAABAAEAAACVAAgAAAABAAEAAACUAAgAAAABAAEAAACTAAgAAAABAAEAAACSAAgAAAABAAEAAAB+AAMAAAABAAEAAAB/AAMAAAABAAEAAACAAAMAAAABAAEAAACBAAMAAAABAAEAAACCAAMAAAABAAEAAACDAAMAAAABAAEAAACEAAMAAAABAAEAAABsAAMAAAABAAEAAABrAAIAAAAAAAAAAABrAAMAAAAAAAEAAABrAAQAAAAAAAEAAABrAAUAAAAAAAEAAABrAAYAAAAAAAEAAABrAAcAAAAAAAEAAABrAAgAAAAAAAEAAABrAAkAAAAAAAIAAAA=")
+tile_set = ExtResource("3_s7fgk")
+
+[node name="Platforms" type="Node2D" parent="World/SalvageYard" unique_id=368224529]
+
+[node name="Shuttle" parent="World/SalvageYard/Platforms" unique_id=460172544 instance=ExtResource("late_2_3h2n3")]
+position = Vector2(12346, 239)
+size = Vector2(220, 28)
+one_way = true
+travel = Vector2(280, 0)
+speed = 170.0
+
+[node name="FreightLift" parent="World/SalvageYard/Platforms" unique_id=1519203893 instance=ExtResource("late_2_3h2n3")]
+position = Vector2(13734, 240)
+size = Vector2(220, 28)
+one_way = true
+travel = Vector2(0, -360)
+speed = 150.0
+
+[node name="HealingLedge" parent="World/SalvageYard/Platforms" unique_id=2145132587 instance=ExtResource("late_4_uf5ar")]
+position = Vector2(14200, -135.5)
+size = Vector2(210, 28)
+
+[node name="TransferIn" parent="World/SalvageYard/Platforms" unique_id=94745353 instance=ExtResource("late_2_3h2n3")]
+position = Vector2(15218, 116)
+size = Vector2(210, 28)
+one_way = true
+travel = Vector2(220, -180)
+speed = 950.0
+
+[node name="TransferRest" parent="World/SalvageYard/Platforms" unique_id=862020034 instance=ExtResource("late_4_uf5ar")]
+position = Vector2(15541, -154)
+size = Vector2(220, 28)
+
+[node name="TransferOut" parent="World/SalvageYard/Platforms" unique_id=1144153388 instance=ExtResource("late_2_3h2n3")]
+position = Vector2(15750, -143)
+size = Vector2(210, 28)
+one_way = true
+travel = Vector2(240, 120)
+speed = 897.0
+
+[node name="Checkpoints" type="Node2D" parent="World/SalvageYard" unique_id=1978613198]
+
+[node name="ShuttleCheckpoint" parent="World/SalvageYard/Checkpoints" unique_id=2090000000 instance=ExtResource("18_chkpt")]
+position = Vector2(12100, 239)
+
+[node name="LiftCheckpoint" parent="World/SalvageYard/Checkpoints" unique_id=1520432132 instance=ExtResource("18_chkpt")]
+position = Vector2(13500, 239)
+
+[node name="TransferCheckpoint" parent="World/SalvageYard/Checkpoints" unique_id=1041358213 instance=ExtResource("18_chkpt")]
+position = Vector2(14900, 119)
+
+[node name="ExitCheckpoint" parent="World/SalvageYard/Checkpoints" unique_id=1887431434 instance=ExtResource("18_chkpt")]
+position = Vector2(17508, 481)
+
+[node name="Hazards" type="Node2D" parent="World/SalvageYard" unique_id=1322272541]
+
+[node name="SpikeStripLarge" parent="World/SalvageYard/Hazards" unique_id=935967437 instance=ExtResource("9_lscnh")]
+position = Vector2(13646, 340)
+
+[node name="SpikeStripLarge2" parent="World/SalvageYard/Hazards" unique_id=1211055477 instance=ExtResource("9_lscnh")]
+position = Vector2(13830, 341)
+
+[node name="TransferSpikes01" parent="World/SalvageYard/Hazards" unique_id=41491031 instance=ExtResource("9_lscnh")]
+position = Vector2(15218, 337)
+damage = 999.0
+
+[node name="TransferSpikes02" parent="World/SalvageYard/Hazards" unique_id=329007924 instance=ExtResource("9_lscnh")]
+position = Vector2(15379, 337)
+damage = 999.0
+
+[node name="TransferSpikes03" parent="World/SalvageYard/Hazards" unique_id=1081012765 instance=ExtResource("9_lscnh")]
+position = Vector2(15540, 337)
+damage = 999.0
+
+[node name="TransferSpikes04" parent="World/SalvageYard/Hazards" unique_id=462355758 instance=ExtResource("9_lscnh")]
+position = Vector2(15701, 337)
+damage = 999.0
+
+[node name="TransferSpikes05" parent="World/SalvageYard/Hazards" unique_id=857300857 instance=ExtResource("9_lscnh")]
+position = Vector2(15862, 337)
+damage = 999.0
+
+[node name="ShuttleFall" type="Area2D" parent="World/SalvageYard/Hazards" unique_id=110953134]
+position = Vector2(12540, 1600)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("6_dmh6m")
+damage = 999.0
+
+[node name="Enemies" type="Node2D" parent="World/SalvageYard" unique_id=1978122383]
+
+[node name="DockGuard" parent="World/SalvageYard/Enemies" unique_id=2090000001 instance=ExtResource("18_1tr31")]
+position = Vector2(13200, 239)
+patrol_distance = 75.0
+speed = 240.0
+detection_range = 300.0
+
+[node name="FreightGuard" parent="World/SalvageYard/Enemies" unique_id=1387954961 instance=ExtResource("18_1tr31")]
+position = Vector2(14520, -1)
+patrol_distance = 55.0
+speed = 240.0
+detection_range = 230.0
+
+[node name="Pickups" type="Node2D" parent="World/SalvageYard" unique_id=453310232]
+
+[node name="LiftFig" parent="World/SalvageYard/Pickups" unique_id=2090000002 instance=ExtResource("20_pickup")]
+position = Vector2(13440, 179)
+
+[node name="HighLedgeFig" parent="World/SalvageYard/Pickups" unique_id=1831731925 instance=ExtResource("20_pickup")]
+position = Vector2(14200, -181)
+
+[node name="ExitFig" parent="World/SalvageYard/Pickups" unique_id=1451689718 instance=ExtResource("20_pickup")]
+position = Vector2(16660, 59)
+
+[node name="Gates" type="Node2D" parent="World/SalvageYard" unique_id=1331770119]
+
+[node name="LevelExit" parent="World/SalvageYard/Gates" unique_id=1745738029 instance=ExtResource("compact_15_53ogl")]
+position = Vector2(18863, 477)
+
+[node name="Decorations" type="Node2D" parent="World/SalvageYard" unique_id=1159172670]
+z_index = -2
+
+[node name="Scrap00" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=956548920]
+position = Vector2(11797.374, 245.98567)
+scale = Vector2(0.26398864, 0.26398864)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Rubble01" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1336400803]
+position = Vector2(11877.145, 246.95552)
+scale = Vector2(0.28297162, 0.28297162)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Rubble02" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1632331858]
+position = Vector2(11908.322, 247.24161)
+scale = Vector2(0.28577438, 0.28577438)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Scrap03" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1248203249]
+position = Vector2(11940.612, 250.0172)
+scale = Vector2(0.23130825, 0.23130825)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Rubble04" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=289396753]
+position = Vector2(12217.248, 245.95152)
+scale = Vector2(0.2665135, 0.2665135)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Rubble05" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1003972245]
+position = Vector2(12159, 245)
+scale = Vector2(0.22195978, 0.22195978)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Scrap06" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=2109716618]
+position = Vector2(13034, 245.00002)
+scale = Vector2(0.30808073, 0.30808073)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Rubble07" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=427345640]
+position = Vector2(13016.001, 253.00002)
+scale = Vector2(0.25096968, 0.25096968)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Rubble08" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1431236562]
+position = Vector2(12896.4375, 250.2347)
+scale = Vector2(0.20614037, 0.20614037)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Scrap09" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1971536661]
+position = Vector2(12944.642, 245.9495)
+scale = Vector2(0.3115729, 0.3115729)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Rubble10" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1143757813]
+position = Vector2(12978.856, 246.50252)
+scale = Vector2(0.28926456, 0.28926456)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Rubble11" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=731050161]
+position = Vector2(13078.176, 248.8483)
+scale = Vector2(0.2960509, 0.2960509)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Scrap12" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=623092899]
+position = Vector2(13124.994, 245.98625)
+scale = Vector2(0.29962075, 0.29962075)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Rubble13" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1179855877]
+position = Vector2(13295.2, 250.19748)
+scale = Vector2(0.21630368, 0.21630368)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Rubble14" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1917738076]
+position = Vector2(13329.215, 244.88277)
+scale = Vector2(0.20244287, 0.20244287)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Rubble16" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=2055427955]
+position = Vector2(13701.812, 365.24994)
+scale = Vector2(0.25405025, 0.25405025)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Rubble17" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1265298693]
+position = Vector2(13918.665, 370.88657)
+scale = Vector2(0.29535258, 0.29535258)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Scrap18" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=881328940]
+position = Vector2(13976.461, 4.7980356)
+scale = Vector2(0.28896815, 0.28896815)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Rubble19" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1589407834]
+position = Vector2(14016.024, 8.447913)
+scale = Vector2(0.2846813, 0.2846813)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Rubble20" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=772725271]
+position = Vector2(14048.361, 4.8085575)
+scale = Vector2(0.21824677, 0.21824677)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Scrap21" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=775776360]
+position = Vector2(14334.71, 10.356525)
+scale = Vector2(0.28839076, 0.28839076)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Rubble22" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1903875401]
+position = Vector2(14382.563, 4.733513)
+scale = Vector2(0.28794083, 0.28794083)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Rubble23" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=689379593]
+position = Vector2(14406.185, 4.0064034)
+scale = Vector2(0.20762329, 0.20762329)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Scrap24" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1471802000]
+position = Vector2(14593.006, 6.407362)
+scale = Vector2(0.2884825, 0.2884825)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Rubble25" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=445151829]
+position = Vector2(14648.044, 126.0903)
+scale = Vector2(0.21067227, 0.21067227)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Rubble26" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=2071351336]
+z_index = 2
+position = Vector2(14595, 118.000015)
+scale = Vector2(0.28107423, 0.28107423)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Scrap27" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1491303121]
+position = Vector2(14818.057, 124.203445)
+scale = Vector2(0.2670458, 0.2670458)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Rubble28" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1329741947]
+position = Vector2(15022.668, 124.81356)
+scale = Vector2(0.23897037, 0.23897037)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Rubble29" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1964445916]
+position = Vector2(15145.908, 485.25095)
+scale = Vector2(0.2199054, 0.2199054)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Scrap30" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1225713690]
+position = Vector2(15298.259, 488.6921)
+scale = Vector2(0.3180338, 0.3180338)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Rubble31" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1641533035]
+position = Vector2(15416.32, 487.2383)
+scale = Vector2(0.29311812, 0.29311812)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Rubble32" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=50112789]
+position = Vector2(15476.992, 485.90625)
+scale = Vector2(0.22202173, 0.22202173)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Scrap33" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1531522386]
+position = Vector2(15539.65, 490.6615)
+scale = Vector2(0.30171695, 0.30171695)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Rubble34" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1682073864]
+position = Vector2(15562.989, 489.10284)
+scale = Vector2(0.2450935, 0.2450935)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Rubble35" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=891508607]
+position = Vector2(15636.192, 488.45874)
+scale = Vector2(0.287071, 0.287071)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Scrap36" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=857750825]
+position = Vector2(15680.473, 489.15164)
+scale = Vector2(0.24180272, 0.24180272)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Rubble37" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=8024575]
+position = Vector2(15752.252, 484.99536)
+scale = Vector2(0.26836553, 0.26836553)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Rubble38" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=768487570]
+position = Vector2(15793.973, 488.50623)
+scale = Vector2(0.22890466, 0.22890466)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Scrap39" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=156552432]
+position = Vector2(15879.594, 489.84677)
+scale = Vector2(0.28140044, 0.28140044)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Rubble40" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1253788584]
+position = Vector2(15947.103, 484.62604)
+scale = Vector2(0.25032306, 0.25032306)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Rubble41" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1089933721]
+position = Vector2(16001.771, 126.85312)
+scale = Vector2(0.2428405, 0.2428405)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Scrap42" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=379270670]
+position = Vector2(16025.64, 127.98915)
+scale = Vector2(0.30681643, 0.30681643)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Rubble43" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1575775790]
+position = Vector2(16140.936, 125.03792)
+scale = Vector2(0.20658876, 0.20658876)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Rubble44" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1839046690]
+position = Vector2(16160.602, 127.48875)
+scale = Vector2(0.22157595, 0.22157595)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Scrap45" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=847647617]
+position = Vector2(16214.99, 126.6119)
+scale = Vector2(0.30797544, 0.30797544)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Rubble46" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=2114719429]
+position = Vector2(16318.139, 127.236244)
+scale = Vector2(0.2772315, 0.2772315)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Rubble47" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=165884326]
+position = Vector2(16326.319, 130.10313)
+scale = Vector2(0.20404357, 0.20404357)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Scrap48" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1376512098]
+position = Vector2(16753.938, 129.73564)
+scale = Vector2(0.28568876, 0.28568876)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="Rubble49" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1805266832]
+position = Vector2(16817.281, 129.32944)
+scale = Vector2(0.2692762, 0.2692762)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -69.03569)
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="Rubble50" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=128507790]
+position = Vector2(16989.57, 130.9072)
+scale = Vector2(0.24757355, 0.24757355)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Scrap51" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=916152107]
+position = Vector2(17061.326, 128.15288)
+scale = Vector2(0.25149122, 0.25149122)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -86)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(340, 854, 322, 172)
+
+[node name="Rubble52" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1136843949]
+position = Vector2(17122, 123)
+scale = Vector2(0.2993049, 0.2993049)
+texture = ExtResource("7_bv8k8")
+offset = Vector2(0, -70.93445)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="Landmark53" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=910548397]
+z_index = -1
+position = Vector2(11901.356, 245.71948)
+scale = Vector2(0.35973862, 0.35973862)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -295.5)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="Landmark54" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1234429823]
+position = Vector2(12164.001, 252)
+scale = Vector2(0.32491773, 0.32491773)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -149.5)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(700, 734, 269, 299)
+
+[node name="Landmark55" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1505244113]
+position = Vector2(12924.988, 245.05902)
+scale = Vector2(0.37086815, 0.37086815)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="Landmark56" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=493476497]
+position = Vector2(13289.933, 248.20763)
+scale = Vector2(0.32576764, 0.32576764)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="Landmark58" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=178283969]
+z_index = -1
+position = Vector2(13978.595, 8.191407)
+scale = Vector2(0.35958213, 0.35958213)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -249)
+region_enabled = true
+region_rect = Rect2(756, 142, 307, 498)
+
+[node name="Landmark59" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=832909273]
+position = Vector2(14432.007, 4.729078)
+scale = Vector2(0.39716214, 0.39716214)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="Landmark60" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1400291828]
+position = Vector2(14807.193, 129.7029)
+scale = Vector2(0.37020564, 0.37020564)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -184)
+region_enabled = true
+region_rect = Rect2(45, 668, 210, 368)
+
+[node name="Landmark61" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=2044693708]
+position = Vector2(15008.012, 128.65517)
+scale = Vector2(0.38331655, 0.38331655)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -149.5)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(700, 734, 269, 299)
+
+[node name="Landmark62" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1901356788]
+position = Vector2(15294.229, 485.58572)
+scale = Vector2(0.35387394, 0.35387394)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="Landmark63" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1558292952]
+position = Vector2(15667.038, 488.66336)
+scale = Vector2(0.33793753, 0.33793753)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -149.5)
+region_enabled = true
+region_rect = Rect2(700, 734, 269, 299)
+
+[node name="Landmark64" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1459755707]
+z_index = -1
+position = Vector2(16119.532, 124.51035)
+scale = Vector2(0.36525178, 0.36525178)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -249)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(756, 142, 307, 498)
+
+[node name="Landmark65" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=318912031]
+position = Vector2(16334.421, 127.13699)
+scale = Vector2(0.3964212, 0.3964212)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="Landmark70" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1327996983]
+z_index = 2
+position = Vector2(18279, 488.99997)
+scale = Vector2(0.3964212, 0.3964212)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -135)
+region_enabled = true
+region_rect = Rect2(994, 770, 418, 270)
+
+[node name="Landmark66" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=613687065]
+z_index = -1
+position = Vector2(16765.996, 130.22055)
+scale = Vector2(0.3819479, 0.3819479)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -201)
+region_enabled = true
+region_rect = Rect2(400, 231, 322, 402)
+
+[node name="Landmark69" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=564189441]
+z_index = 2
+position = Vector2(18464, 485.00003)
+scale = Vector2(0.3819479, 0.3819479)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -201)
+region_enabled = true
+region_rect = Rect2(400, 231, 322, 402)
+
+[node name="Landmark67" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=1922831361]
+z_index = -1
+position = Vector2(17060.479, 127.00911)
+scale = Vector2(0.34229183, 0.34229183)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -295.5)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="Landmark68" type="Sprite2D" parent="World/SalvageYard/Decorations" unique_id=572819901]
+z_index = 2
+position = Vector2(17646, 486)
+scale = Vector2(0.34229183, 0.34229183)
+texture = ExtResource("4_1tr31")
+offset = Vector2(0, -295.5)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="Entities" type="Node2D" parent="." unique_id=91379214]
+
+[node name="Player" parent="Entities" unique_id=1426104633 instance=ExtResource("12_r3o47")]
+z_index = 10
+position = Vector2(11799, 233)
+
+[node name="Enemies" type="Node2D" parent="." unique_id=261374960]
+
+[node name="Guard1" parent="Enemies" unique_id=456567813 instance=ExtResource("18_1tr31")]
+position = Vector2(1239, 602)
+
+[node name="Gunner1" parent="Enemies" unique_id=1974821315 instance=ExtResource("19_bv8k8")]
+position = Vector2(3500, 482)
+
+[node name="Guard2" parent="Enemies" unique_id=1817446925 instance=ExtResource("18_1tr31")]
+position = Vector2(4850, 602)
+
+[node name="Gunner2" parent="Enemies" unique_id=1294749773 instance=ExtResource("19_bv8k8")]
+position = Vector2(6800, 482)
+
+[node name="Gunner3" parent="Enemies" unique_id=1527131330 instance=ExtResource("19_bv8k8")]
+position = Vector2(8198, 601)
+
+[node name="Gunner4" parent="Enemies" unique_id=334027704 instance=ExtResource("19_bv8k8")]
+position = Vector2(8112, 597)
+
+[node name="Guard" parent="Enemies" unique_id=1791530447 instance=ExtResource("18_1tr31")]
+position = Vector2(8157, 599)
+
+[node name="Gunner" parent="Enemies" unique_id=991729530 instance=ExtResource("19_bv8k8")]
+position = Vector2(11637, 241)
+
+[node name="HUD" parent="." unique_id=518270513 instance=ExtResource("16_buk32")]
+
+[node name="Tutorial" type="Node2D" parent="." unique_id=1961595322]
+
+[node name="Moving" type="Node2D" parent="Tutorial" unique_id=575049815]
+position = Vector2(337, 335)
+
+[node name="A_Key" type="Sprite2D" parent="Tutorial/Moving" unique_id=488933181]
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("23_eucyj")
+
+[node name="D_Key" type="Sprite2D" parent="Tutorial/Moving" unique_id=353185004]
+position = Vector2(26, 0)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("25_r3o47")
+
+[node name="MoveLabel" type="Label" parent="Tutorial/Moving" unique_id=452496458]
+offset_left = 50.0
+offset_top = -9.0
+theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
+theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+theme_override_font_sizes/font_size = 12
+text = "Move"
+
+[node name="W_Key" type="Sprite2D" parent="Tutorial/Moving" unique_id=1895600679]
+position = Vector2(0, 32)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("22_lscnh")
+
+[node name="JumpLabel" type="Label" parent="Tutorial/Moving" unique_id=483624670]
+offset_left = 50.0
+offset_top = 23.0
+theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
+theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+theme_override_font_sizes/font_size = 12
+text = "Jump (W / Space)"
+
+[node name="S_Key" type="Sprite2D" parent="Tutorial/Moving" unique_id=435101929]
+position = Vector2(0, 64)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("24_4r0fx")
+
+[node name="CrouchLabel" type="Label" parent="Tutorial/Moving" unique_id=2114472180]
+offset_left = 50.0
+offset_top = 55.0
+theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
+theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+theme_override_font_sizes/font_size = 12
+text = "Crouch"
+
+[node name="Attack" type="Node2D" parent="Tutorial" unique_id=2041116697]
+position = Vector2(780, 335)
+
+[node name="J_Key" type="Sprite2D" parent="Tutorial/Attack" unique_id=1644429809]
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("26_eucyj")
+
+[node name="Label" type="Label" parent="Tutorial/Attack" unique_id=42699086]
+offset_left = 24.0
+offset_top = -9.0
+theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
+theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+theme_override_font_sizes/font_size = 12
+text = "Attack"
+
+[node name="Stopping time" type="Node2D" parent="Tutorial" unique_id=714806754]
+position = Vector2(2020, 335)
+
+[node name="K_Key" type="Sprite2D" parent="Tutorial/Stopping time" unique_id=1644943899]
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("29_tsq7e")
+
+[node name="Label" type="Label" parent="Tutorial/Stopping time" unique_id=1819088637]
+offset_left = 24.0
+offset_top = -9.0
+theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
+theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+theme_override_font_sizes/font_size = 12
+text = "Stop time"
+
+[node name="CostLabel" type="Label" parent="Tutorial/Stopping time" unique_id=828469176]
+offset_left = -10.0
+offset_top = 19.0
+theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
+theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+theme_override_font_sizes/font_size = 12
+text = "5 seconds / costs 3 years"
+
+[node name="Heal2" type="Node2D" parent="Tutorial" unique_id=1987466871]
+position = Vector2(1220, 360)
+
+[node name="Label" type="Label" parent="Tutorial/Heal2" unique_id=290281363]
+theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
+theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+theme_override_font_sizes/font_size = 12
+text = "Cactus fruit
+restores health"
+
+[node name="Checkpoint" type="Node2D" parent="Tutorial" unique_id=411919139]
+position = Vector2(1740, 390)
+
+[node name="Label" type="Label" parent="Tutorial/Checkpoint" unique_id=1220844750]
+theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
+theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_gihc7")
+theme_override_font_sizes/font_size = 12
+text = "Flags save
+your checkpoint"

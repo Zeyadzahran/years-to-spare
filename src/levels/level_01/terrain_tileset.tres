@@ -1,0 +1,33 @@
+[gd_resource type="TileSet" format=3 uid="uid://ct8w2xk4bnq7f"]
+
+[ext_resource type="Texture2D" uid="uid://dlw6qxbday0fi" path="res://src/levels/level_01/art/terrain/tiles.png" id="1_3b0dp"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kspeg"]
+texture = ExtResource("1_3b0dp")
+margins = Vector2i(38, 33)
+separation = Vector2i(49, 49)
+texture_region_size = Vector2i(360, 360)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-124, -110, 180, -110, 180, 180, -124, 180)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-180, -110, 180, -110, 180, 180, -180, 180)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-180, -110, 124, -110, 124, 180, -180, 180)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-124, -180, 180, -180, 180, 180, -124, 180)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-180, -180, 180, -180, 180, 180, -180, 180)
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-180, -180, 124, -180, 124, 180, -180, 180)
+0:2/0 = 0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-124, -180, 180, -180, 180, 64, -124, 64)
+1:2/0 = 0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-180, -180, 180, -180, 180, 64, -180, 64)
+2:2/0 = 0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-180, -180, 124, -180, 124, 64, -180, 64)
+
+[resource]
+tile_size = Vector2i(360, 360)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
+sources/0 = SubResource("TileSetAtlasSource_kspeg")

@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Years to Spare"
 run/main_scene="uid://brqj1brlbwn1f"
-config/features=PackedStringArray("4.7", "Forward Plus")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -20,8 +20,8 @@ config/icon="res://icon.svg"
 EventBus="*res://autoload/event_bus.gd"
 TimeService="*res://autoload/time_service.gd"
 GameState="*res://autoload/game_state.gd"
-SettingsManager="*uid://dwgl36are84yv"
-MusicManager="*uid://d15pmg7g3tj2c"
+SettingsManager="*res://autoload/settings_manager.gd"
+MusicManager="*res://autoload/music_manager.gd"
 
 [display]
 
@@ -30,6 +30,7 @@ window/size/viewport_height=720
 window/size/mode=4
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+window/stretch/mode.web="viewport"
 
 [input]
 
@@ -86,6 +87,11 @@ pause={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":6,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
+heal={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
 crouch={
 "deadzone": 0.5,
 "events": Array[InputEvent]([Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":16,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
@@ -112,4 +118,6 @@ crouch={
 
 [rendering]
 
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.06, 0.05, 0.09, 1)

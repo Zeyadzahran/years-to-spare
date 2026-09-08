@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://b2j4qyiy3tqb3" path="res://src/levels/level_01/art/props/rocks_and_dirt.png" id="7_bv8k8"]
+
+[node name="RockDirt" type="Sprite2D"]
+scale = Vector2(0.21631205, 0.21631205)
+texture = ExtResource("7_bv8k8")
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)

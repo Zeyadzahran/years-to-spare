@@ -1,0 +1,278 @@
+[gd_scene format=3 uid="uid://rewvckd3qxda"]
+
+[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="1_c2u1v"]
+[ext_resource type="Script" uid="uid://c8qd83uhbeny2" path="res://src/ui/options/options.gd" id="1_yjkok"]
+[ext_resource type="Texture2D" uid="uid://bvj72uiog0d4l" path="res://assets/intro/background1.png" id="2_kv8mn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.0784314, 0.0745098, 0.0705882, 0.784314)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.541176, 0.521569, 0.462745, 0.470588)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_bg"]
+content_margin_left = 0.0
+content_margin_top = 7.0
+content_margin_right = 0.0
+content_margin_bottom = 7.0
+bg_color = Color(0.145098, 0.133333, 0.117647, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.541176, 0.521569, 0.462745, 0.784314)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_fill"]
+content_margin_left = 0.0
+content_margin_top = 7.0
+content_margin_right = 0.0
+content_margin_bottom = 7.0
+bg_color = Color(0.898039, 0.717647, 0.356863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.0784314, 0.0745098, 0.0705882, 0.588235)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.541176, 0.521569, 0.462745, 0.470588)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 8.0
+bg_color = Color(0.898039, 0.717647, 0.356863, 0.870588)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.988235, 0.87451, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.176471, 0.156863, 0.121569, 0.784314)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.898039, 0.717647, 0.356863, 0.941176)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_focus"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.898039, 0.717647, 0.356863, 0.627451)
+
+[node name="Options" type="Control" unique_id=620355072]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yjkok")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1176165389]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_kv8mn")
+expand_mode = 1
+
+[node name="DarkOverlay" type="ColorRect" parent="." unique_id=1766191797]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.3529412)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1967286873]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=764875864]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel" unique_id=1016420584]
+layout_mode = 2
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 36
+
+[node name="Content" type="VBoxContainer" parent="Center/Panel/Margin" unique_id=931056493]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/Content" unique_id=2138774554]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 36
+text = "OPTIONS"
+horizontal_alignment = 1
+
+[node name="Divider" type="HSeparator" parent="Center/Panel/Margin/Content" unique_id=151284671]
+layout_mode = 2
+
+[node name="Settings" type="VBoxContainer" parent="Center/Panel/Margin/Content" unique_id=1667841107]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="VolumeRow" type="HBoxContainer" parent="Center/Panel/Margin/Content/Settings" unique_id=65660946]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VolumeLabel" type="Label" parent="Center/Panel/Margin/Content/Settings/VolumeRow" unique_id=1145645342]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 18
+text = "VOLUME"
+vertical_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="Center/Panel/Margin/Content/Settings/VolumeRow" unique_id=993751011]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_slider_fill")
+value = 80.0
+
+[node name="VolumeValue" type="Label" parent="Center/Panel/Margin/Content/Settings/VolumeRow" unique_id=1257767500]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 16
+text = "80"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="FullscreenRow" type="HBoxContainer" parent="Center/Panel/Margin/Content/Settings" unique_id=2112217656]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="FullscreenLabel" type="Label" parent="Center/Panel/Margin/Content/Settings/FullscreenRow" unique_id=112772641]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 18
+text = "FULLSCREEN"
+vertical_alignment = 1
+
+[node name="FullscreenCheck" type="CheckButton" parent="Center/Panel/Margin/Content/Settings/FullscreenRow" unique_id=722371391]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_colors/font_focus_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_colors/font_hover_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 16
+text = "ON"
+
+[node name="Divider2" type="HSeparator" parent="Center/Panel/Margin/Content" unique_id=1229144932]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Center/Panel/Margin/Content" unique_id=295751877]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Center/Panel/Margin/Content/Buttons" unique_id=1639072098]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_colors/font_focus_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_colors/font_pressed_color = Color(0.0784314, 0.0705882, 0.0588235, 1)
+theme_override_colors/font_hover_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "BACK"
+
+[node name="MainMenuButton" type="Button" parent="Center/Panel/Margin/Content/Buttons" unique_id=858335453]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_colors/font_focus_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_colors/font_pressed_color = Color(0.0784314, 0.0705882, 0.0588235, 1)
+theme_override_colors/font_hover_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "MAIN MENU"
+
+[node name="QuitButton" type="Button" parent="Center/Panel/Margin/Content/Buttons" unique_id=829207560]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_colors/font_focus_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_colors/font_pressed_color = Color(0.0784314, 0.0705882, 0.0588235, 1)
+theme_override_colors/font_hover_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
+text = "QUIT"
+
+[connection signal="value_changed" from="Center/Panel/Margin/Content/Settings/VolumeRow/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="toggled" from="Center/Panel/Margin/Content/Settings/FullscreenRow/FullscreenCheck" to="." method="_on_fullscreen_check_toggled"]
+[connection signal="pressed" from="Center/Panel/Margin/Content/Buttons/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/Content/Buttons/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="Center/Panel/Margin/Content/Buttons/QuitButton" to="." method="_on_quit_button_pressed"]

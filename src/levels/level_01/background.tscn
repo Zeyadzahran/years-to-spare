@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://be6vd4fiw07ao"]
+
+[ext_resource type="Texture2D" uid="uid://56bak15n4n1h" path="res://src/levels/level_01/art/background/sky.png" id="1_ap2ib"]
+[ext_resource type="Texture2D" uid="uid://cbmbjiab8hwar" path="res://src/levels/level_01/art/background/distant_ruins.png" id="2_hl4qq"]
+[ext_resource type="Texture2D" uid="uid://d2wan2rvwcjqj" path="res://src/levels/level_01/art/background/scrap.png" id="3_re44o"]
+[ext_resource type="Shader" path="res://src/levels/level_01/shaders/scrap_depth.gdshader" id="4_depth"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_depth"]
+shader = ExtResource("4_depth")
+shader_parameter/scrap_texture = ExtResource("3_re44o")
+
+[node name="PhaseOneBackground" type="Node2D" unique_id=1298165574]
+z_index = -100
+
+[node name="Sky" type="Parallax2D" parent="." unique_id=643419438]
+scroll_scale = Vector2(0.08, 0.04)
+repeat_size = Vector2(836, 0)
+repeat_times = 101
+
+[node name="AboveFill" type="Polygon2D" parent="Sky" unique_id=1878800377]
+color = Color(0.89411765, 0.654902, 0.46666667, 1)
+polygon = PackedVector2Array(0, -2203, 836, -2203, 836, 197, 0, 197)
+
+[node name="Plate" type="Sprite2D" parent="Sky" unique_id=1693055380]
+texture_filter = 1
+position = Vector2(0, 197)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_ap2ib")
+centered = false
+
+[node name="BelowFill" type="Polygon2D" parent="Sky" unique_id=108278559]
+color = Color(0.7137255, 0.5254902, 0.39215687, 1)
+polygon = PackedVector2Array(0, 667.5, 836, 667.5, 836, 3067.5, 0, 3067.5)
+
+[node name="DistantRuins" type="Parallax2D" parent="." unique_id=144921991]
+scroll_scale = Vector2(0.25, 0.07)
+repeat_size = Vector2(635.36, 0)
+repeat_times = 133
+
+[node name="Plate" type="Sprite2D" parent="DistantRuins" unique_id=1418666119]
+texture_filter = 1
+position = Vector2(0, 211)
+scale = Vector2(0.38, 0.38)
+texture = ExtResource("2_hl4qq")
+centered = false
+
+[node name="ForegroundScrap" type="Parallax2D" parent="." unique_id=671558826]
+scroll_scale = Vector2(0.45, 0.1)
+repeat_size = Vector2(501.6, 0)
+repeat_times = 167
+
+[node name="Plate" type="Sprite2D" parent="ForegroundScrap" unique_id=494644589]
+texture_filter = 1
+position = Vector2(0, 221)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_re44o")
+centered = false
+
+[node name="BaseFill" type="Polygon2D" parent="ForegroundScrap" unique_id=539296794]
+material = SubResource("ShaderMaterial_depth")
+polygon = PackedVector2Array(0, 501.3, 501.6, 501.3, 501.6, 2901.3, 0, 2901.3)

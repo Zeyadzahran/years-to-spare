@@ -12,7 +12,7 @@ extends CanvasLayer
 @onready var time_label: Label = %TimeMode
 @onready var options_button: Button = %Options
 
-const OPTIONS_SCENE := preload("res://scenes/options.tscn")
+const OPTIONS_SCENE := preload("res://src/ui/options/options.tscn")
 
 var _options_panel: Control = null
 ## Built rather than instanced: see src/ui/time_stop_overlay.gd.

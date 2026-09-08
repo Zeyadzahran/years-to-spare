@@ -25,6 +25,9 @@ The project is an in-development prototype with a playable first level,
 Only time stop is available in the current level. Rewind and slow-time inputs
 exist in the project, but their gameplay is not yet available.
 
+City of Time currently has a title screen only. It returns to Level 1; a playable
+second level has not been added yet.
+
 ## Running the game
 
 1. Install [Godot 4.7](https://godotengine.org/download/).
@@ -38,14 +41,14 @@ exist in the project, but their gameplay is not yet available.
 3. Import `project.godot` into Godot.
 4. Press **F5** to run the project.
 
-The game starts at `src/levels/logo.tscn`. The playable level is
-`src/levels/level_01.tscn`.
+The game starts at `src/cinematics/logo/logo.tscn`. The playable level is
+`src/levels/level_01/level_01.tscn`.
 
-All Level 01 layout is stored in that one scene. `World/FiveActExtension` is a
+All Level 01 layout is stored in that one scene. `World/SalvageYard` is a
 normal node group inside it, containing the later sections. Reusable actors,
 platforms, hazards, and the background remain separate reusable scenes.
 
-For level work, open `src/levels/level_01.tscn` and use **Run Current Scene**
+For level work, open `src/levels/level_01/level_01.tscn` and use **Run Current Scene**
 (F6), which skips the menu and story. To capture 15 views of this level directly:
 
 ```bash
@@ -67,7 +70,7 @@ a missed jump returns to the transfer checkpoint, preserving spent years.
 For the current transfer challenge:
 
 ```bash
-godot --headless --path . --fixed-fps 60 tools/verify_transfer_timing.tscn
+godot --headless --path . --fixed-fps 60 tests/level_01/verify_transfer_timing.tscn
 python3 tools/capture_level.py --only 05,06,07 --output builds/transfer-review
 ```
 
@@ -103,24 +106,75 @@ progress and starts the level again.
 ## Project structure
 
 ```text
-assets/                  Art, fonts, music, and sound effects
-autoload/
-  event_bus.gd           Signals shared between gameplay systems
-  game_state.gd          Level, ability, and checkpoint progress
-  time_service.gd        World time modes and scaled delta
-scenes/
-  options.tscn           Shared options screen and in-game overlay
-scripts/                 Menu, intro, settings, and music scripts
+assets/                  Shared actor art, fonts, music, sounds, and input icons
+autoload/                Event bus, run progress, world time, settings, and music
 src/
-  actors/
-    player/              Player controller, states, animation, and combat
-    enemy/               Shared enemy logic, Guards, Gunners, and bullets
-  components/            Health, age, and time-power components
+  actors/                Player and enemies, with their scenes and scripts
+  cinematics/            Logo and story intro, each beside its script
+  components/            Health, age, and time powers
   core/                  State machine and time-aware body classes
-  levels/                Startup flow and playable level scenes
-  ui/                    HUD, stat bars, and time-stop effects
-  world/                 Checkpoints, pickups, platforms, and hazards
+  levels/
+    level.gd             Shared level lifecycle and retry handling
+    level_01/
+      level_01.tscn      Gameplay layout: terrain, hazards, actors, and checkpoints
+      shaders/           Scrap background depth shader
+      props/             Reusable decoration scenes
+      hazards/           Level 1 hazard scenes and animation resources
+      art/               Background, terrain, prop, and hazard images
+      audio/             Level ambience
+      background.tscn    Parallax background
+      terrain_tileset.tres
+  ui/                    HUD, options, credits, main menu, and configurable level titles
+  world/
+    checkpoints/         Checkpoint scene, script, and marker animation
+    pickups/             Healing pickup scene and script
+    platforms/           Static, moving, falling, and blinking decks
+    exits/               Exit gate and completion screen
+    hazards/             Shared hazard behavior
+docs/                    Level authoring guide and refactor validation notes
+tests/                   Scene contracts and Level 1 physics checks
+tools/                   Python preview command and grouped authoring helpers
 ```
+
+See [Level authoring](docs/level-authoring.md) for where to place decorations,
+how the layers work, and which names must remain stable.
+
+All gameplay and decoration placements stay in `level_01/level_01.tscn`.
+Use `World/Decorations` for the opening and `World/SalvageYard/Decorations`
+for the later section. Reusable scenes in `props/` are available for new scenery.
+Ambience, terrain seam patches, checkpoints, and salvage-yard objects have
+separate scene-tree groups. The exit checkpoint has its own unique name.
+
+Keep existing enemy paths and checkpoint names stable: retry progress uses them
+to remember defeated enemies and the active checkpoint.
+
+## Validation and Web export
+
+After importing the project, run the scene checks from the project root:
+
+```bash
+godot --headless --path . --script tests/scene_contracts.gd -- --level-only
+```
+
+The command checks scene loading, retry identities, checkpoint recovery, and
+completion while running Level 1 directly. Omit `-- --level-only` to include
+startup, credits, and title navigation. Focused physics checks live in
+`tests/level_01/`; authoring helpers live in `tools/level_01/`. Existing shutdown
+resource diagnostics are separate from assertion failures.
+
+Install the export templates matching your Godot version, then use the `Web`
+preset in **Project → Export**, or run:
+
+```bash
+mkdir -p builds/web
+godot --headless --path . --export-release Web builds/web/index.html
+python3 -m http.server 8000 --directory builds/web
+```
+
+Open `http://localhost:8000` to play the exported build. Replace `godot` with your
+Godot executable path if it is not on your PATH. The preset uses Compatibility
+rendering and a single thread. Web builds render at the base viewport resolution
+before scaling to the browser window; desktop builds retain canvas-item scaling.
 
 ## Architecture rule
 
@@ -138,6 +192,9 @@ raw delta when it needs to continue during a time stop.
 | A player state or ability | Add a `State` under `src/actors/player/states/` and register it in the player's `StateMachine` |
 | A player animation | Add the clip to `player_frames.tres` and map it in `PlayerAnimator.STATE_CLIPS` |
 | An enemy type | Extend `Enemy`, configure its stats, and implement `_attack()` |
+| A Level 1 decoration | Add a reusable scene under `src/levels/level_01/props/`, then place it in a decoration group in `level_01.tscn` |
+| A level exit | Instance `src/world/exits/level_exit.tscn` under a `Level` root to show completion when crossed |
+| A level title | Use the scenes under `src/ui/level_title/` and set the root's `next_scene` |
 | A time-aware world object | Extend `TimeBody2D` or request scaled delta from `TimeService` |
 | A cross-system event | Add a signal to `EventBus` and connect the interested systems |
 | Another level | Add it to `GameState.LEVELS` and create its scene under `src/levels/` |

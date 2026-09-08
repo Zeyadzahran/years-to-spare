@@ -25,7 +25,7 @@ def main() -> int:
     command = [
         args.godot, "--path", str(project), "--windowed", "--resolution", "1280x720",
         "--audio-driver", "Dummy", "--log-file", str(output / "godot.log"),
-        "--quit-after", "600", "tools/capture_production_greybox.tscn",
+        "--quit-after", "600", "tools/level_01/capture_level.tscn",
         "--", f"--output={output}", f"--only={args.only}",
     ]
     try:

@@ -50,7 +50,7 @@ func _process(_delta: float) -> void:
 	if _victory and Input.is_action_just_pressed(&"attack"):
 		get_tree().paused = false
 		GameState.clear_run_progress()
-		get_tree().change_scene_to_file("res://src/levels/main_menu.tscn")
+		get_tree().change_scene_to_file("res://src/ui/main_menu/main_menu.tscn")
 
 
 func _on_animation_finished() -> void:

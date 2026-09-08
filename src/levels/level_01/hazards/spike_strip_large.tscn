@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dh3xs6ly8vm4c"]
+
+[ext_resource type="Texture2D" uid="uid://bv1s2sairdq83" path="res://src/levels/level_01/art/terrain/obstacles.png" id="1_obstacles"]
+[ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="2_hazard"]
+
+[sub_resource type="RectangleShape2D" id="Shape_SpikeStripLarge"]
+size = Vector2(196, 52)
+
+[node name="SpikeStripLarge" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_hazard")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.33333334, 0.33333334)
+texture = ExtResource("1_obstacles")
+offset = Vector2(0, -93.5)
+region_enabled = true
+region_rect = Rect2(370, 254, 612, 187)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -28)
+shape = SubResource("Shape_SpikeStripLarge")

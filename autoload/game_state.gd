@@ -10,7 +10,7 @@ const ABILITY_SLOW := &"slow"
 const LEVELS: Array[Dictionary] = [
 	{
 		"id": &"phase_1",
-		"scene": "res://src/levels/level_01.tscn",
+		"scene": "res://src/levels/level_01/level_01.tscn",
 		"grants": ABILITY_STOP,
 	},
 ]

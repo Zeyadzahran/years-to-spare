@@ -28,9 +28,9 @@ relocation, and the user's global MovingPlatform default speed of 500.
 
 ## Artifacts and validation
 
-`tools/verify_transfer_timing.tscn` is the current traversal contract. The old
-safe-route entry point forwards to it; no-stop acceptance is obsolete.
-`tools/build_production_extension.gd` now exports the current live group to a
+`tests/level_01/verify_transfer_timing.tscn` is the current traversal contract. The obsolete safe-route entry point has been removed; the transfer now requires
+a well-timed stop.
+`tools/level_01/export_layout.gd` now exports the current live group to a
 review draft, so manual edits cannot drift from a second authored layout.
 
 Snapshot and respawn-check artifacts: `builds/transfer-timing/`.
@@ -49,3 +49,25 @@ Final checks passed: timed crossing and spike overlaps, actual checkpoint reload
 layout, enemy footing, freeze/resume, opening join and relocated exit, review-draft
 export, and `git diff --check`. Starting-age 23 crossing used 4.17 seconds;
 starting-age 53 crossing used 4.12 seconds. Each cast cost three years.
+
+## Repository organization and PR delivery
+
+- [x] Commit the authored gameplay and background revision.
+- [x] Integrate main's existing Level 1 folder structure, cinematics, and UI moves.
+- [x] Keep one authored layout, including decorations, at
+      `src/levels/level_01/level_01.tscn`.
+- [x] Group shared objects by purpose and keep scripts beside their scenes.
+- [x] Group ambience, terrain seam patches, and loose checkpoints in the scene.
+      Rename the later section to SalvageYard and give its final checkpoint the
+      unique name ExitCheckpoint; preserve positions and gameplay parameters.
+- [x] Group physics checks under tests/level_01 and authoring helpers under
+      tools/level_01; update every resource path and authoring documentation.
+- [x] Verify scene contracts, transfer timing, existing physics checks, and Web export.
+
+Delivery target: commit the integration, push the branch, and update PR #44.
+
+Organization validation: all 267 pre-existing node property blocks match the
+pre-organization snapshot. Scene contracts load 39 scenes with zero failures;
+all seven focused physics scenes pass. Web release export and review-draft
+export succeed. Five fresh direct-level captures cover the opening, transfer,
+spike floor, and exit. Existing headless certificate/shutdown diagnostics remain.
