@@ -72,9 +72,11 @@ func _on_enemy_died(enemy: Node2D, _age_reward: float) -> void:
 		GameState.clear_enemy(level_id, _tag(enemy))
 
 
-## Health runs out and he tries again from the marker. Years run out and there
-## is nothing left to try with: the marker, the bodies and the age all go, and
-## the phase starts over from fourteen.
+## Health runs out and he tries again from the marker - unless that was his
+## third try since the last full start, in which case a heart no longer
+## covers it and the level starts over the way old age does. Years run out
+## and there is nothing left to try with regardless: the marker, the bodies
+## and the age all go, and the phase starts over from fourteen.
 func _on_player_died(of_old_age: bool) -> void:
 	if of_old_age:
 		GameState.clear_run_progress()
@@ -82,4 +84,6 @@ func _on_player_died(of_old_age: bool) -> void:
 		var player := get_tree().get_first_node_in_group(&"player") as Node2D
 		if player != null:
 			GameState.run_age = player.age.age
+		if GameState.lose_heart() <= 0:
+			GameState.clear_run_progress()
 	reload()

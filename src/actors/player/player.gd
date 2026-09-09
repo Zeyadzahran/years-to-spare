@@ -214,6 +214,14 @@ func is_down() -> bool:
 	return states.current_name == &"Dead"
 
 
+## Whether the boy is currently in the held duck, standing pose or creeping.
+## A Gunner reads this to decide whether to fire the standing shot or drop to
+## a knee for the low one - ducking shrinks the boy's box but not where he
+## stands, so without this a Gunner keeps shooting over a crouched head.
+func is_crouched() -> bool:
+	return states.current_name == &"Crouch"
+
+
 ## Routes environmental fatalities through HealthComponent and the existing
 ## Dead state instead of maintaining a second game-over path.
 func die_instantly(source: Node = null, restart_at_level_start := false) -> void:

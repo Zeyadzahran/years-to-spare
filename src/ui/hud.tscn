@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://p2hng7rqfrto" path="res://src/ui/stat_bar.tscn" id="3_bar"]
 [ext_resource type="Texture2D" uid="uid://c5qdvan58j5kd" path="res://assets/sprites/health-bar.png" id="4_hbar"]
 [ext_resource type="Texture2D" uid="uid://bsiugok2jqr24" path="res://assets/sprites/powers-bar.png" id="5_pbar"]
+[ext_resource type="Texture2D" uid="uid://yzje1byyqtje2" path="res://assets/sprites/heart-full.png" id="6_hfull"]
+[ext_resource type="Texture2D" uid="uid://mjfcqzsvc30js" path="res://assets/sprites/heart-empty.png" id="7_hempty"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
 content_margin_left = 12.0
@@ -58,6 +60,35 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/separation = 0
+
+[node name="HeartsRow" type="HBoxContainer" parent="Margin/Stats" unique_id=1347888946]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Heart0" type="TextureRect" parent="Margin/Stats/HeartsRow"]
+custom_minimum_size = Vector2(38, 36)
+layout_mode = 2
+texture = ExtResource("6_hfull")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+
+[node name="Heart1" type="TextureRect" parent="Margin/Stats/HeartsRow"]
+custom_minimum_size = Vector2(38, 36)
+layout_mode = 2
+texture = ExtResource("6_hfull")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+
+[node name="Heart2" type="TextureRect" parent="Margin/Stats/HeartsRow"]
+custom_minimum_size = Vector2(38, 36)
+layout_mode = 2
+texture = ExtResource("6_hfull")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="HealthRow" type="HBoxContainer" parent="Margin/Stats" unique_id=1347888947]
 layout_mode = 2
