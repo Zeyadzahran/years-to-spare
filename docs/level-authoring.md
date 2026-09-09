@@ -1,72 +1,68 @@
 # Level authoring
 
-Open `src/levels/level_01/level_01.tscn` for gameplay placement. Open
-`src/levels/level_01/decorations.tscn` to edit decoration placement without the
-rest of the level crowding the scene tree. Keep shared objects in `src/world`
-and level-specific content in the level's own folder.
+Open `src/levels/level_01/level_01.tscn` and use **Run Current Scene (F6)**.
+All terrain, gameplay objects, and decoration placements are authored here.
+There is no separate extension or decoration layout to synchronize.
 
-## Placing decorations
+## Scene tree
 
-Drag a scene from `level_01/props` into the relevant location group:
-Entrance (x below 2500), Trench (2500–4999), BigPit (5000–8499), or Exit
-(8500 onward). These are editor organization boundaries, not gameplay triggers.
-Keep a prop in the group containing its origin; do not split artwork at a boundary.
+- `Ambience`: desert wind and ambience players.
+- `Background`: the reusable parallax scene.
+- `World/Terrain`: opening tile surface and seam patches.
+- `World/Decorations`: opening background and foreground scenery.
+- `World/Checkpoints`, `Pickups`, and `Hazards`: opening gameplay objects.
+- `World/SalvageYard`: the later terrain, platforms, checkpoints, hazards,
+  enemies, pickups, exit gate, and decorations in their own groups.
+- `Entities/Player`, `Enemies`, `HUD`, and `Tutorial`: player, opening enemies,
+  interface, and instructions.
 
-Each location has the drawing layers it currently needs:
+Keep the SalvageYard parent at the origin. Its object positions are world-space
+coordinates, which makes it easy to compare both terrain sections in one scene.
+The fixed middle platform is `Platforms/TransferRest`; the two fast decks are
+`TransferIn` and `TransferOut`. Five overlapping lethal strips cover the floor.
 
-- Back: effective Z = -1.
-- Middle: effective Z = 0, shared with terrain and enemies.
-- Front: effective Z = 1, above terrain and enemies but below the player at Z = 10.
+## Files and reusable objects
 
-These depths preserve the old layout. “Front” means the front decoration layer,
-not in front of the player. Keep the layer Z on the parent; placed props normally
-have Z = 0. Within the same depth, scene-tree order controls overlapping art.
+Level-specific images, audio, hazards, props, tileset, background, and shader
+live under `src/levels/level_01/`. Shared checkpoint, pickup, platform, and exit
+scenes live in matching folders under `src/world/`. Scripts stay beside their
+scenes, along with `.uid` and animation resource files.
 
-Move or flip a placed instance to arrange the level. Edit the source prop scene
-only when every copy should change. Source props own texture crop, offset and
-default scale. Their origins and scales preserve the original art placement;
-for existing rocks/dirt, do not recenter them during an organization-only change.
-Use descriptive names for new props and placements. Existing instance names were
-retained for comparison with the old scene.
+Drag a scene from `level_01/props/` into a decoration group when adding scenery.
+Existing placements retain their original texture crops, transforms, drawing
+order, and depth. Edit a reusable source scene only when every instance should
+change. Do not recenter existing rocks or normalize scales during file cleanup.
+The original sheets remain in `art/props/`; separate PNG files are unnecessary.
 
-The original sheets are under `art/props`; there is no need to split them into
-separate PNG files. There are ten reusable props and 79 placed instances.
+The background contains one upright sky, ruins, and scrap layer. Its shader
+extends rubble below the scrap silhouette. Keep the original colors, nearest
+texture filtering, and enough horizontal repeats to cover the level in the editor.
 
-## Gameplay layout
+## Retry identities
 
-Terrain and its seam patches are under `World/Terrain`. All four checkpoint
-instances are under `World/Checkpoints`. Ambience is under `Ambience`.
-The shared level-exit scene is placed as `World/CityTransition`; set its
-`destination` in the Inspector. It accepts the player once, as before.
+Enemy progress uses paths relative to the level root. The eight opening enemy
+paths remain under `Enemies`; the two later guards are under
+`World/SalvageYard/Enemies`. Avoid renaming or reparenting these during play tuning.
+Checkpoint names must be unique across the whole level. The four later markers
+are `ShuttleCheckpoint`, `LiftCheckpoint`, `TransferCheckpoint`, and
+`ExitCheckpoint`. A retry preserves age spent and enemies already defeated.
 
-Do not rename or reparent existing enemies casually: retry progress identifies
-them by their path relative to the level root, for example `Enemies/Guard1`.
-Checkpoints identify themselves by node name; keep names unique within a level.
-These identities survived this refactor unchanged.
+The gate at `World/SalvageYard/Gates/LevelExit` shows a completion panel and pauses
+the level. Its return button clears run progress and opens the main menu.
 
-## Title screens and navigation
+## Previews and checks
 
-`src/ui/level_title/level_title.gd` is shared by the two title scenes. Edit their
-Label text/layout in the scene and set `next_scene` on the root. Animation timing
-is shared. Both titles currently lead to Level 1, preserving the existing flow;
-City of Time is a title screen, not a playable second level.
+```bash
+python3 tools/capture_level.py
+python3 tools/capture_level.py --only 05,06,07 --output builds/transfer-review
+godot --headless --path . --script tests/scene_contracts.gd -- --level-only
+godot --headless --path . --fixed-fps 60 tests/level_01/verify_transfer_timing.tscn
+```
 
-Main menu, options, and cinematics keep scripts beside their scenes. The startup
-scene is `src/cinematics/logo/logo.tscn`. Autoload scripts live in `autoload`.
+The Python helper renders Level 1 directly and writes a gallery under `builds/`.
+Focused checks are under `tests/level_01/`. `tools/level_01/export_layout.gd`
+exports the current salvage yard into an ignored review draft; it does not
+rebuild or overwrite the live layout. Generated artifacts stay under `builds/`.
 
-## Changing assets safely
-
-Prefer Godot's FileSystem dock for file moves. Preserve `.uid` and `.import`
-sidecars, check literal `res://` paths in scripts, and reopen the project to
-refresh imports. Do not normalize scales, crop rectangles, collision shapes,
-or parallax repeat settings as part of a folder cleanup.
-
-The two overlapping scrap background layers are intentionally retained here.
-Removing either requires a separate visual/performance check.
-
-## Regression check
-
-Run `godot --headless --path . --script tests/scene_contracts.gd` after importing
-the project. It checks scene dependencies, retry identities, checkpoint recovery,
-and the existing exit/title navigation. Full visual comparison from this refactor
-is recorded in `docs/refactor-plan.md`.
+Prefer Godot's FileSystem dock for future moves. Preserve `.uid` and `.import`
+sidecars, update literal resource paths, refresh imports, then run scene checks.

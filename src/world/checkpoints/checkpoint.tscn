@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b4kxq2wcheckp"]
 
-[ext_resource type="Script" uid="uid://dvadu41mf5w8j" path="res://src/world/checkpoint.gd" id="1_checkpoint"]
-[ext_resource type="SpriteFrames" uid="uid://fbe7xc2pvbw7" path="res://src/world/checkpoint_frames.tres" id="2_frames"]
+[ext_resource type="Script" uid="uid://dvadu41mf5w8j" path="res://src/world/checkpoints/checkpoint.gd" id="1_checkpoint"]
+[ext_resource type="SpriteFrames" uid="uid://fbe7xc2pvbw7" path="res://src/world/checkpoints/checkpoint_frames.tres" id="2_frames"]
 
 [sub_resource type="RectangleShape2D" id="Shape_Checkpoint"]
 size = Vector2(64, 140)
@@ -22,5 +22,3 @@ offset = Vector2(0, -256)
 [node name="Shape" type="CollisionShape2D" parent="." unique_id=64028517]
 position = Vector2(0, -70)
 shape = SubResource("Shape_Checkpoint")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

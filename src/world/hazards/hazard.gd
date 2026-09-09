@@ -49,6 +49,8 @@ func _physics_process(delta: float) -> void:
 		_cooldowns[id] -= delta
 		if _cooldowns[id] <= 0.0:
 			_cooldowns.erase(id)
+	if not monitoring:
+		return
 	# A body that never leaves keeps taking hits once its cooldown expires.
 	for body in get_overlapping_bodies():
 		_hurt(body)

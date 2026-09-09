@@ -20,14 +20,14 @@ config/icon="res://icon.svg"
 EventBus="*res://autoload/event_bus.gd"
 TimeService="*res://autoload/time_service.gd"
 GameState="*res://autoload/game_state.gd"
-SettingsManager="*uid://dwgl36are84yv"
-MusicManager="*uid://d15pmg7g3tj2c"
+SettingsManager="*res://autoload/settings_manager.gd"
+MusicManager="*res://autoload/music_manager.gd"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
-window/size/mode=3
+window/size/mode=4
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/stretch/mode.web="viewport"

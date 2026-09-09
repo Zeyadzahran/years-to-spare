@@ -1,0 +1,94 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/actors/enemy/warden.gd" id="1_warden"]
+[ext_resource type="Script" uid="uid://dp3hvo5k6qq50" path="res://src/components/health_component.gd" id="2_health"]
+[ext_resource type="SpriteFrames" uid="uid://bfaxh72gxcf6f" path="res://src/actors/enemy/guard_frames.tres" id="3_frames"]
+[ext_resource type="AudioStream" uid="uid://bl35qir5s0ysq" path="res://assets/sounds/stick-hit-enemy1.mp3" id="4_hit"]
+[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="5_font"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_warden"]
+size = Vector2(58, 148)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.047, 0.039, 0.031, 0.96)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.9, 0.65, 0.25, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="Warden" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_warden")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -74)
+shape = SubResource("RectangleShape2D_warden")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+z_index = 5
+scale = Vector2(0.72, 0.72)
+sprite_frames = ExtResource("3_frames")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(0, -120)
+modulate = Color(1, 0.77, 0.58, 1)
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2_health")
+max_health = 340.0
+
+[node name="HitAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_hit")
+volume_db = 10.0
+
+[node name="Victory" type="CanvasLayer" parent="."]
+layer = 70
+
+[node name="Panel" type="PanelContainer" parent="Victory"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -370.0
+offset_top = -128.0
+offset_right = 370.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Copy" type="VBoxContainer" parent="Victory/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 26
+alignment = 1
+
+[node name="Kicker" type="Label" parent="Victory/Panel/Copy"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.91, 0.64, 0.24, 1)
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 13
+text = "WARDEN DEFEATED"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Victory/Panel/Copy"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.91, 0.74, 1)
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 29
+text = "TIME WELL SPENT"
+horizontal_alignment = 1
+
+[node name="Prompt" type="Label" parent="Victory/Panel/Copy"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.69, 0.62, 1)
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 10
+text = "Press J to return"
+horizontal_alignment = 1
