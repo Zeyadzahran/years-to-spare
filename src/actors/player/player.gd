@@ -207,6 +207,14 @@ func is_down() -> bool:
 	return states.current_name == &"Dead"
 
 
+## Whether the boy is currently in the held duck, standing pose or creeping.
+## A Gunner reads this to decide whether to fire the standing shot or drop to
+## a knee for the low one - ducking shrinks the boy's box but not where he
+## stands, so without this a Gunner keeps shooting over a crouched head.
+func is_crouched() -> bool:
+	return states.current_name == &"Crouch"
+
+
 func _on_damaged(_amount: float, source: Node) -> void:
 	if is_down():
 		return

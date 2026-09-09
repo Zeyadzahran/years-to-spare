@@ -15,6 +15,10 @@ const LEVELS: Array[Dictionary] = [
 	},
 ]
 
+## Lives, not health: three tries at a checkpoint before a mistake costs the
+## whole level rather than just the ground since the last marker.
+const MAX_HEARTS := 3
+
 var level_index := 0
 var unlocked: Array[StringName] = []
 
@@ -25,6 +29,11 @@ var unlocked: Array[StringName] = []
 var checkpoint_id: StringName = &""
 var checkpoint_level: StringName = &""
 var checkpoint_position := Vector2.ZERO
+
+## Same shape as the checkpoint above: a death does not touch this, only
+## `clear_run_progress()` does - so three tries at a marker have to run out
+## before this resets, not one reload of it.
+var hearts := MAX_HEARTS
 
 ## The age the boy carries into his next attempt. Dying is not a fountain of
 ## youth: the years he spent are spent, and only the ground he covered is lost.
@@ -74,13 +83,25 @@ func is_enemy_cleared(level_id: StringName, path: String) -> bool:
 
 
 ## Throws away everything a retry would have carried: the marker, the years
-## already spent, and the bodies. This is what "start over" means.
+## already spent, the bodies, and now the hearts - this is what "start over"
+## means, and running out of hearts is one more way to mean it.
 func clear_run_progress() -> void:
 	checkpoint_id = &""
 	checkpoint_level = &""
 	checkpoint_position = Vector2.ZERO
 	run_age = -1.0
 	cleared_enemies.clear()
+	hearts = MAX_HEARTS
+	EventBus.player_hearts_changed.emit(hearts, MAX_HEARTS)
+
+
+## Called on every death that is not old age. The return value is what
+## Level._on_player_died reads to decide a checkpoint respawn still covers it
+## or whether this was the third and the level starts over instead.
+func lose_heart() -> int:
+	hearts = maxi(hearts - 1, 0)
+	EventBus.player_hearts_changed.emit(hearts, MAX_HEARTS)
+	return hearts
 
 
 func current_level() -> Dictionary:
