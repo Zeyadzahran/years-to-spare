@@ -1,9 +1,9 @@
 extends Node
-## Runtime coverage for boss-room loading and environmental respawn rules.
+## Runtime coverage for the inline boss arena and environmental respawn rules.
 
 const LEVEL_SCENE := preload("res://src/levels/level_01/level_01.tscn")
 const PLAYER_SCENE := preload("res://src/actors/player/player.tscn")
-const LEVEL_START := Vector2(337, 606)
+const LEVEL_START := Vector2(183, 618)
 const TEST_CHECKPOINT := Vector2(9198, 604)
 const SPIKE_SCENES := [
 	preload("res://src/levels/level_01/hazards/spike_strip_small.tscn"),
@@ -17,35 +17,79 @@ var _death_announcements := 0
 
 func _ready() -> void:
 	GameState.clear_run_progress()
-	await _verify_direct_boss_room_load()
+	_verify_editor_authored_boss_arena()
 	await _verify_normal_damage_and_checkpoint()
 	await _verify_spikes_restart_at_start()
 	await _verify_void_restarts_at_start()
+	await _verify_inline_boss_arena()
 	GameState.clear_run_progress()
 	print("BOSS_GATE_AND_RESPAWN_RULES_VERIFIED")
 	get_tree().quit()
 
 
-func _verify_direct_boss_room_load() -> void:
+func _verify_editor_authored_boss_arena() -> void:
+	# Inspect before add_child(), so these nodes/cells can only have come from
+	# level_01.tscn and are therefore visible in that editor scene too.
+	var level := LEVEL_SCENE.instantiate()
+	var arena := level.get_node(^"World/BossArena") as Node2D
+	var terrain := level.get_node(^"World/SalvageYard/Terrain") as TileMapLayer
+	var spawn := arena.get_node(^"PlayerSpawn") as Marker2D
+	assert(arena.has_node(^"Atmosphere/DeepRecess"))
+	assert(arena.has_node(^"Atmosphere/Dust"))
+	assert(terrain.tile_set == load("res://src/levels/level_01/terrain_tileset.tres"))
+	assert(arena.has_node(^"TrappedSister"))
+	assert(arena.has_node(^"FutureBossPosition"))
+	assert(not arena.has_node(^"Warden"))
+	assert(level.find_children("Player", "Player", true, false).size() == 1)
+	var below_spawn := terrain.local_to_map(
+		terrain.to_local(arena.to_global(spawn.position + Vector2(0, 36)))
+	)
+	assert(terrain.get_cell_source_id(below_spawn) >= 0)
+	level.free()
+
+
+func _verify_inline_boss_arena() -> void:
 	var level := await _fresh_level()
-	var world := level.get_node(^"World")
 	var player := level.get_node(^"Entities/Player") as Player
 	var gate := level.get_node(^"World/SalvageYard/Gates/BossGate") as BossGate
+	var arena := level.get_node(^"World/BossArena") as Node2D
+	var spawn := arena.get_node(^"PlayerSpawn") as Marker2D
+	var terrain := level.get_node(^"World/SalvageYard/Terrain") as TileMapLayer
 	assert(player != null)
 	assert(gate != null)
-	assert(not world.has_node(^"BossRoom"))
+	assert(gate.body_entered.is_connected(gate._on_body_entered))
 
 	player.age.set_to(33.0)
 	var health_before := player.health.current
-	gate._on_body_entered(player)
-	await get_tree().create_timer(1.35).timeout
+	var player_id := player.get_instance_id()
+	# Enter the real Area2D collision so the test covers automatic activation,
+	# not a button press or a direct call to the transition implementation.
+	var gate_shape := gate.get_node(^"Shape") as CollisionShape2D
+	player.global_position = gate_shape.global_position + Vector2(0, 50)
+	player.velocity = Vector2.ZERO
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	assert(gate.get("_transitioning"))
+	assert(player.process_mode == Node.PROCESS_MODE_DISABLED)
+	assert(gate.get_node(^"Effects").emitting)
 
-	assert(world.has_node(^"BossRoom"))
-	var room := world.get_node(^"BossRoom")
-	var spawn := room.get_node(^"PlayerSpawn") as Marker2D
-	var warden := room.get_node(^"Warden") as Warden
-	var sister := room.get_node(^"TrappedSister") as Sprite2D
-	var arena_terrain := room.get_node(^"Terrain") as TileMapLayer
+	# Feedback and fade happen before crossing into the arena.
+	await get_tree().create_timer(0.43).timeout
+	assert(gate.get_node(^"Glow").modulate.a > 0.0)
+	assert(gate.get_node(^"Transition/Fade").color.a > 0.0)
+
+	# The same Player crosses within Level 1 only while the screen is covered.
+	await get_tree().create_timer(0.25).timeout
+	assert(player.get_instance_id() == player_id)
+	assert(level.has_node(^"World/BossArena"))
+	assert(arena.has_node(^"TrappedSister"))
+	assert((arena.get_node(^"TrappedSister") as Sprite2D).is_visible_in_tree())
+	assert(not arena.has_node(^"Warden"))
+	assert(get_tree().get_nodes_in_group(&"player").size() == 1)
+	assert(player.global_position.distance_to(spawn.global_position) < 4.0)
+	assert(player.process_mode == Node.PROCESS_MODE_DISABLED)
+
+	await get_tree().create_timer(0.7).timeout
 	print("BOSS_GATE_POSITION actual=%s spawn=%s" % [player.global_position, spawn.global_position])
 	assert(player.global_position.distance_to(spawn.global_position) < 4.0)
 	assert(player.is_on_floor())
@@ -53,15 +97,34 @@ func _verify_direct_boss_room_load() -> void:
 	assert(is_equal_approx(player.age.age, 33.0))
 	assert(is_equal_approx(player.health.current, health_before))
 	assert(player.process_mode == Node.PROCESS_MODE_INHERIT)
-	assert(is_zero_approx(gate.get_node(^"Transition/Fade").color.a))
-	assert(arena_terrain.tile_set == load("res://src/levels/level_01/terrain_tileset.tres"))
-	assert(arena_terrain.get_used_cells().size() == 118)
-	assert(warden.target == player)
-	assert(warden.global_position.distance_to(player.global_position) <= warden.detection_range)
-	assert(absf(sister.global_position.x - player.global_position.x) < 450.0)
-	assert((player.get_node(^"Camera2D") as Camera2D).zoom == Vector2(1.25, 1.25))
+	assert(is_zero_approx((gate.get_node(^"Transition/Fade") as ColorRect).color.a))
+	assert(terrain.tile_set == load("res://src/levels/level_01/terrain_tileset.tres"))
+	assert((player.get_node(^"Camera2D") as Camera2D).zoom == Vector2(0.5, 0.5))
+	var camera := player.get_node(^"Camera2D") as Camera2D
+	assert(camera.enabled)
+	assert(camera.get_parent() == player)
+	assert(get_viewport().get_visible_rect().size.x / camera.zoom.x >= 1560.0)
 
-	level.queue_free()
+	# Restoring the process mode is not enough on its own: prove normal input
+	# moves the player as soon as the room has been revealed.
+	var control_start_x := player.global_position.x
+	Input.action_press(&"move_right")
+	for frame in 12:
+		await get_tree().physics_frame
+	Input.action_release(&"move_right")
+	assert(player.global_position.x > control_start_x + 1.0)
+
+	# A second call cannot restart the fade or move the Player again.
+	player.velocity = Vector2.ZERO
+	var arena_position := player.global_position
+	gate._on_body_entered(player)
+	await get_tree().create_timer(0.1).timeout
+	assert(absf(player.global_position.x - arena_position.x) < 1.0)
+	assert(is_zero_approx((gate.get_node(^"Transition/Fade") as ColorRect).color.a))
+	assert(get_tree().get_nodes_in_group(&"player").size() == 1)
+	assert(player.process_mode == Node.PROCESS_MODE_INHERIT)
+	assert(not gate.monitoring)
+	level.free()
 	await get_tree().process_frame
 
 
@@ -75,8 +138,8 @@ func _verify_normal_damage_and_checkpoint() -> void:
 	assert(is_equal_approx(player.health.current, health_before - 34.0))
 	assert(player.states.current_name == &"Hurt")
 	assert(not GameState.respawn_at_level_start_once)
-	player.queue_free()
-	source.queue_free()
+	player.free()
+	source.free()
 	await get_tree().process_frame
 
 	GameState.set_checkpoint(&"normal_damage_checkpoint", TEST_CHECKPOINT, 27.0)
@@ -84,7 +147,7 @@ func _verify_normal_damage_and_checkpoint() -> void:
 	var respawned := level.get_node(^"Entities/Player") as Player
 	print("NORMAL_RESPAWN actual=%s checkpoint=%s" % [respawned.global_position, TEST_CHECKPOINT])
 	assert(respawned.global_position.distance_to(TEST_CHECKPOINT) < 5.0)
-	level.queue_free()
+	level.free()
 	await get_tree().process_frame
 
 
@@ -100,19 +163,23 @@ func _verify_spikes_restart_at_start() -> void:
 		spike._hurt(player)
 		assert(not player.health.is_alive())
 		assert(player.states.current_name == &"Dead")
-		player.queue_free()
-		spike.queue_free()
+		player.free()
+		spike.free()
 		await get_tree().process_frame
 	assert(GameState.respawn_at_level_start_once)
 	EventBus.player_died.disconnect(_on_player_died)
 
-	var level := await _fresh_level()
+	var level := LEVEL_SCENE.instantiate() as Level
+	add_child(level)
 	var respawned := level.get_node(^"Entities/Player") as Player
 	print("SPIKE_RESPAWN actual=%s start=%s" % [respawned.global_position, LEVEL_START])
-	assert(respawned.global_position.distance_to(LEVEL_START) < 7.0)
+	assert(respawned.global_position == LEVEL_START)
 	assert(GameState.has_checkpoint(&"phase_1"))
 	assert(not GameState.respawn_at_level_start_once)
-	level.queue_free()
+	for frame in 4:
+		await get_tree().physics_frame
+	assert(respawned.is_on_floor())
+	level.free()
 	await get_tree().process_frame
 	assert(_death_announcements == before)
 
@@ -124,16 +191,20 @@ func _verify_void_restarts_at_start() -> void:
 	assert(not player.health.is_alive())
 	assert(player.states.current_name == &"Dead")
 	assert(GameState.respawn_at_level_start_once)
-	player.queue_free()
+	player.free()
 	await get_tree().process_frame
 
-	var level := await _fresh_level()
+	var level := LEVEL_SCENE.instantiate() as Level
+	add_child(level)
 	var respawned := level.get_node(^"Entities/Player") as Player
 	print("VOID_RESPAWN actual=%s start=%s" % [respawned.global_position, LEVEL_START])
-	assert(respawned.global_position.distance_to(LEVEL_START) < 7.0)
+	assert(respawned.global_position == LEVEL_START)
 	assert(GameState.has_checkpoint(&"phase_1"))
 	assert(not GameState.respawn_at_level_start_once)
-	level.queue_free()
+	for frame in 4:
+		await get_tree().physics_frame
+	assert(respawned.is_on_floor())
+	level.free()
 	await get_tree().process_frame
 
 

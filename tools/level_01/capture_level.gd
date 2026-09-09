@@ -19,7 +19,7 @@ const SHOTS := [
 	{"name": "07_spike_floor", "position": Vector2(15430, 250)},
 	{"name": "08_exit_approach", "position": Vector2(16400, 119)},
 	{"name": "09_boss_gate", "node": ^"Gates/BossGate", "offset": Vector2(-180, 0)},
-	{"name": "10_boss_room", "boss_room": true},
+	{"name": "10_boss_arena", "boss_arena": true},
 ]
 
 
@@ -70,9 +70,8 @@ func _ready() -> void:
 			for prefix in only:
 				if String(shot["name"]).begins_with(prefix): selected = true
 			if not selected: continue
-		if shot.get("boss_room", false):
-			# The room is intentionally loaded by the live gate transition rather
-			# than present off-screen when Level 1 starts.
+		if shot.get("boss_arena", false):
+			# Capture the arena through the same inline gate transition as gameplay.
 			get_tree().paused = false
 			live_extension.get_node(^"Gates/BossGate")._on_body_entered(player)
 			await get_tree().create_timer(1.35).timeout

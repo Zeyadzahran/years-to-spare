@@ -1,12 +1,13 @@
 class_name BossGate
 extends Area2D
-## A one-way threshold into the final arena. Entering its arch locks the player
-## briefly, blooms the gate, fades the screen, and moves him without reloading
-## the level so his age and run progress survive the crossing.
+## A one-way threshold into the final arena authored inside Level 1. Entering
+## its arch locks the player, blooms the gate, fades the screen, and carries the
+## same Player into the hidden chamber beyond the level's final gap.
 
-@export var boss_room_scene: PackedScene
-@export_node_path("Node2D") var boss_room_parent_path: NodePath
-@export_node_path("Marker2D") var boss_room_anchor_path: NodePath
+@export_node_path("Node2D") var boss_arena_path: NodePath
+@export_node_path("Marker2D") var arena_spawn_path: NodePath
+
+const ARENA_CAMERA_ZOOM := Vector2(0.75, 0.75)
 
 const REST_SCALE := Vector2(0.14, 0.14)
 const ACTIVE_SCALE := Vector2(0.15, 0.15)
@@ -22,17 +23,17 @@ func _ready() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if _transitioning or not body is Player:
 		return
-	var room_parent := get_node_or_null(boss_room_parent_path) as Node2D
-	var room_anchor := get_node_or_null(boss_room_anchor_path) as Marker2D
-	if boss_room_scene == null or room_parent == null or room_anchor == null:
-		push_error("BossGate requires the existing boss-room scene, parent and anchor")
+	var boss_arena := get_node_or_null(boss_arena_path) as Node2D
+	var arena_spawn := get_node_or_null(arena_spawn_path) as Marker2D
+	if boss_arena == null or arena_spawn == null:
+		push_error("BossGate requires the Level 1 BossArena and PlayerSpawn")
 		return
 	_transitioning = true
-	monitoring = false
-	_enter_gate(body, room_parent, room_anchor)
+	set_deferred(&"monitoring", false)
+	_enter_gate(body, boss_arena, arena_spawn)
 
 
-func _enter_gate(player: Player, room_parent: Node2D, room_anchor: Marker2D) -> void:
+func _enter_gate(player: Player, boss_arena: Node2D, arena_spawn: Marker2D) -> void:
 	player.powers.cancel()
 	player.velocity = Vector2.ZERO
 	player.process_mode = Node.PROCESS_MODE_DISABLED
@@ -48,48 +49,34 @@ func _enter_gate(player: Player, room_parent: Node2D, room_anchor: Marker2D) -> 
 	cover.tween_property($Transition/Fade, ^"color:a", 1.0, 0.28)
 	await cover.finished
 
-	# Load the authored room while the screen is covered. It is not sitting in
-	# the normal level off-screen anymore: crossing this gate creates the one
-	# existing boss-room scene at its dedicated world anchor.
-	var boss_room := _load_boss_room(room_parent, room_anchor)
-	var boss_spawn := boss_room.get_node_or_null(^"PlayerSpawn") as Marker2D
-	if boss_spawn == null:
-		push_error("The boss room requires its PlayerSpawn marker")
-		_abort_transition(player)
-		return
-
-	player.global_position = boss_spawn.global_position
+	# The arena is already part of Level 1 and visible in the editor. Move the
+	# same live Player only while covered, then reveal that authored area.
+	player.global_position = arena_spawn.global_position
 	player.velocity = Vector2.ZERO
 	player.facing = 1
 	var camera := player.get_node_or_null(^"Camera2D") as Camera2D
 	if camera != null:
-		if boss_room.has_method(&"configure_camera"):
-			boss_room.configure_camera(camera)
+		camera.zoom = ARENA_CAMERA_ZOOM
+		camera.position_smoothing_enabled = false
 		camera.reset_smoothing()
+		camera.force_update_scroll()
+	boss_arena.show()
+	await get_tree().process_frame
+	if camera != null:
+		camera.reset_smoothing()
+		camera.force_update_scroll()
 
 	var reveal := create_tween()
 	reveal.tween_interval(0.12)
 	reveal.tween_property($Transition/Fade, ^"color:a", 0.0, 0.48)
 	await reveal.finished
 	player.process_mode = Node.PROCESS_MODE_INHERIT
-	if boss_room.has_method(&"begin_encounter"):
-		boss_room.begin_encounter()
-
+	if camera != null:
+		camera.position_smoothing_enabled = true
 	$Effects.emitting = false
 	$Art.scale = REST_SCALE
 	$Art.modulate = Color.WHITE
 	$Glow.modulate.a = 0.0
-
-
-func _load_boss_room(room_parent: Node2D, room_anchor: Marker2D) -> Node2D:
-	var existing := room_parent.get_node_or_null(^"BossRoom") as Node2D
-	if existing != null:
-		return existing
-	var boss_room := boss_room_scene.instantiate() as Node2D
-	boss_room.name = "BossRoom"
-	boss_room.position = room_parent.to_local(room_anchor.global_position)
-	room_parent.add_child(boss_room)
-	return boss_room
 
 
 func _abort_transition(player: Player) -> void:
@@ -100,4 +87,4 @@ func _abort_transition(player: Player) -> void:
 	$Art.modulate = Color.WHITE
 	$Glow.modulate.a = 0.0
 	_transitioning = false
-	monitoring = true
+	set_deferred(&"monitoring", true)

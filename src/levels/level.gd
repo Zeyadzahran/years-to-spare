@@ -4,6 +4,7 @@ extends Node2D
 ## content of a phase stays in its scene tree.
 
 @export var level_id: StringName = &"phase_1"
+@export_node_path("Marker2D") var level_start_path: NodePath
 
 func _ready() -> void:
 	TimeService.reset()
@@ -32,6 +33,9 @@ func _resume_run() -> void:
 	if GameState.run_age >= 0.0:
 		player.age.set_to(GameState.run_age)
 	if GameState.consume_level_start_respawn():
+		var level_start := get_node_or_null(level_start_path) as Marker2D
+		if level_start != null:
+			player.global_position = level_start.global_position
 		return
 	if GameState.has_checkpoint(level_id):
 		player.global_position = GameState.checkpoint_position

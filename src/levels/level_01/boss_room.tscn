@@ -1,10 +1,10 @@
-[gd_scene format=4 uid="uid://cj8hmma2bxj6x"]
+[gd_scene format=4 uid="uid://bugjtfy3553rb"]
 
-[ext_resource type="Script" uid="uid://cue5vvdt26pet" path="res://src/levels/level_01/boss_room.gd" id="1_script"]
+[ext_resource type="Script" path="res://src/levels/level_01/boss_room.gd" id="1_script"]
 [ext_resource type="TileSet" uid="uid://ct8w2xk4bnq7f" path="res://src/levels/level_01/terrain_tileset.tres" id="2_terrain"]
-[ext_resource type="PackedScene" path="res://src/actors/enemy/warden.tscn" id="3_warden"]
+[ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="3_player"]
 [ext_resource type="Texture2D" uid="uid://dj7tgk374tysh" path="res://assets/sprites/trapped-sister.png" id="4_sister"]
-[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="5_font"]
+[ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="5_hud"]
 [ext_resource type="Texture2D" uid="uid://cq7g30j4pyjf2" path="res://src/levels/level_01/art/props/decorations.png" id="6_decorations"]
 [ext_resource type="Texture2D" uid="uid://b2j4qyiy3tqb3" path="res://src/levels/level_01/art/props/rocks_and_dirt.png" id="7_rubble"]
 
@@ -34,6 +34,31 @@ polygon = PackedVector2Array(-960, -196, 960, -196, 960, 467, -960, 467)
 z_index = 2
 color = Color(0.028, 0.021, 0.026, 1)
 polygon = PackedVector2Array(-820, -112, 820, -112, 820, 450, -820, 450)
+
+[node name="UpperVaultBand" type="Polygon2D" parent="Atmosphere" unique_id=6109251]
+z_index = 3
+color = Color(0.16, 0.09, 0.055, 1)
+polygon = PackedVector2Array(-820, -112, 820, -112, 780, -66, -780, -66)
+
+[node name="LeftWallPier" type="Polygon2D" parent="Atmosphere" unique_id=1111472724]
+z_index = 3
+color = Color(0.13, 0.075, 0.055, 1)
+polygon = PackedVector2Array(-820, -112, -700, -112, -650, 450, -820, 450)
+
+[node name="RightWallPier" type="Polygon2D" parent="Atmosphere" unique_id=1622688082]
+z_index = 3
+color = Color(0.13, 0.075, 0.055, 1)
+polygon = PackedVector2Array(700, -112, 820, -112, 820, 450, 650, 450)
+
+[node name="CentralVaultSeal" type="Polygon2D" parent="Atmosphere" unique_id=101254452]
+z_index = 3
+color = Color(0.11, 0.06, 0.055, 1)
+polygon = PackedVector2Array(-250, -66, 250, -66, 330, 65, 330, 360, 250, 450, -250, 450, -330, 360, -330, 65)
+
+[node name="CentralVaultInset" type="Polygon2D" parent="Atmosphere" unique_id=610279789]
+z_index = 4
+color = Color(0.035, 0.024, 0.03, 1)
+polygon = PackedVector2Array(-205, -28, 205, -28, 275, 82, 275, 335, 205, 405, -205, 405, -275, 335, -275, 82)
 
 [node name="AmberHaze" type="Polygon2D" parent="Atmosphere" unique_id=1351585861]
 z_index = 3
@@ -76,8 +101,14 @@ scale = Vector2(0.33333334, 0.33333334)
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAQAAAAAAAIAAAABAAAAAAABAAAAAAABAAEAAAABAAEAAAABAAIAAAABAAEAAAABAAMAAAABAAEAAAABAAQAAAABAAIAAAACAAAAAAABAAAAAAACAAEAAAABAAEAAAACAAIAAAABAAEAAAACAAMAAAABAAEAAAACAAQAAAABAAIAAAADAAAAAAABAAAAAAADAAEAAAABAAEAAAADAAIAAAABAAEAAAADAAMAAAABAAEAAAADAAQAAAABAAIAAAAEAAAAAAABAAAAAAAEAAEAAAABAAEAAAAEAAIAAAABAAEAAAAEAAMAAAABAAEAAAAEAAQAAAABAAIAAAAFAAAAAAABAAAAAAAFAAEAAAABAAEAAAAFAAIAAAABAAEAAAAFAAMAAAABAAEAAAAFAAQAAAABAAIAAAAGAAAAAAABAAAAAAAGAAEAAAABAAEAAAAGAAIAAAABAAEAAAAGAAMAAAABAAEAAAAGAAQAAAABAAIAAAAHAAAAAAABAAAAAAAHAAEAAAABAAEAAAAHAAIAAAABAAEAAAAHAAMAAAABAAEAAAAHAAQAAAABAAIAAAAIAAAAAAABAAAAAAAIAAEAAAABAAEAAAAIAAIAAAABAAEAAAAIAAMAAAABAAEAAAAIAAQAAAABAAIAAAAJAAAAAAABAAAAAAAJAAEAAAABAAEAAAAJAAIAAAABAAEAAAAJAAMAAAABAAEAAAAJAAQAAAABAAIAAAAKAAAAAAABAAAAAAAKAAEAAAABAAEAAAAKAAIAAAABAAEAAAAKAAMAAAABAAEAAAAKAAQAAAABAAIAAAALAAAAAAABAAAAAAALAAEAAAABAAEAAAALAAIAAAABAAEAAAALAAMAAAABAAEAAAALAAQAAAABAAIAAAAMAAAAAAABAAAAAAAMAAEAAAABAAEAAAAMAAIAAAABAAEAAAAMAAMAAAABAAEAAAAMAAQAAAABAAIAAAANAAAAAAABAAAAAAANAAEAAAABAAEAAAANAAIAAAABAAEAAAANAAMAAAABAAEAAAANAAQAAAABAAIAAAAOAAAAAAABAAAAAAAOAAEAAAABAAEAAAAOAAIAAAABAAEAAAAOAAMAAAABAAEAAAAOAAQAAAABAAIAAAAPAAAAAAABAAAAAAAPAAEAAAABAAEAAAAPAAIAAAABAAEAAAAPAAMAAAABAAEAAAAPAAQAAAABAAIAAAAQAAAAAAABAAAAAAAQAAEAAAABAAEAAAAQAAIAAAABAAEAAAAQAAMAAAABAAEAAAAQAAQAAAABAAIAAAARAAAAAAACAAEAAAARAAEAAAACAAEAAAARAAIAAAACAAEAAAARAAMAAAACAAEAAAARAAQAAAACAAIAAAAAAPv/AAAAAAEAAAARAPv/AAACAAEAAAAAAPz/AAAAAAEAAAARAPz/AAACAAEAAAAAAP3/AAAAAAEAAAARAP3/AAACAAEAAAAAAP7/AAAAAAEAAAARAP7/AAACAAEAAAAAAP//AAAAAAEAAAARAP//AAACAAEAAAAAAPr/AAAAAAEAAAABAPr/AAABAAIAAAACAPr/AAABAAIAAAADAPr/AAABAAIAAAAEAPr/AAABAAIAAAAFAPr/AAABAAIAAAAGAPr/AAABAAIAAAAHAPr/AAABAAIAAAAIAPr/AAABAAIAAAAJAPr/AAABAAIAAAAKAPr/AAABAAIAAAALAPr/AAABAAIAAAAMAPr/AAABAAIAAAANAPr/AAABAAIAAAAOAPr/AAABAAIAAAAPAPr/AAABAAIAAAAQAPr/AAABAAIAAAARAPr/AAACAAEAAAA=")
 tile_set = ExtResource("2_terrain")
 
-[node name="PlayerSpawn" type="Marker2D" parent="."]
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1832926137]
 position = Vector2(0, 466.5)
+
+[node name="Player" parent="." unique_id=971644284 instance=ExtResource("3_player")]
+z_index = 10
+position = Vector2(0, 466.5)
+
+[node name="HUD" parent="." unique_id=890827083 instance=ExtResource("5_hud")]
 
 [node name="Decorations" type="Node2D" parent="." unique_id=1150349430]
 
@@ -124,49 +155,39 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
 
-[node name="RoomTitle" type="Label" parent="." unique_id=1511482713]
-z_index = 3
-offset_left = -250.0
-offset_top = -152.0
-offset_right = 250.0
-offset_bottom = -112.0
-theme_override_colors/font_color = Color(0.95, 0.71, 0.31, 1)
-theme_override_colors/font_outline_color = Color(0.025, 0.015, 0.018, 1)
-theme_override_constants/outline_size = 7
-theme_override_fonts/font = ExtResource("5_font")
-theme_override_font_sizes/font_size = 22
-text = "THE WARDEN'S VAULT"
-horizontal_alignment = 1
-
-[node name="SisterGlow" type="Polygon2D" parent="." unique_id=1583692127]
+[node name="RightLandmark" type="Sprite2D" parent="Decorations" unique_id=1925442061]
 z_index = -1
-material = SubResource("CanvasItemMaterial_add")
-color = Color(0.8, 0.36, 0.07, 0.38)
-polygon = PackedVector2Array(310, 75, 490, 75, 490, 466, 310, 466)
+position = Vector2(770, 466.5)
+scale = Vector2(0.34229183, 0.34229183)
+texture = ExtResource("6_decorations")
+offset = Vector2(0, -295.5)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
 
-[node name="TrappedSister" type="Sprite2D" parent="." unique_id=1324267666]
-z_index = 2
-position = Vector2(400, 350)
-scale = Vector2(0.56, 0.56)
+[node name="SisterGlow" type="Polygon2D" parent="." unique_id=473317424]
+z_index = 1
+material = SubResource("CanvasItemMaterial_add")
+color = Color(0.95, 0.48, 0.08, 0.22)
+polygon = PackedVector2Array(500, 40, 820, 40, 900, 466, 420, 466)
+
+[node name="TrappedSister" type="Sprite2D" parent="." unique_id=656934010]
+z_index = 4
+position = Vector2(665, 466.5)
+scale = Vector2(0.64, 0.64)
 texture = ExtResource("4_sister")
+offset = Vector2(0, -209)
 region_enabled = true
 region_rect = Rect2(0, 0, 313.5, 418)
 
-[node name="SisterLabel" type="Label" parent="." unique_id=1884381471]
-z_index = 3
-offset_left = 290.0
-offset_top = 40.0
-offset_right = 510.0
-offset_bottom = 68.0
-theme_override_colors/font_color = Color(1, 0.86, 0.55, 1)
-theme_override_colors/font_outline_color = Color(0.025, 0.015, 0.018, 1)
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("5_font")
-theme_override_font_sizes/font_size = 11
-text = "YOUR SISTER"
-horizontal_alignment = 1
+[node name="Transition" type="CanvasLayer" parent="." unique_id=1718951571]
+layer = 90
 
-[node name="Warden" parent="." unique_id=2002330585 instance=ExtResource("3_warden")]
-position = Vector2(200, 466.5)
-patrol_distance = 470.0
-territory = 1120.0
+[node name="Fade" type="ColorRect" parent="Transition" unique_id=1990077483]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.025, 0.018, 0.012, 1)

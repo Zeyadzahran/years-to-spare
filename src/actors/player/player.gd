@@ -26,7 +26,7 @@ const JUMP_BUFFER := 0.15
 const ATTACK_BUFFER := 0.15
 
 ## Safely below every authored playable surface. Unlike a placed death volume,
-## this follows the player across the normal level and the isolated boss room.
+## This follows the player across the normal level and the isolated boss arena.
 const VOID_DEATH_Y := 1200.0
 
 ## Three swings to down a Guard, on the 100-point scale.
