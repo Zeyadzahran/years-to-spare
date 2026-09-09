@@ -1,0 +1,172 @@
+[gd_scene format=4 uid="uid://cj8hmma2bxj6x"]
+
+[ext_resource type="Script" uid="uid://cue5vvdt26pet" path="res://src/levels/level_01/boss_room.gd" id="1_script"]
+[ext_resource type="TileSet" uid="uid://ct8w2xk4bnq7f" path="res://src/levels/level_01/terrain_tileset.tres" id="2_terrain"]
+[ext_resource type="PackedScene" path="res://src/actors/enemy/warden.tscn" id="3_warden"]
+[ext_resource type="Texture2D" uid="uid://dj7tgk374tysh" path="res://assets/sprites/trapped-sister.png" id="4_sister"]
+[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="5_font"]
+[ext_resource type="Texture2D" uid="uid://cq7g30j4pyjf2" path="res://src/levels/level_01/art/props/decorations.png" id="6_decorations"]
+[ext_resource type="Texture2D" uid="uid://b2j4qyiy3tqb3" path="res://src/levels/level_01/art/props/rocks_and_dirt.png" id="7_rubble"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_dust"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(0.95, 0.55, 0.18, 0, 0.95, 0.55, 0.18, 0.42, 0.95, 0.55, 0.18, 0)
+
+[node name="BossRoom" type="Node2D" unique_id=1054035007]
+script = ExtResource("1_script")
+
+[node name="Atmosphere" type="Node2D" parent="." unique_id=1452734869]
+z_index = -100
+
+[node name="OuterDarkness" type="Polygon2D" parent="Atmosphere" unique_id=1632937401]
+color = Color(0.018, 0.012, 0.014, 1)
+polygon = PackedVector2Array(-1600, -600, 1600, -600, 1600, 1200, -1600, 1200)
+
+[node name="VaultWall" type="Polygon2D" parent="Atmosphere" unique_id=138185864]
+z_index = 1
+color = Color(0.075, 0.048, 0.043, 1)
+polygon = PackedVector2Array(-960, -196, 960, -196, 960, 467, -960, 467)
+
+[node name="DeepRecess" type="Polygon2D" parent="Atmosphere" unique_id=1697071091]
+z_index = 2
+color = Color(0.028, 0.021, 0.026, 1)
+polygon = PackedVector2Array(-820, -112, 820, -112, 820, 450, -820, 450)
+
+[node name="AmberHaze" type="Polygon2D" parent="Atmosphere" unique_id=1351585861]
+z_index = 3
+material = SubResource("CanvasItemMaterial_add")
+color = Color(0.35, 0.14, 0.035, 0.22)
+polygon = PackedVector2Array(-700, 395, 700, 395, 900, 467, -900, 467)
+
+[node name="LeftShaft" type="Polygon2D" parent="Atmosphere" unique_id=626012907]
+z_index = 3
+material = SubResource("CanvasItemMaterial_add")
+color = Color(0.45, 0.21, 0.055, 0.13)
+polygon = PackedVector2Array(-760, -195, -600, -195, -390, 467, -720, 467)
+
+[node name="RightShaft" type="Polygon2D" parent="Atmosphere" unique_id=84783113]
+z_index = 3
+material = SubResource("CanvasItemMaterial_add")
+color = Color(0.45, 0.21, 0.055, 0.1)
+polygon = PackedVector2Array(520, -195, 650, -195, 800, 467, 570, 467)
+
+[node name="Dust" type="CPUParticles2D" parent="Atmosphere" unique_id=960464822]
+z_index = 4
+position = Vector2(0, 145)
+amount = 55
+lifetime = 6.0
+preprocess = 6.0
+randomness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(820, 255)
+direction = Vector2(0.15, -1)
+spread = 25.0
+gravity = Vector2(0, -2)
+initial_velocity_min = 3.0
+initial_velocity_max = 11.0
+scale_amount_max = 2.8
+color_ramp = SubResource("Gradient_dust")
+
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=284407936]
+position = Vector2(-1080, 443.16666)
+scale = Vector2(0.33333334, 0.33333334)
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAQAAAAAAAIAAAABAAAAAAABAAAAAAABAAEAAAABAAEAAAABAAIAAAABAAEAAAABAAMAAAABAAEAAAABAAQAAAABAAIAAAACAAAAAAABAAAAAAACAAEAAAABAAEAAAACAAIAAAABAAEAAAACAAMAAAABAAEAAAACAAQAAAABAAIAAAADAAAAAAABAAAAAAADAAEAAAABAAEAAAADAAIAAAABAAEAAAADAAMAAAABAAEAAAADAAQAAAABAAIAAAAEAAAAAAABAAAAAAAEAAEAAAABAAEAAAAEAAIAAAABAAEAAAAEAAMAAAABAAEAAAAEAAQAAAABAAIAAAAFAAAAAAABAAAAAAAFAAEAAAABAAEAAAAFAAIAAAABAAEAAAAFAAMAAAABAAEAAAAFAAQAAAABAAIAAAAGAAAAAAABAAAAAAAGAAEAAAABAAEAAAAGAAIAAAABAAEAAAAGAAMAAAABAAEAAAAGAAQAAAABAAIAAAAHAAAAAAABAAAAAAAHAAEAAAABAAEAAAAHAAIAAAABAAEAAAAHAAMAAAABAAEAAAAHAAQAAAABAAIAAAAIAAAAAAABAAAAAAAIAAEAAAABAAEAAAAIAAIAAAABAAEAAAAIAAMAAAABAAEAAAAIAAQAAAABAAIAAAAJAAAAAAABAAAAAAAJAAEAAAABAAEAAAAJAAIAAAABAAEAAAAJAAMAAAABAAEAAAAJAAQAAAABAAIAAAAKAAAAAAABAAAAAAAKAAEAAAABAAEAAAAKAAIAAAABAAEAAAAKAAMAAAABAAEAAAAKAAQAAAABAAIAAAALAAAAAAABAAAAAAALAAEAAAABAAEAAAALAAIAAAABAAEAAAALAAMAAAABAAEAAAALAAQAAAABAAIAAAAMAAAAAAABAAAAAAAMAAEAAAABAAEAAAAMAAIAAAABAAEAAAAMAAMAAAABAAEAAAAMAAQAAAABAAIAAAANAAAAAAABAAAAAAANAAEAAAABAAEAAAANAAIAAAABAAEAAAANAAMAAAABAAEAAAANAAQAAAABAAIAAAAOAAAAAAABAAAAAAAOAAEAAAABAAEAAAAOAAIAAAABAAEAAAAOAAMAAAABAAEAAAAOAAQAAAABAAIAAAAPAAAAAAABAAAAAAAPAAEAAAABAAEAAAAPAAIAAAABAAEAAAAPAAMAAAABAAEAAAAPAAQAAAABAAIAAAAQAAAAAAABAAAAAAAQAAEAAAABAAEAAAAQAAIAAAABAAEAAAAQAAMAAAABAAEAAAAQAAQAAAABAAIAAAARAAAAAAACAAEAAAARAAEAAAACAAEAAAARAAIAAAACAAEAAAARAAMAAAACAAEAAAARAAQAAAACAAIAAAAAAPv/AAAAAAEAAAARAPv/AAACAAEAAAAAAPz/AAAAAAEAAAARAPz/AAACAAEAAAAAAP3/AAAAAAEAAAARAP3/AAACAAEAAAAAAP7/AAAAAAEAAAARAP7/AAACAAEAAAAAAP//AAAAAAEAAAARAP//AAACAAEAAAAAAPr/AAAAAAEAAAABAPr/AAABAAIAAAACAPr/AAABAAIAAAADAPr/AAABAAIAAAAEAPr/AAABAAIAAAAFAPr/AAABAAIAAAAGAPr/AAABAAIAAAAHAPr/AAABAAIAAAAIAPr/AAABAAIAAAAJAPr/AAABAAIAAAAKAPr/AAABAAIAAAALAPr/AAABAAIAAAAMAPr/AAABAAIAAAANAPr/AAABAAIAAAAOAPr/AAABAAIAAAAPAPr/AAABAAIAAAAQAPr/AAABAAIAAAARAPr/AAACAAEAAAA=")
+tile_set = ExtResource("2_terrain")
+
+[node name="PlayerSpawn" type="Marker2D" parent="."]
+position = Vector2(0, 466.5)
+
+[node name="Decorations" type="Node2D" parent="." unique_id=1150349430]
+
+[node name="LeftLandmark" type="Sprite2D" parent="Decorations" unique_id=543797791]
+z_index = -1
+position = Vector2(-770, 466.5)
+scale = Vector2(0.34229183, 0.34229183)
+texture = ExtResource("6_decorations")
+offset = Vector2(0, -295.5)
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="LeftScrap" type="Sprite2D" parent="Decorations" unique_id=482069553]
+position = Vector2(-645, 466.5)
+scale = Vector2(0.28896815, 0.28896815)
+texture = ExtResource("6_decorations")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="LeftRubble" type="Sprite2D" parent="Decorations" unique_id=1869717279]
+position = Vector2(-585, 466.5)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("7_rubble")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RightScrap" type="Sprite2D" parent="Decorations" unique_id=731604055]
+position = Vector2(680, 466.5)
+scale = Vector2(0.28896815, 0.28896815)
+texture = ExtResource("6_decorations")
+offset = Vector2(0, -108)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="RightRubble" type="Sprite2D" parent="Decorations" unique_id=196571646]
+position = Vector2(620, 466.5)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("7_rubble")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="RoomTitle" type="Label" parent="." unique_id=1511482713]
+z_index = 3
+offset_left = -250.0
+offset_top = -152.0
+offset_right = 250.0
+offset_bottom = -112.0
+theme_override_colors/font_color = Color(0.95, 0.71, 0.31, 1)
+theme_override_colors/font_outline_color = Color(0.025, 0.015, 0.018, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 22
+text = "THE WARDEN'S VAULT"
+horizontal_alignment = 1
+
+[node name="SisterGlow" type="Polygon2D" parent="." unique_id=1583692127]
+z_index = -1
+material = SubResource("CanvasItemMaterial_add")
+color = Color(0.8, 0.36, 0.07, 0.38)
+polygon = PackedVector2Array(310, 75, 490, 75, 490, 466, 310, 466)
+
+[node name="TrappedSister" type="Sprite2D" parent="." unique_id=1324267666]
+z_index = 2
+position = Vector2(400, 350)
+scale = Vector2(0.56, 0.56)
+texture = ExtResource("4_sister")
+region_enabled = true
+region_rect = Rect2(0, 0, 313.5, 418)
+
+[node name="SisterLabel" type="Label" parent="." unique_id=1884381471]
+z_index = 3
+offset_left = 290.0
+offset_top = 40.0
+offset_right = 510.0
+offset_bottom = 68.0
+theme_override_colors/font_color = Color(1, 0.86, 0.55, 1)
+theme_override_colors/font_outline_color = Color(0.025, 0.015, 0.018, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 11
+text = "YOUR SISTER"
+horizontal_alignment = 1
+
+[node name="Warden" parent="." unique_id=2002330585 instance=ExtResource("3_warden")]
+position = Vector2(200, 466.5)
+patrol_distance = 470.0
+territory = 1120.0

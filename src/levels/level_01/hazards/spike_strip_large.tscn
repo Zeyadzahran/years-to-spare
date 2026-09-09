@@ -10,6 +10,7 @@ size = Vector2(196, 52)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("2_hazard")
+instant_death = true
 
 [node name="Sprite" type="Sprite2D" parent="."]
 scale = Vector2(0.33333334, 0.33333334)
