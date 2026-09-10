@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://daddkq5xkwf4s" path="res://src/levels/level_02/art/pipes/4.png" id="19_1os6h"]
+[node name="BluePipe" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("19_1os6h")
+offset = Vector2(0, -21)

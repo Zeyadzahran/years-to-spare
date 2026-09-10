@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bmim2hv3c3omh"]
+
+[ext_resource type="Texture2D" uid="uid://dwuoshh33w4nh" path="res://src/levels/level_02/art/decorations/27.png" id="13_rfgta"]
+[ext_resource type="Script" uid="uid://i1m44m2dmr21" path="res://src/levels/level_02/objects/cargo_crate.gd" id="crate_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lsg5l"]
+resource_local_to_scene = true
+size = Vector2(110, 48)
+
+[node name="CargoCrate" type="StaticBody2D" unique_id=349908724]
+texture_filter = 1
+script = ExtResource("crate_script")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=192367749]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_lsg5l")
+
+[node name="Cargo" type="Sprite2D" parent="." unique_id=8570704]
+scale = Vector2(1.4102564, 1.4102564)
+texture = ExtResource("13_rfgta")
+offset = Vector2(0, -17.5)

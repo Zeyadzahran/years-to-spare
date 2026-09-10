@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://ouevtjytkj6l" path="res://src/world/platforms/moving_platform.gd" id="11_nhfhe"]
+[ext_resource type="Texture2D" uid="uid://b8s8kilhsc1dj" path="res://src/levels/level_02/art/decorations/17.png" id="12_6rlit"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3keme"]
+resource_local_to_scene = true
+size = Vector2(240, 24)
+
+[node name="FreightShuttle" type="AnimatableBody2D"]
+texture_filter = 1
+collision_mask = 0
+script = ExtResource("11_nhfhe")
+size = Vector2(240, 24)
+travel = Vector2(384, 0)
+speed = 150.0
+
+[node name="Art" type="Sprite2D" parent="."]
+position = Vector2(0, 17.538462)
+scale = Vector2(3.6923077, 3.6923077)
+texture = ExtResource("12_6rlit")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3keme")
+one_way_collision_margin = 16.0

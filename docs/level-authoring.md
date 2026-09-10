@@ -1,5 +1,8 @@
 # Level authoring
 
+Level 2 is a separate playable scene. See [Level 2 authoring](level-02-authoring.md)
+for its map, controls, assets and checks.
+
 Open `src/levels/level_01/level_01.tscn` and use **Run Current Scene (F6)**.
 All terrain, gameplay objects, and decoration placements are authored here.
 There is no separate extension or decoration layout to synchronize.

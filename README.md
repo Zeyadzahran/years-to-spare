@@ -198,3 +198,9 @@ raw delta when it needs to continue during a time stop.
 | A time-aware world object | Extend `TimeBody2D` or request scaled delta from `TimeService` |
 | A cross-system event | Add a signal to `EventBus` and connect the interested systems |
 | Another level | Add it to `GameState.LEVELS` and create its scene under `src/levels/` |
+
+## Level 2 development scene
+
+Open `src/levels/level_02/level_02.tscn` and run the current scene to play Level 2, an industrial map with eleven enemies, five checkpoints, supply caches, electrical traps and a moving freight crossing. The main menu continues to start Level 1. See [Level 2 authoring](docs/level-02-authoring.md) for the layout, editing notes and verification commands.
+
+Level 2 gameplay objects are reusable scenes under `src/levels/level_02/objects/`, with shared decorations under `props/`. Edit a source scene to update every placement, or use the Inspector on one instance for local settings.

@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://pcbqm06f8k4y" path="res://src/levels/level_02/art/decorations/4.png" id="25_spf28"]
+[node name="ScrapPileD" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("25_spf28")
+offset = Vector2(0, -4)

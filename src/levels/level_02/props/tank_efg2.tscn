@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://xpnerq8jxu8f" path="res://src/levels/level_02/art/decorations/25.png" id="18_odqkl"]
+[node name="TankEfg2" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("18_odqkl")
+offset = Vector2(0, -38.5)

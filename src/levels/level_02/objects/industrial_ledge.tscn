@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/levels/level_02/objects/industrial_ledge.gd" id="script"]
+[ext_resource type="Texture2D" path="res://src/levels/level_02/art/terrain/Tile_25.png" id="left"]
+[ext_resource type="Texture2D" path="res://src/levels/level_02/art/terrain/Tile_26.png" id="middle"]
+[ext_resource type="Texture2D" path="res://src/levels/level_02/art/terrain/Tile_27.png" id="right"]
+
+[sub_resource type="RectangleShape2D" id="box"]
+resource_local_to_scene = true
+size = Vector2(192, 24)
+
+[node name="IndustrialLedge" type="StaticBody2D"]
+texture_filter = 1
+script = ExtResource("script")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12)
+shape = SubResource("box")
+one_way_collision = true
+
+[node name="Left" type="Sprite2D" parent="."]
+position = Vector2(-64, 32)
+scale = Vector2(2, 2)
+texture = ExtResource("left")
+
+[node name="Middle" type="Sprite2D" parent="."]
+texture_repeat = 2
+position = Vector2(0, 32)
+scale = Vector2(2, 2)
+texture = ExtResource("middle")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="Right" type="Sprite2D" parent="."]
+position = Vector2(64, 32)
+scale = Vector2(2, 2)
+texture = ExtResource("right")
