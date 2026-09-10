@@ -1,0 +1,193 @@
+[gd_scene format=4 uid="uid://bugjtfy3553rb"]
+
+[ext_resource type="Script" path="res://src/levels/level_01/boss_room.gd" id="1_script"]
+[ext_resource type="TileSet" uid="uid://ct8w2xk4bnq7f" path="res://src/levels/level_01/terrain_tileset.tres" id="2_terrain"]
+[ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="3_player"]
+[ext_resource type="Texture2D" uid="uid://dj7tgk374tysh" path="res://assets/sprites/trapped-sister.png" id="4_sister"]
+[ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="5_hud"]
+[ext_resource type="Texture2D" uid="uid://cq7g30j4pyjf2" path="res://src/levels/level_01/art/props/decorations.png" id="6_decorations"]
+[ext_resource type="Texture2D" uid="uid://b2j4qyiy3tqb3" path="res://src/levels/level_01/art/props/rocks_and_dirt.png" id="7_rubble"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_dust"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(0.95, 0.55, 0.18, 0, 0.95, 0.55, 0.18, 0.42, 0.95, 0.55, 0.18, 0)
+
+[node name="BossRoom" type="Node2D" unique_id=1054035007]
+script = ExtResource("1_script")
+
+[node name="Atmosphere" type="Node2D" parent="." unique_id=1452734869]
+z_index = -100
+
+[node name="OuterDarkness" type="Polygon2D" parent="Atmosphere" unique_id=1632937401]
+color = Color(0.018, 0.012, 0.014, 1)
+polygon = PackedVector2Array(-1600, -600, 1600, -600, 1600, 1200, -1600, 1200)
+
+[node name="VaultWall" type="Polygon2D" parent="Atmosphere" unique_id=138185864]
+z_index = 1
+color = Color(0.075, 0.048, 0.043, 1)
+polygon = PackedVector2Array(-960, -196, 960, -196, 960, 467, -960, 467)
+
+[node name="DeepRecess" type="Polygon2D" parent="Atmosphere" unique_id=1697071091]
+z_index = 2
+color = Color(0.028, 0.021, 0.026, 1)
+polygon = PackedVector2Array(-820, -112, 820, -112, 820, 450, -820, 450)
+
+[node name="UpperVaultBand" type="Polygon2D" parent="Atmosphere" unique_id=6109251]
+z_index = 3
+color = Color(0.16, 0.09, 0.055, 1)
+polygon = PackedVector2Array(-820, -112, 820, -112, 780, -66, -780, -66)
+
+[node name="LeftWallPier" type="Polygon2D" parent="Atmosphere" unique_id=1111472724]
+z_index = 3
+color = Color(0.13, 0.075, 0.055, 1)
+polygon = PackedVector2Array(-820, -112, -700, -112, -650, 450, -820, 450)
+
+[node name="RightWallPier" type="Polygon2D" parent="Atmosphere" unique_id=1622688082]
+z_index = 3
+color = Color(0.13, 0.075, 0.055, 1)
+polygon = PackedVector2Array(700, -112, 820, -112, 820, 450, 650, 450)
+
+[node name="CentralVaultSeal" type="Polygon2D" parent="Atmosphere" unique_id=101254452]
+z_index = 3
+color = Color(0.11, 0.06, 0.055, 1)
+polygon = PackedVector2Array(-250, -66, 250, -66, 330, 65, 330, 360, 250, 450, -250, 450, -330, 360, -330, 65)
+
+[node name="CentralVaultInset" type="Polygon2D" parent="Atmosphere" unique_id=610279789]
+z_index = 4
+color = Color(0.035, 0.024, 0.03, 1)
+polygon = PackedVector2Array(-205, -28, 205, -28, 275, 82, 275, 335, 205, 405, -205, 405, -275, 335, -275, 82)
+
+[node name="AmberHaze" type="Polygon2D" parent="Atmosphere" unique_id=1351585861]
+z_index = 3
+material = SubResource("CanvasItemMaterial_add")
+color = Color(0.35, 0.14, 0.035, 0.22)
+polygon = PackedVector2Array(-700, 395, 700, 395, 900, 467, -900, 467)
+
+[node name="LeftShaft" type="Polygon2D" parent="Atmosphere" unique_id=626012907]
+z_index = 3
+material = SubResource("CanvasItemMaterial_add")
+color = Color(0.45, 0.21, 0.055, 0.13)
+polygon = PackedVector2Array(-760, -195, -600, -195, -390, 467, -720, 467)
+
+[node name="RightShaft" type="Polygon2D" parent="Atmosphere" unique_id=84783113]
+z_index = 3
+material = SubResource("CanvasItemMaterial_add")
+color = Color(0.45, 0.21, 0.055, 0.1)
+polygon = PackedVector2Array(520, -195, 650, -195, 800, 467, 570, 467)
+
+[node name="Dust" type="CPUParticles2D" parent="Atmosphere" unique_id=960464822]
+z_index = 4
+position = Vector2(0, 145)
+amount = 55
+lifetime = 6.0
+preprocess = 6.0
+randomness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(820, 255)
+direction = Vector2(0.15, -1)
+spread = 25.0
+gravity = Vector2(0, -2)
+initial_velocity_min = 3.0
+initial_velocity_max = 11.0
+scale_amount_max = 2.8
+color_ramp = SubResource("Gradient_dust")
+
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=284407936]
+position = Vector2(-1080, 443.16666)
+scale = Vector2(0.33333334, 0.33333334)
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAEAAAAAAAEAAAAAAAEAAAAAAAIAAAAAAAEAAAAAAAMAAAAAAAEAAAAAAAQAAAAAAAIAAAABAAAAAAABAAAAAAABAAEAAAABAAEAAAABAAIAAAABAAEAAAABAAMAAAABAAEAAAABAAQAAAABAAIAAAACAAAAAAABAAAAAAACAAEAAAABAAEAAAACAAIAAAABAAEAAAACAAMAAAABAAEAAAACAAQAAAABAAIAAAADAAAAAAABAAAAAAADAAEAAAABAAEAAAADAAIAAAABAAEAAAADAAMAAAABAAEAAAADAAQAAAABAAIAAAAEAAAAAAABAAAAAAAEAAEAAAABAAEAAAAEAAIAAAABAAEAAAAEAAMAAAABAAEAAAAEAAQAAAABAAIAAAAFAAAAAAABAAAAAAAFAAEAAAABAAEAAAAFAAIAAAABAAEAAAAFAAMAAAABAAEAAAAFAAQAAAABAAIAAAAGAAAAAAABAAAAAAAGAAEAAAABAAEAAAAGAAIAAAABAAEAAAAGAAMAAAABAAEAAAAGAAQAAAABAAIAAAAHAAAAAAABAAAAAAAHAAEAAAABAAEAAAAHAAIAAAABAAEAAAAHAAMAAAABAAEAAAAHAAQAAAABAAIAAAAIAAAAAAABAAAAAAAIAAEAAAABAAEAAAAIAAIAAAABAAEAAAAIAAMAAAABAAEAAAAIAAQAAAABAAIAAAAJAAAAAAABAAAAAAAJAAEAAAABAAEAAAAJAAIAAAABAAEAAAAJAAMAAAABAAEAAAAJAAQAAAABAAIAAAAKAAAAAAABAAAAAAAKAAEAAAABAAEAAAAKAAIAAAABAAEAAAAKAAMAAAABAAEAAAAKAAQAAAABAAIAAAALAAAAAAABAAAAAAALAAEAAAABAAEAAAALAAIAAAABAAEAAAALAAMAAAABAAEAAAALAAQAAAABAAIAAAAMAAAAAAABAAAAAAAMAAEAAAABAAEAAAAMAAIAAAABAAEAAAAMAAMAAAABAAEAAAAMAAQAAAABAAIAAAANAAAAAAABAAAAAAANAAEAAAABAAEAAAANAAIAAAABAAEAAAANAAMAAAABAAEAAAANAAQAAAABAAIAAAAOAAAAAAABAAAAAAAOAAEAAAABAAEAAAAOAAIAAAABAAEAAAAOAAMAAAABAAEAAAAOAAQAAAABAAIAAAAPAAAAAAABAAAAAAAPAAEAAAABAAEAAAAPAAIAAAABAAEAAAAPAAMAAAABAAEAAAAPAAQAAAABAAIAAAAQAAAAAAABAAAAAAAQAAEAAAABAAEAAAAQAAIAAAABAAEAAAAQAAMAAAABAAEAAAAQAAQAAAABAAIAAAARAAAAAAACAAEAAAARAAEAAAACAAEAAAARAAIAAAACAAEAAAARAAMAAAACAAEAAAARAAQAAAACAAIAAAAAAPv/AAAAAAEAAAARAPv/AAACAAEAAAAAAPz/AAAAAAEAAAARAPz/AAACAAEAAAAAAP3/AAAAAAEAAAARAP3/AAACAAEAAAAAAP7/AAAAAAEAAAARAP7/AAACAAEAAAAAAP//AAAAAAEAAAARAP//AAACAAEAAAAAAPr/AAAAAAEAAAABAPr/AAABAAIAAAACAPr/AAABAAIAAAADAPr/AAABAAIAAAAEAPr/AAABAAIAAAAFAPr/AAABAAIAAAAGAPr/AAABAAIAAAAHAPr/AAABAAIAAAAIAPr/AAABAAIAAAAJAPr/AAABAAIAAAAKAPr/AAABAAIAAAALAPr/AAABAAIAAAAMAPr/AAABAAIAAAANAPr/AAABAAIAAAAOAPr/AAABAAIAAAAPAPr/AAABAAIAAAAQAPr/AAABAAIAAAARAPr/AAACAAEAAAA=")
+tile_set = ExtResource("2_terrain")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1832926137]
+position = Vector2(0, 466.5)
+
+[node name="Player" parent="." unique_id=971644284 instance=ExtResource("3_player")]
+z_index = 10
+position = Vector2(0, 466.5)
+
+[node name="HUD" parent="." unique_id=890827083 instance=ExtResource("5_hud")]
+
+[node name="Decorations" type="Node2D" parent="." unique_id=1150349430]
+
+[node name="LeftLandmark" type="Sprite2D" parent="Decorations" unique_id=543797791]
+z_index = -1
+position = Vector2(-770, 466.5)
+scale = Vector2(0.34229183, 0.34229183)
+texture = ExtResource("6_decorations")
+offset = Vector2(0, -295.5)
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="LeftScrap" type="Sprite2D" parent="Decorations" unique_id=482069553]
+position = Vector2(-645, 466.5)
+scale = Vector2(0.28896815, 0.28896815)
+texture = ExtResource("6_decorations")
+offset = Vector2(0, -108)
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="LeftRubble" type="Sprite2D" parent="Decorations" unique_id=1869717279]
+position = Vector2(-585, 466.5)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("7_rubble")
+offset = Vector2(0, -70.93445)
+region_enabled = true
+region_rect = Rect2(1001.0543, 584.81525, 203.16626, 141.8689)
+
+[node name="RightScrap" type="Sprite2D" parent="Decorations" unique_id=731604055]
+position = Vector2(680, 466.5)
+scale = Vector2(0.28896815, 0.28896815)
+texture = ExtResource("6_decorations")
+offset = Vector2(0, -108)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1129, 417, 273, 216)
+
+[node name="RightRubble" type="Sprite2D" parent="Decorations" unique_id=196571646]
+position = Vector2(620, 466.5)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("7_rubble")
+offset = Vector2(0, -69.03569)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(727.2217, 290.783, 135.22375, 138.07138)
+
+[node name="RightLandmark" type="Sprite2D" parent="Decorations" unique_id=1925442061]
+z_index = -1
+position = Vector2(770, 466.5)
+scale = Vector2(0.34229183, 0.34229183)
+texture = ExtResource("6_decorations")
+offset = Vector2(0, -295.5)
+flip_h = true
+region_enabled = true
+region_rect = Rect2(37, 39, 353, 591)
+
+[node name="SisterGlow" type="Polygon2D" parent="." unique_id=473317424]
+z_index = 1
+material = SubResource("CanvasItemMaterial_add")
+color = Color(0.95, 0.48, 0.08, 0.22)
+polygon = PackedVector2Array(500, 40, 820, 40, 900, 466, 420, 466)
+
+[node name="TrappedSister" type="Sprite2D" parent="." unique_id=656934010]
+z_index = 4
+position = Vector2(665, 466.5)
+scale = Vector2(0.64, 0.64)
+texture = ExtResource("4_sister")
+offset = Vector2(0, -209)
+region_enabled = true
+region_rect = Rect2(0, 0, 313.5, 418)
+
+[node name="Transition" type="CanvasLayer" parent="." unique_id=1718951571]
+layer = 90
+
+[node name="Fade" type="ColorRect" parent="Transition" unique_id=1990077483]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.025, 0.018, 0.012, 1)

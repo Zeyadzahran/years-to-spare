@@ -4,6 +4,7 @@ extends Node2D
 ## content of a phase stays in its scene tree.
 
 @export var level_id: StringName = &"phase_1"
+@export_node_path("Marker2D") var level_start_path: NodePath
 
 func _ready() -> void:
 	TimeService.reset()
@@ -18,10 +19,10 @@ func _ready() -> void:
 ## A death reloads the whole level, so this runs on every load and is what turns
 ## that reload into a respawn rather than a restart.
 ##
-## The boy comes back where he last stood and as old as he was when he fell:
-## losing health costs him ground, never years. Handing the years back would
-## make the game's only currency free, and would walk his body backwards from
-## the elder frames to the boy's on every mistake.
+## Combat deaths return the boy to his checkpoint. A spike or void death can
+## request the authored level entrance for this reload instead. Both preserve
+## his age; handing years back would make the game's only currency free and
+## walk his body backwards on every mistake.
 ##
 ## Runs after the scene's children are ready, so the player and its components
 ## exist and the age it announces reaches the HUD and his sprite set.
@@ -31,6 +32,11 @@ func _resume_run() -> void:
 		return
 	if GameState.run_age >= 0.0:
 		player.age.set_to(GameState.run_age)
+	if GameState.consume_level_start_respawn():
+		var level_start := get_node_or_null(level_start_path) as Marker2D
+		if level_start != null:
+			player.global_position = level_start.global_position
+		return
 	if GameState.has_checkpoint(level_id):
 		player.global_position = GameState.checkpoint_position
 

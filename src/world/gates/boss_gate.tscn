@@ -1,0 +1,66 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/world/gates/boss_gate.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dfepksxdscqyv" path="res://assets/sprites/end-gate.png" id="2_gate"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
+size = Vector2(122, 190)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_glow"]
+blend_mode = 1
+
+[node name="BossGate" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="Glow" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(0, -96)
+scale = Vector2(0.148, 0.148)
+material = SubResource("CanvasItemMaterial_glow")
+modulate = Color(1, 0.63, 0.2, 0)
+texture = ExtResource("2_gate")
+
+[node name="Art" type="Sprite2D" parent="."]
+z_index = 2
+position = Vector2(0, -96)
+scale = Vector2(0.14, 0.14)
+texture = ExtResource("2_gate")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -95)
+shape = SubResource("RectangleShape2D_gate")
+
+[node name="Effects" type="CPUParticles2D" parent="."]
+z_index = 3
+position = Vector2(0, -98)
+emitting = false
+amount = 42
+lifetime = 1.1
+one_shot = true
+explosiveness = 0.35
+randomness = 0.7
+emission_shape = 3
+emission_rect_extents = Vector2(72, 92)
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, -28)
+initial_velocity_min = 16.0
+initial_velocity_max = 62.0
+scale_amount_min = 2.5
+scale_amount_max = 6.0
+color = Color(1, 0.72, 0.24, 0.9)
+
+[node name="Transition" type="CanvasLayer" parent="."]
+layer = 90
+
+[node name="Fade" type="ColorRect" parent="Transition"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.025, 0.018, 0.012, 0)
+

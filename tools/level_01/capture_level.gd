@@ -18,8 +18,8 @@ const SHOTS := [
 	{"name": "06_transfer_aligned", "position": Vector2(15541, -139.5), "transfer_phase": 0.67},
 	{"name": "07_spike_floor", "position": Vector2(15430, 250)},
 	{"name": "08_exit_approach", "position": Vector2(16400, 119)},
-	{"name": "09_exit", "node": ^"Gates/LevelExit", "offset": Vector2(-110, 0)},
-	{"name": "10_completion", "node": ^"Gates/LevelExit", "offset": Vector2.ZERO, "complete": true},
+	{"name": "09_boss_gate", "node": ^"Gates/BossGate", "offset": Vector2(-180, 0)},
+	{"name": "10_boss_arena", "boss_arena": true},
 ]
 
 
@@ -70,7 +70,13 @@ func _ready() -> void:
 			for prefix in only:
 				if String(shot["name"]).begins_with(prefix): selected = true
 			if not selected: continue
-		if shot.has("node"):
+		if shot.get("boss_arena", false):
+			# Capture the arena through the same inline gate transition as gameplay.
+			get_tree().paused = false
+			live_extension.get_node(^"Gates/BossGate")._on_body_entered(player)
+			await get_tree().create_timer(1.35).timeout
+			get_tree().paused = true
+		elif shot.has("node"):
 			player.global_position = live_extension.get_node(shot["node"]).global_position + shot["offset"]
 		else:
 			player.global_position = shot["position"]
@@ -79,8 +85,6 @@ func _ready() -> void:
 				var deck := live_extension.get_node("Platforms/" + deck_name) as MovingPlatform
 				deck.position = deck.get("_origin") + deck.travel * float(shot["transfer_phase"])
 		player.velocity = Vector2.ZERO
-		if shot.get("complete", false):
-			live_extension.get_node(^"Gates/LevelExit")._on_body_entered(player)
 		camera.reset_smoothing()
 		await get_tree().process_frame
 		await get_tree().process_frame
