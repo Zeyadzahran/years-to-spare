@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://dipfj72k2eha5" path="res://src/levels/level_02/art/power_lines/3.png" id="14_qy0nb"]
+[node name="PowerPylon" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(2.6, 2.6)
+texture = ExtResource("14_qy0nb")
+offset = Vector2(0, -96)
+

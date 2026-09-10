@@ -7,7 +7,7 @@ extends Node2D
 
 func _ready() -> void:
 	TimeService.reset()
-	GameState.start_new_run()
+	GameState.start_new_run(level_id)
 	EventBus.player_died.connect(_on_player_died)
 	EventBus.enemy_died.connect(_on_enemy_died)
 	_remove_the_fallen()

@@ -13,6 +13,11 @@ const LEVELS: Array[Dictionary] = [
 		"scene": "res://src/levels/level_01/level_01.tscn",
 		"grants": ABILITY_STOP,
 	},
+	{
+		"id": &"phase_2",
+		"scene": "res://src/levels/level_02/level_02.tscn",
+		"grants": ABILITY_STOP,
+	},
 ]
 
 ## Lives, not health: three tries at a checkpoint before a mistake costs the
@@ -47,8 +52,15 @@ var run_age := -1.0
 ## out - and so clearing a room actually means something.
 var cleared_enemies: Dictionary[String, bool] = {}
 
-func start_new_run() -> void:
+func start_new_run(level_id: StringName = &"phase_1") -> void:
 	level_index = 0
+	for index in LEVELS.size():
+		if LEVELS[index]["id"] == level_id:
+			level_index = index
+			break
+	# A directly opened phase must not inherit another phase's retry state.
+	if checkpoint_level != &"" and checkpoint_level != level_id:
+		clear_run_progress()
 	unlocked.clear()
 	_grant_for_current_level()
 

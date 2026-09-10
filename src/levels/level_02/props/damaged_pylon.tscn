@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://6gcq0jmlur42" path="res://src/levels/level_02/art/power_lines/4.png" id="15_o53cl"]
+[node name="DamagedPylon" type="Sprite2D"]
+texture_filter = 1
+scale = Vector2(2.6, 2.6)
+texture = ExtResource("15_o53cl")
+offset = Vector2(0, -96)
+

@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://l1o14r6saymu"]
+
+[ext_resource type="AudioStream" uid="uid://yhcokvnjo7v7" path="res://assets/sounds/electric-sound.mp3" id="4_electric_audio"]
+[ext_resource type="Script" uid="uid://dvwau50b60kym" path="res://src/levels/level_02/objects/pulse_trap.gd" id="31_m3b34"]
+[ext_resource type="Texture2D" uid="uid://ie1m7b1tcnb0" path="res://src/levels/level_02/art/animated/Trap.png" id="32_63lq0"]
+[ext_resource type="Texture2D" uid="uid://q86h5fvgh4c6" path="res://src/levels/level_02/art/decorations/20.png" id="33_ekull"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6rv2w"]
+resource_local_to_scene = true
+size = Vector2(42, 73)
+
+[sub_resource type="AtlasTexture" id="Frame_0"]
+atlas = ExtResource("32_63lq0")
+region = Rect2(0, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="Frame_1"]
+atlas = ExtResource("32_63lq0")
+region = Rect2(32, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="Frame_2"]
+atlas = ExtResource("32_63lq0")
+region = Rect2(64, 0, 32, 48)
+
+[sub_resource type="AtlasTexture" id="Frame_3"]
+atlas = ExtResource("32_63lq0")
+region = Rect2(96, 0, 32, 48)
+
+[sub_resource type="SpriteFrames" id="ElectricityFrames"]
+resource_local_to_scene = true
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Frame_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Frame_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Frame_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Frame_3")
+}],
+"loop": 1,
+"name": &"electricity",
+"speed": 16.0
+}]
+
+[node name="PulseTrap" type="Area2D" unique_id=390358743]
+texture_filter = 1
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("31_m3b34")
+damage = 25.0
+cooldown = 1.0
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=31984690]
+position = Vector2(16, -37.5)
+shape = SubResource("RectangleShape2D_6rv2w")
+
+[node name="Emitter" type="AnimatedSprite2D" parent="." unique_id=442941731]
+position = Vector2(15, -1)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("ElectricityFrames")
+animation = &"electricity"
+autoplay = "electricity"
+offset = Vector2(0, -24)
+
+[node name="WarningSign" type="Sprite2D" parent="." unique_id=96520486]
+position = Vector2(-30, -1)
+scale = Vector2(2, 2)
+texture = ExtResource("33_ekull")
+offset = Vector2(0, -11)
+
+[node name="ElectricAudio" type="AudioStreamPlayer2D" parent="." unique_id=902617356]
+position = Vector2(16, -38)
+stream = ExtResource("4_electric_audio")
+autoplay = true
+max_distance = 700.0
