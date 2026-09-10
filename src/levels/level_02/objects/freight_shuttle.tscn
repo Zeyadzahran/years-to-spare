@@ -22,4 +22,3 @@ texture = ExtResource("12_6rlit")
 [node name="Shape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_3keme")
 one_way_collision_margin = 16.0
-

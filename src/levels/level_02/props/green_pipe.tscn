@@ -6,4 +6,3 @@ texture_filter = 1
 scale = Vector2(2, 2)
 texture = ExtResource("21_lsels")
 offset = Vector2(0, -11)
-

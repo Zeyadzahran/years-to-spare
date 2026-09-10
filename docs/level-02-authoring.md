@@ -105,10 +105,16 @@ coverage, not a complete human playthrough or final difficulty balancing.
 
 Current PR checks on Godot 4.7.2: reusable objects, all five supply-chest
 contacts and HUD updates, 18 movement routes (ages 14 and 60), gameplay lifecycle,
-and scene contracts. The tests use the saved map, including the repositioned
+and scene loading. The tests use the saved map, including the repositioned
 cache platforms; hazard checks hold the player in contact to isolate repeated
 damage from knockback. Headless runs can report audio-resource cleanup warnings
 and a macOS certificate diagnostic; these are separate from assertion results.
+
+All Level 2 suites pass after integrating `main` at `cf19ef2`. The earlier base
+passed 59 scene contracts. The current repository-wide contract run is blocked
+by Level 1 references to missing boss-room/toxic-water scripts and a shader,
+plus its replaced exit path. The Level 1 boss check also reports a camera-zoom
+assertion. Those Level 1 files match the base branch and are outside this change.
 
 The capture helper writes six gameplay screenshots under the ignored
 `builds/level-02-review/` folder. Existing captures and exports are local review
@@ -118,4 +124,3 @@ artifacts and may predate the latest scene edits.
 now uses the reusable object scenes.
 It overwrites the saved scene and tileset when explicitly run with `--replace`;
 keep manual edits in the scene and do not regenerate it during normal editing.
-

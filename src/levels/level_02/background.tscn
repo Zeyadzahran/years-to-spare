@@ -63,4 +63,3 @@ position = Vector2(864, 820)
 scale = Vector2(3, 3)
 texture = ExtResource("6_mgcsk")
 offset = Vector2(0, -162)
-

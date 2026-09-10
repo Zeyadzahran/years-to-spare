@@ -6,4 +6,3 @@ texture_filter = 1
 scale = Vector2(2, 2)
 texture = ExtResource("19_1os6h")
 offset = Vector2(0, -21)
-
