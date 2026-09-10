@@ -30,6 +30,15 @@ func take_damage(amount: float, source: Node = null) -> void:
 		died.emit()
 
 
+## Fatal contacts still enter the same damaged/died signal flow as combat.
+## This keeps the player death state, animation, checkpoint reload and UI as
+## the only death system while avoiding arbitrary "huge damage" values.
+func kill(source: Node = null) -> void:
+	if not is_alive():
+		return
+	take_damage(current, source)
+
+
 func heal(amount: float) -> void:
 	if not is_alive() or amount <= 0.0:
 		return

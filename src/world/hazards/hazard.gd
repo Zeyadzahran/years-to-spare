@@ -4,11 +4,15 @@ extends Area2D
 ## all use this; the sprite stays a plain child so the art and the danger can be
 ## adjusted independently.
 ##
-## Hazards chip rather than kill: a mistake costs a fifth of the bar and the
-## walk back to the next fig, not the run. Raise `damage` past max health for
-## the one pit that is meant to be final.
+## Hazards chip by default: a mistake costs a fifth of the bar and the walk
+## back to the next fig. Authored lethal contacts opt into `instant_death` and
+## still travel through the shared HealthComponent death signals.
 
 @export var damage := 20.0
+
+## Spikes opt into this; acid, blades, enemies and projectiles keep their
+## authored damage values and continue to use ordinary health loss.
+@export var instant_death := false
 
 ## Seconds before the same body can be hurt again, so standing in acid does not
 ## drain a hit every frame.
@@ -70,4 +74,10 @@ func _hurt(body: Node2D) -> void:
 	if health == null or not health.is_alive():
 		return
 	_cooldowns[id] = cooldown
-	health.take_damage(damage, self)
+	if instant_death:
+		if body is Player:
+			body.die_instantly(self, true)
+		else:
+			health.kill(self)
+	else:
+		health.take_damage(damage, self)
