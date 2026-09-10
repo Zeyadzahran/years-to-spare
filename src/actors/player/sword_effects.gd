@@ -81,6 +81,16 @@ func impact(at: Vector2) -> void:
 	_impacts.append({"at": at, "age": 0.0, "spin": randf() * TAU})
 
 
+func clear() -> void:
+	_slashes.clear()
+	_impacts.clear()
+	queue_redraw()
+
+
+func is_active() -> bool:
+	return not _slashes.is_empty() or not _impacts.is_empty()
+
+
 func _process(delta: float) -> void:
 	if _slashes.is_empty() and _impacts.is_empty():
 		return
