@@ -9,6 +9,11 @@ extends Enemy
 
 const BULLET_SCENE := preload("res://src/actors/enemy/bullet.tscn")
 
+## The report of the shot itself, separate from Bullet's ImpactAudio - that one
+## fires on the far end, when the round finds flesh or terrain, not here where
+## it leaves the barrel.
+@onready var _shot_audio: AudioStreamPlayer2D = get_node_or_null(^"ShotAudio")
+
 ## Slowed alongside the boy: he lost a fifth of his speed, and a round that
 ## kept all of its would have made the same dodge harder than it was.
 const BULLET_SPEED := 720.0
@@ -97,3 +102,5 @@ func _attack() -> void:
 	var muzzle_forward := CROUCH_MUZZLE_FORWARD if low else MUZZLE_FORWARD
 	bullet.global_position = global_position + Vector2(facing * muzzle_forward, muzzle_height)
 	bullet.setup(Vector2(facing, 0.0) * BULLET_SPEED, damage, self)
+	if _shot_audio != null:
+		_shot_audio.play()
