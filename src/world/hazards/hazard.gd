@@ -76,7 +76,7 @@ func _hurt(body: Node2D) -> void:
 	_cooldowns[id] = cooldown
 	if instant_death:
 		if body is Player:
-			body.die_instantly(self, true)
+			body.die_instantly(self)
 		else:
 			health.kill(self)
 	else:

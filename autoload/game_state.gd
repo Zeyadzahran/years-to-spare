@@ -46,11 +46,6 @@ var hearts := MAX_HEARTS
 ## starts him".
 var run_age := -1.0
 
-## Environmental deaths request one retry from the authored level entrance.
-## The checkpoint itself stays recorded, so ordinary combat deaths continue to
-## use it and touching a later checkpoint still works normally.
-var respawn_at_level_start_once := false
-
 ## Bodies he has already left behind, keyed "<level id>|<path inside the level>".
 ## A retry is a retry, not a re-run: a Guard downed before the last checkpoint
 ## stays down, so a hard stretch cannot be farmed for the years its troops pay
@@ -107,7 +102,6 @@ func clear_run_progress() -> void:
 	checkpoint_level = &""
 	checkpoint_position = Vector2.ZERO
 	run_age = -1.0
-	respawn_at_level_start_once = false
 	cleared_enemies.clear()
 	hearts = MAX_HEARTS
 	EventBus.player_hearts_changed.emit(hearts, MAX_HEARTS)
@@ -120,16 +114,6 @@ func lose_heart() -> int:
 	hearts = maxi(hearts - 1, 0)
 	EventBus.player_hearts_changed.emit(hearts, MAX_HEARTS)
 	return hearts
-
-
-func request_level_start_respawn() -> void:
-	respawn_at_level_start_once = true
-
-
-func consume_level_start_respawn() -> bool:
-	var requested := respawn_at_level_start_once
-	respawn_at_level_start_once = false
-	return requested
 
 
 func current_level() -> Dictionary:

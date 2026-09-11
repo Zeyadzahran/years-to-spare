@@ -1,0 +1,50 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" uid="uid://difdo2x53bv8r" path="res://assets/sprites/trapped-sister/South_0001.png" id="south_1"]
+[ext_resource type="Texture2D" uid="uid://0hlap0a10dql" path="res://assets/sprites/trapped-sister/South_0002.png" id="south_2"]
+[ext_resource type="Texture2D" uid="uid://bqmppl12xf813" path="res://assets/sprites/trapped-sister/South_0003.png" id="south_3"]
+[ext_resource type="Texture2D" uid="uid://bl4pobvuhhsfo" path="res://assets/sprites/trapped-sister/South_0004.png" id="south_4"]
+[ext_resource type="Texture2D" uid="uid://bp8gr5jeuvejh" path="res://assets/sprites/trapped-sister/South_0005.png" id="south_5"]
+[ext_resource type="Texture2D" uid="uid://dljlis3noek3n" path="res://assets/sprites/trapped-sister/South_0006.png" id="south_6"]
+[ext_resource type="Texture2D" uid="uid://yrmsn8h2e787" path="res://assets/sprites/trapped-sister/South_0007.png" id="south_7"]
+[ext_resource type="Texture2D" uid="uid://fxprjspxbb2b" path="res://assets/sprites/trapped-sister/South_0008.png" id="south_8"]
+[ext_resource type="Texture2D" uid="uid://6h672pgwvcyp" path="res://assets/sprites/trapped-sister/South_0009.png" id="south_9"]
+[ext_resource type="Texture2D" uid="uid://cv1jahi07g5y" path="res://assets/sprites/trapped-sister/South_0010.png" id="south_10"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("south_1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("south_2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("south_3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("south_4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("south_5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("south_6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("south_7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("south_8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("south_9")
+}, {
+"duration": 1.0,
+"texture": ExtResource("south_10")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}]

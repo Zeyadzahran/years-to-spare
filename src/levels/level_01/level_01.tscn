@@ -30,7 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://d3phh6mhrfc4b" path="res://assets/keys/K.png" id="29_tsq7e"]
 [ext_resource type="Script" uid="uid://bml7u6pies1ij" path="res://src/levels/level_01/boss_arena.gd" id="boss_arena_script"]
 [ext_resource type="Texture2D" uid="uid://csp6eptuobfmv" path="res://assets/sprites/boss-background.png" id="boss_background"]
-[ext_resource type="Texture2D" uid="uid://dj7tgk374tysh" path="res://assets/sprites/trapped-sister.png" id="boss_sister"]
+[ext_resource type="SpriteFrames" path="res://src/levels/level_01/trapped_sister_frames.tres" id="boss_sister_frames"]
 [ext_resource type="PackedScene" path="res://src/world/platforms/slim_platform.tscn" id="boss_slim_platform"]
 [ext_resource type="PackedScene" path="res://src/world/platforms/stair_step.tscn" id="boss_stair_step"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/stone_titan.tscn" id="boss_titan"]
@@ -938,7 +938,10 @@ position = Vector2(13500, 239)
 position = Vector2(14900, 119)
 
 [node name="ExitCheckpoint" parent="World/SalvageYard/Checkpoints" unique_id=1887431434 instance=ExtResource("18_chkpt")]
-position = Vector2(17387, 461)
+position = Vector2(16303, 118)
+
+[node name="ExitCheckpoint2" parent="World/SalvageYard/Checkpoints" unique_id=1221767689 instance=ExtResource("18_chkpt")]
+position = Vector2(16303, 118)
 
 [node name="Hazards" type="Node2D" parent="World/SalvageYard" unique_id=1322272541]
 
@@ -1616,6 +1619,26 @@ texture = ExtResource("boss_background")
 region_enabled = true
 region_rect = Rect2(225, 0, 550, 375)
 
+[node name="BackdropGuards" type="Node2D" parent="World/BossArena" unique_id=67209068]
+z_index = -21
+
+[node name="Left" type="Polygon2D" parent="World/BossArena/BackdropGuards" unique_id=602272292]
+position = Vector2(8719, 52)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-10000, -10000, 2452, -10000, 2452, 10000, -10000, 10000, -10000, -380.552)
+
+[node name="Right" type="Polygon2D" parent="World/BossArena/BackdropGuards" unique_id=1263313418]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4848, -10000, 10000, -10000, 10000, 10000, 4848, 10000)
+
+[node name="Top" type="Polygon2D" parent="World/BossArena/BackdropGuards" unique_id=681500757]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(2452, -10000, 4848, -10000, 4848, -520, 2452, -520)
+
+[node name="Bottom" type="Polygon2D" parent="World/BossArena/BackdropGuards" unique_id=1406197278]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(2452, 480, 4848, 480, 4848, 10000, 2452, 10000)
+
 [node name="ArenaShell" type="TileMapLayer" parent="World/BossArena" unique_id=781025473]
 position = Vector2(2400, -23.333334)
 scale = Vector2(0.33333334, 0.33333334)
@@ -1891,12 +1914,6 @@ offset = Vector2(0, -149.5)
 region_enabled = true
 region_rect = Rect2(700, 734, 269, 299)
 
-[node name="SisterGlow" type="Polygon2D" parent="World/BossArena" unique_id=1794005488]
-z_index = 1
-material = SubResource("CanvasItemMaterial_boss_glow")
-color = Color(0.95, 0.48, 0.08, 0.24)
-polygon = PackedVector2Array(4280, -410, 4780, -410, 4790, -50, 4260, -50)
-
 [node name="SisterArea" type="Node2D" parent="World/BossArena" unique_id=511706291]
 
 [node name="SisterPlatform" parent="World/BossArena/SisterArea" unique_id=1125089812 instance=ExtResource("boss_slim_platform")]
@@ -1912,14 +1929,14 @@ position = Vector2(4230, 260)
 [node name="Stair03" parent="World/BossArena/SisterArea/Staircase" unique_id=2017847790 instance=ExtResource("boss_stair_step")]
 position = Vector2(4370, 130)
 
-[node name="TrappedSister" type="Sprite2D" parent="World/BossArena" unique_id=740645818]
+[node name="TrappedSister" type="AnimatedSprite2D" parent="World/BossArena" unique_id=740645818]
 z_index = 4
-position = Vector2(4560, -60)
-scale = Vector2(0.64, 0.64)
-texture = ExtResource("boss_sister")
-offset = Vector2(0, -209)
-region_enabled = true
-region_rect = Rect2(0, 0, 313.5, 418)
+position = Vector2(4614, 2.3841858e-07)
+scale = Vector2(1.5553, 1.5553)
+sprite_frames = ExtResource("boss_sister_frames")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(0, -86)
 
 [node name="Outro" type="CanvasLayer" parent="World/BossArena" unique_id=2078970208]
 layer = 80
@@ -1937,7 +1954,7 @@ color = Color(0.01, 0.008, 0.008, 0)
 
 [node name="Player" parent="Entities" unique_id=1426104633 instance=ExtResource("12_r3o47")]
 z_index = 10
-position = Vector2(15787, -135)
+position = Vector2(16095, 121)
 
 [node name="Enemies" type="Node2D" parent="." unique_id=261374960]
 

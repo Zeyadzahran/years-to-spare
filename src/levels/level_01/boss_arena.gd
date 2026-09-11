@@ -31,7 +31,7 @@ const MAX_REINFORCEMENT_WAVES := 2
 @onready var arena_adds: Node2D = $ArenaAdds
 @onready var staircase: Node2D = $SisterArea/Staircase
 @onready var fade: ColorRect = $Outro/Fade
-@onready var sister: Sprite2D = $TrappedSister
+@onready var sister: AnimatedSprite2D = $TrappedSister
 
 var player: Player
 var _started := false
@@ -88,6 +88,14 @@ func _exit_tree() -> void:
 		MusicManager.stop_music(0.8)
 
 
+## Called by the gate while its cover is still fully black. The hard limits are
+## active before the first boss-room frame can reach the screen, so the camera
+## can never reveal Level 1 beyond the boss backdrop.
+func prepare_gate_entry(entry_player: Player) -> void:
+	player = entry_player
+	_configure_camera()
+
+
 func _configure_camera() -> void:
 	var camera := player.get_node_or_null(^"Camera2D") as Camera2D
 	if camera == null:
@@ -96,7 +104,7 @@ func _configure_camera() -> void:
 	camera.limit_right = roundi(global_position.x + ROOM_RIGHT)
 	camera.limit_top = roundi(global_position.y + ROOM_TOP)
 	camera.limit_bottom = roundi(global_position.y + ROOM_BOTTOM)
-	camera.limit_smoothed = true
+	camera.limit_smoothed = false
 
 
 func _on_stomp_warning(stomp_number: int, phase: int) -> void:
