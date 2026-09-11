@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/world/platforms/slim_platform.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b8w5ea6b7b88x" path="res://assets/sprites/platforms.png" id="2_platforms"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slim_slab"]
+atlas = ExtResource("2_platforms")
+region = Rect2(189, 383, 1154, 257)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_slim"]
+resource_local_to_scene = true
+size = Vector2(220, 18)
+
+[node name="SlimPlatform" type="StaticBody2D"]
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Art" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(0, 24.4974)
+scale = Vector2(0.19064125, 0.19064125)
+texture = SubResource("AtlasTexture_slim_slab")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9)
+shape = SubResource("RectangleShape2D_slim")
+one_way_collision = true
+one_way_collision_margin = 16.0

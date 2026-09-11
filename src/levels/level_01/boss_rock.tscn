@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/levels/level_01/boss_rock.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b2j4qyiy3tqb3" path="res://src/levels/level_01/art/props/rocks_and_dirt.png" id="2_rocks"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rock"]
+resource_local_to_scene = true
+radius = 22.0
+
+[node name="BossRock" type="Area2D"]
+z_index = 12
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.64, 0.64)
+texture = ExtResource("2_rocks")
+region_enabled = true
+region_rect = Rect2(509, 61, 90, 74)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rock")
