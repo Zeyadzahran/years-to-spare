@@ -1616,6 +1616,26 @@ texture = ExtResource("boss_background")
 region_enabled = true
 region_rect = Rect2(225, 0, 550, 375)
 
+[node name="BackdropGuards" type="Node2D" parent="World/BossArena" unique_id=67209068]
+z_index = -21
+
+[node name="Left" type="Polygon2D" parent="World/BossArena/BackdropGuards" unique_id=602272292]
+position = Vector2(8719, 52)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-10000, -10000, 2452, -10000, 2452, 10000, -10000, 10000, -10000, -380.552)
+
+[node name="Right" type="Polygon2D" parent="World/BossArena/BackdropGuards" unique_id=1263313418]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(4848, -10000, 10000, -10000, 10000, 10000, 4848, 10000)
+
+[node name="Top" type="Polygon2D" parent="World/BossArena/BackdropGuards" unique_id=681500757]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(2452, -10000, 4848, -10000, 4848, -520, 2452, -520)
+
+[node name="Bottom" type="Polygon2D" parent="World/BossArena/BackdropGuards" unique_id=1406197278]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(2452, 480, 4848, 480, 4848, 10000, 2452, 10000)
+
 [node name="ArenaShell" type="TileMapLayer" parent="World/BossArena" unique_id=781025473]
 position = Vector2(2400, -23.333334)
 scale = Vector2(0.33333334, 0.33333334)

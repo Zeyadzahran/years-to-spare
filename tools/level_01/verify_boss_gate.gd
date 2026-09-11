@@ -41,6 +41,10 @@ func _verify_editor_authored_boss_arena() -> void:
 	assert(arena.has_node(^"FutureBossPosition"))
 	assert(arena.has_node(^"StoneTitan"))
 	assert(arena.has_node(^"ArenaShell"))
+	assert(arena.has_node(^"BackdropGuards/Left"))
+	assert(arena.has_node(^"BackdropGuards/Right"))
+	assert(arena.has_node(^"BackdropGuards/Top"))
+	assert(arena.has_node(^"BackdropGuards/Bottom"))
 	assert(not arena.has_node(^"Warden"))
 	assert(level.find_children("Player", "Player", true, false).size() == 1)
 	var below_spawn := terrain.local_to_map(
@@ -56,6 +60,7 @@ func _verify_inline_boss_arena() -> void:
 	var gate := level.get_node(^"World/SalvageYard/Gates/BossGate") as BossGate
 	var arena := level.get_node(^"World/BossArena") as Node2D
 	var spawn := arena.get_node(^"PlayerSpawn") as Marker2D
+	var boss_background := arena.get_node(^"BossBackground") as Sprite2D
 	var terrain := level.get_node(^"World/SalvageYard/Terrain") as TileMapLayer
 	assert(player != null)
 	assert(gate != null)
@@ -80,7 +85,8 @@ func _verify_inline_boss_arena() -> void:
 	assert(gate.get_node(^"Glow").modulate.a > 0.0)
 	assert(gate.get_node(^"Transition/Fade").color.a > 0.0)
 
-	# The same Player crosses within Level 1 only while the screen is covered.
+	# The same Player crosses within Level 1 only while the screen is fully
+	# covered. Camera limits and the boss backdrop must be ready before reveal.
 	await get_tree().create_timer(0.25).timeout
 	assert(player.get_instance_id() == player_id)
 	assert(level.has_node(^"World/BossArena"))
@@ -90,6 +96,14 @@ func _verify_inline_boss_arena() -> void:
 	assert(get_tree().get_nodes_in_group(&"player").size() == 1)
 	assert(player.global_position.distance_to(spawn.global_position) < 4.0)
 	assert(player.process_mode == Node.PROCESS_MODE_DISABLED)
+	assert((gate.get_node(^"Transition/Fade") as ColorRect).color.a >= 0.999)
+	assert(boss_background.is_visible_in_tree())
+	var camera := player.get_node(^"Camera2D") as Camera2D
+	assert(not camera.position_smoothing_enabled)
+	assert(not camera.limit_smoothed)
+	assert(camera.limit_left == roundi(arena.global_position.x + BossArena.ROOM_LEFT))
+	assert(camera.limit_right == roundi(arena.global_position.x + BossArena.ROOM_RIGHT))
+	_assert_no_desert_left_of_boss_background(camera, boss_background)
 
 	await get_tree().create_timer(0.7).timeout
 	print("BOSS_GATE_POSITION actual=%s spawn=%s" % [player.global_position, spawn.global_position])
@@ -102,7 +116,6 @@ func _verify_inline_boss_arena() -> void:
 	assert(is_zero_approx((gate.get_node(^"Transition/Fade") as ColorRect).color.a))
 	assert(terrain.tile_set == load("res://src/levels/level_01/terrain_tileset.tres"))
 	assert((player.get_node(^"Camera2D") as Camera2D).zoom == BossGate.ARENA_CAMERA_ZOOM)
-	var camera := player.get_node(^"Camera2D") as Camera2D
 	assert(camera.enabled)
 	assert(camera.get_parent() == player)
 	assert(get_viewport().get_visible_rect().size.x / camera.zoom.x >= 1560.0)
@@ -128,6 +141,16 @@ func _verify_inline_boss_arena() -> void:
 	assert(not gate.monitoring)
 	level.free()
 	await get_tree().process_frame
+
+
+func _assert_no_desert_left_of_boss_background(
+		camera: Camera2D, background: Sprite2D) -> void:
+	var background_width := background.region_rect.size.x * absf(background.global_scale.x)
+	var background_left := background.global_position.x - background_width * 0.5
+	var visible_width := get_viewport().get_visible_rect().size.x / camera.zoom.x
+	var camera_left := camera.get_screen_center_position().x - visible_width * 0.5
+	print("BOSS_REVEAL_LEFT camera=%s background=%s" % [camera_left, background_left])
+	assert(camera_left >= background_left - 1.0)
 
 
 func _verify_normal_damage_and_checkpoint() -> void:
