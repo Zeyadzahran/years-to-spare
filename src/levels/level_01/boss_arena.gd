@@ -13,6 +13,8 @@ const GUARD_SCENE := preload("res://src/actors/enemy/guard.tscn")
 ## happens in the quiet the room had before.
 const BOSS_MUSIC: AudioStream = preload("res://assets/music/Epic_Boss_Battle.ogg")
 const MUSIC_VOLUME_DB := -7.0
+## Where the outro fade leads instead of sitting on black once it lands.
+const ENDING_SCENE := "res://src/cinematics/ending/ending.tscn"
 
 const ROOM_LEFT := 2500.0
 const ROOM_RIGHT := 4820.0
@@ -419,6 +421,11 @@ func _run_victory_sequence() -> void:
 	var level := get_parent().get_parent() as Level
 	if level != null:
 		level.complete()
+	# Only the real game goes on to the closing cutscene - a contract test
+	# builds this same room as a plain child rather than as current_scene, and
+	# must stay in the room to keep making its own assertions afterward.
+	if level != null and get_tree().current_scene == level:
+		get_tree().change_scene_to_file(ENDING_SCENE)
 
 
 func _move_player_to(local_destination: Vector2, speed: float) -> void:

@@ -6,7 +6,7 @@
 
 [node name="CityOfTime" type="Node2D" unique_id=150344343]
 script = ExtResource("1_tbfeo")
-next_scene = "res://src/levels/level_01/level_01.tscn"
+next_scene = "res://src/levels/level_02/level_02.tscn"
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1246061587]
 
