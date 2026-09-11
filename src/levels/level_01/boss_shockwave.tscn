@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://src/levels/level_01/boss_shockwave.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wave"]
+size = Vector2(82, 28)
+
+[node name="BossShockwave" type="Area2D"]
+z_index = 11
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_wave")
