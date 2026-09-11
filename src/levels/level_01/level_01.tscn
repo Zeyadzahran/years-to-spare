@@ -938,7 +938,10 @@ position = Vector2(13500, 239)
 position = Vector2(14900, 119)
 
 [node name="ExitCheckpoint" parent="World/SalvageYard/Checkpoints" unique_id=1887431434 instance=ExtResource("18_chkpt")]
-position = Vector2(17387, 461)
+position = Vector2(16303, 118)
+
+[node name="ExitCheckpoint2" parent="World/SalvageYard/Checkpoints" unique_id=1221767689 instance=ExtResource("18_chkpt")]
+position = Vector2(16303, 118)
 
 [node name="Hazards" type="Node2D" parent="World/SalvageYard" unique_id=1322272541]
 
@@ -1951,7 +1954,7 @@ color = Color(0.01, 0.008, 0.008, 0)
 
 [node name="Player" parent="Entities" unique_id=1426104633 instance=ExtResource("12_r3o47")]
 z_index = 10
-position = Vector2(15787, -135)
+position = Vector2(16095, 121)
 
 [node name="Enemies" type="Node2D" parent="." unique_id=261374960]
 
