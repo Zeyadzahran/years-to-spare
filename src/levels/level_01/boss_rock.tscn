@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://src/levels/level_01/boss_rock.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b2j4qyiy3tqb3" path="res://src/levels/level_01/art/props/rocks_and_dirt.png" id="2_rocks"]
+[ext_resource type="AudioStream" path="res://src/levels/level_01/audio/rock-sound.mp3" id="3_impact"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rock"]
 resource_local_to_scene = true
@@ -21,3 +22,6 @@ region_rect = Rect2(509, 61, 90, 74)
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_rock")
+
+[node name="ImpactAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_impact")

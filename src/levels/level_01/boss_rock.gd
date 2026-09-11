@@ -23,13 +23,6 @@ const LIGHT_IMPACTS: Array[AudioStream] = [
 	preload("res://assets/sounds/boss/impactGeneric_light_003.ogg"),
 	preload("res://assets/sounds/boss/impactGeneric_light_004.ogg"),
 ]
-const HEAVY_IMPACTS: Array[AudioStream] = [
-	preload("res://assets/sounds/boss/impactMining_000.ogg"),
-	preload("res://assets/sounds/boss/impactMining_001.ogg"),
-	preload("res://assets/sounds/boss/impactMining_002.ogg"),
-	preload("res://assets/sounds/boss/impactMining_003.ogg"),
-	preload("res://assets/sounds/boss/impactMining_004.ogg"),
-]
 const SMALL_REGIONS := [
 	Rect2(58, 104, 27, 23),
 	Rect2(131, 84, 41, 42),
@@ -52,6 +45,10 @@ const LOCKED := Color(1.0, 0.78, 0.3)
 
 @onready var sprite: Sprite2D = $Sprite
 @onready var shape: CollisionShape2D = $Shape
+## The crack of impact - ground or flesh, this rock only ever plays it once.
+## Detached to the parent and left to finish on its own in `_release_audio`,
+## because the rock itself is freed the same frame it lands.
+@onready var _impact_audio: AudioStreamPlayer2D = get_node_or_null(^"ImpactAudio")
 
 var size_kind := RockSize.MEDIUM
 var motion_kind := MotionKind.FALL
@@ -308,7 +305,7 @@ func _impact_ground() -> void:
 	get_parent().add_child(effect)
 	var impact_strength := 0.55 if size_kind == RockSize.SMALL else 0.78 if size_kind == RockSize.MEDIUM else 1.1
 	effect.configure(landing_position, impact_strength, size_kind == RockSize.LARGE)
-	_play_impact_sound()
+	_release_audio()
 	if size_kind == RockSize.LARGE:
 		var fx := BossScreenFx.find(get_tree())
 		if fx != null:
@@ -328,7 +325,7 @@ func _on_body_entered(body: Node2D) -> void:
 	var effect := IMPACT_SCENE.instantiate() as BossImpactEffect
 	get_parent().add_child(effect)
 	effect.configure(global_position, 0.45 if size_kind == RockSize.SMALL else 0.7)
-	_play_impact_sound()
+	_release_audio()
 	_release_wake()
 	queue_free()
 
@@ -364,14 +361,19 @@ func _hit_whoever_is_inside() -> void:
 			return
 
 
-func _play_impact_sound() -> void:
-	if size_kind == RockSize.SMALL:
-		_play_detached(LIGHT_IMPACTS, -5.0, randf_range(1.02, 1.16))
-	else:
-		var volume := -1.5 if size_kind == RockSize.LARGE else -3.5
-		var pitch := randf_range(0.72, 0.84) if size_kind == RockSize.LARGE \
-			else randf_range(0.9, 1.02)
-		_play_detached(HEAVY_IMPACTS, volume, pitch)
+## Hands the impact sound off to the parent so it keeps playing after this
+## rock frees itself - the same problem Bullet solves by awaiting instead,
+## which is not an option here since the ground-impact caller is not async.
+func _release_audio() -> void:
+	if _impact_audio == null:
+		return
+	var at := global_position
+	remove_child(_impact_audio)
+	get_parent().add_child(_impact_audio)
+	_impact_audio.global_position = at
+	_impact_audio.finished.connect(_impact_audio.queue_free)
+	_impact_audio.play()
+	_impact_audio = null
 
 
 func _play_detached(streams: Array[AudioStream], volume_db: float,
