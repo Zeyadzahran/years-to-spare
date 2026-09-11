@@ -96,6 +96,7 @@ const VOICE_HURTS: Array[AudioStream] = [
 	preload("res://assets/sounds/boss/voice/titan_hurt_03.ogg"),
 	preload("res://assets/sounds/boss/voice/titan_hurt_04.ogg"),
 ]
+const HIT_GROUND_SOUND: AudioStream = preload("res://assets/sounds/boss/hit_ground.mp3")
 const STOMP_SUB: AudioStream = preload("res://assets/sounds/boss/voice/stomp_sub.ogg")
 const GROUND_RUMBLE: AudioStream = preload("res://assets/sounds/boss/voice/ground_rumble.ogg")
 
@@ -163,6 +164,7 @@ void fragment() {
 @onready var windup_audio: AudioStreamPlayer2D = $WindupAudio
 @onready var stomp_audio: AudioStreamPlayer2D = $StompAudio
 @onready var stomp_body_audio: AudioStreamPlayer2D = $StompBodyAudio
+@onready var hit_ground_audio: AudioStreamPlayer2D = $HitGroundAudio
 @onready var hurt_audio: AudioStreamPlayer2D = $HurtAudio
 @onready var death_audio: AudioStreamPlayer2D = $DeathAudio
 
@@ -665,6 +667,10 @@ func _update_vulnerability_visual() -> void:
 func _play_stomp_audio() -> void:
 	_play_variant(stomp_audio, STOMP_SOUNDS, -1.5, randf_range(0.72, 0.8))
 	_play_variant(stomp_body_audio, BODY_IMPACTS, -5.0, randf_range(0.62, 0.7))
+	hit_ground_audio.stream = HIT_GROUND_SOUND
+	hit_ground_audio.volume_db = -2.0
+	hit_ground_audio.pitch_scale = randf_range(0.95, 1.05)
+	hit_ground_audio.play()
 	_say_variant(VOICE_SHOUTS, -3.0, randf_range(0.95, 1.05))
 	_sub_audio.stream = STOMP_SUB
 	_sub_audio.volume_db = 1.0

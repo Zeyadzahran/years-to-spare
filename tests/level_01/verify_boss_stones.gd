@@ -33,7 +33,6 @@ func _ready() -> void:
 	assert(StoneTitan.VOICE_HURTS.size() == 4)
 	assert(StoneTitan.VOICE_ROARS.size() == 2)
 	assert(BossRock.LIGHT_IMPACTS.size() == 5)
-	assert(BossRock.HEAVY_IMPACTS.size() == 5)
 
 	# Keep this test about stones only; normal reinforcement timing is covered by
 	# verify_boss_encounter.gd.
@@ -75,6 +74,8 @@ func _ready() -> void:
 
 		var signature := ""
 		for rock in rocks:
+			var impact_audio := rock.get_node(^"ImpactAudio") as AudioStreamPlayer2D
+			assert(impact_audio.stream.resource_path == "res://src/levels/level_01/audio/rock-sound.mp3")
 			assert(rock.warning_active)
 			assert(rock.is_vertical_plan())
 			assert(absf(rock.landing_position.x - rocks[0].landing_position.x) <= 400.0)
