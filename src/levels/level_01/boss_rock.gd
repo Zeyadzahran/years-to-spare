@@ -306,14 +306,11 @@ func _impact_ground() -> void:
 	var impact_strength := 0.55 if size_kind == RockSize.SMALL else 0.78 if size_kind == RockSize.MEDIUM else 1.1
 	effect.configure(landing_position, impact_strength, size_kind == RockSize.LARGE)
 	_release_audio()
-<<<<<<< HEAD
-=======
 	if size_kind == RockSize.LARGE:
 		var fx := BossScreenFx.find(get_tree())
 		if fx != null:
 			fx.shockwave(landing_position, 0.45)
 	_release_wake()
->>>>>>> f5a3cae504a8f81453dbab49cc9502eb9bd0fad5
 	queue_free()
 
 
@@ -329,11 +326,6 @@ func _on_body_entered(body: Node2D) -> void:
 	get_parent().add_child(effect)
 	effect.configure(global_position, 0.45 if size_kind == RockSize.SMALL else 0.7)
 	_release_audio()
-<<<<<<< HEAD
-	queue_free()
-
-
-=======
 	_release_wake()
 	queue_free()
 
@@ -369,7 +361,6 @@ func _hit_whoever_is_inside() -> void:
 			return
 
 
->>>>>>> f5a3cae504a8f81453dbab49cc9502eb9bd0fad5
 ## Hands the impact sound off to the parent so it keeps playing after this
 ## rock frees itself - the same problem Bullet solves by awaiting instead,
 ## which is not an option here since the ground-impact caller is not async.
@@ -382,8 +373,6 @@ func _release_audio() -> void:
 	_impact_audio.global_position = at
 	_impact_audio.finished.connect(_impact_audio.queue_free)
 	_impact_audio.play()
-<<<<<<< HEAD
-=======
 	_impact_audio = null
 
 
@@ -400,7 +389,6 @@ func _play_detached(streams: Array[AudioStream], volume_db: float,
 	audio.max_distance = 1800.0
 	audio.finished.connect(audio.queue_free)
 	audio.play()
->>>>>>> f5a3cae504a8f81453dbab49cc9502eb9bd0fad5
 
 
 func _draw() -> void:

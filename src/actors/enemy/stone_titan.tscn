@@ -75,6 +75,9 @@ max_distance = 2800.0
 [node name="StompBodyAudio" type="AudioStreamPlayer2D" parent="."]
 max_distance = 2800.0
 
+[node name="HitGroundAudio" type="AudioStreamPlayer2D" parent="."]
+max_distance = 2800.0
+
 [node name="HurtAudio" type="AudioStreamPlayer2D" parent="."]
 max_distance = 2800.0
 
