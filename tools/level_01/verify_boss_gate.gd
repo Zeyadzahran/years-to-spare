@@ -35,7 +35,7 @@ func _verify_editor_authored_boss_arena() -> void:
 	assert(terrain.tile_set == load("res://src/levels/level_01/terrain_tileset.tres"))
 	assert(arena.has_node(^"TrappedSister"))
 	assert(arena.has_node(^"FutureBossPosition"))
-	assert(arena.has_node(^"StoneTitan"))
+	assert(arena.has_node(^"Guardian"))
 	assert(arena.has_node(^"ArenaShell"))
 	assert(arena.has_node(^"BackdropGuards/Left"))
 	assert(arena.has_node(^"BackdropGuards/Right"))

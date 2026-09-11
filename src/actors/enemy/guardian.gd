@@ -1,4 +1,4 @@
-class_name StoneTitan
+class_name Guardian
 extends TimeBody2D
 ## The boss-room creature. It advances on the player, but its only attack is a
 ## clearly telegraphed two-foot stomp; the arena owns the resulting rock wave.
@@ -74,27 +74,27 @@ const BODY_IMPACTS: Array[AudioStream] = [
 	preload("res://assets/sounds/boss/impactMetal_heavy_003.ogg"),
 	preload("res://assets/sounds/boss/impactMetal_heavy_004.ogg"),
 ]
-const VOICE_AWAKEN: AudioStream = preload("res://assets/sounds/boss/voice/titan_awaken.ogg")
-const VOICE_DEATH: AudioStream = preload("res://assets/sounds/boss/voice/titan_death.ogg")
+const VOICE_AWAKEN: AudioStream = preload("res://assets/sounds/boss/voice/guardian_awaken.ogg")
+const VOICE_DEATH: AudioStream = preload("res://assets/sounds/boss/voice/guardian_death.ogg")
 const VOICE_ROARS: Array[AudioStream] = [
-	preload("res://assets/sounds/boss/voice/titan_roar_01.ogg"),
-	preload("res://assets/sounds/boss/voice/titan_roar_02.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_roar_01.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_roar_02.ogg"),
 ]
 const VOICE_GROWLS: Array[AudioStream] = [
-	preload("res://assets/sounds/boss/voice/titan_growl_01.ogg"),
-	preload("res://assets/sounds/boss/voice/titan_growl_02.ogg"),
-	preload("res://assets/sounds/boss/voice/titan_growl_03.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_growl_01.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_growl_02.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_growl_03.ogg"),
 ]
 const VOICE_SHOUTS: Array[AudioStream] = [
-	preload("res://assets/sounds/boss/voice/titan_shout_01.ogg"),
-	preload("res://assets/sounds/boss/voice/titan_shout_02.ogg"),
-	preload("res://assets/sounds/boss/voice/titan_shout_03.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_shout_01.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_shout_02.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_shout_03.ogg"),
 ]
 const VOICE_HURTS: Array[AudioStream] = [
-	preload("res://assets/sounds/boss/voice/titan_hurt_01.ogg"),
-	preload("res://assets/sounds/boss/voice/titan_hurt_02.ogg"),
-	preload("res://assets/sounds/boss/voice/titan_hurt_03.ogg"),
-	preload("res://assets/sounds/boss/voice/titan_hurt_04.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_hurt_01.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_hurt_02.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_hurt_03.ogg"),
+	preload("res://assets/sounds/boss/voice/guardian_hurt_04.ogg"),
 ]
 const HIT_GROUND_SOUND: AudioStream = preload("res://assets/sounds/boss/hit_ground.mp3")
 const STOMP_SUB: AudioStream = preload("res://assets/sounds/boss/voice/stomp_sub.ogg")

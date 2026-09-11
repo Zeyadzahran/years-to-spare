@@ -9,7 +9,7 @@ const IMPACT_SCENE := preload("res://src/levels/level_01/boss_impact_effect.tscn
 const SHOCKWAVE_SCENE := preload("res://src/levels/level_01/boss_shockwave.tscn")
 const GUARD_SCENE := preload("res://src/actors/enemy/guard.tscn")
 ## The only music in the level. It starts under the wake-up roar and is gone
-## by the time the titan has finished falling, so the walk up to the sister
+## by the time the guardian has finished falling, so the walk up to the sister
 ## happens in the quiet the room had before.
 const BOSS_MUSIC: AudioStream = preload("res://assets/music/Epic_Boss_Battle.ogg")
 const MUSIC_VOLUME_DB := -7.0
@@ -28,7 +28,7 @@ const BOSS_RIGHT := 4680.0
 const MAX_REINFORCEMENT_WAVES := 2
 
 @onready var activation: Area2D = $Activation
-@onready var boss: StoneTitan = $StoneTitan
+@onready var boss: Guardian = $Guardian
 @onready var hazards: Node2D = $StompHazards
 @onready var arena_adds: Node2D = $ArenaAdds
 @onready var staircase: Node2D = $SisterArea/Staircase
@@ -63,7 +63,7 @@ func _on_activation_body_entered(body: Node2D) -> void:
 	player = body
 	_started = true
 	_configure_camera()
-	# The rig and the screen layer go in before the titan wakes, because the
+	# The rig and the screen layer go in before the guardian wakes, because the
 	# wake-up is the first thing that uses them.
 	_camera_rig = BossCameraRig.attach(player.get_node_or_null(^"Camera2D") as Camera2D)
 	_screen_fx = BossScreenFx.new()
@@ -380,7 +380,7 @@ func _reveal_staircase() -> void:
 		reveal.tween_property(step, ^"modulate:a", 1.0, 0.12)
 		await reveal.finished
 		# Each step lands with a puff of dust and a small jolt, so the stairs
-		# arrive out of the same rock the titan was made of.
+		# arrive out of the same rock the guardian was made of.
 		BossVfx.dust_burst(self, step.global_position, 0.7, true, 9)
 		if _camera_rig != null and is_instance_valid(_camera_rig):
 			_camera_rig.add_trauma(0.2)

@@ -1,6 +1,6 @@
 class_name BossScreenFx
 extends Node2D
-## Full-screen response to the titan: the picture itself is hit, not just the
+## Full-screen response to the guardian: the picture itself is hit, not just the
 ## floor under it. Built the same way as TimeStopOverlay - one quad, one
 ## shader, nothing to author.
 ##
@@ -15,7 +15,7 @@ extends Node2D
 ##     the colour channels pulled apart along its front. Two slots, because a
 ##     stone can land while a stomp's wave is still crossing the screen;
 ##   - flash: a short wash of colour over the frame, for the slam itself and
-##     for the titan's death;
+##     for the guardian's death;
 ##   - vignette: the edges close in and let go again, the "brace" before a
 ##     heavy hit lands and the pulse of a phase change.
 ##

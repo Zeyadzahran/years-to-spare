@@ -1,7 +1,7 @@
 class_name BossVfx
 extends Object
 ## Particle builders shared by everything in the boss fight that throws dirt
-## around: the titan's feet, the falling stones, the shockwaves and the crumbling
+## around: the guardian's feet, the falling stones, the shockwaves and the crumbling
 ## death. Built in code rather than authored as scenes for the same reason as
 ## SwordEffects - one place to tune, no scene to reopen - and every emitter is
 ## fed from the room's own rock sheet so the debris matches the floor it came
@@ -61,7 +61,7 @@ static func chip_texture(region: Rect2) -> Texture2D:
 ##
 ## Ground dust thrown out sideways from an impact and left to hang. `strength`
 ## scales reach and count; `wide` spreads the source along the floor for the
-## titan's feet rather than a single stone.
+## guardian's feet rather than a single stone.
 static func dust_burst(parent: Node, at: Vector2, strength := 1.0,
 		wide := false, z := 0) -> CPUParticles2D:
 	var dust := _emitter(parent, at, z)

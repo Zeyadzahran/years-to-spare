@@ -15,7 +15,7 @@ extends Node
 ##   3. zoom punches - a brief push in and ease out, the thing that makes a hit
 ##      feel like it has mass rather than just noise;
 ##   4. focus - a slow pull of the frame toward a point, used to look at the
-##      titan while it wakes and for the death.
+##      guardian while it wakes and for the death.
 ##
 ## Runs on the raw frame delta on purpose. The shake is the player's own
 ## nervous system, not the world's, and should not freeze when time does.

@@ -28,6 +28,6 @@ func _apply() -> void:
 	art.position.y = art_size.y * art_scale * 0.5
 	var box := shape.shape as RectangleShape2D
 	box.size = size
-	shape.position.y = size.y * 0.5
+	# Keep the collision position authored in the shared scene when resizing.
 	shape.one_way_collision = true
 	shape.one_way_collision_margin = 16.0
