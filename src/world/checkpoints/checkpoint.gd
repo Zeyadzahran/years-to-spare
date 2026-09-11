@@ -10,6 +10,9 @@ extends Area2D
 ## record has to outlive this node.
 
 @onready var _marker: AnimatedSprite2D = $Marker
+## Plays once, the moment the flag turns - not on load, so a checkpoint that
+## comes back already lit after a respawn stays quiet.
+@onready var _activate_audio: AudioStreamPlayer2D = get_node_or_null(^"ActivateAudio")
 
 func _ready() -> void:
 	if not body_entered.is_connected(_on_body_entered):
@@ -30,3 +33,5 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	GameState.set_checkpoint(name, global_position, age_component.age)
 	_marker.play(&"green")
+	if _activate_audio != null:
+		_activate_audio.play()

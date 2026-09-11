@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b8lr3l7ij8nys" path="res://src/actors/enemy/gunner.gd" id="1_gunner"]
 [ext_resource type="Script" uid="uid://dp3hvo5k6qq50" path="res://src/components/health_component.gd" id="2_health"]
 [ext_resource type="SpriteFrames" uid="uid://dtvlxv02epglg" path="res://src/actors/enemy/gunner_frames.tres" id="3_frames"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gun-bullet.mp3" id="4_shot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gunner"]
 size = Vector2(36, 100)
@@ -26,3 +27,7 @@ offset = Vector2(0, -120)
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_health")
 max_health = 70.0
+
+[node name="ShotAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_shot")
+volume_db = 4.0

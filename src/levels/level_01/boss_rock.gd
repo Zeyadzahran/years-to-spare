@@ -27,6 +27,10 @@ const LARGE_REGIONS := [
 
 @onready var sprite: Sprite2D = $Sprite
 @onready var shape: CollisionShape2D = $Shape
+## The crack of impact - ground or flesh, this rock only ever plays it once.
+## Detached to the parent and left to finish on its own in `_release_audio`,
+## because the rock itself is freed the same frame it lands.
+@onready var _impact_audio: AudioStreamPlayer2D = get_node_or_null(^"ImpactAudio")
 
 var size_kind := RockSize.MEDIUM
 var motion_kind := MotionKind.FALL
@@ -161,6 +165,7 @@ func _impact_ground() -> void:
 	get_parent().add_child(effect)
 	var impact_strength := 0.55 if size_kind == RockSize.SMALL else 0.78 if size_kind == RockSize.MEDIUM else 1.1
 	effect.configure(landing_position, impact_strength, size_kind == RockSize.LARGE)
+	_release_audio()
 	queue_free()
 
 
@@ -172,7 +177,22 @@ func _on_body_entered(body: Node2D) -> void:
 	var effect := IMPACT_SCENE.instantiate() as BossImpactEffect
 	get_parent().add_child(effect)
 	effect.configure(global_position, 0.45 if size_kind == RockSize.SMALL else 0.7)
+	_release_audio()
 	queue_free()
+
+
+## Hands the impact sound off to the parent so it keeps playing after this
+## rock frees itself - the same problem Bullet solves by awaiting instead,
+## which is not an option here since the ground-impact caller is not async.
+func _release_audio() -> void:
+	if _impact_audio == null:
+		return
+	var at := global_position
+	remove_child(_impact_audio)
+	get_parent().add_child(_impact_audio)
+	_impact_audio.global_position = at
+	_impact_audio.finished.connect(_impact_audio.queue_free)
+	_impact_audio.play()
 
 
 func _draw() -> void:
