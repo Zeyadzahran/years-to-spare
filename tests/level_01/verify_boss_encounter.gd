@@ -80,9 +80,23 @@ func _verify_fight_and_outro() -> void:
 	assert(arena.get("_started"))
 	assert(arena.boss.active)
 	var camera := player.get_node(^"Camera2D") as Camera2D
+	# It wakes before it fights: roar, tremor, the camera pulled onto it.
+	assert(arena.boss.get("_state") == &"awaken")
+	assert(camera.has_node(^"BossCameraRig"))
+	assert(arena.has_node(^"ScreenFx"))
+	assert((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream == StoneTitan.VOICE_AWAKEN)
+	assert(not camera.ignore_rotation)
+	await arena.boss.awakened
+	assert(arena.boss.get("_state") == &"chase")
 	assert(camera.limit_left == roundi(arena.global_position.x + BossArena.ROOM_LEFT))
 	assert(camera.limit_right == roundi(arena.global_position.x + BossArena.ROOM_RIGHT))
 	assert(BossArena.ROOM_RIGHT - BossArena.BOSS_RIGHT <= 160.0)
+	assert(arena.boss._windup_duration() == 0.78)
+	arena.boss.phase = 2
+	assert(arena.boss._windup_duration() == 0.66)
+	arena.boss.phase = 3
+	assert(arena.boss._windup_duration() == 0.56)
+	arena.boss.phase = 1
 
 	# The old 4020 boundary stranded the boss before the room's right-side combat
 	# floor. Put both actors beyond it and confirm the boss can keep pursuing.
@@ -91,19 +105,35 @@ func _verify_fight_and_outro() -> void:
 	player.global_position = arena.to_global(Vector2(4550, BossArena.FLOOR_Y))
 	await get_tree().create_timer(0.5).timeout
 	assert(arena.to_local(arena.boss.global_position).x > 4240.0)
+	assert((arena.boss.get_node(^"StepAudio") as AudioStreamPlayer2D).stream != null)
 
 	arena.boss._begin_stomp()
 	await get_tree().process_frame
+	assert((arena.boss.get_node(^"WindupAudio") as AudioStreamPlayer2D).stream != null)
+	assert(StoneTitan.VOICE_GROWLS.has((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream))
+	# The slam is cut to the clip: the attack animation runs at whatever rate
+	# puts the fist on the floor at the end of the wind-up.
+	assert(is_equal_approx(arena.boss._animation_rate(), (6.0 / 11.0) / 0.78))
 	assert(arena.hazards.get_child_count() >= 3)
 	for hazard in arena.hazards.get_children():
 		if hazard is BossRock:
 			assert(not hazard.monitoring)
 	await get_tree().create_timer(1.15).timeout
 	var launched := false
+	var has_shockwave := false
 	for hazard in arena.hazards.get_children():
 		if hazard is BossRock and hazard.monitoring:
 			launched = true
+		if hazard is BossShockwave:
+			has_shockwave = true
 	assert(launched)
+	assert(has_shockwave)
+	assert(arena.boss.is_vulnerable())
+	assert((arena.boss.get_node(^"StompAudio") as AudioStreamPlayer2D).stream != null)
+	assert((arena.boss.get_node(^"StompBodyAudio") as AudioStreamPlayer2D).stream != null)
+	assert((arena.boss.get_node(^"StompSubAudio") as AudioStreamPlayer2D).stream == StoneTitan.STOMP_SUB)
+	assert(StoneTitan.VOICE_SHOUTS.has((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream))
+	assert(float(arena.boss.sprite.material.get_shader_parameter(&"outline")) > 0.0)
 
 	arena._on_stomp_warning(3, 1)
 	await get_tree().process_frame
@@ -124,6 +154,9 @@ func _verify_fight_and_outro() -> void:
 	EventBus.level_completed.connect(_on_level_completed)
 	arena.boss.health.kill(player)
 	await get_tree().process_frame
+	assert((arena.boss.get_node(^"HurtAudio") as AudioStreamPlayer2D).stream != null)
+	assert((arena.boss.get_node(^"DeathAudio") as AudioStreamPlayer2D).stream != null)
+	assert((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream == StoneTitan.VOICE_DEATH)
 	assert(arena.hazards.get_child_count() == 0)
 	assert(arena.arena_adds.get_child_count() == 0)
 	assert(arena.staircase.visible)
