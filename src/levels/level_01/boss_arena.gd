@@ -8,6 +8,11 @@ const ROCK_SCENE := preload("res://src/levels/level_01/boss_rock.tscn")
 const IMPACT_SCENE := preload("res://src/levels/level_01/boss_impact_effect.tscn")
 const SHOCKWAVE_SCENE := preload("res://src/levels/level_01/boss_shockwave.tscn")
 const GUARD_SCENE := preload("res://src/actors/enemy/guard.tscn")
+## The only music in the level. It starts under the wake-up roar and is gone
+## by the time the titan has finished falling, so the walk up to the sister
+## happens in the quiet the room had before.
+const BOSS_MUSIC: AudioStream = preload("res://assets/music/Epic_Boss_Battle.ogg")
+const MUSIC_VOLUME_DB := -7.0
 
 const ROOM_LEFT := 2500.0
 const ROOM_RIGHT := 4820.0
@@ -62,7 +67,25 @@ func _on_activation_body_entered(body: Node2D) -> void:
 	_screen_fx = BossScreenFx.new()
 	_screen_fx.name = &"ScreenFx"
 	add_child(_screen_fx)
+	_start_music()
 	boss.activate(player, global_position.x + BOSS_LEFT, global_position.x + BOSS_RIGHT)
+
+
+func _start_music() -> void:
+	# Looped here rather than in the import, so the setting travels with the
+	# code that depends on it.
+	var song := BOSS_MUSIC as AudioStreamOggVorbis
+	song.loop = true
+	# A slow swell: the roar owns the first two seconds.
+	MusicManager.play_music(BOSS_MUSIC, 2.6, MUSIC_VOLUME_DB)
+
+
+func _exit_tree() -> void:
+	# A death reloads the level with the manager still playing; the normal
+	# level has no music, and the boss theme must not follow the boy back
+	# to his checkpoint.
+	if MusicManager.current_song == BOSS_MUSIC:
+		MusicManager.stop_music(0.8)
 
 
 func _configure_camera() -> void:
@@ -292,6 +315,7 @@ func _on_boss_defeated() -> void:
 	_stop_all_danger()
 	if _screen_fx != null and is_instance_valid(_screen_fx):
 		_screen_fx.set_vignette(0.0, 0.6)
+	MusicManager.stop_music(3.0)
 	_finish_encounter.call_deferred()
 
 

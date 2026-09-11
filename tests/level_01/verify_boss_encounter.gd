@@ -85,6 +85,9 @@ func _verify_fight_and_outro() -> void:
 	assert(camera.has_node(^"BossCameraRig"))
 	assert(arena.has_node(^"ScreenFx"))
 	assert((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream == StoneTitan.VOICE_AWAKEN)
+	assert(MusicManager.current_song == BossArena.BOSS_MUSIC)
+	assert(MusicManager.player.playing)
+	assert((MusicManager.current_song as AudioStreamOggVorbis).loop)
 	assert(not camera.ignore_rotation)
 	await arena.boss.awakened
 	assert(arena.boss.get("_state") == &"chase")
@@ -175,6 +178,9 @@ func _verify_fight_and_outro() -> void:
 	assert(camera.get_screen_center_position().x > camera_x_before_follow + 20.0)
 	await get_tree().create_timer(4.1).timeout
 	assert((arena.fade as ColorRect).color.a > 0.98)
+	# The theme has faded out with the titan; the outro walk is unscored.
+	assert(not MusicManager.player.playing)
+	assert(MusicManager.current_song == null)
 	await get_tree().process_frame
 	assert(_completions == 1)
 	EventBus.level_completed.disconnect(_on_level_completed)

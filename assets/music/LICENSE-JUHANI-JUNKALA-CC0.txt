@@ -1,0 +1,13 @@
+Boss room music
+===============
+
+Epic_Boss_Battle.ogg
+"Epic Boss Battle [Seamlessly Looping]" by Juhani Junkala (SubspaceAudio)
+https://opengameart.org/content/boss-battle-music
+
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Attribution is not required, but the source is recorded here so the project's
+audio provenance remains clear. Re-encoded from the original WAV to Ogg Vorbis
+(q6) without other changes; the loop point is the file's end.
