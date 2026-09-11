@@ -1,5 +1,5 @@
 extends Node
-## The live merged scene: original seam and the real one-way boss gate overlap.
+## The live merged scene: original seam, real gate overlap, and completion UI.
 
 const LEVEL := "res://src/levels/level_01/level_01.tscn"
 var completions: Array[StringName] = []
@@ -37,33 +37,53 @@ func _ready() -> void:
 	assert(crossed, "Opening no longer joins the later section")
 	print("LEVEL_JOIN_TRAVERSAL_OK age=59 time_stops=0")
 
-	var gate := section.get_node(^"Gates/BossGate") as BossGate
+	var gate := section.get_node(^"Gates/LevelExit") as Area2D
 	var non_player := Node2D.new()
 	gate._on_body_entered(non_player)
 	non_player.free()
-	assert(not gate.get("_transitioning"))
+	assert(not gate.get("_completed"))
 	assert(completions.is_empty())
-	var gate_shape := gate.get_node(^"Shape") as CollisionShape2D
-	player.global_position = gate_shape.global_position + Vector2(0, 50)
+	player.position = gate.global_position + Vector2(-220, -2)
 	player.velocity = Vector2.ZERO
 	player.age.set_to(23)
-	await get_tree().physics_frame
-	await get_tree().physics_frame
-	assert(gate.get("_transitioning"))
-	assert(player.process_mode == Node.PROCESS_MODE_DISABLED)
-	await get_tree().create_timer(1.35).timeout
-	var arena := level.get_node(^"World/BossArena") as BossArena
-	var spawn := arena.get_node(^"PlayerSpawn") as Marker2D
-	assert(player.global_position.distance_to(spawn.global_position) < 4.0)
-	assert(arena.boss.active)
-	assert(completions.is_empty())
+	for _frame in range(12):
+		await get_tree().physics_frame
+	Input.action_press(&"time_stop")
+	# process_frame resumes before nodes process input; allow that full frame.
+	await get_tree().process_frame
+	await get_tree().process_frame
+	Input.action_release(&"time_stop")
+	player.powers._process(TimePowers.WIND_UP + 0.01)
+	assert(TimeService.mode == TimeService.Mode.STOPPED)
+	Input.action_press(&"move_right")
+	for _frame in range(90):
+		await get_tree().physics_frame
+		if not completions.is_empty():
+			break
+	Input.action_release(&"move_right")
+	await get_tree().process_frame
+	assert(completions == [&"phase_1"], "Gate overlap did not complete exactly once")
+	assert(get_tree().paused)
 	assert(TimeService.mode == TimeService.Mode.NORMAL)
 	assert(player.powers.active == null)
+	var panel := gate.get_node(^"Completion/Panel") as Control
+	assert(panel.visible)
+	var button := gate.get_node(^"Completion/Panel/Copy/ReturnButton") as Button
+	assert(button.has_focus() and button.pressed.get_connections().size() == 1)
+	assert(ResourceLoader.exists("res://src/ui/main_menu/main_menu.tscn"))
+	var hud := level.get_node(^"HUD")
+	assert(hud.options_button.disabled)
+	hud._on_options_pressed()
+	var pause_input := InputEventAction.new()
+	pause_input.action = &"pause"
+	pause_input.pressed = true
+	hud._unhandled_input(pause_input)
+	assert(hud.get("_options_panel") == null and get_tree().paused)
 	gate._on_body_entered(player)
 	await get_tree().process_frame
-	assert(player.global_position.distance_to(spawn.global_position) < 4.0)
-	assert(completions.is_empty())
-	print("BOSS_GATE_OK overlap=player transfer=once power_cancelled=true")
+	assert(completions.size() == 1)
+	print("LEVEL_EXIT_OK overlap=player completion=once power_cancelled=true options_locked=true")
+	get_tree().paused = false
 	level.queue_free()
 	await get_tree().process_frame
 	get_tree().quit()

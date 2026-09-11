@@ -28,7 +28,7 @@ func _ready() -> void:
 	assert(section.has_node(^"Checkpoints/ExitCheckpoint"))
 	assert(section.get_node(^"Enemies").get_child_count() <= 4)
 	assert(section.get_node(^"Decorations").get_child_count() >= 60)
-	assert(section.has_node(^"Gates/BossGate"))
+	assert(section.has_node(^"Gates/LevelExit"))
 	assert(not section.has_node(^"Enemies/Warden"))
 	assert(get_tree().get_nodes_in_group(&"warden_phase_two").is_empty())
 	assert(get_tree().get_nodes_in_group(&"warden_phase_three").is_empty())
@@ -41,7 +41,7 @@ func _ready() -> void:
 	assert(not platforms.has_node(^"RecoveryLow") and not platforms.has_node(^"RecoveryHigh"))
 	for index in range(1, 6):
 		var spike := section.get_node("Hazards/TransferSpikes%02d" % index) as Hazard
-		assert(spike.instant_death and spike.hurts_while_frozen)
+		assert(spike.damage >= 100 and spike.hurts_while_frozen)
 	for x in range(126, 133):
 		assert(terrain.get_cell_source_id(Vector2i(x, 3)) != -1)
 	print("COMPACT_LAYOUT_OK length=%d platforms=%d decorations=%d enemies=%d" % [

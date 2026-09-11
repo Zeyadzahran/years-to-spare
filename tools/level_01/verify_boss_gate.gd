@@ -39,8 +39,6 @@ func _verify_editor_authored_boss_arena() -> void:
 	assert(terrain.tile_set == load("res://src/levels/level_01/terrain_tileset.tres"))
 	assert(arena.has_node(^"TrappedSister"))
 	assert(arena.has_node(^"FutureBossPosition"))
-	assert(arena.has_node(^"StoneTitan"))
-	assert(arena.has_node(^"ArenaShell"))
 	assert(not arena.has_node(^"Warden"))
 	assert(level.find_children("Player", "Player", true, false).size() == 1)
 	var below_spawn := terrain.local_to_map(
@@ -101,7 +99,7 @@ func _verify_inline_boss_arena() -> void:
 	assert(player.process_mode == Node.PROCESS_MODE_INHERIT)
 	assert(is_zero_approx((gate.get_node(^"Transition/Fade") as ColorRect).color.a))
 	assert(terrain.tile_set == load("res://src/levels/level_01/terrain_tileset.tres"))
-	assert((player.get_node(^"Camera2D") as Camera2D).zoom == BossGate.ARENA_CAMERA_ZOOM)
+	assert((player.get_node(^"Camera2D") as Camera2D).zoom == Vector2(0.5, 0.5))
 	var camera := player.get_node(^"Camera2D") as Camera2D
 	assert(camera.enabled)
 	assert(camera.get_parent() == player)

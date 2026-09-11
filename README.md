@@ -19,7 +19,7 @@ The project is an in-development prototype with a playable first level,
 - A fast, timed transfer above a spike pit and an optional healing ledge
 - Checkpoints that preserve age and defeated enemies between retries
 - Hazards, moving traps, and healing fig pickups
-- The existing final chamber, reshaped into a compact two-torch boss arena with the Iron Titan encounter and sister rescue ending
+- A marked exit gate and completion screen; no Warden fight
 - Intro, main menu, HUD, music, sound effects, and persistent settings
 
 Only time stop is available in the current level. Rewind and slow-time inputs

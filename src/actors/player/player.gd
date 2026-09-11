@@ -159,15 +159,6 @@ func begin_swing() -> void:
 	_effects.thrust(global_position, facing)
 
 
-func clear_combat_effects() -> void:
-	if _effects != null:
-		_effects.clear()
-
-
-func has_combat_effects() -> bool:
-	return _effects != null and _effects.is_active()
-
-
 func perform_attack_hit() -> void:
 	if _attack_hit_done:
 		return
