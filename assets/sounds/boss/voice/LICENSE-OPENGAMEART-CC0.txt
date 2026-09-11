@@ -1,0 +1,16 @@
+Stone Titan voice, built from CC0 recordings on OpenGameArt.org.
+All sources are released under CC0 1.0 (public domain); no attribution required.
+
+Sources:
+- "80 CC0 creature SFX" and "80 CC0 creture SFX #2" by rubberduck
+  https://opengameart.org/content/80-cc0-creature-sfx
+  https://opengameart.org/content/80-cc0-creture-sfx-2
+  (grunt_02, grunt_07, grunt_08, grunt_09, hurt_04, monster_04, monster_07,
+   monster_09, monster_20, roar_02, roar_04, roar_05, roar_06)
+- "CC0 Deep Monster Roar" by trazzz123
+  https://opengameart.org/content/cc0-deep-monster-roar
+  (monster_roar.wav, used for titan_awaken and titan_death)
+
+Processing: pitched down 8-30%, a sub-octave layer added, EQ, tape-style
+saturation and a short stone-hall reverb tail. stomp_sub.ogg and
+ground_rumble.ogg are synthesised, not recordings.

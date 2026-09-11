@@ -180,7 +180,10 @@ func perform_attack_hit() -> void:
 		# exactly level with the boy has signf(offset.x) == 0, which matched
 		# neither facing and let the swing pass straight through it.
 		if absf(offset.x) <= 78.0 and absf(offset.y) <= 75.0 and offset.x * facing >= 0.0:
-			enemy.health.take_damage(attack_damage, self)
+			if enemy.has_method(&"receive_player_hit"):
+				enemy.receive_player_hit(attack_damage, self)
+			else:
+				enemy.health.take_damage(attack_damage, self)
 			# On the blade line rather than on the unit's middle: a thrust
 			# connects where the sword is, which is chest height off the floor
 			# the boy is standing on, not off wherever the unit's feet are.

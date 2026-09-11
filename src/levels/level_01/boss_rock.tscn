@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://src/levels/level_01/boss_rock.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b2j4qyiy3tqb3" path="res://src/levels/level_01/art/props/rocks_and_dirt.png" id="2_rocks"]
