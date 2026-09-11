@@ -101,7 +101,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if global_position.y > VOID_DEATH_Y:
-		die_instantly(null, true)
+		die_instantly(null)
 		return
 	input_dir = Input.get_axis(&"move_left", &"move_right")
 	_coyote_left = COYOTE_TIME if is_on_floor() else maxf(_coyote_left - delta, 0.0)
@@ -235,12 +235,12 @@ func is_crouched() -> bool:
 
 
 ## Routes environmental fatalities through HealthComponent and the existing
-## Dead state instead of maintaining a second game-over path.
-func die_instantly(source: Node = null, restart_at_level_start := false) -> void:
+## Dead state instead of maintaining a second game-over path. Spikes, saws and
+## the void all end up here, so they all cost a heart and respawn at the last
+## checkpoint exactly like a combat death does - see Level._on_player_died.
+func die_instantly(source: Node = null) -> void:
 	if is_down():
 		return
-	if restart_at_level_start:
-		GameState.request_level_start_respawn()
 	health.kill(source)
 
 

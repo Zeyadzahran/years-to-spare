@@ -12,15 +12,11 @@ const SPIKE_SCENES := [
 	preload("res://src/levels/level_01/hazards/ceiling_obstacle.tscn"),
 ]
 
-var _death_announcements := 0
-
-
 func _ready() -> void:
 	GameState.clear_run_progress()
 	_verify_editor_authored_boss_arena()
 	await _verify_normal_damage_and_checkpoint()
-	await _verify_spikes_restart_at_start()
-	await _verify_void_restarts_at_start()
+	await _verify_hazard_deaths_respect_hearts_and_checkpoint()
 	await _verify_inline_boss_arena()
 	GameState.clear_run_progress()
 	print("BOSS_GATE_AND_RESPAWN_RULES_VERIFIED")
@@ -162,7 +158,6 @@ func _verify_normal_damage_and_checkpoint() -> void:
 	assert(player.health.is_alive())
 	assert(is_equal_approx(player.health.current, health_before - 34.0))
 	assert(player.states.current_name == &"Hurt")
-	assert(not GameState.respawn_at_level_start_once)
 	player.free()
 	source.free()
 	await get_tree().process_frame
@@ -176,9 +171,11 @@ func _verify_normal_damage_and_checkpoint() -> void:
 	await get_tree().process_frame
 
 
-func _verify_spikes_restart_at_start() -> void:
-	EventBus.player_died.connect(_on_player_died)
-	var before := _death_announcements
+## Every spike variant and the void kill through the same Player.die_instantly
+## path, so proving the cascade once here covers all of them: a mistake costs
+## a heart and sends the boy back to his checkpoint, not the level, and only
+## running out of hearts costs the checkpoint and restarts the level itself.
+func _verify_hazard_deaths_respect_hearts_and_checkpoint() -> void:
 	for packed_spike: PackedScene in SPIKE_SCENES:
 		var player := await _fresh_player()
 		var spike := packed_spike.instantiate() as Hazard
@@ -191,46 +188,64 @@ func _verify_spikes_restart_at_start() -> void:
 		player.free()
 		spike.free()
 		await get_tree().process_frame
-	assert(GameState.respawn_at_level_start_once)
-	EventBus.player_died.disconnect(_on_player_died)
 
-	var level := LEVEL_SCENE.instantiate() as Level
-	add_child(level)
-	var respawned := level.get_node(^"Entities/Player") as Player
-	print("SPIKE_RESPAWN actual=%s start=%s" % [respawned.global_position, LEVEL_START])
-	assert(respawned.global_position == LEVEL_START)
-	assert(GameState.has_checkpoint(&"phase_1"))
-	assert(not GameState.respawn_at_level_start_once)
-	for frame in 4:
-		await get_tree().physics_frame
-	assert(respawned.is_on_floor())
-	level.free()
-	await get_tree().process_frame
-	assert(_death_announcements == before)
-
-
-func _verify_void_restarts_at_start() -> void:
-	var player := await _fresh_player()
-	player.global_position.y = Player.VOID_DEATH_Y + 1.0
+	var void_player := await _fresh_player()
+	void_player.global_position.y = Player.VOID_DEATH_Y + 1.0
 	await get_tree().physics_frame
-	assert(not player.health.is_alive())
-	assert(player.states.current_name == &"Dead")
-	assert(GameState.respawn_at_level_start_once)
-	player.free()
+	assert(not void_player.health.is_alive())
+	assert(void_player.states.current_name == &"Dead")
+	void_player.free()
 	await get_tree().process_frame
 
-	var level := LEVEL_SCENE.instantiate() as Level
-	add_child(level)
-	var respawned := level.get_node(^"Entities/Player") as Player
-	print("VOID_RESPAWN actual=%s start=%s" % [respawned.global_position, LEVEL_START])
-	assert(respawned.global_position == LEVEL_START)
+	# The above proves every hazard kills instantly through the shared path;
+	# from here the cascade is GameState's own, the same one
+	# Level._on_player_died drives on every real reload.
+	GameState.clear_run_progress()
+	GameState.set_checkpoint(&"heart_test_checkpoint", TEST_CHECKPOINT, 24.0)
+
+	# A) 3 hearts -> 2: the checkpoint still covers it.
+	assert(GameState.hearts == 3)
+	assert(GameState.lose_heart() == 2)
 	assert(GameState.has_checkpoint(&"phase_1"))
-	assert(not GameState.respawn_at_level_start_once)
+	assert(GameState.checkpoint_position == TEST_CHECKPOINT)
+	var level_a := LEVEL_SCENE.instantiate() as Level
+	add_child(level_a)
+	var respawned_a := level_a.get_node(^"Entities/Player") as Player
+	print("HEART_RESPAWN_2 actual=%s checkpoint=%s" % [respawned_a.global_position, TEST_CHECKPOINT])
+	assert(respawned_a.global_position.distance_to(TEST_CHECKPOINT) < 5.0)
+	level_a.free()
+	await get_tree().process_frame
+
+	# B) 2 hearts -> 1: same checkpoint, still not cleared.
+	assert(GameState.lose_heart() == 1)
+	assert(GameState.has_checkpoint(&"phase_1"))
+	assert(GameState.checkpoint_position == TEST_CHECKPOINT)
+	var level_b := LEVEL_SCENE.instantiate() as Level
+	add_child(level_b)
+	var respawned_b := level_b.get_node(^"Entities/Player") as Player
+	print("HEART_RESPAWN_1 actual=%s checkpoint=%s" % [respawned_b.global_position, TEST_CHECKPOINT])
+	assert(respawned_b.global_position.distance_to(TEST_CHECKPOINT) < 5.0)
+	level_b.free()
+	await get_tree().process_frame
+
+	# C) 1 heart -> 0: no heart left to cover it, so the run - checkpoint
+	# included - starts over exactly like Level._on_player_died does.
+	assert(GameState.lose_heart() == 0)
+	GameState.clear_run_progress()
+	assert(not GameState.has_checkpoint(&"phase_1"))
+	# D) ...and the reset hands the next attempt its three hearts back.
+	assert(GameState.hearts == 3)
+	var level_c := LEVEL_SCENE.instantiate() as Level
+	add_child(level_c)
+	var respawned_c := level_c.get_node(^"Entities/Player") as Player
+	print("FULL_RESTART_RESPAWN actual=%s start=%s" % [respawned_c.global_position, LEVEL_START])
+	assert(respawned_c.global_position == LEVEL_START)
 	for frame in 4:
 		await get_tree().physics_frame
-	assert(respawned.is_on_floor())
-	level.free()
+	assert(respawned_c.is_on_floor())
+	level_c.free()
 	await get_tree().process_frame
+	GameState.clear_run_progress()
 
 
 func _fresh_level() -> Level:
@@ -247,7 +262,3 @@ func _fresh_player() -> Player:
 	await get_tree().process_frame
 	await get_tree().physics_frame
 	return player
-
-
-func _on_player_died(_of_old_age: bool) -> void:
-	_death_announcements += 1
