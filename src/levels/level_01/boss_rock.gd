@@ -77,6 +77,7 @@ var _tracking_left_bound := -INF
 var _tracking_right_bound := INF
 var _warning_locked := true
 var _lock_flash := 0.0
+var _frozen := false
 var _cracks: Array[PackedVector2Array] = []
 var _trickle: CPUParticles2D
 var _tremor: CPUParticles2D
@@ -148,7 +149,11 @@ func _physics_process(delta: float) -> void:
 	for particles in [_trickle, _tremor, _wake]:
 		BossVfx.tick(particles, TimeService.world_scale)
 	if is_zero_approx(scaled):
+		_frozen = true
 		return
+	if _frozen:
+		_frozen = false
+		_hit_whoever_is_inside()
 	_pulse += scaled
 	if not _launched:
 		if warning_active and not _warning_locked:
@@ -312,8 +317,12 @@ func _impact_ground() -> void:
 	queue_free()
 
 
+## Same call as the saw: the danger is the motion, so a stone hanging in a
+## stopped world is just a stone, and the boy can walk through the gap it
+## has left him to reach the titan. The moment time runs again it is a
+## falling rock, and anyone still standing in it is hit.
 func _on_body_entered(body: Node2D) -> void:
-	if not body is Player:
+	if not body is Player or TimeService.is_world_frozen():
 		return
 	body.health.take_damage(damage, self)
 	var effect := IMPACT_SCENE.instantiate() as BossImpactEffect
@@ -342,6 +351,17 @@ func _release_wake() -> void:
 func _stop_emitting(particles: CPUParticles2D) -> void:
 	if particles != null and is_instance_valid(particles):
 		particles.emitting = false
+
+
+## `body_entered` already fired, and was ignored, for anyone who stepped into
+## the stone while it hung; so the overlap is re-read when the clock restarts.
+func _hit_whoever_is_inside() -> void:
+	if not monitoring:
+		return
+	for body in get_overlapping_bodies():
+		_on_body_entered(body)
+		if is_queued_for_deletion():
+			return
 
 
 func _play_impact_sound() -> void:

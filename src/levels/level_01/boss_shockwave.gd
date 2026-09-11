@@ -21,6 +21,7 @@ var right_bound := 0.0
 var _age := 0.0
 var _pulse := 0.0
 var _spent := false
+var _frozen := false
 var _origin_x := 0.0
 var _chunks: Array[Sprite2D] = []
 var _wake: CPUParticles2D
@@ -71,7 +72,11 @@ func _physics_process(delta: float) -> void:
 	BossVfx.tick(_wake, TimeService.world_scale)
 	BossVfx.tick(_spray, TimeService.world_scale)
 	if is_zero_approx(scaled):
+		_frozen = true
 		return
+	if _frozen:
+		_frozen = false
+		_hit_whoever_is_inside()
 	_age += scaled
 	_pulse += scaled
 	global_position.x += direction * speed * scaled
@@ -82,12 +87,21 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 
 
+## As with the stones: a stopped wave is a still ridge of floor, and only
+## hurts once it is moving again - including whoever it was stopped on.
 func _on_body_entered(body: Node2D) -> void:
-	if _spent or not body is Player:
+	if _spent or not body is Player or TimeService.is_world_frozen():
 		return
 	_spent = true
 	body.health.take_damage(damage, self)
 	set_deferred(&"monitoring", false)
+
+
+func _hit_whoever_is_inside() -> void:
+	if _spent or not monitoring:
+		return
+	for body in get_overlapping_bodies():
+		_on_body_entered(body)
 
 
 func _build_chunks() -> void:

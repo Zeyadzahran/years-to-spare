@@ -96,6 +96,23 @@ func _ready() -> void:
 		TimeService.mode = TimeService.Mode.STOPPED
 		await get_tree().create_timer(0.08).timeout
 		assert(is_equal_approx(waves[0].global_position.x, frozen_x))
+		if stomp_number == 5:
+			# A stopped wave is safe to stand in, like the saw; it hurts again
+			# the moment the clock restarts, even without moving.
+			var health_before_wave := player.health.current
+			player.global_position = Vector2(waves[0].global_position.x, player.global_position.y)
+			player.velocity = Vector2.ZERO
+			await get_tree().physics_frame
+			await get_tree().physics_frame
+			await get_tree().physics_frame
+			assert(is_equal_approx(player.health.current, health_before_wave))
+			TimeService.mode = TimeService.Mode.NORMAL
+			await get_tree().physics_frame
+			await get_tree().physics_frame
+			assert(player.health.current < health_before_wave)
+			player.health.heal(health_before_wave - player.health.current)
+			player.global_position = arena.to_global(Vector2(
+				player_positions[stomp_number - 1], BossArena.FLOOR_Y))
 		TimeService.mode = TimeService.Mode.NORMAL
 		await get_tree().create_timer(0.08).timeout
 		assert(absf(waves[0].global_position.x - frozen_x) > 20.0)
