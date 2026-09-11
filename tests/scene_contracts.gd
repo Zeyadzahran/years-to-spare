@@ -4,6 +4,7 @@ extends SceneTree
 ## Add -- --level-only to check Level 01 without running menus or cinematics.
 
 const LEVEL := "res://src/levels/level_01/level_01.tscn"
+const LEVEL_02 := "res://src/levels/level_02/level_02.tscn"
 const FIRST_TITLE := "res://src/ui/level_title/level_01_title.tscn"
 const CITY_TITLE := "res://src/ui/level_title/city_of_time_title.tscn"
 const ENEMY_PATHS := [
@@ -107,11 +108,13 @@ func run() -> void:
 	current_scene.free()
 	state.clear_run_progress()
 	if not level_only:
-		for title in [CITY_TITLE, FIRST_TITLE]:
+		for title_and_target in [[CITY_TITLE, LEVEL_02], [FIRST_TITLE, LEVEL]]:
+			var title: String = title_and_target[0]
+			var target: String = title_and_target[1]
 			change_scene_to_file(title)
 			await scene_changed
 			await scene_changed
-			check(current_scene.scene_file_path == LEVEL, "Title destination changed: " + title)
+			check(current_scene.scene_file_path == target, "Title destination changed: " + title)
 			current_scene.free()
 	await process_frame
 	# Give the audio server time to release playbacks after the final scene closes.

@@ -13,7 +13,7 @@ func _ready():
 	add_child(player)
 
 
-func play_music(song: AudioStream, fade_time := 1.0, target_volume_db := 0.0):
+func play_music(song: AudioStream, fade_time := 1.0, target_volume_db := 0.0, start_position := 0.0):
 	if song == current_song and player.playing:
 		return
 
@@ -29,7 +29,7 @@ func play_music(song: AudioStream, fade_time := 1.0, target_volume_db := 0.0):
 
 	player.stream = song
 	player.volume_db = -40.0
-	player.play()
+	player.play(start_position)
 
 	fade_tween = create_tween()
 	fade_tween.tween_property(player, "volume_db", target_volume_db, fade_time)
