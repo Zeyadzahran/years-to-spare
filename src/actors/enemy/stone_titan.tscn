@@ -63,6 +63,24 @@ width = 7.0
 default_color = Color(1, 0.32, 0.04, 0.9)
 closed = true
 
+[node name="StepAudio" type="AudioStreamPlayer2D" parent="."]
+max_distance = 2800.0
+
+[node name="WindupAudio" type="AudioStreamPlayer2D" parent="."]
+max_distance = 2800.0
+
+[node name="StompAudio" type="AudioStreamPlayer2D" parent="."]
+max_distance = 2800.0
+
+[node name="StompBodyAudio" type="AudioStreamPlayer2D" parent="."]
+max_distance = 2800.0
+
+[node name="HurtAudio" type="AudioStreamPlayer2D" parent="."]
+max_distance = 2800.0
+
+[node name="DeathAudio" type="AudioStreamPlayer2D" parent="."]
+max_distance = 2800.0
+
 [node name="Health" type="Node" parent="."]
 script = ExtResource("2_health")
 max_health = 510.0
