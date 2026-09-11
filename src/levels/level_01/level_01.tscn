@@ -30,10 +30,10 @@
 [ext_resource type="Texture2D" uid="uid://d3phh6mhrfc4b" path="res://assets/keys/K.png" id="29_tsq7e"]
 [ext_resource type="Script" uid="uid://bml7u6pies1ij" path="res://src/levels/level_01/boss_arena.gd" id="boss_arena_script"]
 [ext_resource type="Texture2D" uid="uid://csp6eptuobfmv" path="res://assets/sprites/boss-background.png" id="boss_background"]
-[ext_resource type="SpriteFrames" path="res://src/levels/level_01/trapped_sister_frames.tres" id="boss_sister_frames"]
-[ext_resource type="PackedScene" path="res://src/world/platforms/slim_platform.tscn" id="boss_slim_platform"]
-[ext_resource type="PackedScene" path="res://src/world/platforms/stair_step.tscn" id="boss_stair_step"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/guardian.tscn" id="boss_guardian"]
+[ext_resource type="SpriteFrames" path="res://src/levels/level_01/trapped_sister_frames.tres" id="boss_sister_frames"]
+[ext_resource type="PackedScene" uid="uid://cyll8to4t86fg" path="res://src/world/platforms/slim_platform.tscn" id="boss_slim_platform"]
+[ext_resource type="PackedScene" path="res://src/world/platforms/stair_step.tscn" id="boss_stair_step"]
 [ext_resource type="PackedScene" path="res://src/world/gates/boss_gate.tscn" id="compact_15_53ogl"]
 [ext_resource type="PackedScene" uid="uid://yfrmkarwqwn4" path="res://src/world/platforms/moving_platform.tscn" id="late_2_3h2n3"]
 [ext_resource type="PackedScene" uid="uid://drfu0r2a1beyg" path="res://src/world/platforms/platform.tscn" id="late_4_uf5ar"]
@@ -57,7 +57,6 @@ base_font = ExtResource("26_r3o47")
 [node name="Level01" type="Node2D" unique_id=2026904255]
 script = ExtResource("1_a7tag")
 level_start_path = NodePath("World/LevelStart")
-debug_keep_editor_spawn = true
 
 [node name="Ambience" type="Node" parent="." unique_id=1708576858]
 
@@ -1855,6 +1854,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="Shape" type="CollisionShape2D" parent="World/BossArena/Activation" unique_id=258165559]
+position = Vector2(5, -38)
 shape = SubResource("RectangleShape2D_boss_activation")
 
 [node name="StompHazards" type="Node2D" parent="World/BossArena" unique_id=416304319]
