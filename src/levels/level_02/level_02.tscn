@@ -411,30 +411,17 @@ position = Vector2(8260, 640)
 [node name="Wayfinding" type="Node2D" parent="World" unique_id=510511794]
 
 [node name="PulseHint" type="Label" parent="World/Wayfinding" unique_id=2011305799]
-offset_left = 2310.0
-offset_top = 475.0
-offset_right = 2310.0
-offset_bottom = 475.0
+offset_left = 2385.0
+offset_top = 511.0
+offset_right = 2594.0
+offset_bottom = 538.0
 theme_override_colors/font_color = Color(0.827451, 0.92941177, 0.9490196, 1)
 theme_override_colors/font_outline_color = Color(0.08235294, 0.105882354, 0.19215687, 1)
 theme_override_constants/outline_size = 5
 theme_override_fonts/font = ExtResource("26_8osm8")
 theme_override_font_sizes/font_size = 11
 text = "LIVE ELECTRICITY.
-JUMP OVER THE BEAM."
-
-[node name="FerryHint" type="Label" parent="World/Wayfinding" unique_id=250795888]
-offset_left = 4040.0
-offset_top = 265.0
-offset_right = 4040.0
-offset_bottom = 265.0
-theme_override_colors/font_color = Color(0.827451, 0.92941177, 0.9490196, 1)
-theme_override_colors/font_outline_color = Color(0.08235294, 0.105882354, 0.19215687, 1)
-theme_override_constants/outline_size = 5
-theme_override_fonts/font = ExtResource("26_8osm8")
-theme_override_font_sizes/font_size = 11
-text = "FREIGHT CROSSING  >
-RIDE THE DECK. [K] HOLDS IT."
+WILL HURT YOU"
 
 [node name="CourtyardSign" type="Label" parent="World/Wayfinding" unique_id=1273901272]
 offset_left = 6500.0

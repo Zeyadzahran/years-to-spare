@@ -22,14 +22,14 @@ func _verify_authored_room() -> void:
 	var shell := arena.get_node(^"ArenaShell") as TileMapLayer
 	var sister := arena.get_node(^"TrappedSister") as AnimatedSprite2D
 	var spawn := arena.get_node(^"PlayerSpawn") as Marker2D
-	var titan := arena.get_node(^"StoneTitan") as StoneTitan
+	var guardian := arena.get_node(^"Guardian") as Guardian
 	assert(background.texture == load("res://assets/sprites/boss-background.png"))
 	assert(background.region_enabled)
 	assert(background.region_rect == Rect2(225, 0, 550, 375))
 	assert(shell.tile_set == load("res://src/levels/level_01/terrain_tileset.tres"))
 	assert(shell.get_used_cells().size() == 36)
-	assert(spawn.position.x >= BossArena.ROOM_LEFT and spawn.position.x < titan.position.x)
-	assert(sister.position.x > titan.position.x)
+	assert(spawn.position.x >= BossArena.ROOM_LEFT and spawn.position.x < guardian.position.x)
+	assert(sister.position.x > guardian.position.x)
 	assert(sister.position.y <= 0.0)
 	var combat_platforms := [
 		arena.get_node(^"BossPlatform") as StaticBody2D,
@@ -55,13 +55,13 @@ func _verify_authored_room() -> void:
 		assert(step.position.y < previous_position.y)
 		previous_position = step.position
 	assert(not arena.has_node(^"SisterArea/ObjectiveSeal"))
-	var titan_sprite := titan.get_node(^"Sprite") as AnimatedSprite2D
-	var titan_shape := (titan.get_node(^"Shape") as CollisionShape2D).shape as CapsuleShape2D
+	var guardian_sprite := guardian.get_node(^"Sprite") as AnimatedSprite2D
+	var guardian_shape := (guardian.get_node(^"Shape") as CollisionShape2D).shape as CapsuleShape2D
 	# The tallest opaque pose uses 45 pixels of the 64-pixel animation frame.
-	var visual_height := 45.0 * titan_sprite.scale.y
+	var visual_height := 45.0 * guardian_sprite.scale.y
 	assert(visual_height >= 145.0 and visual_height <= 175.0)
-	assert(titan_shape.height >= 145.0 and titan_shape.height <= 175.0)
-	assert(titan_shape.radius * 2.0 <= 100.0)
+	assert(guardian_shape.height >= 145.0 and guardian_shape.height <= 175.0)
+	assert(guardian_shape.radius * 2.0 <= 100.0)
 	level.free()
 
 
@@ -84,7 +84,7 @@ func _verify_fight_and_outro() -> void:
 	assert(arena.boss.get("_state") == &"awaken")
 	assert(camera.has_node(^"BossCameraRig"))
 	assert(arena.has_node(^"ScreenFx"))
-	assert((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream == StoneTitan.VOICE_AWAKEN)
+	assert((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream == Guardian.VOICE_AWAKEN)
 	assert(MusicManager.current_song == BossArena.BOSS_MUSIC)
 	assert(MusicManager.player.playing)
 	assert((MusicManager.current_song as AudioStreamOggVorbis).loop)
@@ -113,7 +113,7 @@ func _verify_fight_and_outro() -> void:
 	arena.boss._begin_stomp()
 	await get_tree().process_frame
 	assert((arena.boss.get_node(^"WindupAudio") as AudioStreamPlayer2D).stream != null)
-	assert(StoneTitan.VOICE_GROWLS.has((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream))
+	assert(Guardian.VOICE_GROWLS.has((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream))
 	# The slam is cut to the clip: the attack animation runs at whatever rate
 	# puts the fist on the floor at the end of the wind-up.
 	assert(is_equal_approx(arena.boss._animation_rate(), (6.0 / 11.0) / 0.78))
@@ -134,8 +134,8 @@ func _verify_fight_and_outro() -> void:
 	assert(arena.boss.is_vulnerable())
 	assert((arena.boss.get_node(^"StompAudio") as AudioStreamPlayer2D).stream != null)
 	assert((arena.boss.get_node(^"StompBodyAudio") as AudioStreamPlayer2D).stream != null)
-	assert((arena.boss.get_node(^"StompSubAudio") as AudioStreamPlayer2D).stream == StoneTitan.STOMP_SUB)
-	assert(StoneTitan.VOICE_SHOUTS.has((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream))
+	assert((arena.boss.get_node(^"StompSubAudio") as AudioStreamPlayer2D).stream == Guardian.STOMP_SUB)
+	assert(Guardian.VOICE_SHOUTS.has((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream))
 	assert(float(arena.boss.sprite.material.get_shader_parameter(&"outline")) > 0.0)
 
 	arena._on_stomp_warning(3, 1)
@@ -159,7 +159,7 @@ func _verify_fight_and_outro() -> void:
 	await get_tree().process_frame
 	assert((arena.boss.get_node(^"HurtAudio") as AudioStreamPlayer2D).stream != null)
 	assert((arena.boss.get_node(^"DeathAudio") as AudioStreamPlayer2D).stream != null)
-	assert((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream == StoneTitan.VOICE_DEATH)
+	assert((arena.boss.get_node(^"VoiceAudio") as AudioStreamPlayer2D).stream == Guardian.VOICE_DEATH)
 	assert(arena.hazards.get_child_count() == 0)
 	assert(arena.arena_adds.get_child_count() == 0)
 	assert(arena.staircase.visible)
@@ -178,7 +178,7 @@ func _verify_fight_and_outro() -> void:
 	assert(camera.get_screen_center_position().x > camera_x_before_follow + 20.0)
 	await get_tree().create_timer(4.1).timeout
 	assert((arena.fade as ColorRect).color.a > 0.98)
-	# The theme has faded out with the titan; the outro walk is unscored.
+	# The theme has faded out with the guardian; the outro walk is unscored.
 	assert(not MusicManager.player.playing)
 	assert(MusicManager.current_song == null)
 	await get_tree().process_frame

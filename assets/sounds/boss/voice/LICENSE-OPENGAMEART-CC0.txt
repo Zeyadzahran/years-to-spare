@@ -1,4 +1,4 @@
-Stone Titan voice, built from CC0 recordings on OpenGameArt.org.
+Guardian voice, built from CC0 recordings on OpenGameArt.org.
 All sources are released under CC0 1.0 (public domain); no attribution required.
 
 Sources:
@@ -9,7 +9,7 @@ Sources:
    monster_09, monster_20, roar_02, roar_04, roar_05, roar_06)
 - "CC0 Deep Monster Roar" by trazzz123
   https://opengameart.org/content/cc0-deep-monster-roar
-  (monster_roar.wav, used for titan_awaken and titan_death)
+  (monster_roar.wav, used for guardian_awaken and guardian_death)
 
 Processing: pitched down 8-30%, a sub-octave layer added, EQ, tape-style
 saturation and a short stone-hall reverb tail. stomp_sub.ogg and

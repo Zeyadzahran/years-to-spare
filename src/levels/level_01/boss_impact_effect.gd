@@ -1,6 +1,6 @@
 class_name BossImpactEffect
 extends Node2D
-## Something heavy has hit the floor here. Shared by the titan's feet and the
+## Something heavy has hit the floor here. Shared by the guardian's feet and the
 ## stones, and scaled by `strength` so a pebble and a slam are the same event
 ## at different sizes.
 ##
@@ -70,7 +70,7 @@ func _spawn_particles() -> void:
 		_particles.append(plume)
 		_particles.append(BossVfx.spark_burst(self, at, 7 if floor_wave else 4, strength))
 		if floor_wave:
-			# The titan's own dust goes up behind it. In front, it hid the
+			# The guardian's own dust goes up behind it. In front, it hid the
 			# body for the first second of the open window - the one second
 			# the player is meant to be looking at it.
 			for cloud in [dust, plume]:

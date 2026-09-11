@@ -316,7 +316,7 @@ func _impact_ground() -> void:
 
 ## Same call as the saw: the danger is the motion, so a stone hanging in a
 ## stopped world is just a stone, and the boy can walk through the gap it
-## has left him to reach the titan. The moment time runs again it is a
+## has left him to reach the guardian. The moment time runs again it is a
 ## falling rock, and anyone still standing in it is hit.
 func _on_body_entered(body: Node2D) -> void:
 	if not body is Player or TimeService.is_world_frozen():
