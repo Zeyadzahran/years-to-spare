@@ -1,0 +1,13 @@
+Boss encounter audio
+====================
+
+Selected sounds from:
+- Kenney Impact Sounds: https://kenney.nl/assets/impact-sounds
+- Kenney RPG Audio: https://kenney.nl/assets/rpg-audio
+
+Created by Kenney (www.kenney.nl)
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Attribution is not required, but the source is recorded here so the project's
+audio provenance remains clear.
