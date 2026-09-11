@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dj7tgk374tysh"
-path="res://.godot/imported/trapped-sister.png-42f17dee8e849574030f72f10a721378.ctex"
+uid="uid://bl4pobvuhhsfo"
+path="res://.godot/imported/South_0004.png-2b6b189173b159806eb5b9a700383fc4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/trapped-sister.png"
-dest_files=["res://.godot/imported/trapped-sister.png-42f17dee8e849574030f72f10a721378.ctex"]
+source_file="res://assets/sprites/trapped-sister/South_0004.png"
+dest_files=["res://.godot/imported/South_0004.png-2b6b189173b159806eb5b9a700383fc4.ctex"]
 
 [params]
 

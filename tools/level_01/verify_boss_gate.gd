@@ -85,7 +85,7 @@ func _verify_inline_boss_arena() -> void:
 	assert(player.get_instance_id() == player_id)
 	assert(level.has_node(^"World/BossArena"))
 	assert(arena.has_node(^"TrappedSister"))
-	assert((arena.get_node(^"TrappedSister") as Sprite2D).is_visible_in_tree())
+	assert((arena.get_node(^"TrappedSister") as AnimatedSprite2D).is_visible_in_tree())
 	assert(not arena.has_node(^"Warden"))
 	assert(get_tree().get_nodes_in_group(&"player").size() == 1)
 	assert(player.global_position.distance_to(spawn.global_position) < 4.0)

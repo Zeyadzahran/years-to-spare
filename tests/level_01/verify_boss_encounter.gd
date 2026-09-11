@@ -20,7 +20,7 @@ func _verify_authored_room() -> void:
 	var arena := level.get_node(^"World/BossArena") as BossArena
 	var background := arena.get_node(^"BossBackground") as Sprite2D
 	var shell := arena.get_node(^"ArenaShell") as TileMapLayer
-	var sister := arena.get_node(^"TrappedSister") as Sprite2D
+	var sister := arena.get_node(^"TrappedSister") as AnimatedSprite2D
 	var spawn := arena.get_node(^"PlayerSpawn") as Marker2D
 	var titan := arena.get_node(^"StoneTitan") as StoneTitan
 	assert(background.texture == load("res://assets/sprites/boss-background.png"))

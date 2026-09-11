@@ -31,7 +31,7 @@ const MAX_REINFORCEMENT_WAVES := 2
 @onready var arena_adds: Node2D = $ArenaAdds
 @onready var staircase: Node2D = $SisterArea/Staircase
 @onready var fade: ColorRect = $Outro/Fade
-@onready var sister: Sprite2D = $TrappedSister
+@onready var sister: AnimatedSprite2D = $TrappedSister
 
 var player: Player
 var _started := false
