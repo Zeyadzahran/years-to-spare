@@ -6,6 +6,16 @@ extends Node2D
 @export var level_id: StringName = &"phase_1"
 @export_node_path("Marker2D") var level_start_path: NodePath
 
+## The track under the whole phase. Left empty, the level runs on its ambience
+## alone. Set to loop here rather than in the import, the way the boss theme
+## is, so the file stays a plain asset. A boss room that starts its own music
+## fades this out on the way in; MusicManager keeps it running across a
+## checkpoint reload, so a death does not restart the song.
+@export var music: AudioStream
+## Sits under the boss theme (-7 dB on a much hotter track) so the fight reads
+## as an escalation, and leaves the desert wind audible beneath it.
+@export var music_volume_db := -3.0
+
 ## Testing aid: tick this to leave the boy exactly where the Player node sits
 ## in the editor instead of moving him to the level start. Only ever applies
 ## when there is no checkpoint to honour yet and the scene is run from the
@@ -26,7 +36,16 @@ func _ready() -> void:
 	EventBus.enemy_died.connect(_on_enemy_died)
 	_remove_the_fallen()
 	_resume_run()
+	_start_music()
 	EventBus.level_started.emit(level_id)
+
+
+func _start_music() -> void:
+	if music == null:
+		return
+	if music is AudioStreamMP3 or music is AudioStreamOggVorbis:
+		music.set(&"loop", true)
+	MusicManager.play_music(music, 2.0, music_volume_db)
 
 
 ## A death reloads the whole level, so this runs on every load and is what turns

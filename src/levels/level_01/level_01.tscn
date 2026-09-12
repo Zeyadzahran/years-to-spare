@@ -3,9 +3,11 @@
 [ext_resource type="Script" uid="uid://be5vpy5llau5q" path="res://src/levels/level.gd" id="1_a7tag"]
 [ext_resource type="AudioStream" uid="uid://bx7o8vesdg803" path="res://src/levels/level_01/audio/desert_wind.mp3" id="2_1vujb"]
 [ext_resource type="PackedScene" uid="uid://be6vd4fiw07ao" path="res://src/levels/level_01/background.tscn" id="2_6yjdu"]
+[ext_resource type="AudioStream" uid="uid://dk0lhoa020dtw" path="res://assets/music/Desert_Mystic.ogg" id="2_jxjey"]
 [ext_resource type="AudioStream" uid="uid://b67vxnf3ogwax" path="res://src/levels/level_01/audio/desert_ambience.mp3" id="3_68m7i"]
 [ext_resource type="TileSet" uid="uid://ct8w2xk4bnq7f" path="res://src/levels/level_01/terrain_tileset.tres" id="3_s7fgk"]
 [ext_resource type="Texture2D" uid="uid://cq7g30j4pyjf2" path="res://src/levels/level_01/art/props/decorations.png" id="4_1tr31"]
+[ext_resource type="Script" uid="uid://clacnlwxyh6ag" path="res://src/world/effects/ambient_particles.gd" id="4_47xd3"]
 [ext_resource type="PackedScene" uid="uid://cm4pv8hd3ry6e" path="res://src/levels/level_01/hazards/toxic_pipe.tscn" id="5_bv8k8"]
 [ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="6_dmh6m"]
 [ext_resource type="Texture2D" uid="uid://b2j4qyiy3tqb3" path="res://src/levels/level_01/art/props/rocks_and_dirt.png" id="7_bv8k8"]
@@ -49,18 +51,24 @@ size = Vector2(2320, 1020)
 [node name="Level01" type="Node2D" unique_id=2026904255]
 script = ExtResource("1_a7tag")
 level_start_path = NodePath("World/LevelStart")
+music = ExtResource("2_jxjey")
+music_volume_db = -12.0
 
 [node name="Ambience" type="Node" parent="." unique_id=1708576858]
 
 [node name="DesertWind" type="AudioStreamPlayer" parent="Ambience" unique_id=905748870]
 stream = ExtResource("2_1vujb")
-volume_db = -20.0
+volume_db = -5.0
 autoplay = true
 
 [node name="DesertAmbience" type="AudioStreamPlayer" parent="Ambience" unique_id=22267121]
 stream = ExtResource("3_68m7i")
-volume_db = -24.0
+volume_db = -3.0
 autoplay = true
+
+[node name="BlowingSand" type="CPUParticles2D" parent="Ambience" unique_id=865564480]
+z_index = 6
+script = ExtResource("4_47xd3")
 
 [node name="Background" parent="." unique_id=773687580 instance=ExtResource("2_6yjdu")]
 
@@ -1947,7 +1955,7 @@ color = Color(0.01, 0.008, 0.008, 0)
 
 [node name="Player" parent="Entities" unique_id=1426104633 instance=ExtResource("12_r3o47")]
 z_index = 10
-position = Vector2(16095, 121)
+position = Vector2(16709, 119)
 
 [node name="Enemies" type="Node2D" parent="." unique_id=261374960]
 
@@ -1964,13 +1972,13 @@ position = Vector2(4850, 602)
 position = Vector2(6800, 482)
 
 [node name="Gunner3" parent="Enemies" unique_id=1527131330 instance=ExtResource("19_bv8k8")]
-position = Vector2(8198, 601)
+position = Vector2(8577, 594)
 
 [node name="Gunner4" parent="Enemies" unique_id=334027704 instance=ExtResource("19_bv8k8")]
 position = Vector2(8112, 597)
 
 [node name="Guard" parent="Enemies" unique_id=1791530447 instance=ExtResource("18_1tr31")]
-position = Vector2(8157, 599)
+position = Vector2(7582, 604)
 
 [node name="Gunner" parent="Enemies" unique_id=991729530 instance=ExtResource("19_bv8k8")]
 position = Vector2(11691, 240)
