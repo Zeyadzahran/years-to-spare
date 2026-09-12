@@ -1,0 +1,23 @@
+Player voice
+============
+
+young-man-hurt.mp3   (hurt2.wav, compressed and soft-clipped up to the old grunt's level)
+young-man-death.mp3  (death1.wav, as recorded)
+boy-hurt.mp3         (hurt2.wav, pitch and formants raised 30%, same levelling)
+boy-death.mp3        (death1.wav, pitch and formants raised 30%)
+old-man-hurt.mp3     (hurt2.wav, pitch lowered 16%, slowed 12%, 6.5 Hz tremor, same levelling)
+old-man-death.mp3    (death1.wav, same treatment)
+From "Voice Clip Pack - Male Adventurer RPG" by Brandon Song (wolfwoot)
+https://opengameart.org/content/voice-clip-pack-male-adventurer-rpg
+
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Attribution is not required, though the author asks for a credit; the source
+is recorded here so the project's audio provenance remains clear. The adult
+takes are loudness-levelled and encoded to MP3; the boy's are the same takes
+shifted up with formants moved along (rubberband), so the bodies share one
+actor and the younger one sounds smaller rather than sped up; the elder's are
+shifted down, slowed and given a vocal tremor (ffmpeg tremolo) so the voice
+reads as worn. The pack also
+has attack, jump, victory and other takes in the same voice.

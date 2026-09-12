@@ -30,17 +30,17 @@ const CROUCH_WALK_CLIP := &"crouch_walk"
 ## .tres files so that re-exporting the art cannot quietly switch it back on.
 const POWER_CLIP := &"power"
 
-## jumb.mp3 is a sheet of several takes; the one we want starts two seconds in
-## and runs until the recording drops back to room tone. There is no sub-clip
-## resource for MP3, so playback starts at the offset and is cut at the end of
-## the take in _process.
-const JUMP_FROM := 2.0
-const JUMP_LENGTH := 0.95
-
-## One voice per body. The boy has not broken yet; the man and the elder share
-## the older take.
+## One voice per body - one actor, in fact: the man's takes are the recording,
+## the boy's are the same takes shifted up so he sounds smaller, the elder's
+## are shifted down, slowed and given a tremor so he sounds worn.
 const BOY_HURT := preload("res://assets/sounds/boy-hurt.mp3")
 const MAN_HURT := preload("res://assets/sounds/young-man-hurt.mp3")
+const ELDER_HURT := preload("res://assets/sounds/old-man-hurt.mp3")
+## Same split for the cry that ends him: a hit that only hurts gets the grunt,
+## a hit that kills gets this instead, from the same pack as the grunt.
+const BOY_DEATH := preload("res://assets/sounds/boy-death.mp3")
+const MAN_DEATH := preload("res://assets/sounds/young-man-death.mp3")
+const ELDER_DEATH := preload("res://assets/sounds/old-man-death.mp3")
 
 ## Defaults assume this node sits under the Player alongside its StateMachine.
 @export var state_machine_path: NodePath = ^"../StateMachine"
@@ -106,8 +106,6 @@ func _process(_delta: float) -> void:
 	flip_h = player.facing < 0
 	if states.current_name == &"Crouch":
 		_tick_crouch()
-	if jump_audio.playing and jump_audio.get_playback_position() >= JUMP_FROM + JUMP_LENGTH:
-		jump_audio.stop()
 
 
 func _tick_crouch() -> void:
@@ -203,17 +201,45 @@ func _on_state_changed(from: StringName, to: StringName) -> void:
 		# grunt should sound like a second hit.
 		hurt_audio.stream = _hurt_stream()
 		hurt_audio.play()
+	elif to == &"Dead":
+		# A killing blow passes through Hurt on the same frame, so the grunt
+		# it started is cut off here by the cry - one voice, the last one.
+		hurt_audio.stop()
+		_cry(_death_stream())
+
+
+## The level reloads well before the cry is over (see DeadState.DURATION) and
+## takes the boy and his audio nodes with it. So the cry is handed to a player
+## parked on the tree root, which outlives the reload and frees itself when
+## the take ends.
+func _cry(stream: AudioStream) -> void:
+	var voice := AudioStreamPlayer.new()
+	voice.stream = stream
+	voice.volume_db = hurt_audio.volume_db
+	voice.bus = hurt_audio.bus
+	voice.process_mode = Node.PROCESS_MODE_ALWAYS
+	voice.finished.connect(voice.queue_free)
+	get_tree().root.add_child(voice)
+	voice.play()
 
 
 func _on_jumped() -> void:
-	jump_audio.play(JUMP_FROM)
+	jump_audio.play()
 
 
 ## The voice follows the body rather than the age directly, so whichever set of
 ## frames he is wearing is the one heard - the two can never disagree, however
 ## the age thresholds are retuned.
 func _hurt_stream() -> AudioStream:
-	return BOY_HURT if sprite_frames == teen_frames else MAN_HURT
+	if sprite_frames == teen_frames:
+		return BOY_HURT
+	return ELDER_HURT if sprite_frames == elder_frames else MAN_HURT
+
+
+func _death_stream() -> AudioStream:
+	if sprite_frames == teen_frames:
+		return BOY_DEATH
+	return ELDER_DEATH if sprite_frames == elder_frames else MAN_DEATH
 
 
 func _on_animation_finished() -> void:
