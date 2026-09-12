@@ -48,7 +48,6 @@ size = Vector2(2320, 1020)
 
 [node name="Level01" type="Node2D" unique_id=2026904255]
 script = ExtResource("1_a7tag")
-level_start_path = NodePath("World/LevelStart")
 
 [node name="Ambience" type="Node" parent="." unique_id=1708576858]
 

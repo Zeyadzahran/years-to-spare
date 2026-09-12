@@ -4,19 +4,12 @@ extends Node2D
 ## content of a phase stays in its scene tree.
 
 @export var level_id: StringName = &"phase_1"
-@export_node_path("Marker2D") var level_start_path: NodePath
 
-## Testing aid: tick this to leave the boy exactly where the Player node sits
-## in the editor instead of moving him to the level start. Only ever applies
-## when there is no checkpoint to honour yet and the scene is run from the
-## editor (see OS.has_feature("editor") below) - an exported build, and any
-## run a checkpoint or death has already touched, are untouched by this.
-@export var debug_keep_editor_spawn := false
-
-## Testing aid: point this at a Marker2D to start there instead, without
-## having to drag the Player node itself around. Same editor-only,
-## no-checkpoint-yet guard as debug_keep_editor_spawn, and wins over it if
-## both are set.
+## Testing aid: point this at a Marker2D to start there instead of the Player
+## node's own authored position. Only ever applies when there is no
+## checkpoint to honour yet and the scene is run from the editor (see
+## OS.has_feature("editor") below) - an exported build, and any run a
+## checkpoint or death has already touched, are untouched by this.
 @export_node_path("Marker2D") var debug_spawn_path: NodePath
 
 func _ready() -> void:
@@ -36,7 +29,7 @@ func _ready() -> void:
 ## GameState.lose_heart() has already run by the time this reload happens. A
 ## heart still covers it, so the checkpoint is still recorded and this puts him
 ## back on it; the third one instead clears the checkpoint before the reload,
-## which is what sends him back to the authored level start here - the same
+## which leaves him at the Player node's own authored position here - the same
 ## place a run that never reached a checkpoint at all resumes from. Either way
 ## his age is preserved; handing years back would make the game's only currency
 ## free and walk his body backwards on every mistake.
@@ -52,24 +45,17 @@ func _resume_run() -> void:
 	if GameState.has_checkpoint(level_id):
 		player.global_position = GameState.checkpoint_position
 		return
-	if OS.has_feature("editor") and _apply_debug_spawn(player):
-		return
-	var level_start := get_node_or_null(level_start_path) as Marker2D
-	if level_start != null:
-		player.global_position = level_start.global_position
+	if OS.has_feature("editor"):
+		_apply_debug_spawn(player)
 
 
-## Testing aid only - see debug_spawn_path and debug_keep_editor_spawn above.
-## Reached only once there is no checkpoint to honour, so it can start a test
-## run somewhere convenient without ever pre-empting what a real checkpoint
-## sends the boy back to. Returns true when it placed - or deliberately left -
-## the boy, which is what tells _resume_run to skip the level start marker.
-func _apply_debug_spawn(player: Node2D) -> bool:
+## Testing aid only - see debug_spawn_path above. Reached only once there is no
+## checkpoint to honour, so it can start a test run at a specific marker
+## without ever pre-empting what a real checkpoint sends the boy back to.
+func _apply_debug_spawn(player: Node2D) -> void:
 	var marker := get_node_or_null(debug_spawn_path) as Marker2D
 	if marker != null:
 		player.global_position = marker.global_position
-		return true
-	return debug_keep_editor_spawn
 
 
 ## Units downed earlier in the run do not get up again for a retry. Done before
