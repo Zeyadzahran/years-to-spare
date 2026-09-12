@@ -34,7 +34,6 @@ func _draw() -> void:
 	draw_rect(Rect2(4, 5, card_width, height), Color(0.08, 0.06, 0.09, 0.3))
 	draw_rect(Rect2(0, 0, card_width, height), Color(0.13, 0.12, 0.15, 0.96))
 	draw_rect(Rect2(0, 0, card_width, height), accent.darkened(0.4), false, 1.0)
-	draw_rect(Rect2(0, 0, 3, height), accent)
 	draw_string(FONT, Vector2(16, 25), heading, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, accent)
 	draw_line(Vector2(16, 35), Vector2(card_width - 16, 35), accent.darkened(0.65))
 	for index in instructions.size():

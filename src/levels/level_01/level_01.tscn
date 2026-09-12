@@ -22,17 +22,16 @@
 [ext_resource type="Texture2D" uid="uid://dlw6qxbday0fi" path="res://src/levels/level_01/art/terrain/tiles.png" id="19_seampatch"]
 [ext_resource type="PackedScene" uid="uid://qjopd3ftflm4" path="res://src/world/pickups/pickup.tscn" id="20_pickup"]
 [ext_resource type="Script" uid="uid://bml7u6pies1ij" path="res://src/levels/level_01/boss_arena.gd" id="boss_arena_script"]
-[ext_resource type="Script" path="res://src/levels/level_01/boss_healing_spawner.gd" id="boss_healing_spawner_script"]
 [ext_resource type="Texture2D" uid="uid://csp6eptuobfmv" path="res://assets/sprites/boss-background.png" id="boss_background"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/guardian.tscn" id="boss_guardian"]
+[ext_resource type="Script" uid="uid://m4sk8m6lo0ru" path="res://src/levels/level_01/boss_healing_spawner.gd" id="boss_healing_spawner_script"]
 [ext_resource type="SpriteFrames" path="res://src/levels/level_01/trapped_sister_frames.tres" id="boss_sister_frames"]
 [ext_resource type="PackedScene" uid="uid://cyll8to4t86fg" path="res://src/world/platforms/slim_platform.tscn" id="boss_slim_platform"]
 [ext_resource type="PackedScene" path="res://src/world/platforms/stair_step.tscn" id="boss_stair_step"]
 [ext_resource type="PackedScene" path="res://src/world/gates/boss_gate.tscn" id="compact_15_53ogl"]
+[ext_resource type="Script" uid="uid://ddet4imgenslm" path="res://src/ui/tutorial/guide_card.gd" id="guide_card"]
 [ext_resource type="PackedScene" uid="uid://yfrmkarwqwn4" path="res://src/world/platforms/moving_platform.tscn" id="late_2_3h2n3"]
 [ext_resource type="PackedScene" uid="uid://drfu0r2a1beyg" path="res://src/world/platforms/platform.tscn" id="late_4_uf5ar"]
-
-[ext_resource type="Script" uid="uid://ddet4imgenslm" path="res://src/ui/tutorial/guide_card.gd" id="guide_card"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_70nlc"]
 size = Vector2(23386, 400)
@@ -865,13 +864,10 @@ position = Vector2(10389, 13)
 rotation = 3.1415927
 
 [node name="SpikeStripSmall" parent="World/Hazards" unique_id=794019762 instance=ExtResource("17_spksm")]
-position = Vector2(11075, 243)
-
-[node name="SpikeStripSmall2" parent="World/Hazards" unique_id=2042232225 instance=ExtResource("17_spksm")]
-position = Vector2(11257, 243)
+position = Vector2(11098, 243)
 
 [node name="SpikeStripSmall3" parent="World/Hazards" unique_id=1735205700 instance=ExtResource("17_spksm")]
-position = Vector2(11442, 245)
+position = Vector2(11429, 244)
 
 [node name="SalvageYard" type="Node2D" parent="World" unique_id=2109772328]
 
@@ -1837,7 +1833,6 @@ position = Vector2(3960, 340)
 
 [node name="Pickups" type="Node2D" parent="World/BossArena" unique_id=474019556]
 script = ExtResource("boss_healing_spawner_script")
-spawn_positions = Array[Vector2]([Vector2(3050, 305), Vector2(3960, 295)])
 
 [node name="FutureBossPosition" type="Marker2D" parent="World/BossArena" unique_id=250730839]
 position = Vector2(3660, 481)
@@ -1978,7 +1973,7 @@ position = Vector2(8112, 597)
 position = Vector2(8157, 599)
 
 [node name="Gunner" parent="Enemies" unique_id=991729530 instance=ExtResource("19_bv8k8")]
-position = Vector2(11637, 241)
+position = Vector2(11691, 240)
 
 [node name="HUD" parent="." unique_id=518270513 instance=ExtResource("16_buk32")]
 
