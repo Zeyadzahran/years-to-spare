@@ -1,0 +1,13 @@
+Guard baton hit
+===============
+
+stick-hit-enemy1.mp3  (hit33 from the pack, limited and encoded to MP3)
+From "37 hits/punches" by Independent.nu (Johannes Pinter)
+https://opengameart.org/content/37-hitspunches
+
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Attribution is not required, but the source is recorded here so the project's
+audio provenance remains clear. The file keeps its old name so guard.tscn
+needs no change; earlier versions are in git history.

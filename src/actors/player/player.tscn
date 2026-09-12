@@ -98,4 +98,4 @@ volume_db = -6.0
 
 [node name="JumpAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764943]
 stream = ExtResource("18_jump")
-volume_db = -16.0
+volume_db = -6.0

@@ -109,13 +109,20 @@ func _ready():
 	await play_intro()
 
 
-func _unhandled_input(event):
-	if event is InputEventKey and event.pressed and not event.echo:
-		if skip_intro:
-			return
+func _unhandled_input(event: InputEvent) -> void:
+	# Keep ordinary movement and action keys from accidentally dismissing the
+	# opening story. Enter is the single, intentional skip control advertised
+	# by the on-screen prompt.
+	if not (event is InputEventKey):
+		return
+	if not event.pressed or event.echo or event.keycode != KEY_ENTER:
+		return
+	if skip_intro:
+		return
 
-		skip_intro = true
-		start_game()
+	get_viewport().set_input_as_handled()
+	skip_intro = true
+	start_game()
 
 
 func play_intro():

@@ -1,0 +1,15 @@
+Level 1 music
+=============
+
+Desert_Mystic.ogg
+"Desert_mystic (dynastic Egyptian theme)" by PolygonDan, variation 2
+https://opengameart.org/content/desertmystic-dynastic-egyptian-theme-cc0
+
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Attribution is not required, but the source is recorded here so the project's
+audio provenance remains clear. Trimmed from 56s to 53s to drop the fade-out
+tail so it loops, with a 0.4s fade-in and 0.8s fade-out at the seam, and
+re-encoded from the original MP3 to Ogg Vorbis (q6). The level script loops it;
+the loop point is the file's end.

@@ -83,9 +83,9 @@ func _start_music() -> void:
 
 
 func _exit_tree() -> void:
-	# A death reloads the level with the manager still playing; the normal
-	# level has no music, and the boss theme must not follow the boy back
-	# to his checkpoint.
+	# A death reloads the level with the manager still playing; the level's
+	# own track takes over on the reload, and the boss theme must not follow
+	# the boy back to his checkpoint.
 	if MusicManager.current_song == BOSS_MUSIC:
 		MusicManager.stop_music(0.8)
 

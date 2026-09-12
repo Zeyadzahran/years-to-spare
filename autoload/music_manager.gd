@@ -10,6 +10,10 @@ func _ready():
 	# volume slider has something to be heard against.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	player = AudioStreamPlayer.new()
+	# Its own bus, so the options panel can silence music alone - and do it
+	# by muting, which leaves the fades here untouched.
+	SettingsManager.music_bus_index()
+	player.bus = SettingsManager.MUSIC_BUS
 	add_child(player)
 
 
