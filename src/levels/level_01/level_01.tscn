@@ -29,6 +29,7 @@
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="26_r3o47"]
 [ext_resource type="Texture2D" uid="uid://d3phh6mhrfc4b" path="res://assets/keys/K.png" id="29_tsq7e"]
 [ext_resource type="Script" uid="uid://bml7u6pies1ij" path="res://src/levels/level_01/boss_arena.gd" id="boss_arena_script"]
+[ext_resource type="Script" path="res://src/levels/level_01/boss_healing_spawner.gd" id="boss_healing_spawner_script"]
 [ext_resource type="Texture2D" uid="uid://csp6eptuobfmv" path="res://assets/sprites/boss-background.png" id="boss_background"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/guardian.tscn" id="boss_guardian"]
 [ext_resource type="SpriteFrames" path="res://src/levels/level_01/trapped_sister_frames.tres" id="boss_sister_frames"]
@@ -1841,6 +1842,10 @@ size = Vector2(210, 18)
 
 [node name="RightDodgePlatform" parent="World/BossArena" unique_id=295281560 instance=ExtResource("boss_slim_platform")]
 position = Vector2(3960, 340)
+
+[node name="Pickups" type="Node2D" parent="World/BossArena" unique_id=474019556]
+script = ExtResource("boss_healing_spawner_script")
+spawn_positions = Array[Vector2]([Vector2(3050, 305), Vector2(3960, 295)])
 
 [node name="FutureBossPosition" type="Marker2D" parent="World/BossArena" unique_id=250730839]
 position = Vector2(3660, 481)
