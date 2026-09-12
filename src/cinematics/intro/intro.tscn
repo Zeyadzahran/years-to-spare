@@ -147,6 +147,29 @@ theme_override_font_sizes/font_size = 23
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="SkipPrompt" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -58.0
+offset_right = -32.0
+offset_bottom = -28.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.858824, 0.815686, 0.729412, 0.85)
+theme_override_colors/font_outline_color = Color(0.0392157, 0.0313726, 0.0235294, 0.92)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = SubResource("FontVariation_support")
+theme_override_font_sizes/font_size = 16
+text = "Press ENTER to skip"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="Title" type="Label" parent="." unique_id=211883191]
 visible = false
 layout_mode = 0
