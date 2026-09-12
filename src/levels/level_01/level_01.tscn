@@ -21,21 +21,15 @@
 [ext_resource type="PackedScene" uid="uid://djqbpdehfsnos" path="res://src/actors/enemy/gunner.tscn" id="19_bv8k8"]
 [ext_resource type="Texture2D" uid="uid://dlw6qxbday0fi" path="res://src/levels/level_01/art/terrain/tiles.png" id="19_seampatch"]
 [ext_resource type="PackedScene" uid="uid://qjopd3ftflm4" path="res://src/world/pickups/pickup.tscn" id="20_pickup"]
-[ext_resource type="Texture2D" uid="uid://de4yqyvggfy0c" path="res://assets/keys/W.png" id="22_lscnh"]
-[ext_resource type="Texture2D" uid="uid://butlj0b1ndwln" path="res://assets/keys/A.png" id="23_eucyj"]
-[ext_resource type="Texture2D" uid="uid://dgenlq4l22n5r" path="res://assets/keys/S.png" id="24_4r0fx"]
-[ext_resource type="Texture2D" uid="uid://bxlb43e0xdi17" path="res://assets/keys/D.png" id="25_r3o47"]
-[ext_resource type="Texture2D" uid="uid://dtk1udcysrmd8" path="res://assets/keys/J.png" id="26_eucyj"]
-[ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="26_r3o47"]
-[ext_resource type="Texture2D" uid="uid://d3phh6mhrfc4b" path="res://assets/keys/K.png" id="29_tsq7e"]
 [ext_resource type="Script" uid="uid://bml7u6pies1ij" path="res://src/levels/level_01/boss_arena.gd" id="boss_arena_script"]
-[ext_resource type="Script" path="res://src/levels/level_01/boss_healing_spawner.gd" id="boss_healing_spawner_script"]
 [ext_resource type="Texture2D" uid="uid://csp6eptuobfmv" path="res://assets/sprites/boss-background.png" id="boss_background"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/guardian.tscn" id="boss_guardian"]
+[ext_resource type="Script" uid="uid://m4sk8m6lo0ru" path="res://src/levels/level_01/boss_healing_spawner.gd" id="boss_healing_spawner_script"]
 [ext_resource type="SpriteFrames" path="res://src/levels/level_01/trapped_sister_frames.tres" id="boss_sister_frames"]
 [ext_resource type="PackedScene" uid="uid://cyll8to4t86fg" path="res://src/world/platforms/slim_platform.tscn" id="boss_slim_platform"]
 [ext_resource type="PackedScene" path="res://src/world/platforms/stair_step.tscn" id="boss_stair_step"]
 [ext_resource type="PackedScene" path="res://src/world/gates/boss_gate.tscn" id="compact_15_53ogl"]
+[ext_resource type="Script" uid="uid://ddet4imgenslm" path="res://src/ui/tutorial/guide_card.gd" id="guide_card"]
 [ext_resource type="PackedScene" uid="uid://yfrmkarwqwn4" path="res://src/world/platforms/moving_platform.tscn" id="late_2_3h2n3"]
 [ext_resource type="PackedScene" uid="uid://drfu0r2a1beyg" path="res://src/world/platforms/platform.tscn" id="late_4_uf5ar"]
 
@@ -51,9 +45,6 @@ colors = PackedColorArray(0.95, 0.55, 0.18, 0, 0.95, 0.55, 0.18, 0.38, 0.95, 0.5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_boss_activation"]
 size = Vector2(2320, 1020)
-
-[sub_resource type="FontVariation" id="FontVariation_gihc7"]
-base_font = ExtResource("26_r3o47")
 
 [node name="Level01" type="Node2D" unique_id=2026904255]
 script = ExtResource("1_a7tag")
@@ -873,13 +864,10 @@ position = Vector2(10389, 13)
 rotation = 3.1415927
 
 [node name="SpikeStripSmall" parent="World/Hazards" unique_id=794019762 instance=ExtResource("17_spksm")]
-position = Vector2(11075, 243)
-
-[node name="SpikeStripSmall2" parent="World/Hazards" unique_id=2042232225 instance=ExtResource("17_spksm")]
-position = Vector2(11257, 243)
+position = Vector2(11098, 243)
 
 [node name="SpikeStripSmall3" parent="World/Hazards" unique_id=1735205700 instance=ExtResource("17_spksm")]
-position = Vector2(11442, 245)
+position = Vector2(11429, 244)
 
 [node name="SalvageYard" type="Node2D" parent="World" unique_id=2109772328]
 
@@ -1845,7 +1833,6 @@ position = Vector2(3960, 340)
 
 [node name="Pickups" type="Node2D" parent="World/BossArena" unique_id=474019556]
 script = ExtResource("boss_healing_spawner_script")
-spawn_positions = Array[Vector2]([Vector2(3050, 305), Vector2(3960, 295)])
 
 [node name="FutureBossPosition" type="Marker2D" parent="World/BossArena" unique_id=250730839]
 position = Vector2(3660, 481)
@@ -1986,128 +1973,51 @@ position = Vector2(8112, 597)
 position = Vector2(8157, 599)
 
 [node name="Gunner" parent="Enemies" unique_id=991729530 instance=ExtResource("19_bv8k8")]
-position = Vector2(11637, 241)
+position = Vector2(11691, 240)
 
 [node name="HUD" parent="." unique_id=518270513 instance=ExtResource("16_buk32")]
 
 [node name="Tutorial" type="Node2D" parent="." unique_id=1961595322]
+z_index = 9
 
 [node name="Moving" type="Node2D" parent="Tutorial" unique_id=575049815]
-position = Vector2(337, 335)
-
-[node name="A_Key" type="Sprite2D" parent="Tutorial/Moving" unique_id=488933181]
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("23_eucyj")
-
-[node name="D_Key" type="Sprite2D" parent="Tutorial/Moving" unique_id=353185004]
-position = Vector2(26, 0)
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("25_r3o47")
-
-[node name="MoveLabel" type="Label" parent="Tutorial/Moving" unique_id=452496458]
-offset_left = 50.0
-offset_top = -9.0
-theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
-theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("FontVariation_gihc7")
-theme_override_font_sizes/font_size = 12
-text = "Move"
-
-[node name="W_Key" type="Sprite2D" parent="Tutorial/Moving" unique_id=1895600679]
-position = Vector2(0, 32)
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("22_lscnh")
-
-[node name="JumpLabel" type="Label" parent="Tutorial/Moving" unique_id=483624670]
-offset_left = 50.0
-offset_top = 23.0
-theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
-theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("FontVariation_gihc7")
-theme_override_font_sizes/font_size = 12
-text = "Jump (W / Space)"
-
-[node name="S_Key" type="Sprite2D" parent="Tutorial/Moving" unique_id=435101929]
-position = Vector2(0, 64)
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("24_4r0fx")
-
-[node name="CrouchLabel" type="Label" parent="Tutorial/Moving" unique_id=2114472180]
-offset_left = 50.0
-offset_top = 55.0
-theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
-theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("FontVariation_gihc7")
-theme_override_font_sizes/font_size = 12
-text = "Crouch"
+position = Vector2(250, 330)
+script = ExtResource("guide_card")
+keys = PackedStringArray("A / D", "W / SPACE", "S")
+actions = PackedStringArray("move_left|move_right", "jump", "crouch")
+instructions = PackedStringArray("Move", "Jump", "Crouch")
 
 [node name="Attack" type="Node2D" parent="Tutorial" unique_id=2041116697]
 position = Vector2(780, 335)
+script = ExtResource("guide_card")
+heading = "FIGHT BACK"
+keys = PackedStringArray("J")
+actions = PackedStringArray("attack")
+instructions = PackedStringArray("Attack")
 
-[node name="J_Key" type="Sprite2D" parent="Tutorial/Attack" unique_id=1644429809]
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("26_eucyj")
+[node name="Heal2" type="Node2D" parent="Tutorial" unique_id=1987466871]
+position = Vector2(1200, 335)
+script = ExtResource("guide_card")
+heading = "HEAL UP"
+keys = PackedStringArray()
+actions = PackedStringArray()
+instructions = PackedStringArray("Fruit restores health")
+accent = Color(0.64, 0.82, 0.51, 1)
 
-[node name="Label" type="Label" parent="Tutorial/Attack" unique_id=42699086]
-offset_left = 24.0
-offset_top = -9.0
-theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
-theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("FontVariation_gihc7")
-theme_override_font_sizes/font_size = 12
-text = "Attack"
+[node name="Checkpoint" type="Node2D" parent="Tutorial" unique_id=411919139]
+position = Vector2(1620, 335)
+script = ExtResource("guide_card")
+heading = "CHECKPOINT"
+keys = PackedStringArray()
+actions = PackedStringArray()
+instructions = PackedStringArray("Flags save your spot")
 
 [node name="Stopping time" type="Node2D" parent="Tutorial" unique_id=714806754]
 position = Vector2(2020, 335)
-
-[node name="K_Key" type="Sprite2D" parent="Tutorial/Stopping time" unique_id=1644943899]
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("29_tsq7e")
-
-[node name="Label" type="Label" parent="Tutorial/Stopping time" unique_id=1819088637]
-offset_left = 24.0
-offset_top = -9.0
-theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
-theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("FontVariation_gihc7")
-theme_override_font_sizes/font_size = 12
-text = "Stop time"
-
-[node name="CostLabel" type="Label" parent="Tutorial/Stopping time" unique_id=828469176]
-offset_left = -10.0
-offset_top = 19.0
-theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
-theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("FontVariation_gihc7")
-theme_override_font_sizes/font_size = 12
-text = "5 seconds / costs 3 years"
-
-[node name="Heal2" type="Node2D" parent="Tutorial" unique_id=1987466871]
-position = Vector2(1220, 360)
-
-[node name="Label" type="Label" parent="Tutorial/Heal2" unique_id=290281363]
-theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
-theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("FontVariation_gihc7")
-theme_override_font_sizes/font_size = 12
-text = "Cactus fruit
-restores health"
-
-[node name="Checkpoint" type="Node2D" parent="Tutorial" unique_id=411919139]
-position = Vector2(1740, 390)
-
-[node name="Label" type="Label" parent="Tutorial/Checkpoint" unique_id=1220844750]
-theme_override_colors/font_color = Color(0.22, 0.19, 0.23, 1)
-theme_override_colors/font_outline_color = Color(0.94, 0.74, 0.55, 0.85)
-theme_override_constants/outline_size = 2
-theme_override_fonts/font = SubResource("FontVariation_gihc7")
-theme_override_font_sizes/font_size = 12
-text = "Flags save
-your checkpoint"
+script = ExtResource("guide_card")
+heading = "STOP TIME"
+keys = PackedStringArray("K")
+actions = PackedStringArray("time_stop")
+instructions = PackedStringArray("Stop time")
+footer = "5 sec / costs 3 years"
+accent = Color(0.45, 0.82, 0.87, 1)
