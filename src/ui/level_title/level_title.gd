@@ -8,6 +8,18 @@ extends Node2D
 @onready var level_number = $UI/LevelIntro/LevelTitle
 @onready var level_name = $UI/LevelIntro/LevelName
 @onready var subtitle = $UI/LevelIntro/Subtitle
+@onready var post_title_black_screen: ColorRect = get_node_or_null("UI/PostTitleBlackScreen")
+@onready var post_title_voice_over: AudioStreamPlayer = get_node_or_null("PostTitleVoiceOver")
+@onready var post_title_subtitle: Label = get_node_or_null("UI/PostTitleSubtitle")
+
+const POST_TITLE_SUBTITLES = [
+	{"time": 0.0, "text": "They call it the City of Time."},
+	{"time": 3.29, "text": "Built on a clock no one asked to wind."},
+	{"time": 6.70, "text": "Every year in this place belongs to someone who never agreed to give it."},
+	{"time": 11.95, "text": "City of Time..."},
+	{"time": 13.54, "text": "huh."},
+	{"time": 15.32, "text": "City of Thieves."},
+]
 
 
 func _ready():
@@ -120,7 +132,23 @@ func play_level_intro():
 	level_intro.visible = false
 	background.visible = false
 
+	if post_title_black_screen != null and post_title_voice_over != null and post_title_subtitle != null:
+		post_title_black_screen.visible = true
+		post_title_subtitle.visible = true
+		post_title_voice_over.play()
+		await play_post_title_subtitles()
+		await post_title_voice_over.finished
+		post_title_subtitle.visible = false
+
 	start_next_scene()
+
+
+func play_post_title_subtitles() -> void:
+	post_title_subtitle.text = POST_TITLE_SUBTITLES[0].text
+	for index in range(1, POST_TITLE_SUBTITLES.size()):
+		var delay = POST_TITLE_SUBTITLES[index].time - POST_TITLE_SUBTITLES[index - 1].time
+		await get_tree().create_timer(delay).timeout
+		post_title_subtitle.text = POST_TITLE_SUBTITLES[index].text
 
 
 func start_next_scene():

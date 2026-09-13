@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bejj7dum5nlxk" path="res://src/ui/level_title/level_title.gd" id="1_tbfeo"]
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="2_35jpc"]
 [ext_resource type="AudioStream" uid="uid://bkhs3kvc6tn2j" path="res://assets/sounds/clock-sound.mp3" id="3_35jpc"]
+[ext_resource type="AudioStream" uid="uid://c14mkuom111ts" path="res://assets/sounds/intro-level2.mp3" id="4_intro_level2"]
 
 [node name="CityOfTime" type="Node2D" unique_id=150344343]
 script = ExtResource("1_tbfeo")
@@ -74,6 +75,38 @@ text = "Not All Clocks Tell Time, Some Take It."
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="PostTitleBlackScreen" type="ColorRect" parent="UI" unique_id=1701016350]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PostTitleSubtitle" type="Label" parent="UI" unique_id=1701016352]
+visible = false
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -132.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_35jpc")
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [node name="Clock" type="AudioStreamPlayer" parent="." unique_id=1133705079]
 stream = ExtResource("3_35jpc")
 autoplay = true
+
+[node name="PostTitleVoiceOver" type="AudioStreamPlayer" parent="." unique_id=1701016351]
+stream = ExtResource("4_intro_level2")
