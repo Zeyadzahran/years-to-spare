@@ -120,12 +120,12 @@ func _draw_thrust(effect: Dictionary) -> void:
 	var head := lerpf(THRUST_FROM, THRUST_TO, _ease(progress))
 	var tail := lerpf(THRUST_FROM, THRUST_TO, _ease(maxf(progress - TRAIL, 0.0) / (1.0 - TRAIL)))
 	var length := head - tail
-	if length < 1.0:
+	if length < 4.0:
 		return
 	var fade := 1.0 - progress * progress
 	# Thin while it is still short, so the first frames read as a point going
 	# out rather than a slab appearing at the hilt.
-	var half := THRUST_HALF * minf(length / 30.0, 1.0)
+	var half := maxf(THRUST_HALF * minf(length / 30.0, 1.0), 0.5)
 	var shoulder := head - length * HEAD_LEN
 
 	draw_colored_polygon(PackedVector2Array([

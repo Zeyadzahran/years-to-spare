@@ -41,6 +41,8 @@ const ELDER_HURT := preload("res://assets/sounds/old-man-hurt.mp3")
 const BOY_DEATH := preload("res://assets/sounds/boy-death.mp3")
 const MAN_DEATH := preload("res://assets/sounds/young-man-death.mp3")
 const ELDER_DEATH := preload("res://assets/sounds/old-man-death.mp3")
+const BOY_DIE := preload("res://assets/sounds/boy-die.mp3")
+const OLD_DIE := preload("res://assets/sounds/die-old.mp3")
 
 ## Defaults assume this node sits under the Player alongside its StateMachine.
 @export var state_machine_path: NodePath = ^"../StateMachine"
@@ -221,6 +223,8 @@ func _cry(stream: AudioStream) -> void:
 	voice.finished.connect(voice.queue_free)
 	get_tree().root.add_child(voice)
 	voice.play()
+		hurt_audio.stream = _death_stream()
+		hurt_audio.play()
 
 
 func _on_jumped() -> void:
@@ -240,6 +244,10 @@ func _death_stream() -> AudioStream:
 	if sprite_frames == teen_frames:
 		return BOY_DEATH
 	return ELDER_DEATH if sprite_frames == elder_frames else MAN_DEATH
+
+
+func _death_stream() -> AudioStream:
+	return BOY_DIE if sprite_frames == teen_frames else OLD_DIE
 
 
 func _on_animation_finished() -> void:

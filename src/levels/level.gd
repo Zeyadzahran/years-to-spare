@@ -44,6 +44,16 @@ func _ready() -> void:
 	_resume_run()
 	_start_music()
 	EventBus.level_started.emit(level_id)
+	_play_opening_fade()
+
+
+func _play_opening_fade() -> void:
+	var opening_fade := get_node_or_null("OpeningTransition/Fade") as ColorRect
+	if opening_fade == null:
+		return
+	opening_fade.color.a = 1.0
+	var tween := create_tween()
+	tween.tween_property(opening_fade, ^"color:a", 0.0, 1.2)
 
 
 func _start_music() -> void:
