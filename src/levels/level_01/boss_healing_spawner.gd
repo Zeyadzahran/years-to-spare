@@ -15,6 +15,7 @@ const PICKUP_SCENE := preload("res://src/world/pickups/pickup.tscn")
 
 var _current: Pickup = null
 var _next_index := 0
+var _spawn_pending := false
 
 
 func _ready() -> void:
@@ -38,10 +39,16 @@ func _on_player_health_changed(current: float, maximum: float) -> void:
 	# itself - still covers this; _on_pickup_gone rechecks once it is gone.
 	if is_instance_valid(_current):
 		return
-	_spawn_next()
+	if _spawn_pending:
+		return
+	_spawn_pending = true
+	_spawn_next.call_deferred()
 
 
 func _spawn_next() -> void:
+	_spawn_pending = false
+	if is_instance_valid(_current) or spawn_positions.is_empty():
+		return
 	var pickup := PICKUP_SCENE.instantiate() as Pickup
 	add_child(pickup)
 	pickup.position = spawn_positions[_next_index]
