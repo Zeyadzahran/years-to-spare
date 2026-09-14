@@ -654,5 +654,17 @@ limit_bottom = 920
 
 [node name="HUD" parent="." unique_id=1527009177 instance=ExtResource("61_lwmew")]
 
+[node name="OpeningTransition" type="CanvasLayer" parent="." unique_id=1701016353]
+layer = 20
+
+[node name="Fade" type="ColorRect" parent="OpeningTransition" unique_id=1701016354]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
 [editable path="World/Exit/LevelExit"]
 [editable path="Entities/Player"]

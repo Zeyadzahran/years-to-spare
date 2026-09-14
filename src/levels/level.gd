@@ -20,6 +20,16 @@ func _ready() -> void:
 	_remove_the_fallen()
 	_resume_run()
 	EventBus.level_started.emit(level_id)
+	_play_opening_fade()
+
+
+func _play_opening_fade() -> void:
+	var opening_fade := get_node_or_null("OpeningTransition/Fade") as ColorRect
+	if opening_fade == null:
+		return
+	opening_fade.color.a = 1.0
+	var tween := create_tween()
+	tween.tween_property(opening_fade, ^"color:a", 0.0, 1.2)
 
 
 ## A death reloads the whole level, so this runs on every load and is what turns
