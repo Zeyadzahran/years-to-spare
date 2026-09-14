@@ -41,6 +41,8 @@ const JUMP_LENGTH := 0.95
 ## the older take.
 const BOY_HURT := preload("res://assets/sounds/boy-hurt.mp3")
 const MAN_HURT := preload("res://assets/sounds/young-man-hurt.mp3")
+const BOY_DIE := preload("res://assets/sounds/boy-die.mp3")
+const OLD_DIE := preload("res://assets/sounds/die-old.mp3")
 
 ## Defaults assume this node sits under the Player alongside its StateMachine.
 @export var state_machine_path: NodePath = ^"../StateMachine"
@@ -203,6 +205,9 @@ func _on_state_changed(from: StringName, to: StringName) -> void:
 		# grunt should sound like a second hit.
 		hurt_audio.stream = _hurt_stream()
 		hurt_audio.play()
+	elif to == &"Dead":
+		hurt_audio.stream = _death_stream()
+		hurt_audio.play()
 
 
 func _on_jumped() -> void:
@@ -214,6 +219,10 @@ func _on_jumped() -> void:
 ## the age thresholds are retuned.
 func _hurt_stream() -> AudioStream:
 	return BOY_HURT if sprite_frames == teen_frames else MAN_HURT
+
+
+func _death_stream() -> AudioStream:
+	return BOY_DIE if sprite_frames == teen_frames else OLD_DIE
 
 
 func _on_animation_finished() -> void:
