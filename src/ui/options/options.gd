@@ -2,6 +2,7 @@ extends Control
 
 @onready var volume_slider: HSlider = %VolumeSlider
 @onready var volume_value: Label = %VolumeValue
+@onready var music_check: CheckButton = %MusicCheck
 @onready var fullscreen_check: CheckButton = %FullscreenCheck
 @onready var back_button: Button = %BackButton
 @onready var main_menu_button: Button = %MainMenuButton
@@ -21,8 +22,10 @@ func _ready():
 		# Back already leads to the menu when this is its own scene.
 		main_menu_button.hide()
 	volume_slider.value = SettingsManager.volume
+	music_check.button_pressed = SettingsManager.music
 	fullscreen_check.button_pressed = SettingsManager.fullscreen
 	_update_volume_label(SettingsManager.volume)
+	_update_music_label(SettingsManager.music)
 	_update_fullscreen_label(SettingsManager.fullscreen)
 	back_button.grab_focus()
 
@@ -53,6 +56,12 @@ func _on_volume_slider_value_changed(value):
 	_update_volume_label(value)
 	SettingsManager.save_settings()
 
+func _on_music_check_toggled(toggled_on):
+	SettingsManager.music = toggled_on
+	SettingsManager.apply_music()
+	_update_music_label(toggled_on)
+	SettingsManager.save_settings()
+
 func _on_fullscreen_check_toggled(toggled_on):
 	SettingsManager.fullscreen = toggled_on
 	SettingsManager.apply_fullscreen()
@@ -61,6 +70,9 @@ func _on_fullscreen_check_toggled(toggled_on):
 
 func _update_volume_label(value):
 	volume_value.text = str(int(round(value)))
+
+func _update_music_label(enabled: bool):
+	music_check.text = "ON" if enabled else "OFF"
 
 func _update_fullscreen_label(enabled: bool):
 	fullscreen_check.text = "ON" if enabled else "OFF"

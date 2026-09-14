@@ -46,10 +46,10 @@ const SUBTITLE_CUES := [
 
 @onready var image: TextureRect = $Image
 @onready var subtitle: RichTextLabel = $CinematicText/Subtitle
+@onready var skip_hint: Label = $SkipPrompt
 @onready var fade: ColorRect = $Fade
 @onready var voice_over: AudioStreamPlayer = $VoiceOver
 
-var skip_hint: Label
 var skip_intro := false
 var current_image_cue := 0
 var current_subtitle_cue := -1
@@ -64,7 +64,7 @@ func _ready() -> void:
 	image.texture = IMAGES[0]
 	image.modulate.a = 1.0
 	subtitle.modulate.a = 0.0
-	_create_skip_hint()
+	skip_hint.modulate.a = 0.0
 	var fade_in := create_tween()
 	fade_in.tween_property(fade, ^"modulate:a", 0.0, 1.4)
 	fade_in.parallel().tween_property(skip_hint, ^"modulate:a", 0.6, 1.4)
@@ -73,27 +73,6 @@ func _ready() -> void:
 		return
 	voice_over.play()
 	await play_intro()
-
-
-func _create_skip_hint() -> void:
-	skip_hint = Label.new()
-	skip_hint.text = "Press Enter to Skip"
-	skip_hint.add_theme_font_override("font", PIXEL_FONT)
-	skip_hint.add_theme_font_size_override("font_size", 11)
-	skip_hint.add_theme_color_override("font_color", Color(1, 0.965, 0.88, 1))
-	skip_hint.add_theme_color_override("font_outline_color", Color(0.02, 0.015, 0.02, 1))
-	skip_hint.add_theme_constant_override("outline_size", 4)
-	skip_hint.modulate.a = 0.0
-	skip_hint.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	skip_hint.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	skip_hint.offset_left = -280.0
-	skip_hint.offset_top = 24.0
-	skip_hint.offset_right = -48.0
-	skip_hint.offset_bottom = 48.0
-	skip_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	skip_hint.clip_text = false
-	skip_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(skip_hint)
 
 
 func _unhandled_input(event: InputEvent) -> void:
