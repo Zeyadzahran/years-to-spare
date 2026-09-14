@@ -1,0 +1,4 @@
+desert_wind.mp3 and desert_ambience.mp3 were normalized with ffmpeg loudnorm
+(wind to -22 LUFS, ambience bed to -30 LUFS). The originals averaged -26 and
+-53 LUFS; the bed was quieter than any volume_db on an AudioStreamPlayer can
+lift, so the files were re-encoded (libmp3lame q2) rather than faded up.
