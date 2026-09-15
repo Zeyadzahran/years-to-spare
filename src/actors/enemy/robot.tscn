@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/actors/enemy/robot.gd" id="1"]
+[ext_resource type="Script" path="res://src/components/health_component.gd" id="2"]
+[ext_resource type="SpriteFrames" path="res://src/actors/enemy/robot_frames.tres" id="3"]
+[ext_resource type="SpriteFrames" path="res://src/actors/enemy/robot_charge_frames.tres" id="4"]
+[ext_resource type="AudioStream" path="res://assets/sounds/robot/yodguard-short-energy-beam-shot-3-482517.mp3" id="5_shot"]
+[ext_resource type="AudioStream" path="res://assets/sounds/robot/floraphonic-metal-hit-95-200424.mp3" id="6_hurt"]
+[ext_resource type="AudioStream" path="res://assets/sounds/robot/freesound_community-retro-video-game-death-95730.mp3" id="7_death"]
+
+[sub_resource type="RectangleShape2D" id="body"]
+size = Vector2(80, 110)
+
+[node name="Robot" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+floor_snap_length = 12.0
+script = ExtResource("1")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -55)
+shape = SubResource("body")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(1.75, 1.75)
+sprite_frames = ExtResource("3")
+animation = &"idle"
+autoplay = "idle"
+offset = Vector2(0, -48)
+
+[node name="Charge" type="AnimatedSprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(10, -70)
+scale = Vector2(1.25, 1.25)
+sprite_frames = ExtResource("4")
+animation = &"charge"
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2")
+max_health = 100.0
+
+[node name="ShotAudio" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(10, -70)
+stream = ExtResource("5_shot")
+volume_db = -4.0
+max_distance = 1000.0
+
+[node name="HurtAudio" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(0, -55)
+stream = ExtResource("6_hurt")
+volume_db = -6.0
+max_distance = 850.0
+
+[node name="DeathAudio" type="AudioStreamPlayer2D" parent="."]
+process_mode = 1
+position = Vector2(0, -55)
+stream = ExtResource("7_death")
+volume_db = -4.0
+max_distance = 1000.0

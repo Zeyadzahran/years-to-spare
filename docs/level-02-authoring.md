@@ -27,7 +27,7 @@ of reusable scenes. No runtime generator rebuilds the layout.
 - `World/Hazards`: four electrical barriers and the fall-reset area.
 - `World/Wayfinding`: in-world instructions and district signs.
 - `World/Exit`: the completion gate and its Level 2 panel.
-- `Enemies`: eleven existing Guard/Gunner instances.
+- `Enemies`: ten Guard/Gunner instances and one stationary Robot.
 - `Entities/Player` and `HUD`: the shared player and interface.
 
 A/D move, Space jumps, J attacks, and K stops time. Electrical barriers are
@@ -42,6 +42,79 @@ all enemies to be defeated.
 Keep enemy paths and checkpoint names stable during tuning: they identify saved
 retry progress. The shared lifecycle now selects the scene's phase before using
 checkpoints, and clears a checkpoint from another phase when switching scenes.
+
+## Robot encounter
+
+`Enemies/RoofRobot` replaces the rooftop gunner at `(4120, 512)`. Approach along
+the flat roof from the left. Its chest charges, then it fires a fast horizontal
+beam. Jump during the charge to clear the shot. A hit is fatal; Rewind during
+the player's collapse lets you try again without losing a heart. Stop Time
+freezes the robot and beam, but touching a frozen beam is still fatal.
+
+The level's **Debug Spawn Path** is set to `DebugSpawns/RobotApproach` for editor
+playtesting. Run the scene with no active checkpoint to start at `(3780, 512)`,
+in front of the robot and just outside detection range. Walk right to begin the
+encounter. Clear the debug path to restore the entry spawn in the editor;
+exported builds still start at the entry.
+
+The reusable enemy is `src/actors/enemy/robot.tscn`. Inspector defaults:
+
+| Setting | Default |
+| --- | --- |
+| Detection / attack range | 320 pixels |
+| Vertical detection / attack tolerance | 110 pixels |
+| Attack Hit Time (charge) | 0.65 seconds |
+| Attack Duration (charge and firing effect) | 1 second |
+| Attack Recovery | 1.25 seconds |
+| Beam Speed | 1,200 pixels/second |
+| Beam sprite animation | 12 FPS |
+| Health | 100; three normal sword hits |
+
+The robot commits to a side when charging and turns again for its next attack.
+Sword hits interrupt charging and play Hurt without knockback. Death plays the
+supplied collapse animation. Walls block detection and absorb fired beams.
+The beam sweeps its full collision shape each physics tick to avoid skipping
+through the player or thin walls, and expires after 1.25 seconds of world time.
+An amber glow, bright core and fading embers surround the supplied beam sprite.
+The dim trail is cosmetic. All animation uses the beam's recorded age, so the
+glow and embers stop and rewind with it.
+
+This change is based on Rewind PR #60 (`3d04771`). It uses Enemy's existing
+snapshots for the robot and records each beam's position, velocity, age and hit
+state. Expired beams and dead robots retire through TimeService so Rewind can
+restore them. The charge effect is derived from the recorded attack clock.
+
+The three original PNG sheets are copied unchanged into `assets/sprites/robot/`
+from `/Users/r6mez/Projects/Years-To-Spear/Assets/characters/enemies/robot/`.
+`robot.png` is the Military Incursion Bot sheet: 160×96 cells, with idle on row 0,
+chest firing on row 2, hurt on row 5 and death on row 6 (zero-based rows).
+The beam and spawn sheets use 32×64 and 64×64 cells. The `.tres` frame resources
+select atlas regions; the PNGs are not cropped or repainted.
+
+The three supplied MP3s are copied unchanged to `assets/sounds/robot/`:
+
+- `yodguard-short-energy-beam-shot-3-482517.mp3`: plays when a beam is fired.
+- `floraphonic-metal-hit-95-200424.mp3`: plays on a surviving sword hit.
+- `freesound_community-retro-video-game-death-95730.mp3`: plays on death.
+
+All three are positional; adjust their AudioStreamPlayer2D children for volume
+and hearing distance. Shot and hurt audio obey the existing enemy time-stop
+behavior. DeathAudio uses Pausable processing so its two-second clip can finish
+after the shorter collapse animation retires the robot, while still respecting
+the pause menu. Rewind stops all three sounds, including a retired robot's death
+sound, so sounds from the abandoned attack or death do not resume afterward.
+
+```bash
+godot --headless --path . --fixed-fps 60 tests/level_02/verify_robot.tscn
+godot --headless --path . --fixed-fps 60 tests/level_02/verify_rewind.tscn
+```
+
+The robot check covers range and cover, stationary repeated attacks, charge
+warnings, locked horizontal aim, Stop Time, fast collision in both directions,
+thin walls, real sword hits, fatal-hit Rewind followed by a successful jump,
+robot revival, and restoration of expired projectiles. Native captures of idle,
+charging and jumping over the beam are in the ignored `builds/robot-review/`.
+These checks verify behavior; final difficulty tuning still needs a human playtest.
 
 ## Reusable scenes and Inspector settings
 

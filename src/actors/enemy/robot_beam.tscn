@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/actors/enemy/robot_beam.gd" id="1"]
+[ext_resource type="SpriteFrames" path="res://src/actors/enemy/robot_beam_frames.tres" id="2"]
+
+[sub_resource type="RectangleShape2D" id="beam"]
+size = Vector2(112, 12)
+
+[node name="RobotBeam" type="Area2D"]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(4, 1.5)
+sprite_frames = ExtResource("2")
+animation = &"beam"
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("beam")
+
+[node name="Sweep" type="ShapeCast2D" parent="."]
+enabled = false
+shape = SubResource("beam")
+target_position = Vector2(0, 0)
+collision_mask = 3

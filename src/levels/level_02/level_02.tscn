@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://djqbpdehfsnos" path="res://src/actors/enemy/gunner.tscn" id="40_131q7"]
 [ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="42_3ows0"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="61_lwmew"]
+[ext_resource type="PackedScene" path="res://src/actors/enemy/robot.tscn" id="robot_scene"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/background.tscn" id="scene_background"]
 [ext_resource type="PackedScene" uid="uid://bmim2hv3c3omh" path="res://src/levels/level_02/objects/cargo_crate.tscn" id="scene_objects_cargo_crate"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/objects/freight_shuttle.tscn" id="scene_objects_freight_shuttle"]
@@ -200,6 +201,8 @@ size = Vector2(36, 100)
 texture_filter = 1
 script = ExtResource("1_g5px2")
 level_id = &"phase_2"
+debug_keep_editor_spawn = true
+debug_spawn_path = NodePath("DebugSpawns/RobotApproach")
 
 [node name="Background" parent="." unique_id=775539332 instance=ExtResource("scene_background")]
 
@@ -560,19 +563,8 @@ territory = 360.0
 speed = 240.0
 detection_range = 340.0
 
-[node name="RoofGunner" parent="Enemies" unique_id=62932850 instance=ExtResource("40_131q7")]
+[node name="RoofRobot" parent="Enemies" unique_id=1346263772 instance=ExtResource("robot_scene")]
 position = Vector2(4120, 512)
-speed = 150.0
-detection_range = 340.0
-attack_range = 340.0
-attack_height_tolerance = 110.0
-eye_height = -89.0
-damage = 14.0
-attack_duration = 0.6667
-attack_hit_time = 0.5
-attack_recovery = 0.7
-hurt_duration = 0.4
-knockback = 170.0
 
 [node name="FreightGuard" parent="Enemies" unique_id=878797509 instance=ExtResource("38_fobyb")]
 position = Vector2(5490, 512)
@@ -636,6 +628,11 @@ attack_hit_time = 0.5
 attack_recovery = 0.7
 hurt_duration = 0.4
 knockback = 170.0
+
+[node name="DebugSpawns" type="Node2D" parent="." unique_id=1936541046]
+
+[node name="RobotApproach" type="Marker2D" parent="DebugSpawns" unique_id=224235290]
+position = Vector2(3780, 512)
 
 [node name="Entities" type="Node2D" parent="." unique_id=1820346557]
 

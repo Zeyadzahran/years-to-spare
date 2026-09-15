@@ -1,0 +1,102 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://ytavrghbdyd4"]
+
+[ext_resource type="Texture2D" uid="uid://dktanecskidom" path="res://assets/sprites/robot/beam_spawn.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="charge_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_1"]
+atlas = ExtResource("1")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_2"]
+atlas = ExtResource("1")
+region = Rect2(0, 128, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_3"]
+atlas = ExtResource("1")
+region = Rect2(0, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_4"]
+atlas = ExtResource("1")
+region = Rect2(0, 256, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_5"]
+atlas = ExtResource("1")
+region = Rect2(0, 320, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_6"]
+atlas = ExtResource("1")
+region = Rect2(0, 384, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_7"]
+atlas = ExtResource("1")
+region = Rect2(0, 448, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_8"]
+atlas = ExtResource("1")
+region = Rect2(0, 512, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_9"]
+atlas = ExtResource("1")
+region = Rect2(0, 576, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_10"]
+atlas = ExtResource("1")
+region = Rect2(0, 640, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_11"]
+atlas = ExtResource("1")
+region = Rect2(0, 704, 64, 64)
+
+[sub_resource type="AtlasTexture" id="charge_12"]
+atlas = ExtResource("1")
+region = Rect2(0, 768, 64, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("charge_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_10")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_11")
+}, {
+"duration": 1.0,
+"texture": SubResource("charge_12")
+}],
+"loop": 0,
+"name": &"charge",
+"speed": 20.0
+}]

@@ -1,0 +1,220 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://bgv2xvkbbtdax"]
+
+[ext_resource type="Texture2D" uid="uid://b5110sokdomdj" path="res://assets/sprites/robot/robot.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="dying_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="dying_1"]
+atlas = ExtResource("1")
+region = Rect2(160, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="dying_2"]
+atlas = ExtResource("1")
+region = Rect2(320, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="dying_3"]
+atlas = ExtResource("1")
+region = Rect2(480, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="dying_4"]
+atlas = ExtResource("1")
+region = Rect2(640, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="dying_5"]
+atlas = ExtResource("1")
+region = Rect2(800, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="dying_6"]
+atlas = ExtResource("1")
+region = Rect2(960, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="dying_7"]
+atlas = ExtResource("1")
+region = Rect2(1120, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="dying_8"]
+atlas = ExtResource("1")
+region = Rect2(1280, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="dying_9"]
+atlas = ExtResource("1")
+region = Rect2(1440, 576, 160, 96)
+
+[sub_resource type="AtlasTexture" id="hurt_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 480, 160, 96)
+
+[sub_resource type="AtlasTexture" id="hurt_1"]
+atlas = ExtResource("1")
+region = Rect2(160, 480, 160, 96)
+
+[sub_resource type="AtlasTexture" id="hurt_2"]
+atlas = ExtResource("1")
+region = Rect2(320, 480, 160, 96)
+
+[sub_resource type="AtlasTexture" id="hurt_3"]
+atlas = ExtResource("1")
+region = Rect2(480, 480, 160, 96)
+
+[sub_resource type="AtlasTexture" id="hurt_4"]
+atlas = ExtResource("1")
+region = Rect2(640, 480, 160, 96)
+
+[sub_resource type="AtlasTexture" id="idle_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 160, 96)
+
+[sub_resource type="AtlasTexture" id="idle_1"]
+atlas = ExtResource("1")
+region = Rect2(160, 0, 160, 96)
+
+[sub_resource type="AtlasTexture" id="run_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 0, 160, 96)
+
+[sub_resource type="AtlasTexture" id="run_1"]
+atlas = ExtResource("1")
+region = Rect2(160, 0, 160, 96)
+
+[sub_resource type="AtlasTexture" id="shoot_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 192, 160, 96)
+
+[sub_resource type="AtlasTexture" id="shoot_1"]
+atlas = ExtResource("1")
+region = Rect2(160, 192, 160, 96)
+
+[sub_resource type="AtlasTexture" id="shoot_2"]
+atlas = ExtResource("1")
+region = Rect2(320, 192, 160, 96)
+
+[sub_resource type="AtlasTexture" id="shoot_3"]
+atlas = ExtResource("1")
+region = Rect2(480, 192, 160, 96)
+
+[sub_resource type="AtlasTexture" id="shoot_4"]
+atlas = ExtResource("1")
+region = Rect2(640, 192, 160, 96)
+
+[sub_resource type="AtlasTexture" id="shoot_5"]
+atlas = ExtResource("1")
+region = Rect2(800, 192, 160, 96)
+
+[sub_resource type="AtlasTexture" id="shoot_6"]
+atlas = ExtResource("1")
+region = Rect2(960, 192, 160, 96)
+
+[sub_resource type="AtlasTexture" id="shoot_7"]
+atlas = ExtResource("1")
+region = Rect2(1120, 192, 160, 96)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("dying_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("dying_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("dying_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("dying_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("dying_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("dying_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("dying_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("dying_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("dying_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("dying_9")
+}],
+"loop": 0,
+"name": &"dying",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("hurt_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("hurt_4")
+}],
+"loop": 0,
+"name": &"hurt",
+"speed": 12.5
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("idle_1")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("run_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("run_1")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("shoot_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("shoot_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("shoot_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("shoot_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("shoot_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("shoot_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("shoot_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("shoot_7")
+}],
+"loop": 0,
+"name": &"shoot",
+"speed": 8.0
+}]
