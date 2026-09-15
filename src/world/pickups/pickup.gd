@@ -11,6 +11,7 @@ extends Area2D
 @export var heal_amount := 34.0
 
 func _ready() -> void:
+	add_to_group(TimeService.REWINDABLE_GROUP)
 	EventBus.player_spawned.connect(_on_player_spawned)
 	EventBus.player_health_changed.connect(_on_player_health_changed)
 	# Covers both orderings: a player that spawns after this fig is already
@@ -43,6 +44,8 @@ func _on_player_health_changed(current: float, maximum: float) -> void:
 ## hit has already entered, and the fig would sit under his feet doing nothing
 ## until he stepped off and back on.
 func _physics_process(_delta: float) -> void:
+	if TimeService.is_rewinding():
+		return
 	for body in get_overlapping_bodies():
 		if _take(body):
 			return
@@ -65,6 +68,34 @@ func _take(body: Node2D) -> bool:
 	set_physics_process(false)
 	monitoring = false
 
-	$PickupAudio.finished.connect(queue_free)
+	$PickupAudio.finished.connect(_on_audio_finished)
 	
 	return true
+
+
+## Retired rather than freed once the sound is done, so a rewind past the
+## moment he ate it can put the fig back. A rewind may already have done so
+## while the sound played, in which case it is on the ground and stays there.
+func _on_audio_finished() -> void:
+	if not monitoring:
+		TimeService.retire(self)
+
+
+## Taken or not - and, if not, whether it was showing. A fig hides itself
+## while he is at full health, and that is a question about him, not about it.
+func rewind_capture() -> Array:
+	return [visible, monitoring]
+
+
+func rewind_apply(saved: Array) -> void:
+	visible = saved[0]
+	set_deferred(&"monitoring", saved[1])
+	set_physics_process(saved[1])
+	process_mode = Node.PROCESS_MODE_INHERIT
+
+
+func rewind_retire() -> void:
+	visible = false
+	set_deferred(&"monitoring", false)
+	set_physics_process(false)
+	process_mode = Node.PROCESS_MODE_DISABLED

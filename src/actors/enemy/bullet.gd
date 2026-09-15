@@ -33,6 +33,7 @@ func setup(shot_velocity: Vector2, damage: float, shooter: Node) -> void:
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
+	add_to_group(TimeService.REWINDABLE_GROUP)
 
 
 func _physics_process(delta: float) -> void:
@@ -42,7 +43,7 @@ func _physics_process(delta: float) -> void:
 	global_position += _velocity * scaled
 	_age += scaled
 	if _age >= LIFETIME:
-		queue_free()
+		TimeService.retire(self)
 
 
 ## Stops on the first thing it meets, terrain included - the round masks the
@@ -50,7 +51,8 @@ func _physics_process(delta: float) -> void:
 ## wall. Async so a round that found flesh can wait out its own impact sound
 ## rather than cutting it off.
 func _on_body_entered(body: Node2D) -> void:
-	if _spent:
+	# A round the boy is being dragged back through has already missed him.
+	if _spent or TimeService.is_rewinding():
 		return
 	_spent = true
 	# The lifetime timer would otherwise keep running and free the round
@@ -65,4 +67,33 @@ func _on_body_entered(body: Node2D) -> void:
 		if _impact_audio != null:
 			_impact_audio.play()
 			await _impact_audio.finished
-	queue_free()
+	# Retired rather than freed, so a rewind can put it back in the air. One
+	# may already have done so while the sound played - the round is flying
+	# again and no longer spent - in which case this is not its moment.
+	if _spent:
+		TimeService.retire(self)
+
+
+## A round is its position, its heading, how long it has flown and whether it
+## has hit anything yet. `visible`/`monitoring` are what a spent one turned off.
+func rewind_capture() -> Array:
+	return [global_position, rotation, _velocity, _age, _spent, visible, monitoring]
+
+
+func rewind_apply(saved: Array) -> void:
+	global_position = saved[0]
+	rotation = saved[1]
+	_velocity = saved[2]
+	_age = saved[3]
+	_spent = saved[4]
+	visible = saved[5]
+	set_deferred(&"monitoring", saved[6])
+	set_physics_process(not _spent)
+	process_mode = Node.PROCESS_MODE_INHERIT
+
+
+func rewind_retire() -> void:
+	visible = false
+	set_deferred(&"monitoring", false)
+	set_physics_process(false)
+	process_mode = Node.PROCESS_MODE_DISABLED

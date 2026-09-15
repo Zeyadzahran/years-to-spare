@@ -21,6 +21,8 @@ func _ready() -> void:
 	_elapsed = (visible_time if _active else hidden_time) * phase_offset
 	_apply()
 	_set_active(_active)
+	if not Engine.is_editor_hint():
+		add_to_group(TimeService.REWINDABLE_GROUP)
 
 
 func _physics_process(delta: float) -> void:
@@ -38,6 +40,20 @@ func _physics_process(delta: float) -> void:
 		var art := $Art as Sprite2D
 		var warning := clampf((visible_time - _elapsed) / maxf(warning_time, 0.01), 0.0, 1.0)
 		art.modulate = tint if warning >= 1.0 else tint.lerp(Color(1.3, 0.45, 0.25, 0.35), 1.0 - warning)
+
+
+func rewind_capture() -> Array:
+	var art := $Art as Sprite2D
+	return [_active, _elapsed, art.visible, art.modulate, ($Shape as CollisionShape2D).disabled]
+
+
+func rewind_apply(saved: Array) -> void:
+	_active = saved[0]
+	_elapsed = saved[1]
+	var art := $Art as Sprite2D
+	art.visible = saved[2]
+	art.modulate = saved[3]
+	($Shape as CollisionShape2D).set_deferred(&"disabled", saved[4])
 
 
 func is_active() -> bool:

@@ -40,6 +40,7 @@ func _ready() -> void:
 	GameState.start_new_run(level_id)
 	EventBus.player_died.connect(_on_player_died)
 	EventBus.enemy_died.connect(_on_enemy_died)
+	EventBus.enemy_revived.connect(_on_enemy_revived)
 	_remove_the_fallen()
 	_resume_run()
 	_start_music()
@@ -129,6 +130,11 @@ func _on_enemy_died(enemy: Node2D, _age_reward: float) -> void:
 	# this level, and the unit has no business knowing which level it stands in.
 	if is_instance_valid(enemy) and is_ancestor_of(enemy):
 		GameState.clear_enemy(level_id, _tag(enemy))
+
+
+func _on_enemy_revived(enemy: Node2D) -> void:
+	if is_instance_valid(enemy) and is_ancestor_of(enemy):
+		GameState.revive_enemy(level_id, _tag(enemy))
 
 
 ## Health runs out and he tries again from the marker - unless that was his

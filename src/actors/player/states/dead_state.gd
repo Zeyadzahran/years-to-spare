@@ -19,6 +19,10 @@ func physics_update(delta: float) -> StringName:
 	player.velocity.x = move_toward(player.velocity.x, 0.0, Player.GROUND_FRICTION * delta)
 	player.move_and_slide()
 
+	# Held while a rewind is under way: it is about to reach back past this
+	# and stand him up, and the level must not reload out from under it.
+	if player.powers.is_casting(GameState.ABILITY_REWIND):
+		return &""
 	if not _announced and _elapsed >= DURATION:
 		_announced = true
 		# Which of the two clocks ran out decides whether the level gives him

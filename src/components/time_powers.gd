@@ -18,7 +18,11 @@ extends Node
 ## The cast is timed on the real clock, not the world one: the world's clock is
 ## the thing that has been stopped, so counting on it would never tick down.
 ##
-## Rewind is still a placeholder; only Stop is granted in phase 1.
+## Rewind is the same shape: one press, a fixed price, and TimeService.REWIND_SPAN
+## seconds of the world - the boy included - run back at REWIND_SPEED. Its
+## window is how long that takes, not how far it reaches. The flourish runs on
+## forward time, so the span is measured from the moment it lands, a little
+## before the press itself. Slow is still a placeholder.
 
 class Power:
 	var id: StringName
@@ -65,7 +69,8 @@ func _ready() -> void:
 	# without killing walks himself into his sixties in about fifteen presses.
 	_powers = [
 		Power.new(GameState.ABILITY_STOP, &"time_stop", TimeService.Mode.STOPPED, 5.0, 3.0, 3.0),
-		Power.new(GameState.ABILITY_REWIND, &"time_rewind", TimeService.Mode.REWINDING, 2.0, 4.0, 6.0),
+		Power.new(GameState.ABILITY_REWIND, &"time_rewind", TimeService.Mode.REWINDING,
+			TimeService.REWIND_SPAN / TimeService.REWIND_SPEED, 4.0, 6.0),
 		Power.new(GameState.ABILITY_SLOW, &"time_slow", TimeService.Mode.SLOWED, 6.0, 4.0, 4.0),
 	]
 
@@ -105,6 +110,14 @@ func is_ready(id: StringName) -> bool:
 ## Paid for and playing out his flourish, but the world is still running.
 func is_winding_up() -> bool:
 	return _pending != null
+
+
+## Whether `id` is the power under way, winding up or already landed. Dying
+## asks this: a rewind pressed on the way into the spikes has to outlive the
+## death that follows, since undoing it is the whole reason he pressed.
+func is_casting(id: StringName) -> bool:
+	var casting := active if active != null else _pending
+	return casting != null and casting.id == id
 
 
 ## Ends a power, whether it had taken hold or was still winding up. The cooldown

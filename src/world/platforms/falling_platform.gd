@@ -22,6 +22,8 @@ func _ready() -> void:
 	_apply()
 	var rider_zone := $RiderZone as Area2D
 	rider_zone.body_entered.connect(_on_rider_entered)
+	if not Engine.is_editor_hint():
+		add_to_group(TimeService.REWINDABLE_GROUP)
 
 
 func _physics_process(delta: float) -> void:
@@ -49,9 +51,30 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_rider_entered(body: Node2D) -> void:
+	if TimeService.is_rewinding():
+		return
 	if _state == State.READY and body.is_in_group(&"player") and body.is_on_floor():
 		_state = State.WARNING
 		_elapsed = 0.0
+
+
+## The whole cycle - warning, fall, absence, return - is a position, a state
+## and a clock, plus what the state switched off on the way down.
+func rewind_capture() -> Array:
+	return [
+		position, _state, _elapsed, visible, ($Art as Sprite2D).modulate,
+		($Shape as CollisionShape2D).disabled, ($RiderZone/Shape as CollisionShape2D).disabled,
+	]
+
+
+func rewind_apply(saved: Array) -> void:
+	position = saved[0]
+	_state = saved[1]
+	_elapsed = saved[2]
+	visible = saved[3]
+	($Art as Sprite2D).modulate = saved[4]
+	($Shape as CollisionShape2D).set_deferred(&"disabled", saved[5])
+	($RiderZone/Shape as CollisionShape2D).set_deferred(&"disabled", saved[6])
 
 
 func _hide_deck() -> void:

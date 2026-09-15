@@ -41,6 +41,19 @@ func _ready() -> void:
 	super._ready()
 
 
+## The beat's direction rides along with Enemy's own state: rewound to the
+## middle of a leg, he keeps walking the way he was walking.
+func rewind_capture() -> Array:
+	var saved := super()
+	saved.append(patrol_direction)
+	return saved
+
+
+func rewind_apply(saved: Array) -> void:
+	super(saved)
+	patrol_direction = saved[-1]
+
+
 ## A Guard does not stand his post; he walks it - and walks back to it after a
 ## chase has dragged him off.
 func _tick_idle(_delta: float) -> void:

@@ -17,6 +17,10 @@ signal player_age_changed(age: float, death_age: float)
 signal player_hearts_changed(current: int, max_hearts: int)
 
 signal enemy_died(enemy: Node2D, age_reward: float)
+## A rewind reached back past a unit's death and it is standing again. The
+## years its death paid out are not taken back - see TimePowers on what a
+## rewind does and does not touch.
+signal enemy_revived(enemy: Node2D)
 
 signal ability_unlocked(ability_id: StringName)
 ## Pressed and paid for: the boy starts his flourish, the world still running.

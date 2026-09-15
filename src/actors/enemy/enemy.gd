@@ -92,6 +92,7 @@ var _audio: Array[AudioStreamPlayer2D] = []
 
 func _ready() -> void:
 	add_to_group(&"enemy")
+	add_to_group(TimeService.REWINDABLE_GROUP)
 	_spawn_y = global_position.y
 	health.died.connect(_on_died)
 	health.damaged.connect(_on_damaged)
@@ -112,9 +113,18 @@ const PIT_DEPTH := 2200.0
 
 
 func _physics_process(delta: float) -> void:
+	# Every branch below moves him, the dead one on the raw clock: while the
+	# world runs backward the snapshots own his position and his frames, and
+	# nothing here may fight them - not even a clip left running on its own.
+	if TimeService.is_rewinding():
+		for animated in _animated:
+			animated.speed_scale = 0.0
+		for audio in _audio:
+			audio.stream_paused = true
+		return
 	if state != &"Dead" and global_position.y > _spawn_y + PIT_DEPTH:
 		# Silently, and without paying out years: the pit took him, not the boy.
-		queue_free()
+		TimeService.retire(self)
 		return
 	_sync_to_world_time()
 	# Raw delta, ahead of the frozen-world return: the boy can still swing while
@@ -381,4 +391,49 @@ func _on_died() -> void:
 func _on_animation_finished() -> void:
 	if sprite.animation == &"dying" and state == &"Dead":
 		EventBus.enemy_died.emit(self, age_reward)
-		queue_free()
+		# Retired rather than freed: a rewind that reaches back past this
+		# stands him up again, so the body has to still exist to be stood.
+		TimeService.retire(self)
+
+
+## Everything a rewind needs to put the unit back exactly as it was on that
+## tick: where and how fast, what it was doing and how far into it, how hurt,
+## which frame it was showing, and which layers it was on - a body mid-collapse
+## has already dropped off the boy's. Guard adds his patrol to this.
+func rewind_capture() -> Array:
+	return [
+		global_position, velocity, facing, state, _state_elapsed, _attack_fired,
+		_hurt_from, _flash, health.current, sprite.animation, sprite.frame,
+		sprite.frame_progress, collision_layer, collision_mask,
+	]
+
+
+## Total: a retired body comes back through here, so it also undoes retiring.
+func rewind_apply(saved: Array) -> void:
+	global_position = saved[0]
+	velocity = saved[1]
+	facing = saved[2]
+	state = saved[3]
+	_state_elapsed = saved[4]
+	_attack_fired = saved[5]
+	_hurt_from = saved[6]
+	_flash = saved[7]
+	health.restore_to(saved[8])
+	if sprite.sprite_frames != null and sprite.sprite_frames.has_animation(saved[9]):
+		sprite.animation = saved[9]
+		sprite.set_frame_and_progress(saved[10], saved[11])
+	sprite.flip_h = facing < 0
+	sprite.modulate = Color.WHITE.lerp(FLASH_TINT, _flash)
+	collision_layer = saved[12]
+	collision_mask = saved[13]
+	visible = true
+	process_mode = Node.PROCESS_MODE_INHERIT
+
+
+## Gone, but kept: hidden, off every layer and not ticking, until the past it
+## belongs to has aged out of the buffer or a rewind brings it back.
+func rewind_retire() -> void:
+	visible = false
+	collision_layer = 0
+	collision_mask = 0
+	process_mode = Node.PROCESS_MODE_DISABLED
