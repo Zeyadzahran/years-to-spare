@@ -42,11 +42,9 @@ const BOY_DEATH := preload("res://assets/sounds/boy-death.mp3")
 const MAN_DEATH := preload("res://assets/sounds/young-man-death.mp3")
 const ELDER_DEATH := preload("res://assets/sounds/old-man-death.mp3")
 
-## What a rewind sounds like: the City of Time's own clock, run fast. Nothing
-## was recorded for it, and a clock ticking too quickly to be right already
-## says "time is being handled".
-const REWIND_TICK := preload("res://assets/sounds/clock-sound.mp3")
-const REWIND_TICK_PITCH := 1.7
+## What a rewind sounds like. Cut to the length of a press plus its window
+## and faded at the end, so it runs out with the rewind rather than being cut.
+const REWIND_SOUND := preload("res://assets/sounds/rewind.mp3")
 
 ## Defaults assume this node sits under the Player alongside its StateMachine.
 @export var state_machine_path: NodePath = ^"../StateMachine"
@@ -84,9 +82,9 @@ var _power_spent := false
 ## a rewind that pulls him back from the dead can cut it short: he is not dying
 ## any more, and a death cry playing over a boy walking about reads as a glitch.
 var _last_cry: AudioStreamPlayer = null
-## Built rather than authored on the scene, the same way the cry is: the tick
-## is a stock asset with nothing to tune on the node.
-var _rewind_tick: AudioStreamPlayer
+## Built rather than authored on the scene, the same way the cry is: a stock
+## asset with nothing to tune on the node.
+var _rewind_audio: AudioStreamPlayer
 var _rewinding := false
 
 func _ready() -> void:
@@ -101,12 +99,11 @@ func _ready() -> void:
 	EventBus.ability_stopped.connect(_on_ability_changed.bind(false))
 	EventBus.ability_engaged.connect(_on_ability_engaged)
 	EventBus.time_mode_changed.connect(_on_time_mode_changed)
-	_rewind_tick = AudioStreamPlayer.new()
-	_rewind_tick.stream = REWIND_TICK
-	_rewind_tick.pitch_scale = REWIND_TICK_PITCH
-	_rewind_tick.volume_db = time_stop_audio.volume_db
-	_rewind_tick.bus = time_stop_audio.bus
-	add_child(_rewind_tick)
+	_rewind_audio = AudioStreamPlayer.new()
+	_rewind_audio.stream = REWIND_SOUND
+	_rewind_audio.volume_db = time_stop_audio.volume_db
+	_rewind_audio.bus = time_stop_audio.bus
+	add_child(_rewind_audio)
 	for frames in [teen_frames, adult_frames, elder_frames]:
 		if frames == null or not frames.has_animation(POWER_CLIP):
 			continue
@@ -185,8 +182,8 @@ func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 	# out rather than cut on release - a clipped whoosh reads as a glitch.
 	if active and ability_id == GameState.ABILITY_STOP:
 		time_stop_audio.play()
-	if not active and _rewind_tick.playing:
-		_rewind_tick.stop()
+	elif active and ability_id == GameState.ABILITY_REWIND:
+		_rewind_audio.play()
 	if _channelling == active:
 		return
 	_channelling = active
@@ -199,12 +196,10 @@ func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 		_play(_clip_for(&"Idle"))
 
 
-## The rewind's tick starts when the world actually runs backward, not on the
-## press: the flourish is his, the ticking is the world's.
+## The world has started running backward: if he was dying, he no longer is.
 func _on_ability_engaged(ability_id: StringName, _duration: float) -> void:
 	if ability_id != GameState.ABILITY_REWIND:
 		return
-	_rewind_tick.play()
 	if _last_cry != null and is_instance_valid(_last_cry):
 		_last_cry.queue_free()
 		_last_cry = null
