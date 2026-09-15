@@ -41,8 +41,10 @@ const ELDER_HURT := preload("res://assets/sounds/old-man-hurt.mp3")
 const BOY_DEATH := preload("res://assets/sounds/boy-death.mp3")
 const MAN_DEATH := preload("res://assets/sounds/young-man-death.mp3")
 const ELDER_DEATH := preload("res://assets/sounds/old-man-death.mp3")
-const BOY_DIE := preload("res://assets/sounds/boy-die.mp3")
-const OLD_DIE := preload("res://assets/sounds/die-old.mp3")
+
+## What a rewind sounds like. Cut to the length of a press plus its window
+## and faded at the end, so it runs out with the rewind rather than being cut.
+const REWIND_SOUND := preload("res://assets/sounds/rewind.mp3")
 
 ## Defaults assume this node sits under the Player alongside its StateMachine.
 @export var state_machine_path: NodePath = ^"../StateMachine"
@@ -76,6 +78,14 @@ var _channelling := false
 ## Whether this cast's flourish has already run. The world stays stopped for
 ## seconds after it; the tint and the dial are what carry the rest of the window.
 var _power_spent := false
+## The cry currently ringing out on the tree root, if any - see `_cry`. Held so
+## a rewind that pulls him back from the dead can cut it short: he is not dying
+## any more, and a death cry playing over a boy walking about reads as a glitch.
+var _last_cry: AudioStreamPlayer = null
+## Built rather than authored on the scene, the same way the cry is: a stock
+## asset with nothing to tune on the node.
+var _rewind_audio: AudioStreamPlayer
+var _rewinding := false
 
 func _ready() -> void:
 	states.state_changed.connect(_on_state_changed)
@@ -87,6 +97,13 @@ func _ready() -> void:
 	EventBus.player_age_changed.connect(_on_age_changed)
 	EventBus.ability_started.connect(_on_ability_changed.bind(true))
 	EventBus.ability_stopped.connect(_on_ability_changed.bind(false))
+	EventBus.ability_engaged.connect(_on_ability_engaged)
+	EventBus.time_mode_changed.connect(_on_time_mode_changed)
+	_rewind_audio = AudioStreamPlayer.new()
+	_rewind_audio.stream = REWIND_SOUND
+	_rewind_audio.volume_db = time_stop_audio.volume_db
+	_rewind_audio.bus = time_stop_audio.bus
+	add_child(_rewind_audio)
 	for frames in [teen_frames, adult_frames, elder_frames]:
 		if frames == null or not frames.has_animation(POWER_CLIP):
 			continue
@@ -106,7 +123,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	flip_h = player.facing < 0
-	if states.current_name == &"Crouch":
+	if states.current_name == &"Crouch" and not TimeService.is_rewinding():
 		_tick_crouch()
 
 
@@ -165,6 +182,8 @@ func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 	# out rather than cut on release - a clipped whoosh reads as a glitch.
 	if active and ability_id == GameState.ABILITY_STOP:
 		time_stop_audio.play()
+	elif active and ability_id == GameState.ABILITY_REWIND:
+		_rewind_audio.play()
 	if _channelling == active:
 		return
 	_channelling = active
@@ -175,6 +194,36 @@ func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 	# so those clips are never taken over.
 	if states.current_name == &"Idle":
 		_play(_clip_for(&"Idle"))
+
+
+## The world has started running backward: if he was dying, he no longer is.
+func _on_ability_engaged(ability_id: StringName, _duration: float) -> void:
+	if ability_id != GameState.ABILITY_REWIND:
+		return
+	if _last_cry != null and is_instance_valid(_last_cry):
+		_last_cry.queue_free()
+		_last_cry = null
+
+
+## While the world runs backward the frames are the rewind's to set, one
+## snapshot at a time, so the clip is held rather than left to play over them.
+## Once it lets go, whatever state the boy was handed back to gets its clip
+## from the top - the state itself may not have changed, and the frame the
+## rewind left showing could be from any clip at all.
+func _on_time_mode_changed(mode: int) -> void:
+	var rewinding := mode == TimeService.Mode.REWINDING
+	if rewinding == _rewinding:
+		return
+	_rewinding = rewinding
+	speed_scale = 0.0 if rewinding else 1.0
+	if rewinding:
+		run_audio.stop()
+		return
+	_after_landing = &""
+	var clip := _clip_for(states.current_name)
+	if not clip.is_empty():
+		play(clip)
+	_sync_footsteps()
 
 
 func _clip_for(state: StringName) -> StringName:
@@ -223,6 +272,7 @@ func _cry(stream: AudioStream) -> void:
 	voice.finished.connect(voice.queue_free)
 	get_tree().root.add_child(voice)
 	voice.play()
+	_last_cry = voice
 	hurt_audio.stream = _death_stream()
 	hurt_audio.play()
 

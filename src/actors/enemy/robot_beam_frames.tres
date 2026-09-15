@@ -1,0 +1,39 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://bab3subxg8y5m"]
+
+[ext_resource type="Texture2D" uid="uid://ccor5mn5pdy17" path="res://assets/sprites/robot/beam.png" id="1"]
+
+[sub_resource type="AtlasTexture" id="beam_0"]
+atlas = ExtResource("1")
+region = Rect2(0, 320, 32, 64)
+
+[sub_resource type="AtlasTexture" id="beam_1"]
+atlas = ExtResource("1")
+region = Rect2(0, 384, 32, 64)
+
+[sub_resource type="AtlasTexture" id="beam_2"]
+atlas = ExtResource("1")
+region = Rect2(0, 448, 32, 64)
+
+[sub_resource type="AtlasTexture" id="beam_3"]
+atlas = ExtResource("1")
+region = Rect2(0, 512, 32, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("beam_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("beam_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("beam_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("beam_3")
+}],
+"loop": 1,
+"name": &"beam",
+"speed": 12.0
+}]

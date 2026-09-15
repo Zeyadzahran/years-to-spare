@@ -30,6 +30,8 @@ func _ready() -> void:
 	_angle = _progress * TAU
 	_update_position()
 	_apply()
+	if not Engine.is_editor_hint():
+		add_to_group(TimeService.REWINDABLE_GROUP)
 
 
 func _physics_process(delta: float) -> void:
@@ -53,6 +55,19 @@ func _physics_process(delta: float) -> void:
 			_progress = 0.0
 			_direction = 1.0
 	_update_position()
+
+
+## Where along its line or orbit the deck was. Position is restored outright
+## as well, so the rider on it is carried back with it that same tick.
+func rewind_capture() -> Array:
+	return [position, _progress, _direction, _angle]
+
+
+func rewind_apply(saved: Array) -> void:
+	position = saved[0]
+	_progress = saved[1]
+	_direction = saved[2]
+	_angle = saved[3]
 
 
 func _update_position() -> void:

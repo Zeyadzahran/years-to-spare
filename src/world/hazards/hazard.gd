@@ -67,6 +67,10 @@ func _on_body_entered(body: Node2D) -> void:
 func _hurt(body: Node2D) -> void:
 	if not hurts_while_frozen and TimeService.is_world_frozen():
 		return
+	# The boy being dragged back out through the spikes that killed him is
+	# the rewind working, not a second death.
+	if TimeService.is_rewinding():
+		return
 	var id := body.get_instance_id()
 	if _cooldowns.has(id):
 		return

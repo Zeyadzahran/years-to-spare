@@ -39,6 +39,17 @@ func kill(source: Node = null) -> void:
 	take_damage(current, source)
 
 
+## Puts the bar at an exact value, dead or alive, for a rewind handing back the
+## health he had a few seconds ago. Announced like any other change so the HUD
+## follows; `damaged`/`healed` stay quiet, because nothing hit or healed him.
+func restore_to(value: float) -> void:
+	var next := clampf(value, 0.0, max_health)
+	if is_equal_approx(next, current):
+		return
+	current = next
+	changed.emit(current, max_health)
+
+
 func heal(amount: float) -> void:
 	if not is_alive() or amount <= 0.0:
 		return

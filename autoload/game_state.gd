@@ -16,7 +16,7 @@ const LEVELS: Array[Dictionary] = [
 	{
 		"id": &"phase_2",
 		"scene": "res://src/levels/level_02/level_02.tscn",
-		"grants": ABILITY_STOP,
+		"grants": ABILITY_REWIND,
 	},
 ]
 
@@ -94,6 +94,12 @@ func is_enemy_cleared(level_id: StringName, path: String) -> bool:
 	return cleared_enemies.has("%s|%s" % [level_id, path])
 
 
+## A rewind has stood a downed unit back up. Unmarked again, or the next reload
+## would remove a unit that is visibly alive.
+func revive_enemy(level_id: StringName, path: String) -> void:
+	cleared_enemies.erase("%s|%s" % [level_id, path])
+
+
 ## Throws away everything a retry would have carried: the marker, the years
 ## already spent, the bodies, and now the hearts - this is what "start over"
 ## means, and running out of hearts is one more way to mean it.
@@ -133,8 +139,11 @@ func advance() -> bool:
 	return true
 
 
+## Every phase up to this one: a power once earned stays his, so phase 2 has
+## Stop as well as the Rewind it introduces.
 func _grant_for_current_level() -> void:
-	var id: StringName = current_level()["grants"]
-	if not unlocked.has(id):
-		unlocked.append(id)
-		EventBus.ability_unlocked.emit(id)
+	for index in range(clampi(level_index, 0, LEVELS.size() - 1) + 1):
+		var id: StringName = LEVELS[index]["grants"]
+		if not unlocked.has(id):
+			unlocked.append(id)
+			EventBus.ability_unlocked.emit(id)

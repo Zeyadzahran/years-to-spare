@@ -59,6 +59,7 @@ const CRAWL_SPEED := 20.0
 const ELDER_SPEED := 0.82
 
 @onready var shape: CollisionShape2D = $Shape
+@onready var sprite: AnimatedSprite2D = $Sprite
 @onready var health: HealthComponent = $Health
 @onready var age: AgeComponent = $Age
 @onready var powers: TimePowers = $TimePowers
@@ -78,9 +79,15 @@ var _standing_size: Vector2
 var _standing_offset: float
 ## Built rather than instanced: see src/actors/player/sword_effects.gd.
 var _effects: SwordEffects
+## Whether the last snapshot a rewind put him in had him ducked, so the state
+## he is handed back to can keep the low box under an overhang.
+var _rewound_crouched := false
 
 func _ready() -> void:
 	add_to_group(&"player")
+	# The one thing the world's clock never touches is still something a rewind
+	# does: a bad jump is his to take back.
+	add_to_group(TimeService.REWINDABLE_GROUP)
 	# Own the shape so resizing it for crouch cannot leak into other instances.
 	shape.shape = shape.shape.duplicate()
 	_standing_size = (shape.shape as RectangleShape2D).size
@@ -256,5 +263,61 @@ func _on_enemy_died(_enemy: Node2D, age_reward: float) -> void:
 
 
 func _on_died() -> void:
-	powers.cancel()
+	# A rewind under way is left alone: pressed on the way into the spikes, it
+	# is about to pull him back out, and it has already been paid for.
+	if not powers.is_casting(GameState.ABILITY_REWIND):
+		powers.cancel()
 	states.travel(&"Dead")
+
+
+## What a rewind needs to put him back: where and how fast, which way he was
+## looking, what he was doing, how hurt he was and which frame of it he was on.
+## See TimeService for who calls this and when.
+func rewind_capture() -> Array:
+	return [
+		global_position, velocity, facing, hurt_from, states.current_name,
+		health.current, sprite.animation, sprite.frame, sprite.frame_progress,
+		is_crouched(),
+	]
+
+
+func rewind_apply(state: Array) -> void:
+	global_position = state[0]
+	velocity = state[1]
+	facing = state[2]
+	hurt_from = state[3]
+	health.restore_to(state[5])
+	if sprite.sprite_frames != null and sprite.sprite_frames.has_animation(state[6]):
+		sprite.animation = state[6]
+		sprite.set_frame_and_progress(state[7], state[8])
+	_rewound_crouched = state[9]
+	set_crouched(_rewound_crouched)
+
+
+## The world has started running backward. He is a passenger in it: no input,
+## no physics, no state ticking - the snapshots are what move him now.
+func rewind_began() -> void:
+	set_physics_process(false)
+	states.set_physics_process(false)
+	states.set_process(false)
+	_jump_buffered = 0.0
+	_attack_buffered = 0.0
+	_coyote_left = 0.0
+	clear_combat_effects()
+
+
+## Time runs forward again from wherever the last snapshot left him. He is put
+## into a plain state rather than the one recorded: Attack, Hurt and Dead all
+## do something on entry, and none of it is what a boy who has just been
+## handed back a few seconds should be doing. The clip is the animator's to
+## sort out; it listens for the mode change that follows this.
+func rewind_ended() -> void:
+	set_physics_process(true)
+	states.set_physics_process(true)
+	states.set_process(true)
+	var next: StringName = &"Idle"
+	if _rewound_crouched:
+		next = &"Crouch"
+	elif not is_on_floor():
+		next = &"Air"
+	states.travel(next)

@@ -18,8 +18,11 @@ const HEART_FULL := preload("res://assets/sprites/heart-full.png")
 const HEART_EMPTY := preload("res://assets/sprites/heart-empty.png")
 
 var _options_panel: Control = null
-## Built rather than instanced: see src/ui/time_stop_overlay.gd.
+## Built rather than instanced: see src/ui/time_stop_overlay.gd. One screen
+## per power, since a stop and a rewind look nothing alike; refusals go to the
+## stop's, which is the one that knows how to say them.
 var _overlay: TimeStopOverlay = null
+var _rewind_overlay: RewindOverlay = null
 
 var _player: Node2D = null
 var _powers: TimePowers = null
@@ -44,9 +47,12 @@ func _ready() -> void:
 	EventBus.level_completed.connect(_on_level_completed)
 	_overlay = TimeStopOverlay.new()
 	add_child(_overlay)
-	# First child, so the freeze is drawn under the meters. It replaces every
-	# pixel it covers; the bars have to stay on top of it to stay readable.
+	_rewind_overlay = RewindOverlay.new()
+	add_child(_rewind_overlay)
+	# First children, so the screens are drawn under the meters. They replace
+	# every pixel they cover; the bars have to stay on top to stay readable.
 	move_child(_overlay, 0)
+	move_child(_rewind_overlay, 1)
 	# The player may already exist: pull the starting values instead of waiting
 	# for the first change.
 	_read_player(get_tree().get_first_node_in_group(&"player"))
@@ -95,15 +101,26 @@ func _on_age_changed(age: float, death_age: float) -> void:
 
 ## The press: the meter starts breathing while he winds up. The screen itself
 ## stays put until the power actually lands.
-func _on_ability_changed(_ability_id: StringName, active: bool) -> void:
+func _on_ability_changed(ability_id: StringName, active: bool) -> void:
 	power_line.channelling = active
-	if _overlay != null and not active:
-		_overlay.end()
+	if active:
+		return
+	var screen := _screen_for(ability_id)
+	if screen != null:
+		screen.end()
 
 
-func _on_ability_engaged(_ability_id: StringName, duration: float) -> void:
-	if _overlay != null:
-		_overlay.begin(duration)
+func _on_ability_engaged(ability_id: StringName, duration: float) -> void:
+	var screen := _screen_for(ability_id)
+	if screen != null:
+		screen.begin(duration)
+
+
+## Which screen a power draws on. Both share the same begin/end/focus shape.
+func _screen_for(ability_id: StringName) -> Control:
+	if ability_id == GameState.ABILITY_REWIND:
+		return _rewind_overlay
+	return _overlay
 
 
 func _on_ability_refused(_ability_id: StringName, missing_years: float) -> void:
@@ -117,21 +134,27 @@ func _process(_delta: float) -> void:
 	if _powers == null:
 		return
 	if _powers.active != null:
-		time_label.text = "TIME  STOPPED %.1f" % _powers.time_left
-		_overlay.set_remaining(_powers.time_left)
-		_overlay.set_focus(_focus_uv())
+		var rewinding := _powers.active.id == GameState.ABILITY_REWIND
+		time_label.text = ("TIME  REWINDING %.1f" if rewinding else "TIME  STOPPED %.1f") % _powers.time_left
+		var screen := _screen_for(_powers.active.id)
+		screen.set_remaining(_powers.time_left)
+		screen.set_focus(_focus_uv())
 		return
 	if _powers.is_winding_up():
-		time_label.text = "TIME  STOPPING"
+		time_label.text = "TIME  WINDING"
 		return
-	var cooling := _powers.cooldown_left(GameState.ABILITY_STOP)
+	var cooling := maxf(_powers.cooldown_left(GameState.ABILITY_STOP),
+		_powers.cooldown_left(GameState.ABILITY_REWIND))
 	if cooling > 0.0:
 		time_label.text = "TIME  COOLING %.1f" % cooling
-	elif GameState.has_ability(GameState.ABILITY_STOP):
-		# Doubles as where the key is taught. Nothing else in the game says it.
-		time_label.text = "TIME  [K] READY"
-	else:
-		time_label.text = "TIME  LOCKED"
+		return
+	# Doubles as where the keys are taught. Nothing else in the game says them.
+	var ready := ""
+	if GameState.has_ability(GameState.ABILITY_STOP):
+		ready += "  [K] STOP"
+	if GameState.has_ability(GameState.ABILITY_REWIND):
+		ready += "  [E] REWIND"
+	time_label.text = "TIME" + ready if not ready.is_empty() else "TIME  LOCKED"
 
 
 ## Where on screen the shockwave starts. His chest rather than his feet, which

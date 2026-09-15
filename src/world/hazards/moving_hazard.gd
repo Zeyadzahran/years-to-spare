@@ -33,6 +33,17 @@ func _ready() -> void:
 	# Starting parked at the far end has to head back, or it would stall there.
 	_direction = -1.0 if is_equal_approx(_progress, 1.0) else 1.0
 	position = _origin + travel * _progress
+	add_to_group(TimeService.REWINDABLE_GROUP)
+
+
+func rewind_capture() -> Array:
+	return [position, _progress, _direction]
+
+
+func rewind_apply(saved: Array) -> void:
+	position = saved[0]
+	_progress = saved[1]
+	_direction = saved[2]
 
 
 func _physics_process(delta: float) -> void:
