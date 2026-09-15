@@ -68,12 +68,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 	skip_intro = true
 	start_game()
-func _unhandled_input(event):
-	if event is InputEventKey and event.pressed and not event.echo:
-		if skip_intro:
-			return
-		skip_intro = true
-		start_game()
 
 
 func play_intro():
