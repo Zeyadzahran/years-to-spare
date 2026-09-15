@@ -273,6 +273,8 @@ func _cry(stream: AudioStream) -> void:
 	get_tree().root.add_child(voice)
 	voice.play()
 	_last_cry = voice
+	hurt_audio.stream = _death_stream()
+	hurt_audio.play()
 
 
 func _on_jumped() -> void:
