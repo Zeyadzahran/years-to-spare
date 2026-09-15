@@ -223,8 +223,8 @@ func _cry(stream: AudioStream) -> void:
 	voice.finished.connect(voice.queue_free)
 	get_tree().root.add_child(voice)
 	voice.play()
-		hurt_audio.stream = _death_stream()
-		hurt_audio.play()
+	hurt_audio.stream = _death_stream()
+	hurt_audio.play()
 
 
 func _on_jumped() -> void:
@@ -244,10 +244,6 @@ func _death_stream() -> AudioStream:
 	if sprite_frames == teen_frames:
 		return BOY_DEATH
 	return ELDER_DEATH if sprite_frames == elder_frames else MAN_DEATH
-
-
-func _death_stream() -> AudioStream:
-	return BOY_DIE if sprite_frames == teen_frames else OLD_DIE
 
 
 func _on_animation_finished() -> void:
