@@ -13,6 +13,7 @@ const ROOM_TOP := -160.0
 const ROOM_BOTTOM := 920.0
 const GUARD_SCENE := preload("res://src/actors/enemy/guard.tscn")
 const GUNNER_SCENE := preload("res://src/actors/enemy/gunner.tscn")
+const PLATFORM_TELEPORT_COOLDOWN := 4.0
 
 var player: Player
 var _started := false
@@ -20,6 +21,7 @@ var _defeated := false
 var _intermission := false
 var _phase_breaks := 0
 var _reinforcements: Array[Enemy] = []
+var _platform_teleport_cooldown := 0.0
 
 @onready var boss: BusinessBoss = $BusinessBoss
 @onready var boss_bar: ProgressBar = $BossUI/Panel/BossHealth
@@ -47,6 +49,38 @@ func _start_encounter() -> void:
 	boss_ui.show()
 	boss_bar.max_value = boss.health.max_health
 	boss_bar.value = boss.health.current
+
+
+func _physics_process(delta: float) -> void:
+	if _platform_teleport_cooldown > 0.0:
+		_platform_teleport_cooldown = maxf(_platform_teleport_cooldown - delta, 0.0)
+	if not _started or _intermission or _defeated or _platform_teleport_cooldown > 0.0:
+		return
+	var platform := _platform_under_player()
+	if platform == null:
+		return
+	_platform_teleport_cooldown = PLATFORM_TELEPORT_COOLDOWN
+	var half_width := platform.width_tiles * 32.0
+	var side := -1.0 if player.global_position.x >= platform.global_position.x else 1.0
+	# Keep the boss on the deck, at its far side, rather than overlapping the
+	# player who triggered the teleport.
+	var destination := platform.global_position + Vector2(side * maxf(half_width - 44.0, 0.0), 0.0)
+	boss.teleport_to_platform(destination)
+
+
+func _platform_under_player() -> MovingIndustrialPlatform:
+	if player == null or not is_instance_valid(player):
+		return null
+	for child in $Platforms.get_children():
+		var platform := child as MovingIndustrialPlatform
+		if platform == null:
+			continue
+		var half_width := platform.width_tiles * 32.0
+		var on_platform := absf(player.global_position.x - platform.global_position.x) <= half_width
+		on_platform = on_platform and absf(player.global_position.y - platform.global_position.y) <= 48.0
+		if on_platform:
+			return platform
+	return null
 
 func _configure_camera() -> void:
 	if player == null:
@@ -129,7 +163,13 @@ func _spawn_reinforcement(index: int, x_offset: float) -> void:
 		guard.patrol_origin_x = guard.global_position.x
 		guard.territory = ROOM_RIGHT - ROOM_LEFT
 
-	var destination := reinforcement_gate.global_position + Vector2(x_offset, 0.0)
+	# The gate is on the far right. Reinforcements cross the player's position
+	# before they become solid, so they emerge into the arena instead of bunching
+	# behind its frame.
+	var exit_direction := signf(player.global_position.x - reinforcement_gate.global_position.x)
+	if is_zero_approx(exit_direction):
+		exit_direction = -1.0
+	var destination := Vector2(player.global_position.x + exit_direction * 120.0 + x_offset, reinforcement_gate.global_position.y)
 	var tween := create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(enemy, ^"global_position", destination, 0.45).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)

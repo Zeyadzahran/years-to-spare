@@ -6,12 +6,11 @@
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="26_8osm8"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/checkpoint.tscn" id="27_txlfv"]
 [ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="34_4rpjk"]
-[ext_resource type="Texture2D" uid="uid://c7esfiu8o1o5n" path="res://src/levels/level_02/art/decorations/9.png" id="37_07213"]
 [ext_resource type="PackedScene" uid="uid://drt0b4rcdaxpq" path="res://src/actors/enemy/guard.tscn" id="38_fobyb"]
 [ext_resource type="PackedScene" uid="uid://djqbpdehfsnos" path="res://src/actors/enemy/gunner.tscn" id="40_131q7"]
 [ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="42_3ows0"]
 [ext_resource type="PackedScene" path="res://src/world/gates/boss_gate.tscn" id="43_bossgate"]
-[ext_resource type="Script" uid="uid://ct0g3nlv2mcxg" path="res://src/levels/level_02/boss_arena.gd" id="44_bossarena"]
+[ext_resource type="Script" uid="uid://df253iysytrqc" path="res://src/levels/level_02/boss_arena.gd" id="44_bossarena"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/business_boss.tscn" id="45_businessboss"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="61_lwmew"]
 [ext_resource type="Texture2D" uid="uid://bblgbn5kipusx" path="res://src/levels/level_02/art/terrain/CollapseFloor.png" id="collapse_floor_art"]
@@ -197,6 +196,10 @@ size = Vector2(64, 1600)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ukmyu"]
 size = Vector2(14000, 300)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_arena_bricks"]
+atlas = ExtResource("7_1y2jp")
+region = Rect2(32, 32, 32, 32)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_business_bar_bg"]
 bg_color = Color(0.055, 0.035, 0.03, 0.92)
@@ -597,20 +600,34 @@ scale = Vector2(2.8, 2.8)
 texture = ExtResource("13_rfgta")
 offset = Vector2(0, -17.5)
 
-[node name="ExitBeacon" type="Sprite2D" parent="World/Exit" unique_id=1088265633]
-position = Vector2(12640, 520)
-scale = Vector2(2, 2)
-texture = ExtResource("37_07213")
-offset = Vector2(0, -9.5)
-
 [node name="BossArena" type="Node2D" parent="World" unique_id=-982962415]
 position = Vector2(20000, 0)
 script = ExtResource("44_bossarena")
 
-[node name="ArenaFoundation" type="Polygon2D" parent="World/BossArena" unique_id=522792649]
+[node name="ArenaFoundation" type="Polygon2D" parent="World/BossArena" unique_id=1919157570]
 z_index = -2
 color = Color(0.07, 0.12, 0.2, 1)
 polygon = PackedVector2Array(0, 640, 1600, 640, 1600, 1152, 0, 1152)
+
+[node name="ArenaEdgeTiles" type="Node2D" parent="World/BossArena" unique_id=1152394374]
+z_index = -1
+
+[node name="LeftFill" type="NinePatchRect" parent="World/BossArena/ArenaEdgeTiles" unique_id=2003558674]
+offset_top = 640.0
+offset_right = 96.0
+offset_bottom = 1152.0
+texture = SubResource("AtlasTexture_arena_bricks")
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="RightFill" type="NinePatchRect" parent="World/BossArena/ArenaEdgeTiles" unique_id=1803815989]
+offset_left = 1504.0
+offset_top = 640.0
+offset_right = 1600.0
+offset_bottom = 1152.0
+texture = SubResource("AtlasTexture_arena_bricks")
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [node name="FloorTiles" type="TileMapLayer" parent="World/BossArena" unique_id=-982962414]
 scale = Vector2(2, 2)
@@ -620,13 +637,13 @@ tile_set = SubResource("TileSet_4ovkw")
 [node name="LeftWall" type="StaticBody2D" parent="World/BossArena" unique_id=-982962413]
 
 [node name="Shape" type="CollisionShape2D" parent="World/BossArena/LeftWall" unique_id=-982962412]
-position = Vector2(-58, 397)
+position = Vector2(-32, 400)
 shape = SubResource("RectangleShape2D_a1py8")
 
 [node name="RightWall" type="StaticBody2D" parent="World/BossArena" unique_id=-982962411]
 
 [node name="Shape" type="CollisionShape2D" parent="World/BossArena/RightWall" unique_id=-982962410]
-position = Vector2(1650, 395)
+position = Vector2(1632, 400)
 shape = SubResource("RectangleShape2D_a1py8")
 
 [node name="PlayerSpawn" type="Marker2D" parent="World/BossArena" unique_id=-982962409]
@@ -635,24 +652,24 @@ position = Vector2(150, 640)
 [node name="Platforms" type="Node2D" parent="World/BossArena" unique_id=-982962408]
 
 [node name="StepOne" parent="World/BossArena/Platforms" unique_id=-982962407 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(365, 511)
+position = Vector2(241, 518)
 start_at = 0.15
 
 [node name="StepTwo" parent="World/BossArena/Platforms" unique_id=-982962406 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(681, 389)
+position = Vector2(552, 397)
 travel = Vector2(0, -150)
 speed = 100.0
 start_at = 0.7
 
 [node name="StepThree" parent="World/BossArena/Platforms" unique_id=-982962405 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(1071, 316)
+position = Vector2(819, 245)
 width_tiles = 4
 travel = Vector2(0, -130)
 speed = 95.0
 start_at = 0.4
 
 [node name="ArenaPlatform" parent="World/BossArena/Platforms" unique_id=-982962404 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(1329, 209)
+position = Vector2(1322, 344)
 width_tiles = 6
 travel = Vector2(0, -80)
 speed = 85.0
@@ -660,7 +677,7 @@ start_at = 0.9
 
 [node name="ReinforcementGate" parent="World/BossArena" unique_id=-982962401 instance=ExtResource("scene_reinforcement_gate")]
 visible = false
-position = Vector2(280, 640)
+position = Vector2(1480, 640)
 
 [node name="FutureBossPosition" type="Marker2D" parent="World/BossArena" unique_id=-982962403]
 position = Vector2(1200, 640)
@@ -670,10 +687,10 @@ position = Vector2(1200, 640)
 
 [node name="Reinforcements" type="Node2D" parent="World/BossArena" unique_id=-982962400]
 
-[node name="BossUI" type="CanvasLayer" parent="World/BossArena" unique_id=36661521]
+[node name="BossUI" type="CanvasLayer" parent="World/BossArena" unique_id=678072455]
 layer = 30
 
-[node name="Panel" type="VBoxContainer" parent="World/BossArena/BossUI" unique_id=279058390]
+[node name="Panel" type="VBoxContainer" parent="World/BossArena/BossUI" unique_id=2144642373]
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 360.0
@@ -684,7 +701,7 @@ grow_horizontal = 2
 mouse_filter = 2
 theme_override_constants/separation = 7
 
-[node name="Title" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=1311121069]
+[node name="Title" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=1289483431]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.73, 0.34, 1)
 theme_override_fonts/font = ExtResource("26_8osm8")
@@ -692,7 +709,7 @@ theme_override_font_sizes/font_size = 12
 text = "THE BUSINESS MAN"
 horizontal_alignment = 1
 
-[node name="BossHealth" type="ProgressBar" parent="World/BossArena/BossUI/Panel" unique_id=1846427198]
+[node name="BossHealth" type="ProgressBar" parent="World/BossArena/BossUI/Panel" unique_id=927931656]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_business_bar_bg")
@@ -700,7 +717,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_business_bar_fill")
 value = 100.0
 show_percentage = false
 
-[node name="Result" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=1639477323]
+[node name="Result" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=430746891]
 visible = false
 layout_mode = 2
 theme_override_fonts/font = ExtResource("26_8osm8")

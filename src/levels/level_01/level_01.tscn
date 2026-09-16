@@ -998,8 +998,8 @@ position = Vector2(16660, 59)
 [node name="Gates" type="Node2D" parent="World/SalvageYard" unique_id=1331770119]
 
 [node name="BossGate" parent="World/SalvageYard/Gates" unique_id=1745738029 instance=ExtResource("compact_15_53ogl")]
-position = Vector2(17049, 138)
-scale = Vector2(0.769, 1)
+position = Vector2(17073, 132)
+scale = Vector2(0.538, 0.7)
 boss_arena_path = NodePath("../../../BossArena")
 arena_spawn_path = NodePath("../../../BossArena/PlayerSpawn")
 
