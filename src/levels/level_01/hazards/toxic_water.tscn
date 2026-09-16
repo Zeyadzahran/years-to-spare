@@ -1,16 +1,6 @@
-[gd_scene format=3 uid="uid://do1rl2sxwnmke"]
-
-[ext_resource type="Script" path="res://src/world/hazards/toxic_water.gd" id="1_script"]
-[ext_resource type="Shader" path="res://src/world/hazards/toxic_water.gdshader" id="2_shader"]
+[gd_scene format=3 uid="uid://ctcrex6sipnil"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_water"]
-shader = ExtResource("2_shader")
-shader_parameter/time = 0.0
-shader_parameter/depth = 120.0
-shader_parameter/amplitude = 7.0
-shader_parameter/deep_color = Color(0.09, 0.2, 0.17, 0.95)
-shader_parameter/mid_color = Color(0.18, 0.36, 0.29, 0.92)
-shader_parameter/surface_color = Color(0.4, 0.5, 0.3, 0.88)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water"]
 size = Vector2(249, 120)
@@ -18,7 +8,6 @@ size = Vector2(249, 120)
 [node name="ToxicWater" type="Area2D" unique_id=1804796530]
 collision_layer = 0
 collision_mask = 2
-script = ExtResource("1_script")
 
 [node name="Body" type="Polygon2D" parent="." unique_id=1800155342]
 material = SubResource("ShaderMaterial_water")
