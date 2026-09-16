@@ -34,6 +34,17 @@ var unlocked: Array[StringName] = []
 var checkpoint_id: StringName = &""
 var checkpoint_level: StringName = &""
 var checkpoint_position := Vector2.ZERO
+## Whether the checkpoint above was reached with Level 02's Day/Night
+## transition already active. Unused by any level without that concept - a
+## checkpoint there always passes false and nothing ever reads it as true.
+var checkpoint_night := false
+
+## Live, not saved: whatever a level's own day/night trigger currently has
+## in effect, so a Checkpoint (shared across levels, no notion of day/night
+## of its own) can read the moment of passing rather than needing a level
+## to hand it down directly. What actually survives a death is the snapshot
+## above, taken from this the instant a checkpoint records itself - not this.
+var night_active := false
 
 ## Same shape as the checkpoint above: a death does not touch this, only
 ## `clear_run_progress()` does - so three tries at a marker have to run out
@@ -66,11 +77,12 @@ func start_new_run(level_id: StringName = &"phase_1") -> void:
 
 
 ## Called by a Checkpoint the first time the boy passes it.
-func set_checkpoint(id: StringName, position: Vector2, age: float) -> void:
+func set_checkpoint(id: StringName, position: Vector2, age: float, night: bool = false) -> void:
 	checkpoint_id = id
 	checkpoint_level = current_level()["id"]
 	checkpoint_position = position
 	run_age = age
+	checkpoint_night = night
 
 
 ## Whether `id` names the checkpoint currently recorded. Checked by the marker
@@ -107,6 +119,8 @@ func clear_run_progress() -> void:
 	checkpoint_id = &""
 	checkpoint_level = &""
 	checkpoint_position = Vector2.ZERO
+	checkpoint_night = false
+	night_active = false
 	run_age = -1.0
 	cleared_enemies.clear()
 	hearts = MAX_HEARTS
