@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ldmdtdi2byqu" path="res://src/levels/level_02/art/terrain/Tileset.png" id="7_1y2jp"]
 [ext_resource type="Texture2D" uid="uid://dwuoshh33w4nh" path="res://src/levels/level_02/art/decorations/27.png" id="13_rfgta"]
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="26_8osm8"]
-[ext_resource type="PackedScene" uid="uid://b4kxq2wcheckp" path="res://src/world/checkpoints/checkpoint.tscn" id="27_txlfv"]
+[ext_resource type="PackedScene" path="res://src/levels/level_02/checkpoint.tscn" id="27_txlfv"]
 [ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="34_4rpjk"]
 [ext_resource type="PackedScene" uid="uid://dipvbr4hlnk2j" path="res://src/world/exits/level_exit.tscn" id="35_uu3hc"]
 [ext_resource type="Texture2D" uid="uid://c7esfiu8o1o5n" path="res://src/levels/level_02/art/decorations/9.png" id="37_07213"]
@@ -441,19 +441,22 @@ text = "EAST COURTYARD  >"
 [node name="Checkpoints" type="Node2D" parent="World" unique_id=948891829]
 
 [node name="L2MachineYard" parent="World/Checkpoints" unique_id=1630213032 instance=ExtResource("27_txlfv")]
-position = Vector2(1680, 643)
+position = Vector2(1691, 652)
 
 [node name="L2Rooftops" parent="World/Checkpoints" unique_id=678448520 instance=ExtResource("27_txlfv")]
-position = Vector2(3200, 517)
+position = Vector2(3206, 521)
 
 [node name="L2FreightLanding" parent="World/Checkpoints" unique_id=742003588 instance=ExtResource("27_txlfv")]
-position = Vector2(5120, 512)
+position = Vector2(5111, 522)
 
 [node name="L2Courtyard" parent="World/Checkpoints" unique_id=535942090 instance=ExtResource("27_txlfv")]
-position = Vector2(6520, 640)
+position = Vector2(6709, 646)
 
 [node name="L2ExitApproach" parent="World/Checkpoints" unique_id=1619048187 instance=ExtResource("27_txlfv")]
-position = Vector2(7872, 640)
+position = Vector2(7874, 651)
+
+[node name="L2NightApproach" parent="World/Checkpoints" unique_id=252794989 instance=ExtResource("27_txlfv")]
+position = Vector2(10050, 650)
 
 [node name="Supplies" type="Node2D" parent="World" unique_id=1350383185]
 

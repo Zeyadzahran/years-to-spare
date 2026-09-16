@@ -31,7 +31,7 @@ func _on_body_entered(body: Node2D) -> void:
 	# it is not news.
 	if GameState.is_active_checkpoint(name):
 		return
-	GameState.set_checkpoint(name, global_position, age_component.age)
+	GameState.set_checkpoint(name, global_position, age_component.age, GameState.night_active)
 	_marker.play(&"green")
 	if _activate_audio != null:
 		_activate_audio.play()
