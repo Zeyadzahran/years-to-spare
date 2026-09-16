@@ -5,6 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://deu3cb35wy6q" path="res://src/levels/level_02/art/background/Day/3.png" id="4_35iug"]
 [ext_resource type="Texture2D" uid="uid://dn1uqdjxe4mib" path="res://src/levels/level_02/art/background/Day/4.png" id="5_1rwto"]
 [ext_resource type="Texture2D" uid="uid://d3eq472us1fta" path="res://src/levels/level_02/art/background/Day/5.png" id="6_mgcsk"]
+[ext_resource type="Texture2D" uid="uid://bx58pt45q4bod" path="res://src/levels/level_02/art/background/Night/1.png" id="7_night1"]
+[ext_resource type="Texture2D" uid="uid://bw4ek2n0moxl7" path="res://src/levels/level_02/art/background/Night/2.png" id="8_night2"]
+[ext_resource type="Texture2D" uid="uid://k4a0q6dy54s6" path="res://src/levels/level_02/art/background/Night/3.png" id="9_night3"]
+[ext_resource type="Texture2D" uid="uid://dg0dsnclf0amy" path="res://src/levels/level_02/art/background/Night/4.png" id="10_night4"]
+[ext_resource type="Texture2D" uid="uid://c3sdr1yboa4s4" path="res://src/levels/level_02/art/background/Night/5.png" id="11_night5"]
 [node name="Background" type="Node2D"]
 z_index = -20
 
@@ -19,6 +24,15 @@ mouse_filter = 2
 texture = ExtResource("2_kiqbs")
 expand_mode = 1
 
+[node name="NightGradient" type="TextureRect" parent="Sky"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("7_night1")
+expand_mode = 1
+
 [node name="CityLayer2" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.07, 0.12)
 repeat_size = Vector2(1728, 0)
@@ -28,6 +42,13 @@ repeat_times = 12
 position = Vector2(864, 820)
 scale = Vector2(3, 3)
 texture = ExtResource("3_smu11")
+offset = Vector2(0, -162)
+
+[node name="NightSilhouette" type="Sprite2D" parent="CityLayer2"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(864, 820)
+scale = Vector2(3, 3)
+texture = ExtResource("8_night2")
 offset = Vector2(0, -162)
 
 [node name="CityLayer3" type="Parallax2D" parent="."]
@@ -41,6 +62,13 @@ scale = Vector2(3, 3)
 texture = ExtResource("4_35iug")
 offset = Vector2(0, -162)
 
+[node name="NightSilhouette" type="Sprite2D" parent="CityLayer3"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(864, 820)
+scale = Vector2(3, 3)
+texture = ExtResource("9_night3")
+offset = Vector2(0, -162)
+
 [node name="CityLayer4" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.31, 0.12)
 repeat_size = Vector2(1728, 0)
@@ -50,6 +78,13 @@ repeat_times = 12
 position = Vector2(864, 820)
 scale = Vector2(3, 3)
 texture = ExtResource("5_1rwto")
+offset = Vector2(0, -162)
+
+[node name="NightSilhouette" type="Sprite2D" parent="CityLayer4"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(864, 820)
+scale = Vector2(3, 3)
+texture = ExtResource("10_night4")
 offset = Vector2(0, -162)
 
 [node name="CityLayer5" type="Parallax2D" parent="."]
@@ -62,4 +97,11 @@ modulate = Color(0.8, 0.89, 0.97, 1)
 position = Vector2(864, 820)
 scale = Vector2(3, 3)
 texture = ExtResource("6_mgcsk")
+offset = Vector2(0, -162)
+
+[node name="NightSilhouette" type="Sprite2D" parent="CityLayer5"]
+modulate = Color(0.8, 0.89, 0.97, 0)
+position = Vector2(864, 820)
+scale = Vector2(3, 3)
+texture = ExtResource("11_night5")
 offset = Vector2(0, -162)
