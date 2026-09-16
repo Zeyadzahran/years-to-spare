@@ -1,0 +1,43 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/idle.png" id="idle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/hurt.png" id="hurt"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_00.png" id="shoot_00"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_01.png" id="shoot_01"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_02.png" id="shoot_02"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_03.png" id="shoot_03"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_04.png" id="shoot_04"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_05.png" id="shoot_05"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_06.png" id="shoot_06"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_07.png" id="shoot_07"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_08.png" id="shoot_08"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_09.png" id="shoot_09"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_10.png" id="shoot_10"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_11.png" id="shoot_11"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/dying_00.png" id="dying_00"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/dying_01.png" id="dying_01"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/dying_02.png" id="dying_02"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/dying_03.png" id="dying_03"]
+
+[resource]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("dying_00")}, {"duration": 1.0, "texture": ExtResource("dying_01")}, {"duration": 1.0, "texture": ExtResource("dying_02")}, {"duration": 1.0, "texture": ExtResource("dying_03")}],
+"loop": 0,
+"name": &"dying",
+"speed": 7.0
+}, {
+"frames": [{"duration": 1.0, "texture": ExtResource("hurt")}],
+"loop": 0,
+"name": &"hurt",
+"speed": 8.0
+}, {
+"frames": [{"duration": 1.0, "texture": ExtResource("idle")}],
+"loop": 1,
+"name": &"idle",
+"speed": 4.0
+}, {
+"frames": [{"duration": 1.0, "texture": ExtResource("shoot_00")}, {"duration": 1.0, "texture": ExtResource("shoot_01")}, {"duration": 1.0, "texture": ExtResource("shoot_02")}, {"duration": 1.0, "texture": ExtResource("shoot_03")}, {"duration": 1.0, "texture": ExtResource("shoot_04")}, {"duration": 1.0, "texture": ExtResource("shoot_05")}, {"duration": 1.0, "texture": ExtResource("shoot_06")}, {"duration": 1.0, "texture": ExtResource("shoot_07")}, {"duration": 1.0, "texture": ExtResource("shoot_08")}, {"duration": 1.0, "texture": ExtResource("shoot_09")}, {"duration": 1.0, "texture": ExtResource("shoot_10")}, {"duration": 1.0, "texture": ExtResource("shoot_11")}],
+"loop": 0,
+"name": &"shoot",
+"speed": 16.0
+}]

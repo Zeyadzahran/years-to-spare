@@ -1,0 +1,55 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/effects/326.png" id="1_sheet"]
+[ext_resource type="Script" path="res://src/actors/enemy/business_disappear_effect.gd" id="2_script"]
+
+[sub_resource type="AtlasTexture" id="f0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 128, 64, 64)
+[sub_resource type="AtlasTexture" id="f1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(64, 128, 64, 64)
+[sub_resource type="AtlasTexture" id="f2"]
+atlas = ExtResource("1_sheet")
+region = Rect2(128, 128, 64, 64)
+[sub_resource type="AtlasTexture" id="f3"]
+atlas = ExtResource("1_sheet")
+region = Rect2(192, 128, 64, 64)
+[sub_resource type="AtlasTexture" id="f4"]
+atlas = ExtResource("1_sheet")
+region = Rect2(256, 128, 64, 64)
+[sub_resource type="AtlasTexture" id="f5"]
+atlas = ExtResource("1_sheet")
+region = Rect2(320, 128, 64, 64)
+[sub_resource type="AtlasTexture" id="f6"]
+atlas = ExtResource("1_sheet")
+region = Rect2(384, 128, 64, 64)
+[sub_resource type="AtlasTexture" id="f7"]
+atlas = ExtResource("1_sheet")
+region = Rect2(448, 128, 64, 64)
+
+[sub_resource type="SpriteFrames" id="frames"]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": SubResource("f0")},
+{"duration": 1.0, "texture": SubResource("f1")},
+{"duration": 1.0, "texture": SubResource("f2")},
+{"duration": 1.0, "texture": SubResource("f3")},
+{"duration": 1.0, "texture": SubResource("f4")},
+{"duration": 1.0, "texture": SubResource("f5")},
+{"duration": 1.0, "texture": SubResource("f6")},
+{"duration": 1.0, "texture": SubResource("f7")}
+],
+"loop": false,
+"name": &"disappear",
+"speed": 12.0
+}]
+
+[node name="BusinessDisappearEffect" type="AnimatedSprite2D"]
+z_index = 20
+texture_filter = 1
+scale = Vector2(2.4, 2.4)
+sprite_frames = SubResource("frames")
+animation = &"disappear"
+autoplay = "disappear"
+script = ExtResource("2_script")

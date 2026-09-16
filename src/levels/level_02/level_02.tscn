@@ -6,15 +6,18 @@
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="26_8osm8"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/checkpoint.tscn" id="27_txlfv"]
 [ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="34_4rpjk"]
-[ext_resource type="PackedScene" uid="uid://dipvbr4hlnk2j" path="res://src/world/exits/level_exit.tscn" id="35_uu3hc"]
 [ext_resource type="Texture2D" uid="uid://c7esfiu8o1o5n" path="res://src/levels/level_02/art/decorations/9.png" id="37_07213"]
 [ext_resource type="PackedScene" uid="uid://drt0b4rcdaxpq" path="res://src/actors/enemy/guard.tscn" id="38_fobyb"]
 [ext_resource type="PackedScene" uid="uid://djqbpdehfsnos" path="res://src/actors/enemy/gunner.tscn" id="40_131q7"]
 [ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="42_3ows0"]
+[ext_resource type="PackedScene" path="res://src/world/gates/boss_gate.tscn" id="43_bossgate"]
+[ext_resource type="Script" uid="uid://ct0g3nlv2mcxg" path="res://src/levels/level_02/boss_arena.gd" id="44_bossarena"]
+[ext_resource type="PackedScene" path="res://src/actors/enemy/business_boss.tscn" id="45_businessboss"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="61_lwmew"]
 [ext_resource type="Texture2D" uid="uid://bblgbn5kipusx" path="res://src/levels/level_02/art/terrain/CollapseFloor.png" id="collapse_floor_art"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/robot.tscn" id="robot_scene"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/background.tscn" id="scene_background"]
+[ext_resource type="PackedScene" path="res://src/levels/level_02/objects/moving_industrial_platform.tscn" id="scene_objects_business_platform"]
 [ext_resource type="PackedScene" uid="uid://bmim2hv3c3omh" path="res://src/levels/level_02/objects/cargo_crate.tscn" id="scene_objects_cargo_crate"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/objects/freight_shuttle.tscn" id="scene_objects_freight_shuttle"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/objects/industrial_ledge.tscn" id="scene_objects_industrial_ledge"]
@@ -35,6 +38,7 @@
 [ext_resource type="PackedScene" path="res://src/levels/level_02/props/tank_ac3.tscn" id="scene_props_tank_ac3"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/props/tank_efg2.tscn" id="scene_props_tank_efg2"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/props/transformer.tscn" id="scene_props_transformer"]
+[ext_resource type="PackedScene" path="res://src/world/gates/reinforcement_gate.tscn" id="scene_reinforcement_gate"]
 [ext_resource type="Script" uid="uid://dhvyc8djtvrj7" path="res://src/levels/level_02/objects/day_night_transition.gd" id="script_day_night_transition"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_transition"]
@@ -194,20 +198,21 @@ size = Vector2(64, 1600)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ukmyu"]
 size = Vector2(14000, 300)
 
-[sub_resource type="RectangleShape2D" id="Shape_exit"]
-size = Vector2(90, 220)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_business_bar_bg"]
+bg_color = Color(0.055, 0.035, 0.03, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.38, 0.19, 0.09, 1)
 
-[sub_resource type="StyleBoxFlat" id="Style_panel"]
-content_margin_left = 32.0
-content_margin_top = 32.0
-content_margin_right = 32.0
-content_margin_bottom = 32.0
-bg_color = Color(0.047, 0.039, 0.031, 0.97)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.9, 0.65, 0.25, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_business_bar_fill"]
+bg_color = Color(0.86, 0.27, 0.08, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.62, 0.18, 1)
 
 [node name="Level02" type="Node2D" unique_id=1411401640]
 texture_filter = 1
@@ -581,21 +586,10 @@ shape = SubResource("RectangleShape2D_ukmyu")
 
 [node name="Exit" type="Node2D" parent="World" unique_id=899740027]
 
-[node name="LevelExit" parent="World/Exit" unique_id=1446590263 instance=ExtResource("35_uu3hc")]
+[node name="BossGate" parent="World/Exit" unique_id=1446590263 instance=ExtResource("43_bossgate")]
 position = Vector2(12640, 640)
-
-[node name="Shape" parent="World/Exit/LevelExit" index="0" unique_id=883090496]
-shape = SubResource("Shape_exit")
-
-[node name="Panel" parent="World/Exit/LevelExit/Completion" parent_id_path=PackedInt32Array(1446590263, 186540910) index="0" unique_id=1125143492]
-theme_override_styles/panel = SubResource("Style_panel")
-
-[node name="Kicker" parent="World/Exit/LevelExit/Completion/Panel/Copy" parent_id_path=PackedInt32Array(1446590263, 1311729061) index="0" unique_id=986476268]
-visible = false
-text = ""
-
-[node name="Title" parent="World/Exit/LevelExit/Completion/Panel/Copy" parent_id_path=PackedInt32Array(1446590263, 1311729061) index="1" unique_id=1138247064]
-text = "LEVEL 2 COMPLETE"
+boss_arena_path = NodePath("../../BossArena")
+arena_spawn_path = NodePath("../../BossArena/PlayerSpawn")
 
 [node name="ExitFrame" type="Sprite2D" parent="World/Exit" unique_id=2120232512]
 position = Vector2(12640, 640)
@@ -608,6 +602,111 @@ position = Vector2(12640, 520)
 scale = Vector2(2, 2)
 texture = ExtResource("37_07213")
 offset = Vector2(0, -9.5)
+
+[node name="BossArena" type="Node2D" parent="World" unique_id=-982962415]
+position = Vector2(20000, 0)
+script = ExtResource("44_bossarena")
+
+[node name="ArenaFoundation" type="Polygon2D" parent="World/BossArena" unique_id=522792649]
+z_index = -2
+color = Color(0.07, 0.12, 0.2, 1)
+polygon = PackedVector2Array(0, 640, 1600, 640, 1600, 1152, 0, 1152)
+
+[node name="FloorTiles" type="TileMapLayer" parent="World/BossArena" unique_id=-982962414]
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAAAAAoAAAAAAAAAAAAAAAsAAAAAAAEAAAAAAAwAAAAAAAEAAAAAAA0AAAAAAAEAAAAAAA4AAAAAAAEAAAAAAA8AAAAAAAEAAAAAABAAAAAAAAEAAAAAABEAAAAAAAEAAAAAABIAAAAAAAEAAAABAAoAAAABAAAAAAABAAsAAAABAAEAAAABAAwAAAAEAAQAAAABAA0AAAABAAEAAAABAA4AAAABAAEAAAABAA8AAAABAAEAAAABABAAAAABAAEAAAABABEAAAABAAEAAAABABIAAAABAAEAAAACAAoAAAABAAAAAAACAAsAAAABAAEAAAACAAwAAAAEAAQAAAACAA0AAAABAAEAAAACAA4AAAABAAEAAAACAA8AAAAEAAQAAAACABAAAAABAAEAAAACABEAAAABAAEAAAACABIAAAABAAEAAAADAAoAAAABAAAAAAADAAsAAAABAAEAAAADAAwAAAABAAEAAAADAA0AAAABAAEAAAADAA4AAAAEAAQAAAADAA8AAAABAAEAAAADABAAAAABAAEAAAADABEAAAABAAEAAAADABIAAAABAAEAAAAEAAoAAAABAAAAAAAEAAsAAAABAAEAAAAEAAwAAAABAAEAAAAEAA0AAAABAAEAAAAEAA4AAAABAAEAAAAEAA8AAAABAAEAAAAEABAAAAABAAEAAAAEABEAAAABAAEAAAAEABIAAAABAAEAAAAFAAoAAAABAAAAAAAFAAsAAAABAAEAAAAFAAwAAAABAAEAAAAFAA0AAAABAAEAAAAFAA4AAAABAAEAAAAFAA8AAAABAAEAAAAFABAAAAABAAEAAAAFABEAAAABAAEAAAAFABIAAAABAAEAAAAGAAoAAAABAAAAAAAGAAsAAAABAAEAAAAGAAwAAAAEAAQAAAAGAA0AAAABAAEAAAAGAA4AAAABAAEAAAAGAA8AAAAEAAQAAAAGABAAAAABAAEAAAAGABEAAAABAAEAAAAGABIAAAABAAEAAAAHAAoAAAABAAAAAAAHAAsAAAABAAEAAAAHAAwAAAABAAEAAAAHAA0AAAABAAEAAAAHAA4AAAABAAEAAAAHAA8AAAABAAEAAAAHABAAAAABAAEAAAAHABEAAAABAAEAAAAHABIAAAABAAEAAAAIAAoAAAABAAAAAAAIAAsAAAABAAEAAAAIAAwAAAABAAEAAAAIAA0AAAABAAEAAAAIAA4AAAABAAEAAAAIAA8AAAABAAEAAAAIABAAAAABAAEAAAAIABEAAAABAAEAAAAIABIAAAABAAEAAAAJAAoAAAABAAAAAAAJAAsAAAABAAEAAAAJAAwAAAABAAEAAAAJAA0AAAABAAEAAAAJAA4AAAAEAAQAAAAJAA8AAAABAAEAAAAJABAAAAABAAEAAAAJABEAAAABAAEAAAAJABIAAAABAAEAAAAKAAoAAAABAAAAAAAKAAsAAAABAAEAAAAKAAwAAAABAAEAAAAKAA0AAAABAAEAAAAKAA4AAAABAAEAAAAKAA8AAAABAAEAAAAKABAAAAABAAEAAAAKABEAAAABAAEAAAAKABIAAAABAAEAAAALAAoAAAABAAAAAAALAAsAAAABAAEAAAALAAwAAAABAAEAAAALAA0AAAABAAEAAAALAA4AAAABAAEAAAALAA8AAAABAAEAAAALABAAAAABAAEAAAALABEAAAABAAEAAAALABIAAAABAAEAAAAMAAoAAAABAAAAAAAMAAsAAAABAAEAAAAMAAwAAAAEAAQAAAAMAA0AAAABAAEAAAAMAA4AAAABAAEAAAAMAA8AAAABAAEAAAAMABAAAAABAAEAAAAMABEAAAAEAAQAAAAMABIAAAABAAEAAAANAAoAAAABAAAAAAANAAsAAAABAAEAAAANAAwAAAABAAEAAAANAA0AAAABAAEAAAANAA4AAAABAAEAAAANAA8AAAAEAAQAAAANABAAAAABAAEAAAANABEAAAABAAEAAAANABIAAAABAAEAAAAOAAoAAAABAAAAAAAOAAsAAAABAAEAAAAOAAwAAAABAAEAAAAOAA0AAAABAAEAAAAOAA4AAAABAAEAAAAOAA8AAAABAAEAAAAOABAAAAABAAEAAAAOABEAAAABAAEAAAAOABIAAAABAAEAAAAPAAoAAAABAAAAAAAPAAsAAAABAAEAAAAPAAwAAAABAAEAAAAPAA0AAAABAAEAAAAPAA4AAAABAAEAAAAPAA8AAAABAAEAAAAPABAAAAABAAEAAAAPABEAAAABAAEAAAAPABIAAAABAAEAAAAQAAoAAAABAAAAAAAQAAsAAAABAAEAAAAQAAwAAAABAAEAAAAQAA0AAAABAAEAAAAQAA4AAAABAAEAAAAQAA8AAAAEAAQAAAAQABAAAAABAAEAAAAQABEAAAAEAAQAAAAQABIAAAABAAEAAAARAAoAAAABAAAAAAARAAsAAAABAAEAAAARAAwAAAABAAEAAAARAA0AAAABAAEAAAARAA4AAAAEAAQAAAARAA8AAAABAAEAAAARABAAAAABAAEAAAARABEAAAABAAEAAAARABIAAAABAAEAAAASAAoAAAABAAAAAAASAAsAAAAEAAQAAAASAAwAAAABAAEAAAASAA0AAAABAAEAAAASAA4AAAABAAEAAAASAA8AAAABAAEAAAASABAAAAABAAEAAAASABEAAAABAAEAAAASABIAAAABAAEAAAATAAoAAAABAAAAAAATAAsAAAABAAEAAAATAAwAAAABAAEAAAATAA0AAAABAAEAAAATAA4AAAABAAEAAAATAA8AAAABAAEAAAATABAAAAABAAEAAAATABEAAAABAAEAAAATABIAAAABAAEAAAAUAAoAAAABAAAAAAAUAAsAAAABAAEAAAAUAAwAAAABAAEAAAAUAA0AAAABAAEAAAAUAA4AAAABAAEAAAAUAA8AAAABAAEAAAAUABAAAAABAAEAAAAUABEAAAABAAEAAAAUABIAAAABAAEAAAAVAAoAAAABAAAAAAAVAAsAAAAEAAQAAAAVAAwAAAABAAEAAAAVAA0AAAABAAEAAAAVAA4AAAABAAEAAAAVAA8AAAABAAEAAAAVABAAAAAEAAQAAAAVABEAAAABAAEAAAAVABIAAAABAAEAAAAWAAoAAAABAAAAAAAWAAsAAAABAAEAAAAWAAwAAAABAAEAAAAWAA0AAAABAAEAAAAWAA4AAAABAAEAAAAWAA8AAAABAAEAAAAWABAAAAABAAEAAAAWABEAAAABAAEAAAAWABIAAAABAAEAAAAXAAoAAAABAAAAAAAXAAsAAAABAAEAAAAXAAwAAAABAAEAAAAXAA0AAAABAAEAAAAXAA4AAAABAAEAAAAXAA8AAAABAAEAAAAXABAAAAABAAEAAAAXABEAAAABAAEAAAAXABIAAAABAAEAAAAYAAoAAAACAAAAAAAYAAsAAAACAAEAAAAYAAwAAAACAAEAAAAYAA0AAAACAAEAAAAYAA4AAAACAAEAAAAYAA8AAAACAAEAAAAYABAAAAACAAEAAAAYABEAAAACAAEAAAAYABIAAAACAAEAAAA=")
+tile_set = SubResource("TileSet_4ovkw")
+
+[node name="LeftWall" type="StaticBody2D" parent="World/BossArena" unique_id=-982962413]
+
+[node name="Shape" type="CollisionShape2D" parent="World/BossArena/LeftWall" unique_id=-982962412]
+position = Vector2(-58, 397)
+shape = SubResource("RectangleShape2D_a1py8")
+
+[node name="RightWall" type="StaticBody2D" parent="World/BossArena" unique_id=-982962411]
+
+[node name="Shape" type="CollisionShape2D" parent="World/BossArena/RightWall" unique_id=-982962410]
+position = Vector2(1650, 395)
+shape = SubResource("RectangleShape2D_a1py8")
+
+[node name="PlayerSpawn" type="Marker2D" parent="World/BossArena" unique_id=-982962409]
+position = Vector2(150, 640)
+
+[node name="Platforms" type="Node2D" parent="World/BossArena" unique_id=-982962408]
+
+[node name="StepOne" parent="World/BossArena/Platforms" unique_id=-982962407 instance=ExtResource("scene_objects_business_platform")]
+position = Vector2(365, 511)
+start_at = 0.15
+
+[node name="StepTwo" parent="World/BossArena/Platforms" unique_id=-982962406 instance=ExtResource("scene_objects_business_platform")]
+position = Vector2(681, 389)
+travel = Vector2(0, -150)
+speed = 100.0
+start_at = 0.7
+
+[node name="StepThree" parent="World/BossArena/Platforms" unique_id=-982962405 instance=ExtResource("scene_objects_business_platform")]
+position = Vector2(1071, 316)
+width_tiles = 4
+travel = Vector2(0, -130)
+speed = 95.0
+start_at = 0.4
+
+[node name="ArenaPlatform" parent="World/BossArena/Platforms" unique_id=-982962404 instance=ExtResource("scene_objects_business_platform")]
+position = Vector2(1329, 209)
+width_tiles = 6
+travel = Vector2(0, -80)
+speed = 85.0
+start_at = 0.9
+
+[node name="ReinforcementGate" parent="World/BossArena" unique_id=-982962401 instance=ExtResource("scene_reinforcement_gate")]
+visible = false
+position = Vector2(280, 640)
+
+[node name="FutureBossPosition" type="Marker2D" parent="World/BossArena" unique_id=-982962403]
+position = Vector2(1200, 640)
+
+[node name="BusinessBoss" parent="World/BossArena" unique_id=-982962402 instance=ExtResource("45_businessboss")]
+position = Vector2(1200, 640)
+
+[node name="Reinforcements" type="Node2D" parent="World/BossArena" unique_id=-982962400]
+
+[node name="BossUI" type="CanvasLayer" parent="World/BossArena" unique_id=36661521]
+layer = 30
+
+[node name="Panel" type="VBoxContainer" parent="World/BossArena/BossUI" unique_id=279058390]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 360.0
+offset_top = 34.0
+offset_right = -360.0
+offset_bottom = 92.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 7
+
+[node name="Title" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=1311121069]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.73, 0.34, 1)
+theme_override_fonts/font = ExtResource("26_8osm8")
+theme_override_font_sizes/font_size = 12
+text = "THE BUSINESS MAN"
+horizontal_alignment = 1
+
+[node name="BossHealth" type="ProgressBar" parent="World/BossArena/BossUI/Panel" unique_id=1846427198]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_business_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_business_bar_fill")
+value = 100.0
+show_percentage = false
+
+[node name="Result" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=1639477323]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("26_8osm8")
+theme_override_font_sizes/font_size = 12
+text = "BOSS DEFEATED"
+horizontal_alignment = 1
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1733786230]
 
@@ -774,4 +873,4 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [editable path="World/Platforms/CourtyardCollapse"]
-[editable path="World/Exit/LevelExit"]
+[editable path="Entities/Player"]

@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://ouevtjytkj6l" path="res://src/world/platforms/moving_platform.gd" id="1_move"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_boss/business_portal_platform.png" id="2_art"]
+
+[sub_resource type="RectangleShape2D" id="shape"]
+resource_local_to_scene = true
+size = Vector2(200, 24)
+
+[node name="BusinessPlatform" type="AnimatableBody2D"]
+texture_filter = 1
+collision_mask = 0
+script = ExtResource("1_move")
+size = Vector2(200, 24)
+travel = Vector2(0, -140)
+speed = 90.0
+one_way = true
+
+[node name="Art" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_art")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("shape")
+one_way_collision_margin = 16.0

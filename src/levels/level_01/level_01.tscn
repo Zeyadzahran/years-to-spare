@@ -30,7 +30,7 @@
 [ext_resource type="SpriteFrames" path="res://src/levels/level_01/trapped_sister_frames.tres" id="boss_sister_frames"]
 [ext_resource type="PackedScene" uid="uid://cyll8to4t86fg" path="res://src/world/platforms/slim_platform.tscn" id="boss_slim_platform"]
 [ext_resource type="PackedScene" path="res://src/world/platforms/stair_step.tscn" id="boss_stair_step"]
-[ext_resource type="PackedScene" path="res://src/world/gates/boss_gate.tscn" id="compact_15_53ogl"]
+[ext_resource type="PackedScene" path="res://src/world/gates/level_01_end_gate.tscn" id="compact_15_53ogl"]
 [ext_resource type="Script" uid="uid://ddet4imgenslm" path="res://src/ui/tutorial/guide_card.gd" id="guide_card"]
 [ext_resource type="PackedScene" uid="uid://yfrmkarwqwn4" path="res://src/world/platforms/moving_platform.tscn" id="late_2_3h2n3"]
 [ext_resource type="PackedScene" uid="uid://drfu0r2a1beyg" path="res://src/world/platforms/platform.tscn" id="late_4_uf5ar"]
@@ -998,8 +998,8 @@ position = Vector2(16660, 59)
 [node name="Gates" type="Node2D" parent="World/SalvageYard" unique_id=1331770119]
 
 [node name="BossGate" parent="World/SalvageYard/Gates" unique_id=1745738029 instance=ExtResource("compact_15_53ogl")]
-position = Vector2(17053, 157)
-scale = Vector2(1, 1.3)
+position = Vector2(17049, 138)
+scale = Vector2(0.769, 1)
 boss_arena_path = NodePath("../../../BossArena")
 arena_spawn_path = NodePath("../../../BossArena/PlayerSpawn")
 

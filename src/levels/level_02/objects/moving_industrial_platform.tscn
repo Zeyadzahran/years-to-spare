@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/levels/level_02/objects/moving_industrial_platform.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://src/levels/level_02/art/terrain/Tile_25.png" id="2_left"]
+[ext_resource type="Texture2D" path="res://src/levels/level_02/art/terrain/Tile_26.png" id="3_middle"]
+[ext_resource type="Texture2D" path="res://src/levels/level_02/art/terrain/Tile_27.png" id="4_right"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+size = Vector2(192, 24)
+
+[node name="MovingIndustrialPlatform" type="AnimatableBody2D"]
+texture_filter = 1
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_platform")
+one_way_collision = true
+one_way_collision_margin = 16.0
+
+[node name="Left" type="Sprite2D" parent="."]
+position = Vector2(-64, 32)
+scale = Vector2(2, 2)
+texture = ExtResource("2_left")
+
+[node name="Middle" type="Sprite2D" parent="."]
+texture_repeat = 2
+position = Vector2(0, 32)
+scale = Vector2(2, 2)
+texture = ExtResource("3_middle")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="Right" type="Sprite2D" parent="."]
+position = Vector2(64, 32)
+scale = Vector2(2, 2)
+texture = ExtResource("4_right")
