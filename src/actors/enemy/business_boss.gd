@@ -26,6 +26,7 @@ const BOSS_MUZZLE_FORWARD := 52.0
 signal defeated
 
 var _in_intermission := false
+var _teleporting := false
 
 func _init() -> void:
 	speed = 0.0
@@ -48,7 +49,7 @@ func _ready() -> void:
 	health.current = BOSS_HEALTH
 
 func _physics_process(delta: float) -> void:
-	if _in_intermission:
+	if _in_intermission or _teleporting:
 		velocity = Vector2.ZERO
 		return
 	super._physics_process(delta)
@@ -107,6 +108,34 @@ func resume_after_intermission() -> void:
 	_state_elapsed = 0.0
 	_attack_fired = false
 	_set_animation(&"idle")
+
+
+## The elevated decks are not a safe shooting perch. The arena calls this when
+## the player settles on one: the same blue disappearance effect used for a
+## health-break teleport plays, then the boss relocates onto that deck.
+func teleport_to_platform(destination: Vector2) -> void:
+	if _in_intermission or _teleporting or state == &"Dead":
+		return
+	_teleporting = true
+	velocity = Vector2.ZERO
+	collision_layer = 0
+	collision_mask = 0
+	var effect := DISAPPEAR_SCENE.instantiate() as BusinessDisappearEffect
+	get_parent().add_child(effect)
+	effect.global_position = global_position + Vector2(0.0, -62.0)
+	visible = false
+	await effect.finished
+	if state == &"Dead":
+		return
+	global_position = destination
+	visible = true
+	collision_layer = 4
+	collision_mask = 3
+	state = &"Idle"
+	_state_elapsed = 0.0
+	_attack_fired = false
+	_set_animation(&"idle")
+	_teleporting = false
 
 func _on_died() -> void:
 	if state == &"Dead":
