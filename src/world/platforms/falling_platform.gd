@@ -33,6 +33,8 @@ func _physics_process(delta: float) -> void:
 	if is_zero_approx(scaled):
 		return
 	match _state:
+		State.READY:
+			_check_grounded_rider()
 		State.WARNING:
 			_elapsed += scaled
 			($Art as Sprite2D).modulate = tint.lerp(Color(1.0, 0.42, 0.22), 0.35 + sin(_elapsed * 24.0) * 0.2)
@@ -56,6 +58,23 @@ func _on_rider_entered(body: Node2D) -> void:
 	if _state == State.READY and body.is_in_group(&"player") and body.is_on_floor():
 		_state = State.WARNING
 		_elapsed = 0.0
+
+
+## body_entered alone can miss a player who is still airborne at the instant
+## they cross into the zone - jumping onto the deck rather than walking onto
+## it from level ground. The signal only fires once on entry, so nothing
+## rechecks is_on_floor() once they actually land a frame or two later.
+## Polling the zone's own overlap list while READY catches that case too,
+## anywhere across its width, without changing how an already-grounded
+## entry triggers.
+func _check_grounded_rider() -> void:
+	if TimeService.is_rewinding():
+		return
+	for body in ($RiderZone as Area2D).get_overlapping_bodies():
+		if body.is_in_group(&"player") and body.is_on_floor():
+			_state = State.WARNING
+			_elapsed = 0.0
+			return
 
 
 ## The whole cycle - warning, fall, absence, return - is a position, a state
