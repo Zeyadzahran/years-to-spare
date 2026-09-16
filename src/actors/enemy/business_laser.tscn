@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/actors/enemy/bullet.gd" id="1_bullet"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/laser_bullet.png" id="2_laser"]
+[ext_resource type="AudioStream" uid="uid://cs8q67g8a2077" path="res://assets/sounds/bullet-in-flesh.mp3" id="3_hit"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_laser"]
+size = Vector2(34, 8)
+
+[node name="BusinessLaser" type="Area2D"]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_bullet")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_laser")
+scale = Vector2(0.55, 0.55)
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_laser")
+
+[node name="ImpactAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_hit")
+volume_db = 2.0

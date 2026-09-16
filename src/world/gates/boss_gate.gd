@@ -1,16 +1,17 @@
 class_name BossGate
 extends Area2D
-## A one-way threshold into the final arena authored inside Level 1. Entering
-## its arch locks the player, blooms the gate, fades the screen, and carries the
-## same Player into the hidden chamber beyond the level's final gap.
+## A one-way threshold into a level's final boss arena, authored inline in the
+## level's own scene (see BossArena in level_02.tscn). Entering its arch locks
+## the player, blooms the gate, fades the screen, and carries the same Player
+## into the arena beyond, instead of ending the level the way LevelExit does.
 
 @export_node_path("Node2D") var boss_arena_path: NodePath
 @export_node_path("Marker2D") var arena_spawn_path: NodePath
 
 const ARENA_CAMERA_ZOOM := Vector2(0.75, 0.75)
 
-const REST_SCALE := Vector2(0.14, 0.14)
-const ACTIVE_SCALE := Vector2(0.15, 0.15)
+@export var rest_art_scale := Vector2(0.70, 0.70)
+@export var active_art_scale := Vector2(0.76, 0.76)
 
 var _transitioning := false
 
@@ -37,10 +38,13 @@ func _enter_gate(player: Player, boss_arena: Node2D, arena_spawn: Marker2D) -> v
 	player.powers.cancel()
 	player.velocity = Vector2.ZERO
 	player.process_mode = Node.PROCESS_MODE_DISABLED
+	# Restart the one-shot burst so the entry always gets a visible spark shower,
+	# even if a previous particle cycle has just finished.
+	$Effects.restart()
 	$Effects.emitting = true
 
 	var charge := create_tween().set_parallel(true)
-	charge.tween_property($Art, ^"scale", ACTIVE_SCALE, 0.32).set_trans(Tween.TRANS_BACK)
+	charge.tween_property($Art, ^"scale", active_art_scale, 0.32).set_trans(Tween.TRANS_BACK)
 	charge.tween_property($Art, ^"modulate", Color(1.8, 1.35, 0.65, 1.0), 0.32)
 	charge.tween_property($Glow, ^"modulate:a", 0.72, 0.32)
 	await charge.finished
@@ -78,7 +82,7 @@ func _enter_gate(player: Player, boss_arena: Node2D, arena_spawn: Marker2D) -> v
 	if camera != null:
 		camera.position_smoothing_enabled = true
 	$Effects.emitting = false
-	$Art.scale = REST_SCALE
+	$Art.scale = rest_art_scale
 	$Art.modulate = Color.WHITE
 	$Glow.modulate.a = 0.0
 
@@ -87,7 +91,7 @@ func _abort_transition(player: Player) -> void:
 	player.process_mode = Node.PROCESS_MODE_INHERIT
 	$Transition/Fade.color.a = 0.0
 	$Effects.emitting = false
-	$Art.scale = REST_SCALE
+	$Art.scale = rest_art_scale
 	$Art.modulate = Color.WHITE
 	$Glow.modulate.a = 0.0
 	_transitioning = false
