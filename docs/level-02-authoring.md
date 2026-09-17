@@ -230,3 +230,11 @@ artifacts and may predate the latest scene edits.
 now uses the reusable object scenes.
 It overwrites the saved scene and tileset when explicitly run with `--replace`;
 keep manual edits in the scene and do not regenerate it during normal editing.
+
+## Finale
+
+Winning the Owner fight runs the existing platform drop and walk to the
+parents chamber, then leaves for `src/cinematics/finale/finale.tscn`: the
+four `assets/cut-scene-l02` stills in numbered order (freed, happy, tired,
+going away), then a black `THE END` card. Any press skips the stills to the
+card; a press on the card returns to the main menu.
