@@ -444,6 +444,7 @@ func rewind_capture() -> Array:
 		_hurt_from, _flash, health.current, sprite.animation, sprite.frame,
 		sprite.frame_progress, collision_layer, collision_mask,
 		[scale, _spawn_from, _spawn_to, _spawn_y],
+		sprite.is_playing(),
 	]
 
 
@@ -460,6 +461,13 @@ func rewind_apply(saved: Array) -> void:
 	health.restore_to(saved[8])
 	if sprite.sprite_frames != null and sprite.sprite_frames.has_animation(saved[9]):
 		sprite.animation = saved[9]
+		# A completed non-looping clip stays stopped even when its frame is
+		# restored. Resume its saved playback before restoring that exact pose.
+		# Manually sampled animations (the boss) remain paused as recorded.
+		if saved[15]:
+			sprite.play()
+		else:
+			sprite.pause()
 		sprite.set_frame_and_progress(saved[10], saved[11])
 	sprite.flip_h = facing < 0
 	sprite.modulate = Color.WHITE.lerp(FLASH_TINT, _flash)
