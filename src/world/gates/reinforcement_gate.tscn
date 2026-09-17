@@ -1,24 +1,27 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://src/world/gates/reinforcement_gate.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_boss/business_portal_gate.png" id="2_gate"]
+[ext_resource type="AudioStream" path="res://assets/sounds/cad_owner/portal_open.wav" id="3_audio"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_boss/business_portal_gate_refined.png" id="2_art"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_glow"]
-blend_mode = 1
+[ext_resource type="AudioStream" path="res://assets/sounds/cad_owner/enemy_spawn.wav" id="4_spawn"]
 
 [node name="ReinforcementGate" type="Node2D"]
+z_index = -1
+texture_filter = 1
 script = ExtResource("1_script")
 
-[node name="Glow" type="Sprite2D" parent="."]
-z_index = -1
-position = Vector2(0, -104)
-scale = Vector2(0.72, 0.72)
-material = SubResource("CanvasItemMaterial_glow")
-modulate = Color(0.25, 0.75, 2, 0.48)
-texture = ExtResource("2_gate")
-
 [node name="Art" type="Sprite2D" parent="."]
-z_index = 8
-position = Vector2(0, -104)
-scale = Vector2(0.72, 0.72)
-texture = ExtResource("2_gate")
+z_index = -1
+texture = ExtResource("2_art")
+scale = Vector2(0.15, 0.15)
+position = Vector2(0, -98)
+
+[node name="PortalAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_audio")
+volume_db = -4.0
+
+[node name="SpawnAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_spawn")
+volume_db = -1.0
+max_polyphony = 2

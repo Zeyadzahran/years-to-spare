@@ -99,6 +99,14 @@ func _apply_debug_spawn(player: Node2D) -> void:
 	var marker := get_node_or_null(debug_spawn_path) as Marker2D
 	if marker != null:
 		player.global_position = marker.global_position
+		# Spawning past a boss gate must also initialize its encounter and camera.
+		var arena := marker.get_parent()
+		if arena.has_method(&"prepare_gate_entry"):
+			arena.call(&"prepare_gate_entry", player)
+			var camera := player.get_node_or_null(^"Camera2D") as Camera2D
+			if camera != null:
+				camera.zoom = BossGate.ARENA_CAMERA_ZOOM
+				camera.reset_smoothing()
 
 
 ## Units downed earlier in the run do not get up again for a retry. Done before
@@ -137,7 +145,8 @@ func _on_enemy_revived(enemy: Node2D) -> void:
 		GameState.revive_enemy(level_id, _tag(enemy))
 
 
-## Health runs out and he tries again from the marker - unless that was his
+## Health runs out and he tries again in the active final arena or from the
+## checkpoint elsewhere - unless that was his
 ## third try since the last full start, in which case a heart no longer
 ## covers it and the level starts over the way old age does. Years run out
 ## and there is nothing left to try with regardless: the marker, the bodies
@@ -151,4 +160,11 @@ func _on_player_died(of_old_age: bool) -> void:
 			GameState.run_age = player.age.age
 		if GameState.lose_heart() <= 0:
 			GameState.clear_run_progress()
+		else:
+			# An active final fight keeps its live actors and wave progress.
+			# Other deaths still use the existing checkpoint reload.
+			var arena := get_node_or_null(^"World/BossArena")
+			if arena != null and arena.has_method(&"respawn_player") \
+					and arena.call(&"respawn_player", player):
+				return
 	reload()

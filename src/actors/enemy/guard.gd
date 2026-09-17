@@ -27,7 +27,7 @@ func _init() -> void:
 	speed = 240.0
 	detection_range = 430.0
 	attack_range = 58.0
-	damage = 34.0
+	damage = 14.0
 	attack_duration = 0.56
 	attack_hit_time = 0.25
 	attack_recovery = 0.6

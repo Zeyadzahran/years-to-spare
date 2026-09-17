@@ -83,6 +83,10 @@ var _spawn_y := 0.0
 var _state_elapsed := 0.0
 var _attack_fired := false
 var _hurt_from := 1
+
+const SPAWN_DURATION := 0.6
+var _spawn_from := Vector2.ZERO
+var _spawn_to := Vector2.ZERO
 ## Blown white on contact and cooling off over the next tenth of a second, so a
 ## blow that landed is legible on the unit itself and not only on its health.
 var _flash := 0.0
@@ -145,9 +149,43 @@ func _physics_process(delta: float) -> void:
 	var scaled := world_delta(delta)
 	if is_zero_approx(scaled):
 		return
+	if state == &"Spawning":
+		_tick_spawn(scaled)
+		return
 	apply_gravity(scaled)
 	_tick(scaled)
 	move_in_time()
+
+
+## Arrival is a real state, not a tween competing with gravity and combat.
+func begin_spawn(from: Vector2, to: Vector2) -> void:
+	_spawn_from = from
+	_spawn_to = to
+	_spawn_y = to.y
+	global_position = from
+	velocity = Vector2.ZERO
+	_change_state(&"Spawning")
+	_set_animation(&"idle")
+	collision_layer = 0
+	collision_mask = 0
+	_sync_spawn()
+
+func _tick_spawn(delta: float) -> void:
+	_state_elapsed += delta
+	_sync_spawn()
+	if _state_elapsed >= SPAWN_DURATION:
+		collision_layer = 4
+		collision_mask = 3
+		_change_state(&"Idle")
+
+func _sync_spawn() -> void:
+	var progress := clampf(_state_elapsed / SPAWN_DURATION, 0.0, 1.0)
+	global_position = _spawn_from.lerp(_spawn_to, smoothstep(0.0, 1.0, progress))
+	scale = Vector2.ONE * lerpf(0.15, 1.0, progress)
+
+func receive_player_hit(base_damage: float, source: Node) -> void:
+	if state != &"Spawning" and not TimeService.is_rewinding():
+		health.take_damage(base_damage, source)
 
 
 ## Art and sound run on world time, the same pairing Hazard uses. The sprite
@@ -405,6 +443,7 @@ func rewind_capture() -> Array:
 		global_position, velocity, facing, state, _state_elapsed, _attack_fired,
 		_hurt_from, _flash, health.current, sprite.animation, sprite.frame,
 		sprite.frame_progress, collision_layer, collision_mask,
+		[scale, _spawn_from, _spawn_to, _spawn_y],
 	]
 
 
@@ -426,6 +465,10 @@ func rewind_apply(saved: Array) -> void:
 	sprite.modulate = Color.WHITE.lerp(FLASH_TINT, _flash)
 	collision_layer = saved[12]
 	collision_mask = saved[13]
+	scale = saved[14][0]
+	_spawn_from = saved[14][1]
+	_spawn_to = saved[14][2]
+	_spawn_y = saved[14][3]
 	visible = true
 	process_mode = Node.PROCESS_MODE_INHERIT
 

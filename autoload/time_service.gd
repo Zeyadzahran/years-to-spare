@@ -97,6 +97,16 @@ func reset() -> void:
 	_ghosts = null
 
 
+## One-way room transitions cannot restore their old gate state. Discard that
+## history and its retired bodies together; otherwise reset would register a
+## hidden corpse as a live track and let a later rewind resurrect it.
+func start_history_window() -> void:
+	for track in _tracks.values():
+		if track.retired_at >= 0.0 and is_instance_valid(track.node):
+			track.node.queue_free()
+	reset()
+
+
 ## What a rewindable node calls instead of `queue_free()` when it is done. With
 ## nothing recording it is exactly that; otherwise the node is hidden and kept
 ## until its last snapshot has aged out of the buffer.

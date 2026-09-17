@@ -233,6 +233,28 @@ func is_down() -> bool:
 	return states.current_name == &"Dead"
 
 
+## A remaining heart returns him to the same live encounter. Age and power
+## cooldowns stay spent; only health, movement and the death pose reset.
+func respawn_at(destination: Vector2) -> void:
+	powers.cancel()
+	global_position = destination
+	velocity = Vector2.ZERO
+	input_dir = 0.0
+	_coyote_left = 0.0
+	_jump_buffered = 0.0
+	_attack_buffered = 0.0
+	_attack_hit_done = false
+	_rewound_crouched = false
+	set_crouched(false)
+	clear_combat_effects()
+	health.restore_to(health.max_health)
+	states.travel(&"Idle")
+	var camera := get_node_or_null(^"Camera2D") as Camera2D
+	if camera != null:
+		camera.reset_smoothing()
+		camera.force_update_scroll()
+
+
 ## Whether the boy is currently in the held duck, standing pose or creeping.
 ## A Gunner reads this to decide whether to fire the standing shot or drop to
 ## a knee for the low one - ducking shrinks the boy's box but not where he

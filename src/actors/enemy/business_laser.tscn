@@ -1,18 +1,32 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://src/actors/enemy/bullet.gd" id="1_bullet"]
+[ext_resource type="Script" path="res://src/actors/enemy/business_laser.gd" id="1_bullet"]
 [ext_resource type="Texture2D" path="res://assets/sprites/business_man/laser_bullet.png" id="2_laser"]
-[ext_resource type="AudioStream" uid="uid://cs8q67g8a2077" path="res://assets/sounds/bullet-in-flesh.mp3" id="3_hit"]
+[ext_resource type="AudioStream" path="res://assets/sounds/boss/impactGeneric_light_003.ogg" id="3_hit"]
+
+[sub_resource type="Shader" id="Shader_laser_glow"]
+code = "shader_type canvas_item;
+void fragment() {
+    vec4 texel = texture(TEXTURE, UV);
+    float light = max(texel.r, max(texel.g, texel.b));
+    COLOR = vec4(texel.rgb, texel.a * smoothstep(0.12, 0.65, light));
+}
+"
+
+[sub_resource type="ShaderMaterial" id="Material_laser_glow"]
+shader = SubResource("Shader_laser_glow")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_laser"]
 size = Vector2(34, 8)
 
 [node name="BusinessLaser" type="Area2D"]
+z_index = 6
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("1_bullet")
 
 [node name="Sprite" type="Sprite2D" parent="."]
+material = SubResource("Material_laser_glow")
 texture = ExtResource("2_laser")
 scale = Vector2(0.55, 0.55)
 
@@ -21,4 +35,9 @@ shape = SubResource("RectangleShape2D_laser")
 
 [node name="ImpactAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_hit")
-volume_db = 2.0
+volume_db = -3.0
+
+[node name="Sweep" type="ShapeCast2D" parent="."]
+shape = SubResource("RectangleShape2D_laser")
+collision_mask = 3
+target_position = Vector2(0, 0)
