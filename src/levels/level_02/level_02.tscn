@@ -226,7 +226,7 @@ texture_filter = 1
 script = ExtResource("1_g5px2")
 level_id = &"phase_2"
 debug_keep_editor_spawn = true
-debug_spawn_path = NodePath("World/BossArena/PlayerSpawn")
+debug_spawn_path = NodePath("")
 
 [node name="Background" parent="." unique_id=775539332 instance=ExtResource("scene_background")]
 
