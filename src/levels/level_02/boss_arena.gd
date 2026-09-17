@@ -55,6 +55,9 @@ func _ready() -> void:
 
 func prepare_gate_entry(entry_player: Player) -> void:
 	player = entry_player
+	var day_night := get_node_or_null(^"../../DayNightTransition")
+	if day_night != null:
+		day_night.restore_daylight()
 	_configure_camera()
 	if stage == Stage.DORMANT:
 		TimeService.start_history_window()

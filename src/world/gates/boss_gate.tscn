@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://src/world/gates/boss_gate.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_boss/business_portal_gate.png" id="2_gate"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_boss/business_portal_gate_refined.png" id="2_gate"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 size = Vector2(122, 190)
@@ -13,19 +13,21 @@ blend_mode = 1
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_script")
+rest_art_scale = Vector2(0.14, 0.14)
+active_art_scale = Vector2(0.152, 0.152)
 
 [node name="Glow" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(0, -101)
-scale = Vector2(0.72, 0.72)
+position = Vector2(0, -91.35)
+scale = Vector2(0.144, 0.144)
 material = SubResource("CanvasItemMaterial_glow")
 modulate = Color(0.25, 0.75, 2, 0)
 texture = ExtResource("2_gate")
 
 [node name="Art" type="Sprite2D" parent="."]
 z_index = 2
-position = Vector2(0, -101)
-scale = Vector2(0.70, 0.70)
+position = Vector2(0, -91.35)
+scale = Vector2(0.14, 0.14)
 texture = ExtResource("2_gate")
 
 [node name="Shape" type="CollisionShape2D" parent="."]
@@ -63,4 +65,3 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0.025, 0.018, 0.012, 0)
-
