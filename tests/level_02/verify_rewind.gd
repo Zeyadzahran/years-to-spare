@@ -76,7 +76,7 @@ func _ready() -> void:
 	check(player.is_physics_processing(), "Player physics left off after the rewind")
 	print("REWIND ground start=%s far=%s back=%s" % [start, far, player.position])
 
-	# 2. A death rewound is no death. Killed outright mid-run, E pressed during
+	# 2. A death rewound is no death. Killed outright mid-run, L pressed during
 	#    the collapse: he stands back up, the heart stays, the level stays.
 	await frames(int(TimePowers.WIND_UP * 60.0) + 400)
 	player.position = Vector2(600, 640)

@@ -153,7 +153,7 @@ func _process(_delta: float) -> void:
 	if GameState.has_ability(GameState.ABILITY_STOP):
 		ready += "  [K] STOP"
 	if GameState.has_ability(GameState.ABILITY_REWIND):
-		ready += "  [E] REWIND"
+		ready += "  [L] REWIND"
 	time_label.text = "TIME" + ready if not ready.is_empty() else "TIME  LOCKED"
 
 
@@ -184,6 +184,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_options_pressed() -> void:
 	if _level_complete or is_instance_valid(_options_panel):
+		return
+	if is_instance_valid(_player) and _player.is_down():
 		return
 	_options_panel = OPTIONS_SCENE.instantiate()
 	_options_panel.process_mode = Node.PROCESS_MODE_ALWAYS

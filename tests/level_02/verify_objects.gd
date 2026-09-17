@@ -1,6 +1,7 @@
 extends Node
 ## Instance-specific sizes must never mutate another object's shared shape resource.
 const OBJECTS := "res://src/levels/level_02/objects/"
+const PulseTrapScript := preload("res://src/levels/level_02/objects/pulse_trap.gd")
 var failures := 0
 
 func check(ok: bool, message: String) -> void:
@@ -13,6 +14,55 @@ func create(file: String) -> Node2D:
 	object.process_mode = Node.PROCESS_MODE_DISABLED
 	add_child(object)
 	return object
+
+func verify_frozen_pulse() -> void:
+	var pulse := create("pulse_trap")
+	var nearby_player := Player.new()
+	var emitter := pulse.get_node("Emitter") as AnimatedSprite2D
+	TimeService.mode = TimeService.Mode.STOPPED
+	pulse._on_proximity_entered(nearby_player)
+	pulse._physics_process(1.0)
+	check(not emitter.visible and pulse._state == PulseTrapScript.State.HIDDEN,
+		"Approaching a frozen trap triggered its warning or emergence")
+	pulse._on_proximity_exited(nearby_player)
+	TimeService.mode = TimeService.Mode.NORMAL
+	pulse._physics_process(1.0)
+	check(not emitter.visible and not pulse.monitoring,
+		"Passing a frozen trap queued a strike after leaving")
+
+	TimeService.mode = TimeService.Mode.STOPPED
+	pulse._on_proximity_entered(nearby_player)
+	TimeService.mode = TimeService.Mode.NORMAL
+	pulse._physics_process(pulse.warning_time * 0.5)
+	check(pulse._state == PulseTrapScript.State.WARNING, "Trap did not warn after time resumed")
+	TimeService.mode = TimeService.Mode.STOPPED
+	pulse._physics_process(1.0)
+	check(pulse._state == PulseTrapScript.State.WARNING and not emitter.visible,
+		"Frozen warning advanced to emergence")
+	TimeService.mode = TimeService.Mode.NORMAL
+	pulse._physics_process(pulse.warning_time)
+	pulse._physics_process(pulse.emerge_time * 0.5)
+	var stopped_position := emitter.position
+	TimeService.mode = TimeService.Mode.STOPPED
+	pulse._physics_process(1.0)
+	check(emitter.position == stopped_position and not pulse.monitoring,
+		"Trap finished emerging while time was stopped")
+	TimeService.mode = TimeService.Mode.NORMAL
+	pulse._physics_process(pulse.emerge_time)
+	check(pulse.monitoring, "Trap did not finish emerging after time resumed")
+	pulse._on_proximity_exited(nearby_player)
+	pulse._physics_process(pulse.retract_time * 0.5)
+	stopped_position = emitter.position
+	TimeService.mode = TimeService.Mode.STOPPED
+	pulse._on_proximity_entered(nearby_player)
+	pulse._physics_process(1.0)
+	check(emitter.position == stopped_position and not pulse.monitoring,
+		"Re-entering a frozen retracting trap snapped it above ground")
+	pulse._on_proximity_exited(nearby_player)
+	TimeService.mode = TimeService.Mode.NORMAL
+	pulse._physics_process(pulse.retract_time)
+	check(not emitter.visible, "Trap did not finish retracting after time resumed")
+	nearby_player.free()
 
 func _ready() -> void:
 	var ledge := create("industrial_ledge")
@@ -87,6 +137,7 @@ func _ready() -> void:
 	check(sheet.frame == 1, "Original Sprite2D emitter did not animate during time stop")
 	legacy_pulse._physics_process(0.2)
 	check(sheet.frame == 1, "Original Sprite2D animation did not wrap its sprite sheet")
+	verify_frozen_pulse()
 	TimeService.reset()
 	var map := (load("res://src/levels/level_02/level_02.tscn") as PackedScene).instantiate()
 	# Do not enter the tree: this check must not start or reset a run.

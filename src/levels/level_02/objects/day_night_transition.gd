@@ -14,6 +14,7 @@ extends Area2D
 @export var night_fade_in: Array[NodePath] = []
 
 var _triggered := false
+var _transition: Tween
 
 
 func _ready() -> void:
@@ -36,18 +37,37 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _run_transition() -> void:
 	var canvas_modulate := get_node_or_null(canvas_modulate_path) as CanvasModulate
-	var tween := create_tween()
-	tween.set_parallel(true)
+	_transition = create_tween().set_parallel(true)
 	if canvas_modulate != null:
-		tween.tween_property(canvas_modulate, ^"color", night_color, duration)
+		_transition.tween_property(canvas_modulate, ^"color", night_color, duration)
 	for path in day_fade_out:
 		var node := get_node_or_null(path) as CanvasItem
 		if node != null:
-			tween.tween_property(node, ^"modulate:a", 0.0, duration)
+			_transition.tween_property(node, ^"modulate:a", 0.0, duration)
 	for path in night_fade_in:
 		var node := get_node_or_null(path) as CanvasItem
 		if node != null:
-			tween.tween_property(node, ^"modulate:a", 1.0, duration)
+			_transition.tween_property(node, ^"modulate:a", 1.0, duration)
+
+
+## The one-way boss gate calls this under its opaque fade. Keep the saved
+## checkpoint's night flag intact so a later level reload restores that area.
+func restore_daylight() -> void:
+	if _transition != null and _transition.is_valid():
+		_transition.kill()
+	_triggered = true
+	GameState.night_active = false
+	var canvas_modulate := get_node_or_null(canvas_modulate_path) as CanvasModulate
+	if canvas_modulate != null:
+		canvas_modulate.color = Color.WHITE
+	for path in day_fade_out:
+		var node := get_node_or_null(path) as CanvasItem
+		if node != null:
+			node.modulate.a = 1.0
+	for path in night_fade_in:
+		var node := get_node_or_null(path) as CanvasItem
+		if node != null:
+			node.modulate.a = 0.0
 
 
 ## Same end state _run_transition() tweens to, applied on the spot instead of

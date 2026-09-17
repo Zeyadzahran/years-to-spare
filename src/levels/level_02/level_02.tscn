@@ -13,7 +13,10 @@
 [ext_resource type="Script" uid="uid://df253iysytrqc" path="res://src/levels/level_02/boss_arena.gd" id="44_bossarena"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/business_boss.tscn" id="45_businessboss"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="61_lwmew"]
+[ext_resource type="AudioStream" uid="uid://7swm5qnofmyk" path="res://assets/sounds/cad_owner/death.wav" id="boss_death_sound"]
+[ext_resource type="Script" uid="uid://dl8wcshdpeoar" path="res://src/cinematics/cad_finale/cad_cinematic.gd" id="cad_cinematic"]
 [ext_resource type="Texture2D" uid="uid://bblgbn5kipusx" path="res://src/levels/level_02/art/terrain/CollapseFloor.png" id="collapse_floor_art"]
+[ext_resource type="Script" uid="uid://d2cg7uo8hyr8y" path="res://src/cinematics/cad_finale/parents_chamber.gd" id="parents_chamber"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/robot.tscn" id="robot_scene"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/background.tscn" id="scene_background"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/objects/moving_industrial_platform.tscn" id="scene_objects_business_platform"]
@@ -39,11 +42,6 @@
 [ext_resource type="PackedScene" path="res://src/levels/level_02/props/transformer.tscn" id="scene_props_transformer"]
 [ext_resource type="PackedScene" path="res://src/world/gates/reinforcement_gate.tscn" id="scene_reinforcement_gate"]
 [ext_resource type="Script" uid="uid://dhvyc8djtvrj7" path="res://src/levels/level_02/objects/day_night_transition.gd" id="script_day_night_transition"]
-
-[ext_resource type="Script" path="res://src/cinematics/cad_finale/parents_chamber.gd" id="parents_chamber"]
-[ext_resource type="Script" path="res://src/cinematics/cad_finale/cad_cinematic.gd" id="cad_cinematic"]
-
-[ext_resource type="AudioStream" path="res://assets/sounds/cad_owner/death.wav" id="boss_death_sound"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_transition"]
 size = Vector2(60, 2000)
@@ -185,11 +183,11 @@ tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_bwi4v")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_upctc"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ww0k"]
 resource_local_to_scene = true
 size = Vector2(224, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3wxbk"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7e6n"]
 resource_local_to_scene = true
 size = Vector2(224, 18)
 
@@ -227,7 +225,6 @@ texture_filter = 1
 script = ExtResource("1_g5px2")
 level_id = &"phase_2"
 debug_keep_editor_spawn = true
-debug_spawn_path = NodePath("World/BossArena/PlayerSpawn")
 
 [node name="Background" parent="." unique_id=775539332 instance=ExtResource("scene_background")]
 
@@ -264,10 +261,10 @@ position = Vector2(1393, 423)
 width_tiles = 4
 
 [node name="RoofStep" parent="World/Platforms" unique_id=773477504 instance=ExtResource("scene_objects_industrial_ledge")]
-position = Vector2(4292, 346)
+position = Vector2(4275, 380)
 
 [node name="RoofCache" parent="World/Platforms" unique_id=954767363 instance=ExtResource("scene_objects_industrial_ledge")]
-position = Vector2(3904, 255)
+position = Vector2(3951, 292)
 width_tiles = 5
 
 [node name="CourtyardRoof" parent="World/Platforms" unique_id=760408465 instance=ExtResource("scene_objects_industrial_ledge")]
@@ -293,13 +290,13 @@ scale = Vector2(1.0769231, 1.0769231)
 texture = ExtResource("collapse_floor_art")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse" index="1" unique_id=2101961067]
-shape = SubResource("RectangleShape2D_upctc")
+shape = SubResource("RectangleShape2D_8ww0k")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse/RiderZone" parent_id_path=PackedInt32Array(1699214882, 624621240) index="0" unique_id=314232447]
-shape = SubResource("RectangleShape2D_3wxbk")
+shape = SubResource("RectangleShape2D_p7e6n")
 
 [node name="DropPerch" parent="World/Platforms" unique_id=1606402365 instance=ExtResource("scene_objects_industrial_ledge")]
-position = Vector2(9391, 351)
+position = Vector2(9131, 458)
 width_tiles = 4
 
 [node name="SentryLedge" parent="World/Platforms" unique_id=193810651 instance=ExtResource("scene_objects_industrial_ledge")]
@@ -481,7 +478,7 @@ z_index = 1
 position = Vector2(9198, 640)
 
 [node name="TransitionGateway" parent="World/Decorations" unique_id=1166091817 instance=ExtResource("scene_objects_industrial_ledge")]
-position = Vector2(9150, 250)
+position = Vector2(9559, 351)
 width_tiles = 6
 
 [node name="CeilingPipeLeft" parent="World/Decorations" unique_id=1875885139 instance=ExtResource("scene_props_red_pipe")]
@@ -558,7 +555,7 @@ position = Vector2(1401, 423)
 position = Vector2(2819, 574)
 
 [node name="RoofCache" parent="World/Supplies" unique_id=701423580 instance=ExtResource("scene_objects_supply_chest")]
-position = Vector2(3911, 255)
+position = Vector2(3952, 292)
 
 [node name="CourtyardCache" parent="World/Supplies" unique_id=442562108 instance=ExtResource("scene_objects_supply_chest")]
 position = Vector2(7012, 421)
@@ -610,11 +607,11 @@ offset = Vector2(0, -17.5)
 position = Vector2(20000, 0)
 script = ExtResource("44_bossarena")
 
-[node name="DeathAudio" type="AudioStreamPlayer" parent="World/BossArena"]
+[node name="DeathAudio" type="AudioStreamPlayer" parent="World/BossArena" unique_id=122083983]
 stream = ExtResource("boss_death_sound")
 volume_db = -1.0
 
-[node name="Cinematic" type="Node" parent="World/BossArena"]
+[node name="Cinematic" type="Node" parent="World/BossArena" unique_id=1441122569]
 script = ExtResource("cad_cinematic")
 
 [node name="ArenaFoundation" type="Polygon2D" parent="World/BossArena" unique_id=1919157570]
@@ -668,7 +665,7 @@ position = Vector2(150, 640)
 position = Vector2(241, 518)
 start_at = 0.15
 
-[node name="LeftSupply" parent="World/BossArena/Platforms/StepOne" instance=ExtResource("scene_objects_supply_chest")]
+[node name="LeftSupply" parent="World/BossArena/Platforms/StepOne" unique_id=634296348 instance=ExtResource("scene_objects_supply_chest")]
 
 [node name="StepTwo" parent="World/BossArena/Platforms" unique_id=-982962406 instance=ExtResource("scene_objects_business_platform")]
 position = Vector2(552, 397)
@@ -683,7 +680,7 @@ travel = Vector2(0, -130)
 speed = 95.0
 start_at = 0.4
 
-[node name="RightSupply" parent="World/BossArena/Platforms/StepThree" instance=ExtResource("scene_objects_supply_chest")]
+[node name="RightSupply" parent="World/BossArena/Platforms/StepThree" unique_id=1392911410 instance=ExtResource("scene_objects_supply_chest")]
 
 [node name="ArenaPlatform" parent="World/BossArena/Platforms" unique_id=-982962404 instance=ExtResource("scene_objects_business_platform")]
 position = Vector2(1322, 344)
@@ -692,7 +689,7 @@ travel = Vector2(0, -80)
 speed = 85.0
 start_at = 0.9
 
-[node name="ParentsChamber" type="Node2D" parent="World/BossArena/Platforms/ArenaPlatform"]
+[node name="ParentsChamber" type="Node2D" parent="World/BossArena/Platforms/ArenaPlatform" unique_id=1659137447]
 z_index = -2
 texture_filter = 1
 script = ExtResource("parents_chamber")
@@ -738,7 +735,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_business_bar_fill")
 value = 100.0
 show_percentage = false
 
-[node name="FirstThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth"]
+[node name="FirstThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth" unique_id=1267597993]
 layout_mode = 0
 anchor_left = 0.333333
 anchor_right = 0.333333
@@ -748,7 +745,7 @@ offset_right = 1.0
 mouse_filter = 2
 color = Color(1, 0.8, 0.4, 0.9)
 
-[node name="SecondThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth"]
+[node name="SecondThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth" unique_id=456684529]
 layout_mode = 0
 anchor_left = 0.666667
 anchor_right = 0.666667
@@ -758,7 +755,7 @@ offset_right = 1.0
 mouse_filter = 2
 color = Color(1, 0.8, 0.4, 0.9)
 
-[node name="Status" type="Label" parent="World/BossArena/BossUI/Panel"]
+[node name="Status" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=45179910]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.02, 0.05, 0.09, 1)
 theme_override_constants/outline_size = 2
@@ -766,7 +763,6 @@ theme_override_fonts/font = ExtResource("26_8osm8")
 theme_override_font_sizes/font_size = 10
 text = "PHASE 1 - SINGLE SHOT"
 horizontal_alignment = 1
-mouse_filter = 2
 
 [node name="Result" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=430746891]
 visible = false
@@ -920,7 +916,7 @@ position = Vector2(3780, 512)
 [node name="Entities" type="Node2D" parent="." unique_id=1820346557]
 
 [node name="Player" parent="Entities" unique_id=1426104633 instance=ExtResource("42_3ows0")]
-position = Vector2(5050, 513)
+position = Vector2(160, 640)
 
 [node name="HUD" parent="." unique_id=1527009177 instance=ExtResource("61_lwmew")]
 
@@ -931,10 +927,6 @@ layer = 20
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 3.0
-offset_right = 10.0
-offset_bottom = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2

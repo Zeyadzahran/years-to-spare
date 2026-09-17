@@ -49,6 +49,7 @@ class Power:
 ## wearing to exactly this long, so the freeze always lands on its last frame
 ## whatever body he is in.
 const WIND_UP := 0.5
+const REWIND_COST := 4.0
 
 @export var age: AgeComponent
 
@@ -70,7 +71,7 @@ func _ready() -> void:
 	_powers = [
 		Power.new(GameState.ABILITY_STOP, &"time_stop", TimeService.Mode.STOPPED, 5.0, 3.0, 3.0),
 		Power.new(GameState.ABILITY_REWIND, &"time_rewind", TimeService.Mode.REWINDING,
-			TimeService.REWIND_SPAN / TimeService.REWIND_SPEED, 4.0, 6.0),
+			TimeService.REWIND_SPAN / TimeService.REWIND_SPEED, REWIND_COST, 6.0),
 		Power.new(GameState.ABILITY_SLOW, &"time_slow", TimeService.Mode.SLOWED, 6.0, 4.0, 4.0),
 	]
 
@@ -105,6 +106,33 @@ func cooldown_left(id: StringName) -> float:
 func is_ready(id: StringName) -> bool:
 	return active == null and _pending == null \
 		and is_zero_approx(cooldown_left(id)) and GameState.has_ability(id)
+
+
+## Shared by the death screen and keyboard input during the collapse animation.
+func death_rewind_block_reason() -> String:
+	if age == null or age.age >= age.death_age:
+		return "Your time has run out."
+	if not GameState.has_ability(GameState.ABILITY_REWIND):
+		return "Rewind is not unlocked yet."
+	if cooldown_left(GameState.ABILITY_REWIND) > 0.0:
+		return "Rewind is cooling down."
+	if age.age + REWIND_COST >= age.death_age:
+		return "Not enough years left to rewind."
+	if not is_ready(GameState.ABILITY_REWIND):
+		return "Rewind is unavailable."
+	if not TimeService.can_restore_player(get_parent(), WIND_UP):
+		return "No safe moment to rewind to."
+	return ""
+
+
+func rewind_after_death() -> bool:
+	if not death_rewind_block_reason().is_empty():
+		return false
+	for power in _powers:
+		if power.id == GameState.ABILITY_REWIND:
+			_try_cast(power)
+			return _pending == power
+	return false
 
 
 ## Paid for and playing out his flourish, but the world is still running.
@@ -145,6 +173,10 @@ func _engage() -> void:
 
 
 func _try_cast(power: Power) -> void:
+	var player := get_parent() as Player
+	if player != null and player.is_down():
+		if power.id != GameState.ABILITY_REWIND or not death_rewind_block_reason().is_empty():
+			return
 	if not GameState.has_ability(power.id) or not is_zero_approx(cooldown_left(power.id)):
 		return
 	if age == null:
