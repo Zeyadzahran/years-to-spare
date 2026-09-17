@@ -29,19 +29,52 @@ of reusable scenes. No runtime generator rebuilds the layout.
 - `World/Exit`: the completion gate and its Level 2 panel.
 - `Enemies`: ten Guard/Gunner instances and one stationary Robot.
 - `Entities/Player` and `HUD`: the shared player and interface.
+- `Tutorial`: one decorative Rewind sign floating over the entry street.
 
 A/D move, Space jumps, J attacks, and K stops time. Electrical barriers are
 always active, including during time-stop. Contact deals 25 damage; remaining
 inside causes another hit every second. The four-frame electricity animation
 loops at 16 FPS, including during time-stop. Jump over the visible electricity.
-The freight deck still stops on the world clock. Falls cost a life and use the normal retry
-system. Supply chests heal 50 health, open only when useful, and reset on retry,
+The freight deck still stops on the world clock. A fall the clock can catch
+triggers a rewind instead of dying (4 years, no heart lost); anything else,
+or a fall with Rewind on cooldown or unaffordable, costs a life and uses the
+normal retry system. Supply chests heal 50 health, open only when useful, and reset on retry,
 like the existing healing pickups. The gate completes the level without requiring
 all enemies to be defeated.
 
 Keep enemy paths and checkpoint names stable during tuning: they identify saved
 retry progress. The shared lifecycle now selects the scene's phase before using
 checkpoints, and clears a checkpoint from another phase when switching scenes.
+
+## Rewind lesson
+
+The entry street mirrors how Level 1 introduces time-stop: a guide card, then
+an existing obstacle that teaches it. The boy spawns at the street's west end
+with Stop and Rewind already granted.
+
+- `Tutorial/Rewind` at `(430, 380)`: a single decorative sign floating above
+  the street - `REWIND`, `L`, `Rewind time`, `4 sec back / costs 4 years`,
+  in Rewind silver, all centred (`centered = true`: heading, key and text
+  aligned to the card's middle, key on its own line). The StreetPatrol
+  guard at `(797, 639)` is the classroom: trade a hit, press `L`, and the
+  wound, positions and spent moments rewind four seconds. The street gap
+  (`1370–1635`) and the `YardPulse` trap at `(2349, 644)` are unmarked
+  practice: miss the jump or walk into the sparks, press `L`, and it never
+  happened - even a lethal fall can be rewound out of during the collapse.
+
+The sign is a static world-space drawing with no collision, so it cannot
+affect movement, physics checks or retry identities. The `centered` flag is
+opt-in; Level 1's cards keep their left-aligned look.
+
+Cheating death is automatic, not only manual: `FallReset` carries
+`cheat_fall = true`, so a lethal fall casts Rewind on the boy's behalf while
+one is ready - winding up as he keeps falling, then standing him back on
+solid ground four seconds back, billed 4 years with no heart lost. Support
+lives in `TimePowers.try_cast` (cast by id, refused while another power
+runs), `Player.try_cheat_death` (falls only, never combat, never phase 1),
+and the `Hazard.cheat_fall` opt-in (chip damage never catches, and contacts
+during the wind-up wait their turn instead of killing). Manual `L` presses
+during the fall or the collapse still work exactly as before.
 
 ## Robot encounter
 

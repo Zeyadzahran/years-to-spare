@@ -16,6 +16,10 @@ const MUTED := Color("c7b49e")
 @export var footer := ""
 @export var card_width := 260.0
 @export var accent := GOLD
+## Decorative sign variant: heading, key and text all centred, with the key
+## shown on its own line above its instruction. Off by default so the
+## existing level 1 cards render exactly as before.
+@export var centered := false
 
 var _elapsed := 0.0
 
@@ -27,38 +31,75 @@ func _process(delta: float) -> void:
 	queue_redraw()
 
 
+func _keyed(index: int) -> bool:
+	return index < keys.size() and not keys[index].is_empty()
+
+
 func _draw() -> void:
-	var height := 48.0 + instructions.size() * 30.0
+	var height := 48.0
+	for index in instructions.size():
+		height += 56.0 if (centered and _keyed(index)) else 30.0
 	if not footer.is_empty():
 		height += 22.0
 	draw_rect(Rect2(4, 5, card_width, height), Color(0.08, 0.06, 0.09, 0.3))
 	draw_rect(Rect2(0, 0, card_width, height), Color(0.13, 0.12, 0.15, 0.96))
 	draw_rect(Rect2(0, 0, card_width, height), accent.darkened(0.4), false, 1.0)
-	draw_string(FONT, Vector2(16, 25), heading, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, accent)
+	if centered:
+		draw_string(FONT, Vector2(0, 25), heading, HORIZONTAL_ALIGNMENT_CENTER, card_width, 12, accent)
+	else:
+		draw_string(FONT, Vector2(16, 25), heading, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, accent)
 	draw_line(Vector2(16, 35), Vector2(card_width - 16, 35), accent.darkened(0.65))
-	for index in instructions.size():
-		var y := 44.0 + index * 30.0
-		var text_x := 16.0
-		if index < keys.size() and not keys[index].is_empty():
-			var pressed := _row_pressed(index)
-			var key_color := accent if pressed else Color("423a39")
-			draw_rect(Rect2(16, y + 2, 110, 23), Color("100f15"))
-			draw_rect(Rect2(16, y, 110, 22), key_color)
-			draw_rect(Rect2(16, y, 110, 22), accent.darkened(0.35), false)
-			var caption := keys[index]
-			var caption_width := FONT.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 10).x
-			draw_string(FONT, Vector2(71 - caption_width / 2, y + 16), caption,
-				HORIZONTAL_ALIGNMENT_LEFT, -1, 10, INK if pressed else PAPER)
-			text_x = 140.0
-		draw_string(FONT, Vector2(text_x, y + 16), instructions[index],
-			HORIZONTAL_ALIGNMENT_LEFT, -1, 11, PAPER)
+	if centered:
+		_draw_centered_rows()
+	else:
+		for index in instructions.size():
+			var y := 44.0 + index * 30.0
+			var text_x := 16.0
+			if _keyed(index):
+				var pressed := _row_pressed(index)
+				var key_color := accent if pressed else Color("423a39")
+				draw_rect(Rect2(16, y + 2, 110, 23), Color("100f15"))
+				draw_rect(Rect2(16, y, 110, 22), key_color)
+				draw_rect(Rect2(16, y, 110, 22), accent.darkened(0.35), false)
+				var caption := keys[index]
+				var caption_width := FONT.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 10).x
+				draw_string(FONT, Vector2(71 - caption_width / 2, y + 16), caption,
+					HORIZONTAL_ALIGNMENT_LEFT, -1, 10, INK if pressed else PAPER)
+				text_x = 140.0
+			draw_string(FONT, Vector2(text_x, y + 16), instructions[index],
+				HORIZONTAL_ALIGNMENT_LEFT, -1, 11, PAPER)
 	var footer_y := height - 13.0
-	draw_string(FONT, Vector2(16, footer_y), footer, HORIZONTAL_ALIGNMENT_LEFT, -1, 9, MUTED)
+	if centered and not footer.is_empty():
+		draw_string(FONT, Vector2(0, footer_y), footer, HORIZONTAL_ALIGNMENT_CENTER, card_width, 9, MUTED)
+	elif not footer.is_empty():
+		draw_string(FONT, Vector2(16, footer_y), footer, HORIZONTAL_ALIGNMENT_LEFT, -1, 9, MUTED)
 	# A small travelling chevron draws the eye toward the route ahead.
 	var arrow_x := card_width - 19.0 + sin(_elapsed * 2.5) * 3.0
 	draw_polyline(PackedVector2Array([
 		Vector2(arrow_x - 4, 13), Vector2(arrow_x + 1, 18), Vector2(arrow_x - 4, 23)
 	]), accent, 2.0)
+
+
+## Centred rows for the decorative variant: the key sits alone above its
+## instruction, everything aligned to the middle of the card.
+func _draw_centered_rows() -> void:
+	var y := 44.0
+	for index in instructions.size():
+		if _keyed(index):
+			var pressed := _row_pressed(index)
+			var key_color := accent if pressed else Color("423a39")
+			var kx := (card_width - 110.0) * 0.5
+			draw_rect(Rect2(kx, y + 2, 110, 23), Color("100f15"))
+			draw_rect(Rect2(kx, y, 110, 22), key_color)
+			draw_rect(Rect2(kx, y, 110, 22), accent.darkened(0.35), false)
+			var caption := keys[index]
+			var caption_width := FONT.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 10).x
+			draw_string(FONT, Vector2(kx + 55.0 - caption_width / 2.0, y + 16), caption,
+				HORIZONTAL_ALIGNMENT_LEFT, -1, 10, INK if pressed else PAPER)
+			y += 26.0
+		draw_string(FONT, Vector2(0, y + 16), instructions[index],
+			HORIZONTAL_ALIGNMENT_CENTER, card_width, 11, PAPER)
+		y += 30.0
 
 
 func _row_pressed(index: int) -> bool:
