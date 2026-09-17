@@ -148,6 +148,19 @@ func is_casting(id: StringName) -> bool:
 	return casting != null and casting.id == id
 
 
+## Casts `id` on the boy's behalf - the clock catching him on the way into
+## the void. Refuses while another power is running; reports whether the
+## requested power is now under way, winding up or already landed.
+func try_cast(id: StringName) -> bool:
+	if active != null or _pending != null:
+		return false
+	for power in _powers:
+		if power.id == id:
+			_try_cast(power)
+			return is_casting(id)
+	return false
+
+
 ## Ends a power, whether it had taken hold or was still winding up. The cooldown
 ## runs either way: the years are spent the moment he commits.
 func cancel() -> void:

@@ -16,6 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://7swm5qnofmyk" path="res://assets/sounds/cad_owner/death.wav" id="boss_death_sound"]
 [ext_resource type="Script" uid="uid://dl8wcshdpeoar" path="res://src/cinematics/cad_finale/cad_cinematic.gd" id="cad_cinematic"]
 [ext_resource type="Texture2D" uid="uid://bblgbn5kipusx" path="res://src/levels/level_02/art/terrain/CollapseFloor.png" id="collapse_floor_art"]
+[ext_resource type="Script" uid="uid://ddet4imgenslm" path="res://src/ui/tutorial/guide_card.gd" id="guide_card"]
 [ext_resource type="Script" uid="uid://d2cg7uo8hyr8y" path="res://src/cinematics/cad_finale/parents_chamber.gd" id="parents_chamber"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/robot.tscn" id="robot_scene"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/background.tscn" id="scene_background"]
@@ -183,11 +184,11 @@ tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_bwi4v")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ww0k"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7e6n"]
 resource_local_to_scene = true
 size = Vector2(224, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7e6n"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8bjyn"]
 resource_local_to_scene = true
 size = Vector2(224, 18)
 
@@ -290,10 +291,10 @@ scale = Vector2(1.0769231, 1.0769231)
 texture = ExtResource("collapse_floor_art")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse" index="1" unique_id=2101961067]
-shape = SubResource("RectangleShape2D_8ww0k")
+shape = SubResource("RectangleShape2D_p7e6n")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse/RiderZone" parent_id_path=PackedInt32Array(1699214882, 624621240) index="0" unique_id=314232447]
-shape = SubResource("RectangleShape2D_p7e6n")
+shape = SubResource("RectangleShape2D_8bjyn")
 
 [node name="DropPerch" parent="World/Platforms" unique_id=1606402365 instance=ExtResource("scene_objects_industrial_ledge")]
 position = Vector2(9131, 458)
@@ -585,6 +586,7 @@ collision_layer = 0
 collision_mask = 2
 script = ExtResource("34_4rpjk")
 damage = 1000.0
+cheat_fall = true
 
 [node name="Shape" type="CollisionShape2D" parent="World/Hazards/FallReset" unique_id=2053586965]
 position = Vector2(6380, 1060)
@@ -662,19 +664,19 @@ position = Vector2(150, 640)
 [node name="Platforms" type="Node2D" parent="World/BossArena" unique_id=-982962408]
 
 [node name="StepOne" parent="World/BossArena/Platforms" unique_id=-982962407 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(241, 497)
+position = Vector2(241, 476)
 start_at = 0.15
 
 [node name="LeftSupply" parent="World/BossArena/Platforms/StepOne" unique_id=2029155764 instance=ExtResource("scene_objects_supply_chest")]
 
 [node name="StepTwo" parent="World/BossArena/Platforms" unique_id=-982962406 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(552, 292)
+position = Vector2(552, 187)
 travel = Vector2(0, -150)
 speed = 100.0
 start_at = 0.7
 
 [node name="StepThree" parent="World/BossArena/Platforms" unique_id=-982962405 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(819, 193)
+position = Vector2(819, 141)
 width_tiles = 4
 travel = Vector2(0, -130)
 speed = 95.0
@@ -683,7 +685,7 @@ start_at = 0.4
 [node name="RightSupply" parent="World/BossArena/Platforms/StepThree" unique_id=801667500 instance=ExtResource("scene_objects_supply_chest")]
 
 [node name="ArenaPlatform" parent="World/BossArena/Platforms" unique_id=-982962404 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(1322, 272)
+position = Vector2(1322, 200)
 width_tiles = 6
 travel = Vector2(0, -80)
 speed = 85.0
@@ -919,6 +921,20 @@ position = Vector2(3780, 512)
 position = Vector2(160, 640)
 
 [node name="HUD" parent="." unique_id=1527009177 instance=ExtResource("61_lwmew")]
+
+[node name="Tutorial" type="Node2D" parent="." unique_id=2120000001]
+z_index = 9
+
+[node name="Rewind" type="Node2D" parent="Tutorial" unique_id=2120000002]
+position = Vector2(430, 380)
+script = ExtResource("guide_card")
+heading = "REWIND"
+keys = PackedStringArray("L")
+actions = PackedStringArray("time_rewind")
+instructions = PackedStringArray("Rewind time")
+footer = "4 sec back / costs 4 years"
+accent = Color(0.72, 0.82, 0.95, 1)
+centered = true
 
 [node name="OpeningTransition" type="CanvasLayer" parent="." unique_id=1701016353]
 layer = 20

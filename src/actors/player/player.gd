@@ -273,6 +273,19 @@ func die_instantly(source: Node = null) -> void:
 	health.kill(source)
 
 
+## The clock catching him on the way into the void: a lethal fall hands him
+## a rewind instead of a death while one is ready, so cheating death costs
+## years, not a heart. Combat deaths still go through hearts, and a rewind
+## that is not ready - cooldown, cost, or already running - still lets him
+## fall. Manual presses keep working the same way they always have.
+func try_cheat_death() -> bool:
+	if is_down():
+		return false
+	if not GameState.has_ability(GameState.ABILITY_REWIND):
+		return false
+	return powers.try_cast(GameState.ABILITY_REWIND)
+
+
 func _on_damaged(_amount: float, source: Node) -> void:
 	if is_down():
 		return

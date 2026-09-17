@@ -14,6 +14,10 @@ extends Area2D
 ## authored damage values and continue to use ordinary health loss.
 @export var instant_death := false
 
+## Void floors opt into this: a lethal fall hands the boy a rewind instead
+## of a death while one is ready. Chip damage never catches - only falls.
+@export var cheat_fall := false
+
 ## Seconds before the same body can be hurt again, so standing in acid does not
 ## drain a hit every frame.
 @export var cooldown := 0.75
@@ -71,6 +75,13 @@ func _hurt(body: Node2D) -> void:
 	# the rewind working, not a second death.
 	if TimeService.is_rewinding():
 		return
+	# A fall the clock is already catching: the winding-up rewind survives
+	# the deeper fall, and no second contact may kill him first.
+	if cheat_fall and body is Player:
+		if body.powers.is_casting(GameState.ABILITY_REWIND):
+			return
+		if body.try_cheat_death():
+			return
 	var id := body.get_instance_id()
 	if _cooldowns.has(id):
 		return
