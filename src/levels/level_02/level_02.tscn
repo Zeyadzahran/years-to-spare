@@ -607,11 +607,11 @@ offset = Vector2(0, -17.5)
 position = Vector2(20000, 0)
 script = ExtResource("44_bossarena")
 
-[node name="DeathAudio" type="AudioStreamPlayer" parent="World/BossArena" unique_id=122083983]
+[node name="DeathAudio" type="AudioStreamPlayer" parent="World/BossArena" unique_id=423578154]
 stream = ExtResource("boss_death_sound")
 volume_db = -1.0
 
-[node name="Cinematic" type="Node" parent="World/BossArena" unique_id=1441122569]
+[node name="Cinematic" type="Node" parent="World/BossArena" unique_id=2095989987]
 script = ExtResource("cad_cinematic")
 
 [node name="ArenaFoundation" type="Polygon2D" parent="World/BossArena" unique_id=1919157570]
@@ -662,34 +662,34 @@ position = Vector2(150, 640)
 [node name="Platforms" type="Node2D" parent="World/BossArena" unique_id=-982962408]
 
 [node name="StepOne" parent="World/BossArena/Platforms" unique_id=-982962407 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(241, 518)
+position = Vector2(241, 497)
 start_at = 0.15
 
-[node name="LeftSupply" parent="World/BossArena/Platforms/StepOne" unique_id=634296348 instance=ExtResource("scene_objects_supply_chest")]
+[node name="LeftSupply" parent="World/BossArena/Platforms/StepOne" unique_id=2029155764 instance=ExtResource("scene_objects_supply_chest")]
 
 [node name="StepTwo" parent="World/BossArena/Platforms" unique_id=-982962406 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(552, 397)
+position = Vector2(552, 292)
 travel = Vector2(0, -150)
 speed = 100.0
 start_at = 0.7
 
 [node name="StepThree" parent="World/BossArena/Platforms" unique_id=-982962405 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(819, 245)
+position = Vector2(819, 193)
 width_tiles = 4
 travel = Vector2(0, -130)
 speed = 95.0
 start_at = 0.4
 
-[node name="RightSupply" parent="World/BossArena/Platforms/StepThree" unique_id=1392911410 instance=ExtResource("scene_objects_supply_chest")]
+[node name="RightSupply" parent="World/BossArena/Platforms/StepThree" unique_id=801667500 instance=ExtResource("scene_objects_supply_chest")]
 
 [node name="ArenaPlatform" parent="World/BossArena/Platforms" unique_id=-982962404 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(1322, 344)
+position = Vector2(1322, 272)
 width_tiles = 6
 travel = Vector2(0, -80)
 speed = 85.0
 start_at = 0.9
 
-[node name="ParentsChamber" type="Node2D" parent="World/BossArena/Platforms/ArenaPlatform" unique_id=1659137447]
+[node name="ParentsChamber" type="Node2D" parent="World/BossArena/Platforms/ArenaPlatform" unique_id=899068448]
 z_index = -2
 texture_filter = 1
 script = ExtResource("parents_chamber")
@@ -735,7 +735,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_business_bar_fill")
 value = 100.0
 show_percentage = false
 
-[node name="FirstThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth" unique_id=1267597993]
+[node name="FirstThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth" unique_id=2038046676]
 layout_mode = 0
 anchor_left = 0.333333
 anchor_right = 0.333333
@@ -745,7 +745,7 @@ offset_right = 1.0
 mouse_filter = 2
 color = Color(1, 0.8, 0.4, 0.9)
 
-[node name="SecondThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth" unique_id=456684529]
+[node name="SecondThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth" unique_id=1442373896]
 layout_mode = 0
 anchor_left = 0.666667
 anchor_right = 0.666667
@@ -755,7 +755,7 @@ offset_right = 1.0
 mouse_filter = 2
 color = Color(1, 0.8, 0.4, 0.9)
 
-[node name="Status" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=45179910]
+[node name="Status" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=775855415]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.02, 0.05, 0.09, 1)
 theme_override_constants/outline_size = 2

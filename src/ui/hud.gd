@@ -182,6 +182,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		_on_options_pressed()
 
 
+## Hides only the gameplay meters, never the whole layer: the pause menu is
+## a child of this layer and must stay visible, e.g. over a boss intro that
+## hides the meters for its cinematic.
+func set_meters_visible(value: bool) -> void:
+	var meters := get_node_or_null("Margin")
+	if meters != null:
+		meters.visible = value
+
+
 func _on_options_pressed() -> void:
 	if _level_complete or is_instance_valid(_options_panel):
 		return
@@ -192,7 +201,14 @@ func _on_options_pressed() -> void:
 	# Closing returns to the level instead of the main menu.
 	_options_panel.set("overlay", true)
 	_options_panel.tree_exited.connect(_on_options_closed)
-	add_child(_options_panel)
+	# The pause menu sits above everything, including cinematic letterbox
+	# layers a boss room may have open underneath it.
+	var options_layer := CanvasLayer.new()
+	options_layer.layer = 50
+	options_layer.name = &"OptionsLayer"
+	add_child(options_layer)
+	options_layer.add_child(_options_panel)
+	_options_panel.tree_exited.connect(options_layer.queue_free)
 	get_tree().paused = true
 
 
