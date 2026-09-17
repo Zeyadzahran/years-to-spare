@@ -17,6 +17,8 @@ const PORTAL_CLOSE_TIME := 0.28
 const SPAWN_INTERVAL := 0.7
 const BATTLE_MUSIC_VOLUME_DB := -19.0
 const BATTLE_MUSIC := preload("res://assets/music/Epic_Boss_Battle.ogg")
+## Where the walk to the parents leads: the reunion cutscene, then THE END.
+const ENDING_SCENE := "res://src/cinematics/finale/finale.tscn"
 const INTRO_FONT := preload("res://assets/fonts/prstart.ttf")
 ## Entrance banter, played as subtitles while the fight is already running.
 ## Single combined array: subtitles[i] pairs with its speaker in the same entry.
@@ -662,6 +664,11 @@ func _finish_walk() -> void:
 	var level := get_parent().get_parent() as Level
 	if level != null:
 		level.complete()
+	# Only the real game goes on to the cutscene - a contract test builds
+	# this same room as a plain child rather than as current_scene, and must
+	# stay in the room to keep making its own assertions afterward.
+	if level != null and get_tree().current_scene == level:
+		get_tree().change_scene_to_file(ENDING_SCENE)
 
 func _process(_delta: float) -> void:
 	# Rewind restores enemies after the room; refresh the count after all of
