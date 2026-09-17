@@ -25,6 +25,18 @@ func _ready() -> void:
 	check(not ledge.get_node("Shape").one_way_collision, "Ledge one-way setting did not update")
 	check(other_ledge.get_node("Shape").shape.size == Vector2(192,24), "Editing one ledge resized another")
 	check(other_ledge.get_node("Shape").one_way_collision, "Editing one ledge changed another's collision")
+	# The boss room mixes three-, four- and six-tile moving platforms.
+	# Resizing the largest must not extend the smaller platforms' collisions.
+	var small_platform := create("moving_industrial_platform")
+	var medium_platform := create("moving_industrial_platform")
+	var large_platform := create("moving_industrial_platform")
+	medium_platform.width_tiles = 4
+	large_platform.width_tiles = 6
+	check(small_platform.get_node("Shape").shape.size == Vector2(192,24), "Large platform widened the small platform collision")
+	check(medium_platform.get_node("Shape").shape.size == Vector2(256,24), "Large platform widened the medium platform collision")
+	check(large_platform.get_node("Shape").shape.size == Vector2(384,24), "Large platform collision has wrong width")
+	small_platform.width_tiles = 2
+	check(large_platform.get_node("Shape").shape.size == Vector2(384,24), "Small platform resize changed the large platform collision")
 	var crate := create("cargo_crate")
 	var other_crate := create("cargo_crate")
 	crate.collision_size = Vector2(128,64)
@@ -39,7 +51,13 @@ func _ready() -> void:
 	check(other_ferry.get_node("Shape").shape.size == Vector2(240,24), "Freight deck sizes are shared")
 	var pulse := create("pulse_trap")
 	var emitter := pulse.get_node("Emitter") as AnimatedSprite2D
-	check(emitter.visible and emitter.is_playing(), "Electricity must start visibly active")
+	check(not emitter.visible and emitter.is_playing(), "Electricity must animate but remain hidden until approached")
+	var nearby_player := Player.new()
+	pulse._on_proximity_entered(nearby_player)
+	pulse._physics_process(pulse.warning_time)
+	pulse._physics_process(pulse.emerge_time)
+	nearby_player.free()
+	check(emitter.visible and pulse.monitoring, "Approaching electricity did not activate the trap")
 	check(emitter.sprite_frames.get_animation_speed(&"electricity") == 16.0, "Electricity should animate at 16 FPS")
 	var other_pulse := create("pulse_trap")
 	pulse.animation_fps = 24.0
@@ -79,8 +97,9 @@ func _ready() -> void:
 		if hazard.name == &"FallReset": continue
 		check(hazard.scene_file_path == OBJECTS + "pulse_trap.tscn", "Electrical trap is not a shared scene")
 	for prop in map.get_node("World/Decorations").get_children():
-		check(prop.scene_file_path.begins_with("res://src/levels/level_02/props/"), "Decoration is not a shared scene")
-	check(map.get_node("World/Checkpoints/L2MachineYard").position == Vector2(1680,643), "User's checkpoint placement changed")
+		var gateway := prop.name == &"TransitionGateway" and prop.scene_file_path == OBJECTS + "industrial_ledge.tscn"
+		check(gateway or prop.scene_file_path.begins_with("res://src/levels/level_02/props/"), "Decoration is not a shared scene")
+	check(map.get_node("World/Checkpoints/L2MachineYard").position == Vector2(1691,652), "User's checkpoint placement changed")
 	check(not map.has_node("World/Checkpoints/L2Entry"), "Removed opening checkpoint was restored")
 	check(map.get_node("World/Obstacles/CargoCrate").collision_size == Vector2(100,49), "Unsaved crate resize was lost")
 	check(map.get_node("World/Obstacles/CargoCrate").collision_offset == Vector2(5,0), "Unsaved crate offset was lost")

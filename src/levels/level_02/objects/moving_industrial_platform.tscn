@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" path="res://src/levels/level_02/art/terrain/Tile_27.png" id="4_right"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
+resource_local_to_scene = true
 size = Vector2(192, 24)
 
 [node name="MovingIndustrialPlatform" type="AnimatableBody2D"]
