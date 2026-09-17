@@ -70,6 +70,12 @@ func _on_body_entered(body: Node2D) -> void:
 	# Retired rather than freed, so a rewind can put it back in the air. One
 	# may already have done so while the sound played - the round is flying
 	# again and no longer spent - in which case this is not its moment.
+	_retire_after_impact.call_deferred()
+
+
+func _retire_after_impact() -> void:
+	# Area callbacks run while physics is flushing contacts. Retiring disables
+	# the body, so wait until that callback is over and re-check Rewind.
 	if _spent:
 		TimeService.retire(self)
 

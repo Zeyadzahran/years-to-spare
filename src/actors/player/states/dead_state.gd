@@ -1,6 +1,6 @@
 extends PlayerState
-## Terminal. Plays the collapse, then tells the level the run is over - the
-## reload waits for the animation instead of cutting it off.
+## Plays the collapse, then asks the level to spend a heart and respawn or
+## restart. The current life ends only after the animation has finished.
 
 ## Matches the dying clip: 9 frames at 14 fps.
 const DURATION := 0.64

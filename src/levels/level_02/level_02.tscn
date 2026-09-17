@@ -40,6 +40,11 @@
 [ext_resource type="PackedScene" path="res://src/world/gates/reinforcement_gate.tscn" id="scene_reinforcement_gate"]
 [ext_resource type="Script" uid="uid://dhvyc8djtvrj7" path="res://src/levels/level_02/objects/day_night_transition.gd" id="script_day_night_transition"]
 
+[ext_resource type="Script" path="res://src/cinematics/cad_finale/parents_chamber.gd" id="parents_chamber"]
+[ext_resource type="Script" path="res://src/cinematics/cad_finale/cad_cinematic.gd" id="cad_cinematic"]
+
+[ext_resource type="AudioStream" path="res://assets/sounds/cad_owner/death.wav" id="boss_death_sound"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_transition"]
 size = Vector2(60, 2000)
 
@@ -222,6 +227,7 @@ texture_filter = 1
 script = ExtResource("1_g5px2")
 level_id = &"phase_2"
 debug_keep_editor_spawn = true
+debug_spawn_path = NodePath("World/BossArena/PlayerSpawn")
 
 [node name="Background" parent="." unique_id=775539332 instance=ExtResource("scene_background")]
 
@@ -604,6 +610,13 @@ offset = Vector2(0, -17.5)
 position = Vector2(20000, 0)
 script = ExtResource("44_bossarena")
 
+[node name="DeathAudio" type="AudioStreamPlayer" parent="World/BossArena"]
+stream = ExtResource("boss_death_sound")
+volume_db = -1.0
+
+[node name="Cinematic" type="Node" parent="World/BossArena"]
+script = ExtResource("cad_cinematic")
+
 [node name="ArenaFoundation" type="Polygon2D" parent="World/BossArena" unique_id=1919157570]
 z_index = -2
 color = Color(0.07, 0.12, 0.2, 1)
@@ -655,6 +668,8 @@ position = Vector2(150, 640)
 position = Vector2(241, 518)
 start_at = 0.15
 
+[node name="LeftSupply" parent="World/BossArena/Platforms/StepOne" instance=ExtResource("scene_objects_supply_chest")]
+
 [node name="StepTwo" parent="World/BossArena/Platforms" unique_id=-982962406 instance=ExtResource("scene_objects_business_platform")]
 position = Vector2(552, 397)
 travel = Vector2(0, -150)
@@ -668,6 +683,8 @@ travel = Vector2(0, -130)
 speed = 95.0
 start_at = 0.4
 
+[node name="RightSupply" parent="World/BossArena/Platforms/StepThree" instance=ExtResource("scene_objects_supply_chest")]
+
 [node name="ArenaPlatform" parent="World/BossArena/Platforms" unique_id=-982962404 instance=ExtResource("scene_objects_business_platform")]
 position = Vector2(1322, 344)
 width_tiles = 6
@@ -675,8 +692,12 @@ travel = Vector2(0, -80)
 speed = 85.0
 start_at = 0.9
 
+[node name="ParentsChamber" type="Node2D" parent="World/BossArena/Platforms/ArenaPlatform"]
+z_index = -2
+texture_filter = 1
+script = ExtResource("parents_chamber")
+
 [node name="ReinforcementGate" parent="World/BossArena" unique_id=-982962401 instance=ExtResource("scene_reinforcement_gate")]
-visible = false
 position = Vector2(1480, 640)
 
 [node name="FutureBossPosition" type="Marker2D" parent="World/BossArena" unique_id=-982962403]
@@ -706,7 +727,7 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.73, 0.34, 1)
 theme_override_fonts/font = ExtResource("26_8osm8")
 theme_override_font_sizes/font_size = 12
-text = "THE BUSINESS MAN"
+text = "THE OWNER  /  CAD CORP"
 horizontal_alignment = 1
 
 [node name="BossHealth" type="ProgressBar" parent="World/BossArena/BossUI/Panel" unique_id=927931656]
@@ -716,6 +737,36 @@ theme_override_styles/background = SubResource("StyleBoxFlat_business_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_business_bar_fill")
 value = 100.0
 show_percentage = false
+
+[node name="FirstThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth"]
+layout_mode = 0
+anchor_left = 0.333333
+anchor_right = 0.333333
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = 1.0
+mouse_filter = 2
+color = Color(1, 0.8, 0.4, 0.9)
+
+[node name="SecondThird" type="ColorRect" parent="World/BossArena/BossUI/Panel/BossHealth"]
+layout_mode = 0
+anchor_left = 0.666667
+anchor_right = 0.666667
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = 1.0
+mouse_filter = 2
+color = Color(1, 0.8, 0.4, 0.9)
+
+[node name="Status" type="Label" parent="World/BossArena/BossUI/Panel"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.02, 0.05, 0.09, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("26_8osm8")
+theme_override_font_sizes/font_size = 10
+text = "PHASE 1 - SINGLE SHOT"
+horizontal_alignment = 1
+mouse_filter = 2
 
 [node name="Result" type="Label" parent="World/BossArena/BossUI/Panel" unique_id=430746891]
 visible = false

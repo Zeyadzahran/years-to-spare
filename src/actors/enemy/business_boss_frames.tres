@@ -1,43 +1,260 @@
 [gd_resource type="SpriteFrames" format=3]
 
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/idle.png" id="idle"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/hurt.png" id="hurt"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_00.png" id="shoot_00"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_01.png" id="shoot_01"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_02.png" id="shoot_02"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_03.png" id="shoot_03"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_04.png" id="shoot_04"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_05.png" id="shoot_05"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_06.png" id="shoot_06"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_07.png" id="shoot_07"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_08.png" id="shoot_08"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_09.png" id="shoot_09"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_10.png" id="shoot_10"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/shoot_11.png" id="shoot_11"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/dying_00.png" id="dying_00"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/dying_01.png" id="dying_01"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/dying_02.png" id="dying_02"]
-[ext_resource type="Texture2D" path="res://assets/sprites/business_man/dying_03.png" id="dying_03"]
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/redesign/movement_hurt.png" id="movement_hurt"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/redesign/shoot_death.png" id="shoot_death"]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/business_man/redesign/teleport.png" id="teleport"]
+
+[sub_resource type="AtlasTexture" id="movement_hurt_0"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(119, 25, 105, 289)
+margin = Rect2(101.0, 39, 255, 51)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_1"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(433, 27, 104, 287)
+margin = Rect2(102.0, 41, 256, 53)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_2"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(747, 27, 104, 287)
+margin = Rect2(102.0, 41, 256, 53)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_3"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(1061, 27, 103, 287)
+margin = Rect2(102.5, 41, 257, 53)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_4"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(86, 333, 178, 294)
+margin = Rect2(68, 36, 182, 46)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_5"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(394, 336, 176, 291)
+margin = Rect2(62, 38, 184, 49)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_6"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(738, 336, 136, 291)
+margin = Rect2(93, 39, 224, 49)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_7"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(1032, 336, 180, 291)
+margin = Rect2(73, 39, 180, 49)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_8"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(74, 640, 192, 301)
+margin = Rect2(56, 30, 168, 39)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_9"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(409, 643, 176, 298)
+margin = Rect2(77, 32, 184, 42)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_10"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(725, 643, 150, 298)
+margin = Rect2(80, 32, 210, 42)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_11"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(1024, 643, 181, 298)
+margin = Rect2(65, 32, 179, 42)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_12"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(106, 951, 134, 303)
+margin = Rect2(91.0, 32, 226, 37)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_13"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(433, 950, 139, 304)
+margin = Rect2(83.0, 31, 221, 36)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_14"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(722, 961, 141, 293)
+margin = Rect2(81.0, 44, 219, 47)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="movement_hurt_15"]
+atlas = ExtResource("movement_hurt")
+region = Rect2(1060, 951, 108, 303)
+margin = Rect2(102.5, 34, 252, 37)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_0"]
+atlas = ExtResource("shoot_death")
+region = Rect2(81, 12, 113, 302)
+margin = Rect2(94.5, 26, 247, 38)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_1"]
+atlas = ExtResource("shoot_death")
+region = Rect2(393, 18, 167, 296)
+margin = Rect2(84.0, 30, 193, 44)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_2"]
+atlas = ExtResource("shoot_death")
+region = Rect2(676, 19, 193, 295)
+margin = Rect2(80.5, 31, 167, 45)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_3"]
+atlas = ExtResource("shoot_death")
+region = Rect2(992, 18, 228, 296)
+margin = Rect2(82.5, 30, 132, 44)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_4"]
+atlas = ExtResource("shoot_death")
+region = Rect2(49, 326, 231, 301)
+margin = Rect2(80.5, 27, 129, 39)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_5"]
+atlas = ExtResource("shoot_death")
+region = Rect2(361, 328, 241, 299)
+margin = Rect2(80.5, 28, 119, 41)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_6"]
+atlas = ExtResource("shoot_death")
+region = Rect2(675, 328, 266, 299)
+margin = Rect2(80.0, 28, 94, 41)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_7"]
+atlas = ExtResource("shoot_death")
+region = Rect2(998, 328, 238, 299)
+margin = Rect2(77.5, 28, 122, 41)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_8"]
+atlas = ExtResource("shoot_death")
+region = Rect2(47, 640, 244, 301)
+margin = Rect2(79.0, 27, 116, 39)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_9"]
+atlas = ExtResource("shoot_death")
+region = Rect2(361, 642, 233, 299)
+margin = Rect2(78.0, 29, 127, 41)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_10"]
+atlas = ExtResource("shoot_death")
+region = Rect2(674, 642, 229, 299)
+margin = Rect2(78.0, 29, 131, 41)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_11"]
+atlas = ExtResource("shoot_death")
+region = Rect2(1007, 640, 118, 301)
+margin = Rect2(104.5, 24, 242, 39)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_12"]
+atlas = ExtResource("shoot_death")
+region = Rect2(58, 959, 144, 282)
+margin = Rect2(88, 53, 216, 58)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_13"]
+atlas = ExtResource("shoot_death")
+region = Rect2(345, 1012, 197, 228)
+margin = Rect2(61, 106, 163, 112)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_14"]
+atlas = ExtResource("shoot_death")
+region = Rect2(627, 1072, 296, 180)
+margin = Rect2(30, 166, 64, 160)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="shoot_death_15"]
+atlas = ExtResource("shoot_death")
+region = Rect2(941, 1128, 304, 115)
+margin = Rect2(30, 222, 56, 225)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="teleport_0"]
+atlas = ExtResource("teleport")
+region = Rect2(0, 0, 444, 444)
+margin = Rect2(0, 0, 0, 0)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="teleport_1"]
+atlas = ExtResource("teleport")
+region = Rect2(444, 0, 443, 444)
+margin = Rect2(0, 0, 1, 0)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="teleport_2"]
+atlas = ExtResource("teleport")
+region = Rect2(887, 0, 444, 444)
+margin = Rect2(0, 0, 0, 0)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="teleport_3"]
+atlas = ExtResource("teleport")
+region = Rect2(1331, 0, 443, 444)
+margin = Rect2(0, 0, 1, 0)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="teleport_4"]
+atlas = ExtResource("teleport")
+region = Rect2(0, 444, 444, 443)
+margin = Rect2(0, 0, 0, 1)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="teleport_5"]
+atlas = ExtResource("teleport")
+region = Rect2(444, 444, 443, 443)
+margin = Rect2(0, 0, 1, 1)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="teleport_6"]
+atlas = ExtResource("teleport")
+region = Rect2(887, 444, 444, 443)
+margin = Rect2(0, 0, 0, 1)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="teleport_7"]
+atlas = ExtResource("teleport")
+region = Rect2(1331, 444, 443, 443)
+margin = Rect2(0, 0, 1, 1)
+filter_clip = true
 
 [resource]
-animations = [{
-"frames": [{"duration": 1.0, "texture": ExtResource("dying_00")}, {"duration": 1.0, "texture": ExtResource("dying_01")}, {"duration": 1.0, "texture": ExtResource("dying_02")}, {"duration": 1.0, "texture": ExtResource("dying_03")}],
-"loop": 0,
-"name": &"dying",
-"speed": 7.0
-}, {
-"frames": [{"duration": 1.0, "texture": ExtResource("hurt")}],
-"loop": 0,
-"name": &"hurt",
-"speed": 8.0
-}, {
-"frames": [{"duration": 1.0, "texture": ExtResource("idle")}],
-"loop": 1,
-"name": &"idle",
-"speed": 4.0
-}, {
-"frames": [{"duration": 1.0, "texture": ExtResource("shoot_00")}, {"duration": 1.0, "texture": ExtResource("shoot_01")}, {"duration": 1.0, "texture": ExtResource("shoot_02")}, {"duration": 1.0, "texture": ExtResource("shoot_03")}, {"duration": 1.0, "texture": ExtResource("shoot_04")}, {"duration": 1.0, "texture": ExtResource("shoot_05")}, {"duration": 1.0, "texture": ExtResource("shoot_06")}, {"duration": 1.0, "texture": ExtResource("shoot_07")}, {"duration": 1.0, "texture": ExtResource("shoot_08")}, {"duration": 1.0, "texture": ExtResource("shoot_09")}, {"duration": 1.0, "texture": ExtResource("shoot_10")}, {"duration": 1.0, "texture": ExtResource("shoot_11")}],
-"loop": 0,
-"name": &"shoot",
-"speed": 16.0
-}]
+animations = [
+{"frames": [{"duration": 1.0, "texture": SubResource("movement_hurt_0")}, {"duration": 1.0, "texture": SubResource("movement_hurt_1")}, {"duration": 1.0, "texture": SubResource("movement_hurt_2")}, {"duration": 1.0, "texture": SubResource("movement_hurt_3")}], "loop": true, "name": &"idle", "speed": 5},
+{"frames": [{"duration": 1.0, "texture": SubResource("movement_hurt_4")}, {"duration": 1.0, "texture": SubResource("movement_hurt_5")}, {"duration": 1.0, "texture": SubResource("movement_hurt_6")}, {"duration": 1.0, "texture": SubResource("movement_hurt_7")}, {"duration": 1.0, "texture": SubResource("movement_hurt_8")}, {"duration": 1.0, "texture": SubResource("movement_hurt_9")}, {"duration": 1.0, "texture": SubResource("movement_hurt_10")}, {"duration": 1.0, "texture": SubResource("movement_hurt_11")}], "loop": true, "name": &"run", "speed": 10},
+{"frames": [{"duration": 1.0, "texture": SubResource("movement_hurt_12")}, {"duration": 1.0, "texture": SubResource("movement_hurt_13")}, {"duration": 1.0, "texture": SubResource("movement_hurt_14")}, {"duration": 1.0, "texture": SubResource("movement_hurt_15")}], "loop": false, "name": &"hurt", "speed": 14.285714285714285},
+{"frames": [{"duration": 1.0, "texture": SubResource("shoot_death_0")}, {"duration": 1.0, "texture": SubResource("shoot_death_1")}, {"duration": 1.0, "texture": SubResource("shoot_death_2")}, {"duration": 1.0, "texture": SubResource("shoot_death_3")}, {"duration": 1.0, "texture": SubResource("shoot_death_4")}, {"duration": 1.0, "texture": SubResource("shoot_death_5")}, {"duration": 1.0, "texture": SubResource("shoot_death_6")}, {"duration": 1.0, "texture": SubResource("shoot_death_7")}, {"duration": 1.0, "texture": SubResource("shoot_death_8")}, {"duration": 1.0, "texture": SubResource("shoot_death_9")}, {"duration": 1.0, "texture": SubResource("shoot_death_10")}, {"duration": 1.0, "texture": SubResource("shoot_death_11")}], "loop": false, "name": &"shoot", "speed": 16},
+{"frames": [{"duration": 1.0, "texture": SubResource("shoot_death_0")}, {"duration": 1.0, "texture": SubResource("shoot_death_1")}, {"duration": 1.0, "texture": SubResource("shoot_death_2")}, {"duration": 1.0, "texture": SubResource("shoot_death_3")}, {"duration": 1.0, "texture": SubResource("shoot_death_4")}, {"duration": 1.0, "texture": SubResource("shoot_death_5")}], "loop": false, "name": &"charge", "speed": 16},
+{"frames": [{"duration": 1.0, "texture": SubResource("shoot_death_6")}, {"duration": 1.0, "texture": SubResource("shoot_death_7")}, {"duration": 1.0, "texture": SubResource("shoot_death_8")}, {"duration": 1.0, "texture": SubResource("shoot_death_9")}, {"duration": 1.0, "texture": SubResource("shoot_death_10")}], "loop": false, "name": &"fire", "speed": 16},
+{"frames": [{"duration": 1.0, "texture": SubResource("shoot_death_4")}, {"duration": 1.0, "texture": SubResource("shoot_death_3")}, {"duration": 1.0, "texture": SubResource("shoot_death_2")}, {"duration": 1.0, "texture": SubResource("shoot_death_1")}, {"duration": 1.0, "texture": SubResource("shoot_death_11")}], "loop": false, "name": &"recover", "speed": 8},
+{"frames": [{"duration": 1.0, "texture": SubResource("shoot_death_12")}, {"duration": 1.0, "texture": SubResource("shoot_death_13")}, {"duration": 1.0, "texture": SubResource("shoot_death_14")}, {"duration": 1.0, "texture": SubResource("shoot_death_15")}], "loop": false, "name": &"dying", "speed": 6},
+{"frames": [{"duration": 1.0, "texture": SubResource("teleport_0")}, {"duration": 1.0, "texture": SubResource("teleport_1")}, {"duration": 1.0, "texture": SubResource("teleport_2")}, {"duration": 1.0, "texture": SubResource("teleport_3")}, {"duration": 1.0, "texture": SubResource("teleport_4")}, {"duration": 1.0, "texture": SubResource("teleport_5")}, {"duration": 1.0, "texture": SubResource("teleport_6")}, {"duration": 1.0, "texture": SubResource("teleport_7")}], "loop": false, "name": &"teleport", "speed": 12}
+]

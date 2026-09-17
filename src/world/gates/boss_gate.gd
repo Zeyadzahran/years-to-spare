@@ -78,7 +78,8 @@ func _enter_gate(player: Player, boss_arena: Node2D, arena_spawn: Marker2D) -> v
 	reveal.tween_interval(0.12)
 	reveal.tween_property($Transition/Fade, ^"color:a", 0.0, 0.48)
 	await reveal.finished
-	player.process_mode = Node.PROCESS_MODE_INHERIT
+	if not boss_arena.has_method(&"is_cinematic_active") or not boss_arena.call(&"is_cinematic_active"):
+		player.process_mode = Node.PROCESS_MODE_INHERIT
 	if camera != null:
 		camera.position_smoothing_enabled = true
 	$Effects.emitting = false
