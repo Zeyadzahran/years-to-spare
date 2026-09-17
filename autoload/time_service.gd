@@ -88,6 +88,18 @@ func is_recording() -> bool:
 	return GameState.has_ability(GameState.ABILITY_REWIND)
 
 
+## A death choice should only offer Rewind if its destination restores health.
+## Include the cast windup: that much forward time passes before playback starts.
+func can_restore_player(player: Node, windup: float) -> bool:
+	var track: Track = _tracks.get(player.get_instance_id())
+	if track == null or track.frames.is_empty():
+		return false
+	var destination := maxf(_now + windup - REWIND_SPAN, track.frames[0][0])
+	var frame := track.frame_at(destination)
+	# Player.rewind_capture stores health at index 5.
+	return not frame.is_empty() and frame[1][5] > 0.0
+
+
 func reset() -> void:
 	_set_mode(Mode.NORMAL)
 	_now = 0.0

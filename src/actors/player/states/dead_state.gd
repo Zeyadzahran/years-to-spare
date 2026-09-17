@@ -1,6 +1,7 @@
 extends PlayerState
-## Plays the collapse, then asks the level to spend a heart and respawn or
-## restart. The current life ends only after the animation has finished.
+## Plays the collapse, then pauses for a choice before spending a heart.
+
+const DEATH_PROMPT := preload("res://src/ui/death_prompt.gd")
 
 ## Matches the dying clip: 9 frames at 14 fps.
 const DURATION := 0.64
@@ -25,7 +26,8 @@ func physics_update(delta: float) -> StringName:
 		return &""
 	if not _announced and _elapsed >= DURATION:
 		_announced = true
-		# Which of the two clocks ran out decides whether the level gives him
-		# the marker back or starts the phase over.
-		EventBus.player_died.emit(player.age.age >= player.age.death_age)
+		var prompt := DEATH_PROMPT.new()
+		prompt.player = player
+		prompt.rewind_chosen.connect(func() -> void: _announced = false)
+		player.add_child.call_deferred(prompt)
 	return &""

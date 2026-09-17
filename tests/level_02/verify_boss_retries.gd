@@ -29,13 +29,27 @@ func fresh(start_encounter := true) -> void:
 		arena.prepare_gate_entry(player)
 	await frames(5)
 
+func confirm_death() -> void:
+	for i in 60:
+		await frames(1)
+		if player.has_node("DeathPrompt"):
+			break
+	check(get_tree().paused, "Death did not pause for a choice")
+	var event := InputEventKey.new()
+	event.keycode = KEY_ENTER
+	event.physical_keycode = KEY_ENTER
+	event.pressed = true
+	Input.parse_input_event(event)
+	event = event.duplicate()
+	event.pressed = false
+	Input.parse_input_event(event)
+	await frames(1)
+	check(not get_tree().paused, "Continue left the game paused")
+
 func die_and_respawn() -> void:
 	player.health.kill(boss)
-	for i in 90:
-		await frames(1)
-		if player.health.is_alive():
-			return
-	check(false, "Remaining heart failed to respawn the player")
+	await confirm_death()
+	check(player.health.is_alive(), "Remaining heart failed to respawn the player")
 
 func retry_progress() -> void:
 	await fresh()
@@ -74,18 +88,18 @@ func retry_progress() -> void:
 	check(arena.stage == arena.Stage.WAVE and arena._living_reinforcements() == remaining, "Retry restarted the reinforcement wave")
 	check(is_instance_valid(survivor) and survivor.health.current == survivor_hp, "Retry healed a surviving reinforcement")
 	player.health.kill(boss)
-	await frames(45)
+	await confirm_death()
 	check(level.reload_count == 1 and GameState.hearts == GameState.MAX_HEARTS, "Third heart did not use the full restart path")
 	print("BOSS_RETRIES first/second heart: same boss HP, phase, wave, age; third heart: full restart")
 
 func restart_boundaries() -> void:
 	await fresh(false)
 	player.health.kill()
-	await frames(45)
+	await confirm_death()
 	check(level.reload_count == 1 and GameState.hearts == 2, "Death outside the arena stopped using checkpoint reload")
 	await fresh()
 	player.age.spend(player.age.death_age)
-	await frames(45)
+	await confirm_death()
 	check(level.reload_count == 1 and GameState.hearts == GameState.MAX_HEARTS and GameState.run_age < 0.0, "Old age did not reset the run")
 	print("BOSS_RETRIES boundaries: ordinary checkpoint death and old age unchanged")
 

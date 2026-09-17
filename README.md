@@ -22,10 +22,16 @@ The project is an in-development prototype with a playable first level,
 - The existing final chamber, reshaped into a compact two-torch boss arena with the Guardian encounter and sister rescue ending
 - Intro, main menu, HUD, music, sound effects, and persistent settings
 
-Level 1 grants time stop (K). Level 2 adds rewind (E / gamepad Y): one press
+Level 1 grants time stop (K). Level 2 adds rewind (L / gamepad Y): one press
 runs the last four seconds of the world - the boy, enemies, bullets and
 platforms - backward, and can pull him out of his own death. Slow-time input
 exists in the project, but its gameplay is not yet available.
+
+After the death animation, a paused **You Died** screen lets you press **L**
+to rewind when it is ready, including on your last heart. **Enter** continues
+using one heart, or restarts the level when no heart will remain or you died
+of old age. The screen explains when Rewind is unavailable; waiting here
+does not advance its cooldown or consume the recorded history.
 
 City of Time currently has a title screen only. It returns to Level 1; a playable
 second level has not been added yet.
