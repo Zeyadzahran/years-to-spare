@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://t70eajoxgiet"]
 
-[ext_resource type="Texture2D" path="res://assets/sprites/parents/chamber_idle_sheet.png" id="sheet"]
+[ext_resource type="Texture2D" uid="uid://7v376puqjqxi" path="res://assets/sprites/parents/chamber_idle_sheet.png" id="sheet"]
 
 [sub_resource type="AtlasTexture" id="Frame0"]
 atlas = ExtResource("sheet")
@@ -33,4 +33,27 @@ region = Rect2(1033, 506, 394, 494)
 filter_clip = true
 
 [resource]
-animations = [{"name": &"idle", "loop": true, "speed": 6.0, "frames": [{"duration": 1.0, "texture": SubResource("Frame0")}, {"duration": 1.0, "texture": SubResource("Frame1")}, {"duration": 1.0, "texture": SubResource("Frame2")}, {"duration": 1.0, "texture": SubResource("Frame3")}, {"duration": 1.0, "texture": SubResource("Frame4")}, {"duration": 1.0, "texture": SubResource("Frame5")}]}]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Frame0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Frame1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Frame2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Frame3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Frame4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Frame5")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}]

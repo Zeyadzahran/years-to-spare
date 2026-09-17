@@ -1,7 +1,7 @@
 extends Hazard
 ## Live electricity stays dangerous and animated, even while world time is
-## stopped - and now stays hidden below the floor until the boy is close
-## enough to catch, so this patch of ground is the actual threat rather than
+## stopped. The mechanism itself follows world time and stays below the floor
+## until the boy is close enough, so this patch of ground is the threat rather than
 ## a permanently-sparking landmark he can just route around.
 ##
 ## ProximityZone (bigger than the damage Shape) is what notices him coming;
@@ -63,19 +63,27 @@ func _on_proximity_entered(body: Node2D) -> void:
 	if not (body is Player):
 		return
 	_near_count += 1
-	if _state == State.HIDDEN:
-		_begin_warning()
-	elif _state == State.RETRACTING:
-		# Walked back in before it finished hiding - straight back to danger
-		# rather than finishing a retreat he is already reversing.
-		_snap_active()
+	_update_proximity_state()
 
 
 func _on_proximity_exited(body: Node2D) -> void:
 	if not (body is Player):
 		return
 	_near_count = maxi(_near_count - 1, 0)
-	if _near_count == 0 and _state in [State.WARNING, State.EMERGING, State.ACTIVE]:
+	_update_proximity_state()
+
+
+## Track entries/exits during time stop, but only act on who is still nearby
+## once time resumes. Walking past a frozen trap must not queue a later strike.
+func _update_proximity_state() -> void:
+	if TimeService.is_world_frozen():
+		return
+	if _near_count > 0:
+		if _state == State.HIDDEN:
+			_begin_warning()
+		elif _state == State.RETRACTING:
+			_snap_active()
+	elif _state in [State.WARNING, State.EMERGING, State.ACTIVE]:
 		_begin_retracting()
 
 
@@ -152,11 +160,11 @@ func _physics_process(delta: float) -> void:
 		_frame_progress = fposmod(_frame_progress + delta * animation_fps, frame_count)
 		_emitter.frame = int(_frame_progress)
 
-	# Real frame time, not TimeService.world_delta(): the ground does not care
-	# that the boy stopped the clock, the same reason the animation and sound
-	# above never do either. Approaching this patch with time held still is
-	# still the mistake it would be at full speed.
-	_elapsed += delta
+	var world_delta := TimeService.world_delta(delta)
+	if is_zero_approx(world_delta):
+		return
+	_update_proximity_state()
+	_elapsed += world_delta
 	match _state:
 		State.WARNING:
 			if _elapsed >= warning_time:

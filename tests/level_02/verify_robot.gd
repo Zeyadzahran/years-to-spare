@@ -121,7 +121,9 @@ func behavior() -> void:
 	check(robot.shot_audio.playing, "Robot shot did not start the beam sound")
 	if not beams.is_empty():
 		check(beams[0]._velocity.x < 0 and is_zero_approx(beams[0]._velocity.y), "Charged shot turned or aimed diagonally")
-	# Stay above the beam, inside vertical detection, to observe repeated shots.
+	# Observe repeats on the open side: RoofStep blocks sight on the right.
+	player.position = Vector2(3870, 422)
+	check(robot.has_line_of_sight(), "Repeat-shot fixture is behind cover")
 	await frames(160)
 	check(get_tree().get_nodes_in_group(&"robot_beam").size() >= 2, "Robot did not repeat after cooldown")
 	check(absf(robot.position.x - post.x) < 0.1, "Robot chased or moved between shots")

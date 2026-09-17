@@ -23,7 +23,10 @@ func _ready() -> void:
 	_origin = position
 	_progress = clampf(start_at, 0.0, 1.0)
 	_direction = -1.0 if is_equal_approx(_progress, 1.0) else 1.0
-	_update_position()
+	# The editor must retain the authored origin. Applying start_at here in
+	# tool mode makes every scene load/save bake another offset into position.
+	if not Engine.is_editor_hint():
+		_update_position()
 	_apply()
 	if not Engine.is_editor_hint():
 		add_to_group(TimeService.REWINDABLE_GROUP)
