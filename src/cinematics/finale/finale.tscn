@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" path="res://src/cinematics/finale/finale.gd" id="1_finale"]
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="2_prstart"]
+[ext_resource type="AudioStream" uid="uid://bkhs3kvc6tn2j" path="res://assets/sounds/clock-sound.mp3" id="3_clock"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_skip"]
 
 [node name="Finale" type="Control" unique_id=1]
 layout_mode = 3
@@ -50,6 +53,29 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
+[node name="EndSubtitle" type="Label" parent="." unique_id=8]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 128.0
+offset_top = -160.0
+offset_right = -128.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.965, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.015, 0.02, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_prstart")
+theme_override_font_sizes/font_size = 20
+text = "Still worth it, my best resource."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
 [node name="EndTitle" type="Label" parent="." unique_id=6]
 layout_mode = 1
 anchors_preset = 15
@@ -66,6 +92,35 @@ theme_override_font_sizes/font_size = 64
 text = "THE END"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Clock" type="AudioStreamPlayer" parent="." unique_id=9]
+stream = ExtResource("3_clock")
+volume_db = -8.0
+
+[node name="SkipButton" type="Button" parent="." unique_id=10]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -190.0
+offset_top = -64.0
+offset_right = -32.0
+offset_bottom = -28.0
+grow_horizontal = 0
+grow_vertical = 0
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.965, 0.88, 0.75)
+theme_override_colors/font_hover_color = Color(1, 0.85, 0.5, 1)
+theme_override_colors/font_pressed_color = Color(0.5, 0.45, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_prstart")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_skip")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_skip")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_skip")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_skip")
+text = "SKIP >>"
 
 [node name="EndHint" type="Label" parent="." unique_id=7]
 layout_mode = 1

@@ -1,9 +1,9 @@
 extends Control
 ## The game's final cinematic: the walk to the parents chamber ends on a fade,
 ## and this picks it up - stills from assets/cut-scene-l02 in their numbered
-## order, cross-faded with the track underneath, then a black screen with
-## THE END. Any key, click or controller button skips the stills and lands on
-## THE END; another press there leaves for the main menu.
+## order, cross-faded with the track underneath, then a black-screen line,
+## then THE END. Any key, click or controller button steps one beat forward
+## (next image, line, card); a press on THE END leaves for the main menu.
 
 const MUSIC := preload("res://assets/music/paulyudin-romantic-romantic-music-573992.mp3")
 
@@ -23,6 +23,7 @@ const IMAGE_HOLD := [6.0, 6.0, 6.0, 8.0]
 const CROSSFADE_DURATION := 2.0
 const OPENING_FADE_DURATION := 2.0
 const CLOSING_FADE_DURATION := 3.0
+const SUBTITLE_HOLD := 4.5
 const END_TITLE_FADE_DURATION := 2.0
 
 const MAIN_MENU_SCENE := "res://src/ui/main_menu/main_menu.tscn"
@@ -30,10 +31,15 @@ const MAIN_MENU_SCENE := "res://src/ui/main_menu/main_menu.tscn"
 @onready var image_back: TextureRect = $ImageBack
 @onready var image_front: TextureRect = $ImageFront
 @onready var fade: ColorRect = $Fade
+@onready var end_subtitle: Label = $EndSubtitle
 @onready var end_title: Label = $EndTitle
 @onready var end_hint: Label = $EndHint
+@onready var clock: AudioStreamPlayer = $Clock
+@onready var skip_button: Button = $SkipButton
 
-var _skipped := false
+## One-shot per press: cuts the current beat short and moves to the next
+## image, line or card - never past them, so every still always shows.
+var _advance := false
 var _on_end_card := false
 var _finished := false
 
@@ -41,36 +47,37 @@ var _finished := false
 func _ready() -> void:
 	image_back.texture = IMAGES[0]
 	image_front.modulate.a = 0.0
+	end_subtitle.modulate.a = 0.0
 	end_title.modulate.a = 0.0
 	end_hint.modulate.a = 0.0
 	fade.color.a = 1.0
+
+	skip_button.pressed.connect(_on_skip_pressed)
 
 	MusicManager.play_music(MUSIC, OPENING_FADE_DURATION, MUSIC_VOLUME_DB, MUSIC_START)
 
 	var opening := create_tween()
 	opening.tween_property(fade, ^"color:a", 0.0, OPENING_FADE_DURATION).set_trans(Tween.TRANS_SINE)
 	await opening.finished
-	if _skipped:
+	if _finished:
 		return
-
-	for i in range(1, IMAGES.size()):
-		await get_tree().create_timer(IMAGE_HOLD[i - 1] - CROSSFADE_DURATION).timeout
-		if _skipped:
-			return
-		await _crossfade_to(IMAGES[i])
-		if _skipped:
-			return
-
-	await get_tree().create_timer(IMAGE_HOLD[-1] - CLOSING_FADE_DURATION).timeout
-	if _skipped:
+	_advance = false
+	await _play_images()
+	if _finished:
 		return
+	await _fade_to_black()
+	if _finished:
+		return
+	_advance = false
+	await _show_black_subtitle()
+	if _finished:
+		return
+	await _show_end_title()
 
-	await _show_end_card()
 
-
-## Any actual press - key, mouse button or controller button. On the stills it
-## skips ahead to THE END; on THE END it leaves for the main menu. Motion
-## events (mouse move, joystick tilt) do not count.
+## Any actual press - key, mouse button or controller button. Steps one beat
+## forward (next image, line, card); on THE END it leaves for the main menu.
+## Motion events (mouse move, joystick tilt) do not count.
 func _unhandled_input(event: InputEvent) -> void:
 	if _finished:
 		return
@@ -83,34 +90,100 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _on_end_card:
 		_finish()
 	else:
-		_skipped = true
-		_show_end_card()
+		_advance = true
+
+
+## A beat that one press can cut short. The flag is consumed here, so each
+## press moves exactly one step.
+func _wait_beat(seconds: float) -> void:
+	var left := seconds
+	while left > 0.0 and not _advance and not _finished:
+		await get_tree().create_timer(minf(0.1, left)).timeout
+		left -= 0.1
+	_advance = false
+
+
+func _play_images() -> void:
+	for i in range(1, IMAGES.size()):
+		await _wait_beat(IMAGE_HOLD[i - 1] - CROSSFADE_DURATION)
+		if _finished:
+			return
+		await _crossfade_to(IMAGES[i])
+		if _finished:
+			return
+	await _wait_beat(IMAGE_HOLD[-1] - CLOSING_FADE_DURATION)
 
 
 ## Fades the next image in over the back layer, then folds it down onto that
 ## layer so the front stays clear (alpha 0) and ready for the next cut.
 func _crossfade_to(next_image: Texture2D) -> void:
+	if _finished or not is_instance_valid(image_front):
+		return
 	image_front.texture = next_image
 	image_front.modulate.a = 0.0
 	var crossfade := create_tween()
 	crossfade.tween_property(image_front, ^"modulate:a", 1.0, CROSSFADE_DURATION)
-	await crossfade.finished
-	if _skipped:
+	await _wait_beat(CROSSFADE_DURATION)
+	if _finished or not is_instance_valid(image_back):
 		return
+	if crossfade != null and crossfade.is_valid():
+		crossfade.kill()
 	image_back.texture = next_image
 	image_front.modulate.a = 0.0
 
 
-## The black screen with the end on it. Reached by playing out naturally or
-## by a skip - both wait here for a press before leaving for the menu.
-func _show_end_card() -> void:
-	if _on_end_card:
-		return
-	_on_end_card = true
+func _fade_to_black() -> void:
 	MusicManager.stop_music(CLOSING_FADE_DURATION)
 	var closing := create_tween()
 	closing.tween_property(fade, ^"color:a", 1.0, CLOSING_FADE_DURATION).set_trans(Tween.TRANS_SINE)
 	await closing.finished
+
+
+## The quiet beat on black before the title: one low line, held long enough
+## to read, stepping to THE END on the next press.
+func _show_black_subtitle() -> void:
+	if _finished or not is_instance_valid(end_subtitle):
+		return
+	# The music is gone; the clock ticks under the line instead. Looped here
+	# rather than in the import, the way level tracks are, so the file stays
+	# a plain asset.
+	if clock.stream is AudioStreamMP3:
+		clock.stream.loop = true
+	clock.play()
+	end_subtitle.modulate.a = 0.0
+	var show := create_tween()
+	show.tween_property(end_subtitle, ^"modulate:a", 1.0, 1.0).set_trans(Tween.TRANS_SINE)
+	await show.finished
+	if _finished:
+		return
+	await _wait_beat(SUBTITLE_HOLD)
+	if _finished or not is_instance_valid(end_subtitle):
+		return
+	var hide := create_tween()
+	hide.tween_property(end_subtitle, ^"modulate:a", 0.0, 0.6)
+	await hide.finished
+
+
+## The black screen with the end on it. Waits here for a press before
+## leaving for the menu.
+## The visible SKIP control does exactly what any press does: one beat
+## forward, or out to the menu from THE END. The button eats its own click,
+## so the press below never fires twice for it.
+func _on_skip_pressed() -> void:
+	if _finished:
+		return
+	if _on_end_card:
+		_finish()
+	else:
+		_advance = true
+
+
+func _show_end_title() -> void:
+	if _on_end_card or _finished:
+		return
+	_on_end_card = true
+	clock.stop()
+	skip_button.hide()
 	var title := create_tween().set_parallel()
 	title.tween_property(end_title, ^"modulate:a", 1.0, END_TITLE_FADE_DURATION).set_trans(Tween.TRANS_SINE)
 	title.tween_property(end_hint, ^"modulate:a", 0.65, END_TITLE_FADE_DURATION).set_trans(Tween.TRANS_SINE)
