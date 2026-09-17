@@ -237,5 +237,6 @@ Winning the Owner fight runs the existing platform drop and walk to the
 parents chamber, then leaves for `src/cinematics/finale/finale.tscn`: the
 four `assets/cut-scene-l02` stills in numbered order (freed, happy, tired,
 going away), then a black screen holding one low line (`Still worth it, my
-best resource.`), ticking with the clock sound, then a black `THE END` card.
-Presses step through line, card, and back to the main menu.
+best resource.`), ticking with the clock sound, then the credits, then a
+black `THE END` card. Enter skips everything to the card; another Enter
+returns to the main menu. Clicks and taps never skip.
