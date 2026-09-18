@@ -701,19 +701,19 @@ position = Vector2(150, 640)
 [node name="Platforms" type="Node2D" parent="World/BossArena" unique_id=-982962408]
 
 [node name="StepOne" parent="World/BossArena/Platforms" unique_id=-982962407 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(241, 434)
+position = Vector2(241, 518)
 start_at = 0.15
 
 [node name="LeftSupply" parent="World/BossArena/Platforms/StepOne" unique_id=2029155764 instance=ExtResource("scene_objects_supply_chest")]
 
 [node name="StepTwo" parent="World/BossArena/Platforms" unique_id=-982962406 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(552, -23)
+position = Vector2(552, 397)
 travel = Vector2(0, -150)
 speed = 100.0
 start_at = 0.7
 
 [node name="StepThree" parent="World/BossArena/Platforms" unique_id=-982962405 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(819, 37)
+position = Vector2(819, 245)
 width_tiles = 4
 travel = Vector2(0, -130)
 speed = 95.0
@@ -722,7 +722,7 @@ start_at = 0.4
 [node name="RightSupply" parent="World/BossArena/Platforms/StepThree" unique_id=801667500 instance=ExtResource("scene_objects_supply_chest")]
 
 [node name="ArenaPlatform" parent="World/BossArena/Platforms" unique_id=-982962404 instance=ExtResource("scene_objects_business_platform")]
-position = Vector2(1322, 56)
+position = Vector2(1322, 344)
 width_tiles = 6
 travel = Vector2(0, -80)
 speed = 85.0
