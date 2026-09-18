@@ -10,6 +10,9 @@ signal player_health_changed(current: float, maximum: float)
 ## costs the boy the ground he covered; running out of years is the end of him,
 ## and the level starts over from the top rather than from a checkpoint.
 signal player_died(of_old_age: bool)
+## The collapse has played out and he is down for good unless a rewind reaches
+## him: the window in which one still can is open from here.
+signal player_collapsed(player: Node2D)
 
 signal player_age_changed(age: float, death_age: float)
 ## A heart lost, picked up or the count restored to full - GameState.hearts is

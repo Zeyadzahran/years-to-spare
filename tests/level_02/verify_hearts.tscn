@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ce47i2hc60yx8"]
+
+[ext_resource type="Script" uid="uid://bjualcfidm5ys" path="res://tests/level_02/verify_hearts.gd" id="1_f0174"]
+
+[node name="VerifyHearts" type="Node" unique_id=281301670]
+script = ExtResource("1_f0174")

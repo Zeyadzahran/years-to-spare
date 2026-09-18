@@ -27,13 +27,12 @@ runs the last four seconds of the world - the boy, enemies, bullets and
 platforms - backward, and can pull him out of his own death. Slow-time input
 exists in the project, but its gameplay is not yet available.
 
-After the death animation, a paused screen shows only the available buttons.
-**L** offers Rewind for one second when it is ready, including on your last
-heart. A bar inside the button shrinks with the remaining time, then the button
-disappears. **Enter** continues using one heart, or restarts the
-level when no heart will remain or you died of old age. **Q** quits to the menu.
-Waiting does not spend a heart, advance cooldowns, or consume recorded history.
-Lethal falls never trigger Rewind automatically.
+After the death animation there is a moment - a second and a half - in which
+**L** still rewinds when Rewind is ready, on any heart, with nothing on screen.
+When it passes, a spare heart is spent and the level reloads at the checkpoint
+on its own. On the last heart, or at 60, a **Game Over** screen offers
+**Enter** to restart the level or **Q** to quit to the menu. Lethal falls never
+trigger Rewind automatically; the start of Level 2 teaches the press instead.
 
 City of Time currently has a title screen only. It returns to Level 1; a playable
 second level has not been added yet.
@@ -110,8 +109,9 @@ three years, freezes the world for five seconds, and then enters a three-second
 cooldown. Defeating an enemy restores one year, while figs restore health.
 
 A normal death returns the player to the latest checkpoint without restoring
-spent years or respawning defeated enemies. Dying of old age clears that run's
-progress and starts the level again.
+spent years or respawning defeated enemies. Losing the last heart or dying of
+old age stops on Game Over; restarting clears that run's progress and starts
+the level again.
 
 ## Project structure
 

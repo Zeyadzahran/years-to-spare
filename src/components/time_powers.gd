@@ -99,6 +99,12 @@ func _process(delta: float) -> void:
 
 
 ## Seconds before `id` can be cast again; 0 when it is ready.
+## Forgives a power's cooldown outright. A lesson uses it so the press it is
+## teaching cannot be refused for the practice that came just before.
+func clear_cooldown(id: StringName) -> void:
+	_cooldowns.erase(id)
+
+
 func cooldown_left(id: StringName) -> float:
 	return _cooldowns.get(id, 0.0)
 

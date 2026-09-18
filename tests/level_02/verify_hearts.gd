@@ -157,17 +157,17 @@ func quit_button() -> void:
 	await frames(60)
 	player.health.kill()
 	var prompt: Node = null
-	for i in 90:
+	for i in 180:
 		await frames(1)
-		if player.has_node("DeathPrompt"):
-			prompt = player.get_node("DeathPrompt")
+		if player.has_node("GameOver"):
+			prompt = player.get_node("GameOver")
 			break
-	check(prompt != null, "Death-choice screen did not appear on the last heart")
+	check(prompt != null, "Game Over screen did not appear on the last heart")
 	if prompt == null:
 		return
 	check(prompt.quit_button != null and prompt.quit_button.text == "[Q] QUIT TO MENU", "Quit button missing")
-	check(prompt.continue_button.has_focus(), "Focus left Restart")
-	check(get_tree().paused, "Death-choice did not pause")
+	check(prompt.restart_button.has_focus(), "Focus left Restart")
+	check(get_tree().paused, "Game Over did not pause")
 	if failures > 0 and prompt == null:
 		return
 	# Quit replaces the current scene - this node - so a watcher outside it
@@ -219,7 +219,7 @@ func chest_hearts() -> void:
 	check(GameState.hearts == 4, "Landed heart was not taken by the boy at the box")
 	check(GameState.is_heart_collected(&"phase_2", "World/Supplies/YardSupply/Heart"), "Chest heart not recorded")
 	# A retry: the chest is shut again, but its heart is gone.
-	GameState.set_checkpoint(&"L2MachineYard", Vector2(1691, 652), player.age.age)
+	GameState.set_checkpoint(&"L2MachineYard", Vector2(1340, 652), player.age.age)
 	await fresh()
 	chest = level.get_node("World/Supplies/YardSupply")
 	await frames(2)
@@ -270,7 +270,7 @@ func chest_luck() -> void:
 		for i in chests.size():
 			var has: bool = level.get_node("World/Supplies/%s" % chests[i]).get_node_or_null("Heart") != null
 			check(has == luck[i], "%s heart presence %s did not match the roll on attempt %d" % [chests[i], has, attempt])
-		GameState.set_checkpoint(&"L2MachineYard", Vector2(1691, 652), player.age.age)
+		GameState.set_checkpoint(&"L2MachineYard", Vector2(1340, 652), player.age.age)
 	# A run that has not rolled yet rolls at the box's own chance and keeps it.
 	GameState.clear_run_progress()
 	check(GameState.heart_rolls.is_empty(), "A new run kept the old luck")

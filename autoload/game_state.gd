@@ -76,6 +76,10 @@ var collected_hearts: Dictionary[String, bool] = {}
 ## finds a different set.
 var heart_rolls: Dictionary[String, bool] = {}
 
+## Whether the fall lesson at the start of Level 2 has been given this run. It
+## shows once; a retry finds the street already the way the lesson left it.
+var rewind_lesson_done := false
+
 func start_new_run(level_id: StringName = &"phase_1") -> void:
 	level_index = 0
 	for index in LEVELS.size():
@@ -162,6 +166,7 @@ func clear_run_progress() -> void:
 	cleared_enemies.clear()
 	collected_hearts.clear()
 	heart_rolls.clear()
+	rewind_lesson_done = false
 	hearts = MAX_HEARTS
 	EventBus.player_hearts_changed.emit(hearts, HEART_CAP)
 

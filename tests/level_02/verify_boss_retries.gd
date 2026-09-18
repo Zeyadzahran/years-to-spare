@@ -39,12 +39,22 @@ func fresh(start_encounter := true) -> void:
 		await wait_stage(arena.Stage.FIGHTING)
 	await frames(5)
 
+## A death with a heart to spare commits itself once the rewind window has
+## passed; the last one stops on the Game Over screen, where Enter restarts.
 func confirm_death() -> void:
-	for i in 60:
+	var last := GameState.hearts <= 1 or player.age.age >= player.age.death_age
+	var hearts_before := GameState.hearts
+	for i in 180:
 		await frames(1)
-		if player.has_node("DeathPrompt"):
+		if last and player.has_node("GameOver"):
 			break
-	check(get_tree().paused, "Death did not pause for a choice")
+		if not last and GameState.hearts < hearts_before:
+			break
+	if not last:
+		check(not get_tree().paused and not player.has_node("GameOver"), "A spare heart still stopped for a choice")
+		await frames(1)
+		return
+	check(get_tree().paused and player.has_node("GameOver"), "Last heart did not stop on Game Over")
 	var event := InputEventKey.new()
 	event.keycode = KEY_ENTER
 	event.physical_keycode = KEY_ENTER
@@ -54,7 +64,7 @@ func confirm_death() -> void:
 	event.pressed = false
 	Input.parse_input_event(event)
 	await frames(1)
-	check(not get_tree().paused, "Continue left the game paused")
+	check(not get_tree().paused, "Restart left the game paused")
 
 func die_and_respawn() -> void:
 	player.health.kill(boss)
