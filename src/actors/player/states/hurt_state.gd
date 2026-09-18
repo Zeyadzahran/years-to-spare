@@ -17,10 +17,10 @@ func physics_update(delta: float) -> StringName:
 	_elapsed += delta
 	player.apply_gravity(delta)
 	player.velocity.x = move_toward(player.velocity.x, 0.0, 900.0 * delta)
-	player.move_and_slide()
+	player.move_with_enemy_slide()
 
 	if _elapsed < STUN:
 		return &""
-	if not player.is_on_floor():
+	if not player.is_grounded():
 		return &"Air"
 	return &"Move" if not is_zero_approx(player.input_dir) else &"Idle"

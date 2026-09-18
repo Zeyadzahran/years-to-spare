@@ -222,7 +222,7 @@ func _tick(delta: float) -> void:
 				_change_state(&"Chase")
 		&"Chase":
 			_tick_chase(delta)
-			if target == null or global_position.distance_to(target.global_position) > detection_range * CHASE_GIVE_UP:
+			if target == null or target.is_down() or global_position.distance_to(target.global_position) > detection_range * CHASE_GIVE_UP:
 				_change_state(&"Idle")
 			elif _in_attack_range():
 				_change_state(&"Attack")
@@ -249,13 +249,26 @@ func _tick_chase(delta: float) -> void:
 	var dx := target.global_position.x - global_position.x
 	var direction: float = signf(dx)
 	facing = 1 if direction > 0.0 else -1 if direction < 0.0 else facing
-	# Only a unit with its feet down gets to refuse the step; one already in the
-	# air keeps its momentum, or it would stall mid-fall.
-	if is_on_floor() and not has_floor_ahead(direction):
-		velocity.x = move_toward(velocity.x, 0.0, GROUND_FRICTION * delta)
-	else:
-		velocity.x = move_toward(velocity.x, direction * speed, CHASE_ACCELERATION * delta)
+	# Walking cannot close a vertical gap or pass through cover. Keep watching
+	# from here so the chase resumes as soon as the player becomes reachable.
+	var wrong_height := absf(target.global_position.y - global_position.y) > attack_height_tolerance
+	if is_on_floor() and (wrong_height or not has_line_of_sight() \
+			or not has_floor_ahead(direction) or not can_step_forward(direction, delta)):
+		velocity.x = 0.0
+		_set_animation(&"idle")
+		return
+	velocity.x = move_toward(velocity.x, direction * speed, CHASE_ACCELERATION * delta)
+	if is_zero_approx(velocity.x):
+		_set_animation(&"idle")
+		return
 	_set_animation(&"run")
+
+
+## Check the body as well as the ground probe: a low crate may block the feet
+## while the eye-to-chest sight line still passes over it.
+func can_step_forward(direction: float, delta: float) -> bool:
+	var motion := Vector2(direction * maxf(speed * delta * TimeService.world_scale, 1.0), 0.0)
+	return not test_move(global_transform, motion)
 
 
 func _tick_attack(delta: float) -> void:

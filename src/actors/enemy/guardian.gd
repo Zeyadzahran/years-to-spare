@@ -379,8 +379,16 @@ func _tick_chase(delta: float) -> void:
 	var dx := target.global_position.x - global_position.x
 	if not is_zero_approx(dx):
 		_facing = 1 if dx > 0.0 else -1
-	velocity.x = move_toward(velocity.x, float(_facing) * CHASE_SPEED, CHASE_ACCELERATION * delta)
-	_play(&"walk")
+	var at_target := absf(dx) <= 16.0
+	var at_edge := (_facing < 0 and global_position.x <= movement_left) \
+			or (_facing > 0 and global_position.x >= movement_right)
+	var step := Vector2(float(_facing) * CHASE_SPEED * delta * TimeService.world_scale, 0.0)
+	if at_target or at_edge or test_move(global_transform, step):
+		velocity.x = 0.0
+		_play(&"idle")
+	else:
+		velocity.x = move_toward(velocity.x, float(_facing) * CHASE_SPEED, CHASE_ACCELERATION * delta)
+		_play(&"walk")
 	if _attack_cooldown <= 0.0:
 		_begin_stomp()
 

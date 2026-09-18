@@ -27,8 +27,9 @@ to adult to elder, and you move more slowly. Reaching **60** ends the run;
 starting over takes you back to Level 1 at fourteen. Spending more years than
 you have left also ends your life.
 
-- **Stop time:** freezes the world for five seconds, costs three years, and
-  takes three seconds to recharge.
+- **Stop time:** press **K** to freeze the world for up to five seconds; press
+  **K** again to resume early. Costs three years per activation and takes
+  three seconds to recharge after ending.
 - **Rewind:** unlocked in Level 2. Goes back four seconds, costs four years,
   and takes six seconds to recharge. It can undo injuries and death, but
   does not refund the years you spend.

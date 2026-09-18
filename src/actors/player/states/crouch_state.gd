@@ -14,9 +14,9 @@ func exit() -> void:
 func physics_update(delta: float) -> StringName:
 	player.apply_gravity(delta)
 	player.apply_horizontal(delta, Player.CROUCH_SPEED)
-	player.move_and_slide()
+	player.move_with_enemy_slide()
 
-	if not player.is_on_floor():
+	if not player.is_grounded():
 		return &"Air"
 	# Every exit restores the tall box, so nothing may leave while an overhang
 	# would trap it.

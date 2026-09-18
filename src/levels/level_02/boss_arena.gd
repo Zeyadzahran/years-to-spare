@@ -476,7 +476,7 @@ func _check_platform_teleport(delta: float) -> void:
 	if platform != _stood_on:
 		_stood_on = platform
 		_stand_time = 0.0
-	if not is_instance_valid(player) or not player.is_on_floor():
+	if not is_instance_valid(player) or not player.is_grounded():
 		_stand_time = 0.0
 		return
 	_stand_time += delta
@@ -550,7 +550,7 @@ func _restore_fight_music() -> void:
 
 ## A jump passing near a deck is not a landing. Use the actual floor contact.
 func _platform_under_player() -> MovingIndustrialPlatform:
-	if not is_instance_valid(player) or not player.is_on_floor():
+	if not is_instance_valid(player) or not player.is_grounded():
 		return null
 	for i in player.get_slide_collision_count():
 		var contact := player.get_slide_collision(i)

@@ -56,7 +56,7 @@ func rewind_apply(saved: Array) -> void:
 
 ## A Guard does not stand his post; he walks it - and walks back to it after a
 ## chase has dragged him off.
-func _tick_idle(_delta: float) -> void:
+func _tick_idle(delta: float) -> void:
 	var offset := global_position.x - patrol_origin_x
 	if absf(offset) >= patrol_distance:
 		# Aimed at the post rather than simply reversed. Flipping direction is
@@ -64,10 +64,15 @@ func _tick_idle(_delta: float) -> void:
 		# standing well outside his patch flips every frame and shivers on the
 		# spot instead of going home.
 		patrol_direction = -1 if offset > 0.0 else 1
-	elif is_on_floor() and not has_floor_ahead(float(patrol_direction)):
+	if is_on_floor() and (not has_floor_ahead(float(patrol_direction)) \
+			or not can_step_forward(float(patrol_direction), delta)):
 		# The beat also ends where the ground does, so a post on a two-tile step
 		# is walked end to end instead of stepped off.
 		patrol_direction = -patrol_direction
+		if not has_floor_ahead(float(patrol_direction)) or not can_step_forward(float(patrol_direction), delta):
+			velocity.x = 0.0
+			_set_animation(&"idle")
+			return
 	velocity.x = patrol_direction * speed * PATROL_PACE
 	# Every tick, not just on the turn: `facing` starts at -1 while the patrol
 	# starts heading +1, so the first leg used to be walked backwards.

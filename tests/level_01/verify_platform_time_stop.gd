@@ -36,13 +36,19 @@ func _ready() -> void:
 		await get_tree().physics_frame
 	for deck: MovingPlatform in frozen:
 		assert(deck.position.is_equal_approx(frozen[deck]), "%s drift %s -> %s" % [deck.name, frozen[deck], deck.position])
-	player.powers.cancel()
+	Input.action_press(&"time_stop")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	Input.action_release(&"time_stop")
 	assert(TimeService.mode == TimeService.Mode.NORMAL)
+	assert(not player.powers.is_casting(GameState.ABILITY_STOP))
+	assert(is_equal_approx(player.age.age, before + 3.0), "Turning Stop Time off charged again")
+	assert(player.powers.cooldown_left(GameState.ABILITY_STOP) > 0.0)
 	for _frame in range(20):
 		await get_tree().physics_frame
 	for deck: MovingPlatform in frozen:
 		assert(not deck.position.is_equal_approx(frozen[deck]))
-	print("PLATFORM_TIME_STOP_OK decks=4 cost=3 freeze=true resume=true")
+	print("PLATFORM_TIME_STOP_OK decks=4 cost=3 freeze=true toggle_resume=true")
 	player.queue_free()
 	section.queue_free()
 	await get_tree().process_frame

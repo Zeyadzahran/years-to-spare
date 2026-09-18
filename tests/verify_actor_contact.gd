@@ -61,7 +61,10 @@ func verify_contact(enemy_name: String) -> void:
 			var contacted := false
 			for frame in 60:
 				mover.velocity = Vector2((-side if enemy_moves else side) * 450.0, 0.0)
-				mover.move_and_slide()
+				if mover is Player:
+					mover.move_with_enemy_slide()
+				else:
+					mover.move_and_slide()
 				for index in mover.get_slide_collision_count():
 					contacted = contacted or mover.get_slide_collision(index).get_collider() == other
 				await get_tree().physics_frame
@@ -73,12 +76,78 @@ func verify_contact(enemy_name: String) -> void:
 	await get_tree().physics_frame
 
 
+func verify_head_contact(enemy_name: String, wall_side := 0.0) -> void:
+	var player := preload("res://src/actors/player/player.tscn").instantiate() as Player
+	var enemy := (load("res://src/actors/enemy/%s.tscn" % enemy_name) as PackedScene).instantiate() as CharacterBody2D
+	enemy.position = Vector2(600.0, 600.0)
+	add_child(player)
+	add_child(enemy)
+	if enemy is BusinessBoss:
+		enemy.activate()
+	stop_updates(player)
+	stop_updates(enemy)
+	var wall: StaticBody2D
+	if not is_zero_approx(wall_side):
+		wall = StaticBody2D.new()
+		var wall_shape := CollisionShape2D.new()
+		var box := RectangleShape2D.new()
+		box.size = Vector2(8, 500)
+		wall_shape.shape = box
+		wall.add_child(wall_shape)
+		wall.position = Vector2(600 + wall_side * 40, 350)
+		add_child(wall)
+	for frozen in [false, true]:
+		TimeService.mode = TimeService.Mode.STOPPED if frozen else TimeService.Mode.NORMAL
+		for offset in [-12.0, 0.0, 12.0]:
+			player.position = Vector2(600.0 + offset, 220.0)
+			player.velocity = Vector2.ZERO
+			await get_tree().physics_frame
+			var touched_head := false
+			for frame in 150:
+				# Try to balance on the enemy, including landing exactly at its center.
+				player.input_dir = signf(enemy.position.x - player.position.x)
+				player.apply_gravity(1.0 / 60.0)
+				player.apply_horizontal(1.0 / 60.0)
+				player.move_with_enemy_slide()
+				if player._enemy_underfoot() != null:
+					touched_head = true
+					player._jump_buffered = Player.JUMP_BUFFER
+					check(not player.is_grounded() and not player.can_jump(),
+						"%s: enemy head grants footing or a jump" % enemy_name)
+				await get_tree().physics_frame
+				if player.position.y >= 599.0:
+					break
+			check(touched_head, "%s: fixture missed head contact" % enemy_name)
+			check(player.position.y >= 599.0 and player.is_grounded(),
+				"%s: player stayed on head, frozen=%s offset=%s" % [enemy_name, frozen, offset])
+			if wall != null:
+				check((player.position.x - 600.0) * wall_side < 18.1, "Head slide crossed a wall")
+	TimeService.reset()
+	if wall != null:
+		wall.free()
+	player.free()
+	enemy.free()
+	await get_tree().physics_frame
+
+
 func _ready() -> void:
 	TimeService.reset()
 	verify_level_layers("res://src/levels/level_01/level_01.tscn")
 	verify_level_layers("res://src/levels/level_02/level_02.tscn")
 	for enemy_name in ENEMIES:
 		await verify_contact(enemy_name)
+	var floor_body := StaticBody2D.new()
+	var floor_shape := CollisionShape2D.new()
+	var box := RectangleShape2D.new()
+	box.size = Vector2(2000.0, 40.0)
+	floor_shape.shape = box
+	floor_body.add_child(floor_shape)
+	floor_body.position = Vector2(600.0, 620.0)
+	add_child(floor_body)
+	for enemy_name in ENEMIES:
+		await verify_head_contact(enemy_name)
+	for wall_side in [-1.0, 1.0]:
+		await verify_head_contact("guard", wall_side)
 	if failures == 0:
-		print("ACTOR_CONTACT_VERIFIED: both levels, six enemy types, both movers and sides")
+		print("ACTOR_CONTACT_VERIFIED: side blocking and head sliding across six enemy types, normal and frozen time")
 	get_tree().quit(0 if failures == 0 else 1)

@@ -3,11 +3,9 @@ extends Node
 ## Turns the ability inputs into a TimeService mode and bills the player in
 ## years for the privilege.
 ##
-## A power is *cast*, not held: one press buys a fixed window - five seconds of
-## a stopped world - at a fixed price in years, and it runs itself out. Holding
-## a key while a counter climbed made the cost invisible until it had already
-## been paid, and gave the moment no shape: no start, no end, nothing to react
-## to. A press with a known length and a known price is a decision.
+## A power is cast, not held. One press buys up to five seconds of Stop Time
+## at a fixed price in years. A second press ends it early; otherwise it expires.
+## The cost is paid once on activation, and cooldown starts when the power ends.
 ##
 ## A press does not stop the world on the frame it lands. The boy plays his
 ## flourish first and the world stops on its last frame, because the alternative
@@ -79,6 +77,12 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	for id in _cooldowns.keys():
 		_cooldowns[id] = maxf(_cooldowns[id] - delta, 0.0)
+
+	# A fresh press releases Stop Time, including during its wind-up. Holding
+	# the button never toggles it repeatedly or spends another activation cost.
+	if is_casting(GameState.ABILITY_STOP) and Input.is_action_just_pressed(&"time_stop"):
+		cancel()
+		return
 
 	if _pending != null:
 		_wind_left = maxf(_wind_left - delta, 0.0)
@@ -208,7 +212,7 @@ func _try_cast(power: Power) -> void:
 		age.spend(power.cost)
 		return
 	# Charged on commitment rather than on arrival: he has decided, and the
-	# half second of flourish is not a window to change his mind in.
+	# half second of flourish is paid for even if he cancels before it lands.
 	_pending = power
 	_wind_left = WIND_UP
 	age.spend(power.cost)
