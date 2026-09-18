@@ -1,16 +1,17 @@
 extends CanvasLayer
 ## Pausing the tree preserves the rewind buffer and cooldowns while choosing.
-## Rewind expires after three seconds; only Continue commits the death.
+## Rewind expires after one second; only Continue commits the death.
 
 signal rewind_chosen
 
-const REWIND_WINDOW := 3.0
+const REWIND_WINDOW := 1.0
 const MAIN_MENU_SCENE := "res://src/ui/main_menu/main_menu.tscn"
 const FONT := preload("res://assets/fonts/prstart.ttf")
 var player: Player
 var rewind_button: Button
 var continue_button: Button
 var quit_button: Button
+var _rewind_progress: ProgressBar
 var _rewind_time_left := REWIND_WINDOW
 var _resolved := false
 var _owns_pause := false
@@ -45,6 +46,7 @@ func _build() -> void:
 	var restart := GameState.hearts <= 1 or player.age.age >= player.age.death_age
 	rewind_button = _button(rows, "[L] REWIND", _choose_rewind)
 	rewind_button.visible = player.powers.death_rewind_block_reason().is_empty()
+	_add_rewind_progress()
 	var continue_text := "[ENTER] RESTART LEVEL" if restart else "[ENTER] CONTINUE"
 	continue_button = _button(rows, continue_text, _choose_continue)
 	quit_button = _button(rows, "[Q] QUIT TO MENU", _choose_quit)
@@ -55,11 +57,34 @@ func _process(delta: float) -> void:
 	if _resolved or not _owns_pause or not rewind_button.visible:
 		return
 	_rewind_time_left = maxf(_rewind_time_left - delta, 0.0)
+	_rewind_progress.value = _rewind_time_left / REWIND_WINDOW
 	if is_zero_approx(_rewind_time_left):
 		if rewind_button.has_focus():
 			continue_button.grab_focus()
 		rewind_button.disabled = true
 		rewind_button.hide()
+
+
+## A thin bar drains right-to-left inside the button without covering its text.
+func _add_rewind_progress() -> void:
+	_rewind_progress = ProgressBar.new()
+	_rewind_progress.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_rewind_progress.show_percentage = false
+	_rewind_progress.max_value = 1.0
+	_rewind_progress.step = 0.0
+	_rewind_progress.value = 1.0
+	_rewind_progress.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_rewind_progress.offset_left = 3.0
+	_rewind_progress.offset_right = -3.0
+	_rewind_progress.offset_top = -7.0
+	_rewind_progress.offset_bottom = -3.0
+	var track := StyleBoxFlat.new()
+	track.bg_color = Color(0.12, 0.22, 0.28)
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(0.45, 0.85, 1.0)
+	_rewind_progress.add_theme_stylebox_override("background", track)
+	_rewind_progress.add_theme_stylebox_override("fill", fill)
+	rewind_button.add_child(_rewind_progress)
 
 
 func _button(parent: Node, text: String, callback: Callable) -> Button:

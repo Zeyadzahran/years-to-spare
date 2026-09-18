@@ -28,8 +28,9 @@ platforms - backward, and can pull him out of his own death. Slow-time input
 exists in the project, but its gameplay is not yet available.
 
 After the death animation, a paused screen shows only the available buttons.
-**L** offers Rewind for three seconds when it is ready, including on your last
-heart, then disappears. **Enter** continues using one heart, or restarts the
+**L** offers Rewind for one second when it is ready, including on your last
+heart. A bar inside the button shrinks with the remaining time, then the button
+disappears. **Enter** continues using one heart, or restarts the
 level when no heart will remain or you died of old age. **Q** quits to the menu.
 Waiting does not spend a heart, advance cooldowns, or consume recorded history.
 Lethal falls never trigger Rewind automatically.

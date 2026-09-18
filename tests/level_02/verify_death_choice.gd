@@ -38,8 +38,8 @@ func paused_rewind(hearts := 3, lethal_fall := false) -> void:
 	check(prompt.continue_button.text == continue_text, "Wrong remaining-heart option")
 	var history_time := TimeService._now
 	var dead_position := player.position
-	await frames(150)
-	check(prompt.rewind_button.visible, "Rewind expired before three seconds")
+	await frames(30)
+	check(prompt.rewind_button.visible, "Rewind expired before one second")
 	check(get_tree().paused and TimeService._now == history_time, "Choice screen consumed rewind history")
 	check(player.position == dead_position and GameState.hearts == hearts, "Waiting moved player or spent a heart")
 	press_key(KEY_ESCAPE)
@@ -65,10 +65,13 @@ func rewind_expires() -> void:
 		prompt.rewind_button.grab_focus()
 		var history_time := TimeService._now
 		var age_before := player.age.age
-		await frames(174)
-		check(prompt.rewind_button.visible, "Rewind disappeared before its three-second window ended")
+		await frames(30)
+		check(absf(prompt._rewind_progress.value - 0.5) < 0.05, "Rewind bar did not show half the remaining second")
+		await frames(24)
+		check(prompt.rewind_button.visible, "Rewind disappeared before its one-second window ended")
 		await frames(12)
-		check(not prompt.rewind_button.visible and prompt.rewind_button.disabled, "Rewind stayed available after three seconds")
+		check(not prompt.rewind_button.visible and prompt.rewind_button.disabled, "Rewind stayed available after one second")
+		check(is_zero_approx(prompt._rewind_progress.value), "Rewind bar did not empty at expiry")
 		check(prompt.continue_button.has_focus(), "Expired Rewind left focus on a hidden button")
 		press_key(KEY_L)
 		var event := InputEventJoypadButton.new()
@@ -88,7 +91,7 @@ func rewind_expires() -> void:
 		await frames(2)
 		check(not get_tree().paused and level.reload_count == 1, "Continue failed after Rewind expired")
 		check(GameState.hearts == (GameState.MAX_HEARTS if hearts == 1 else hearts - 1), "Continue after expiry spent the wrong number of hearts")
-	print("DEATH_CHOICE three-second expiry blocks keyboard, gamepad and queued button input; Continue still works")
+	print("DEATH_CHOICE one-second expiry and countdown bar; late inputs blocked and Continue still works")
 
 func unavailable_options() -> void:
 	for reason in ["cooldown", "old_age", "locked", "age_cost", "history"]:
