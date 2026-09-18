@@ -16,7 +16,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("Atlas_green_1")
 }],
-"loop": false,
+"loop": 0,
 "name": &"green",
 "speed": 5.0
 }, {
@@ -24,7 +24,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("Atlas_red_1")
 }],
-"loop": false,
+"loop": 0,
 "name": &"red",
 "speed": 5.0
 }]

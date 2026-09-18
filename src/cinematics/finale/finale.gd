@@ -15,6 +15,21 @@ const IMAGES: Array[Texture2D] = [
 	preload("res://assets/cut-scene-l02/goingaway-4.jpg"),
 ]
 
+## The boy's closing narration, running under the stills. Times are the speech
+## boundaries measured from boy-finale-vo.mp3 (ffmpeg silencedetect at -45 dB):
+## start is the end of the preceding silence, end is the start of the next one.
+const SUBTITLE_CUES: Array[Dictionary] = [
+	{"start": 0.00, "end": 2.65, "text": "I waited so long for those doors to open."},
+	{"start": 5.23, "end": 6.65, "text": "My mom held me first."},
+	{"start": 8.14, "end": 9.29, "text": "She said I got old."},
+	{"start": 9.92, "end": 10.95, "text": "I just let her hold me."},
+	{"start": 12.79, "end": 14.08, "text": "I knelt there for a second."},
+	{"start": 15.27, "end": 17.59, "text": "Just one second, where I didn't have to be strong."},
+	{"start": 19.56, "end": 20.81, "text": "Then we walked out together."},
+	{"start": 22.24, "end": 23.00, "text": "I don't know where."},
+	{"start": 24.08, "end": 25.23, "text": "I don't think it matters."},
+]
+
 ## Same pacing as the level 1 ending: screen time per image including the
 ## crossfade that carries it in, the last holding longest as the resting beat.
 const MUSIC_START := 21.0
@@ -32,10 +47,12 @@ const MAIN_MENU_SCENE := "res://src/ui/main_menu/main_menu.tscn"
 @onready var image_back: TextureRect = $ImageBack
 @onready var image_front: TextureRect = $ImageFront
 @onready var fade: ColorRect = $Fade
+@onready var subtitle: RichTextLabel = $CinematicText/Subtitle
 @onready var end_subtitle: Label = $EndSubtitle
 @onready var end_title: Label = $EndTitle
 @onready var end_hint: Label = $EndHint
 @onready var clock: AudioStreamPlayer = $Clock
+@onready var voice_over: AudioStreamPlayer = $VoiceOver
 @onready var enter_hint: Label = $EnterHint
 @onready var credits_box: CenterContainer = $Credits
 
@@ -43,6 +60,7 @@ const MAIN_MENU_SCENE := "res://src/ui/main_menu/main_menu.tscn"
 var _skip := false
 var _on_end_card := false
 var _finished := false
+var _current_cue := -1
 
 
 func _ready() -> void:
@@ -52,6 +70,7 @@ func _ready() -> void:
 	end_subtitle.modulate.a = 0.0
 	end_title.modulate.a = 0.0
 	end_hint.modulate.a = 0.0
+	subtitle.modulate.a = 0.0
 	fade.color.a = 1.0
 
 	MusicManager.play_music(MUSIC, OPENING_FADE_DURATION, MUSIC_VOLUME_DB, MUSIC_START)
@@ -64,6 +83,7 @@ func _ready() -> void:
 	await _play_images()
 	if _finished:
 		return
+	_sync_subtitles()
 	if not _skip:
 		await _fade_to_black()
 		if _finished:
@@ -89,17 +109,22 @@ func _unhandled_input(event: InputEvent) -> void:
 			_finish()
 		else:
 			_skip = true
+			voice_over.stop()
+			_hide_subtitle()
 
 
-## A beat that Enter can cut short on the way to THE END.
+## A beat that Enter can cut short on the way to THE END. Also nudges the
+## narration subtitles along, sourced from the voice-over's playback position.
 func _wait_beat(seconds: float) -> void:
 	var left := seconds
 	while left > 0.0 and not _skip and not _finished:
 		await get_tree().create_timer(minf(0.1, left)).timeout
 		left -= 0.1
+		_sync_subtitles()
 
 
 func _play_images() -> void:
+	voice_over.play()
 	for i in range(1, IMAGES.size()):
 		await _wait_beat(IMAGE_HOLD[i - 1] - CROSSFADE_DURATION)
 		if _skip or _finished:
@@ -132,6 +157,11 @@ func _fade_to_black() -> void:
 	MusicManager.stop_music(CLOSING_FADE_DURATION)
 	var closing := create_tween()
 	closing.tween_property(fade, ^"color:a", 1.0, CLOSING_FADE_DURATION).set_trans(Tween.TRANS_SINE)
+	# The narration ends a beat after the stills do; keep its last line syncing
+	# across the final fade instead of leaving it cut off.
+	while _finished == false and !_skip and voice_over.playing:
+		_sync_subtitles()
+		await get_tree().create_timer(0.1).timeout
 	await closing.finished
 
 
@@ -179,6 +209,34 @@ func _show_credits() -> void:
 	await hide.finished
 
 
+## Looks up the current narration line from the voice-over's playback position
+## and shows or hides it in step with the speech.
+func _sync_subtitles() -> void:
+	if _finished or _skip or not is_instance_valid(subtitle):
+		return
+	var position := voice_over.get_playback_position()
+	var next := _current_cue + 1
+	if next < SUBTITLE_CUES.size() and position >= SUBTITLE_CUES[next].start:
+		_current_cue = next
+		_show_subtitle(SUBTITLE_CUES[_current_cue])
+	if _current_cue >= 0 and position >= SUBTITLE_CUES[_current_cue].end:
+		_hide_subtitle()
+
+
+func _show_subtitle(cue: Dictionary) -> void:
+	subtitle.text = "[center]%s[/center]" % cue.text
+	subtitle.modulate.a = 0.0
+	var show := create_tween()
+	show.tween_property(subtitle, ^"modulate:a", 1.0, 0.2).set_trans(Tween.TRANS_SINE)
+
+
+func _hide_subtitle() -> void:
+	if not is_instance_valid(subtitle) or subtitle.modulate.a == 0.0:
+		return
+	var hide := create_tween()
+	hide.tween_property(subtitle, ^"modulate:a", 0.0, 0.15)
+
+
 ## The black screen with the end on it. Waits here for Enter before leaving
 ## for the menu. Landing here by skip covers the frozen frame instantly -
 ## music, clock, line and credits all cut - instead of fading over it.
@@ -187,6 +245,7 @@ func _show_end_title() -> void:
 		return
 	_on_end_card = true
 	clock.stop()
+	voice_over.stop()
 	enter_hint.hide()
 	if _skip:
 		MusicManager.stop_music(1.0)
