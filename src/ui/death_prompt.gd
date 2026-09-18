@@ -1,26 +1,32 @@
 extends CanvasLayer
-## The run is over: his last heart is gone, or his years are. Nothing is
-## committed until he chooses - the tree is paused under this - and the choice
-## is only ever restart or leave. A death that still leaves him a heart never
-## comes here; it costs the heart and puts him back at the marker on its own.
+## Pausing the tree preserves the rewind buffer and cooldowns while choosing.
+## Only Continue commits the death through the existing level retry flow.
 
-const FONT := preload("res://assets/fonts/prstart.ttf")
+signal rewind_chosen
+
 const MAIN_MENU_SCENE := "res://src/ui/main_menu/main_menu.tscn"
+const FONT := preload("res://assets/fonts/prstart.ttf")
 var player: Player
-var restart_button: Button
+var rewind_button: Button
+var continue_button: Button
 var quit_button: Button
 var _resolved := false
 var _owns_pause := false
 
 
 func _ready() -> void:
-	name = "GameOver"
+	name = "DeathPrompt"
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 100
+	# A Rewind pressed on the last frame of the collapse already owns the death.
+	if not player.is_down() or player.powers.is_casting(GameState.ABILITY_REWIND):
+		rewind_chosen.emit()
+		queue_free()
+		return
 	_build()
 	_owns_pause = true
 	get_tree().paused = true
-	restart_button.grab_focus()
+	continue_button.grab_focus()
 
 
 func _build() -> void:
@@ -35,14 +41,25 @@ func _build() -> void:
 	rows.add_theme_constant_override("separation", 22)
 	center.add_child(rows)
 	_lives(rows)
-	_label(rows, "GAME OVER", 36, Color(1.0, 0.45, 0.35))
-	var reason := "Your time has run out." if _of_old_age() else "No hearts left."
-	_label(rows, "%s  The level starts over with %d." % [reason, GameState.MAX_HEARTS], 12, Color(0.84, 0.84, 0.88))
-	restart_button = _button(rows, "[ENTER] RESTART LEVEL", _choose_restart)
+	_label(rows, "YOU DIED", 36, Color(1.0, 0.45, 0.35))
+	var restart := GameState.hearts <= 1 or player.age.age >= player.age.death_age
+	var consequence := "Continue uses 1 heart.  %d remaining." % (GameState.hearts - 1)
+	if restart:
+		consequence = "Restart the level with %d hearts." % GameState.MAX_HEARTS
+	_label(rows, consequence, 12, Color(0.84, 0.84, 0.88))
+	var reason := player.powers.death_rewind_block_reason()
+	rewind_button = _button(rows, "[L] REWIND", _choose_rewind)
+	rewind_button.visible = reason.is_empty()
+	if reason.is_empty():
+		_label(rows, "Keep your heart.  Rewind costs 4 years.", 10, Color(0.55, 0.83, 0.94))
+	else:
+		_label(rows, reason, 12, Color(0.68, 0.69, 0.75))
+	var continue_text := "[ENTER] RESTART LEVEL" if restart else "[ENTER] CONTINUE"
+	continue_button = _button(rows, continue_text, _choose_continue)
 	quit_button = _button(rows, "[Q] QUIT TO MENU", _choose_quit)
 
 
-## The face he died wearing and the count that ran out.
+## Show the current lives: no heart is spent until Continue is chosen.
 func _lives(parent: Node) -> void:
 	var row := HBoxContainer.new()
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -56,7 +73,7 @@ func _lives(parent: Node) -> void:
 	face.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	row.add_child(face)
 	var count := Label.new()
-	count.text = "x%d" % maxi(GameState.hearts - 1, 0)
+	count.text = "x%d" % GameState.hearts
 	count.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	count.add_theme_font_override("font", FONT)
 	count.add_theme_font_size_override("font_size", 16)
@@ -97,34 +114,35 @@ func _button(parent: Node, text: String, callback: Callable) -> Button:
 func _input(event: InputEvent) -> void:
 	if _resolved:
 		return
-	# Consume before Restart can replace the current scene and remove this node.
+	# Consume before Continue can replace the current scene and remove this node.
 	if event is InputEventKey or event is InputEventJoypadButton:
 		get_viewport().set_input_as_handled()
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode in [KEY_ENTER, KEY_KP_ENTER]:
-			_choose_restart()
-		elif event.keycode == KEY_Q:
-			_choose_quit()
+	if event.is_action_pressed(&"time_rewind"):
+		_choose_rewind()
+	elif event is InputEventKey and event.pressed and not event.echo \
+			and event.keycode in [KEY_ENTER, KEY_KP_ENTER]:
+		_choose_continue()
+	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Q:
+		_choose_quit()
 	elif event is InputEventJoypadButton and event.pressed and event.button_index == JOY_BUTTON_A:
-		_choose_restart()
+		_choose_continue()
 
 
-func _of_old_age() -> bool:
-	return player.age.age >= player.age.death_age
+func _choose_rewind() -> void:
+	if _resolved or not player.powers.rewind_after_death():
+		return
+	rewind_chosen.emit()
+	_close()
 
 
-## Commits the death through the level, which spends the last heart, throws
-## the run's progress away and reloads from the top.
-func _choose_restart() -> void:
+func _choose_continue() -> void:
 	if _resolved:
 		return
-	var old_age := _of_old_age()
+	var old_age := player.age.age >= player.age.death_age
 	_close()
 	EventBus.player_died.emit(old_age)
 
 
-## Nothing is committed: PLAY on the menu clears the run - the pause menu's
-## MAIN MENU leaves it the same way (src/ui/options/options.gd).
 func _choose_quit() -> void:
 	if _resolved:
 		return

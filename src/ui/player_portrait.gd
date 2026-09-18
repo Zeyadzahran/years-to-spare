@@ -1,6 +1,6 @@
 class_name PlayerPortrait
 extends RefCounted
-## His face for the HUD and the Game Over screen: the three-quarter head from
+## His face for the HUD and the death-choice screen: the three-quarter head from
 ## each character sheet (assets/sprites/portraits), one per body he can be
 ## wearing, so the portrait ages with him.
 

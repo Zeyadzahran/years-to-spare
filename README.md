@@ -31,7 +31,8 @@ After the death animation, a paused **You Died** screen lets you press **L**
 to rewind when it is ready, including on your last heart. **Enter** continues
 using one heart, or restarts the level when no heart will remain or you died
 of old age. The screen explains when Rewind is unavailable; waiting here
-does not advance its cooldown or consume the recorded history.
+does not advance its cooldown or consume the recorded history. **Q** quits to
+the menu. Lethal falls never trigger Rewind automatically.
 
 City of Time currently has a title screen only. It returns to Level 1; a playable
 second level has not been added yet.

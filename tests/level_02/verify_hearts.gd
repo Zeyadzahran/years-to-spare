@@ -159,15 +159,15 @@ func quit_button() -> void:
 	var prompt: Node = null
 	for i in 90:
 		await frames(1)
-		if player.has_node("GameOver"):
-			prompt = player.get_node("GameOver")
+		if player.has_node("DeathPrompt"):
+			prompt = player.get_node("DeathPrompt")
 			break
-	check(prompt != null, "Game Over screen did not appear on the last heart")
+	check(prompt != null, "Death-choice screen did not appear on the last heart")
 	if prompt == null:
 		return
 	check(prompt.quit_button != null and prompt.quit_button.text == "[Q] QUIT TO MENU", "Quit button missing")
-	check(prompt.restart_button.has_focus(), "Focus left Restart")
-	check(get_tree().paused, "Game Over did not pause")
+	check(prompt.continue_button.has_focus(), "Focus left Restart")
+	check(get_tree().paused, "Death-choice did not pause")
 	if failures > 0 and prompt == null:
 		return
 	# Quit replaces the current scene - this node - so a watcher outside it

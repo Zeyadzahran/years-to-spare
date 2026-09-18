@@ -1,10 +1,7 @@
 extends PlayerState
-## Plays the collapse, then spends a heart. With a heart still left that is
-## all it is: the level puts him back at the marker and nothing gets in the
-## way. On his last heart, or out of years, the run is over and the Game Over
-## screen asks whether to start the level again or leave.
+## Plays the collapse, then pauses for a choice before spending a heart.
 
-const GAME_OVER := preload("res://src/ui/game_over.gd")
+const DEATH_PROMPT := preload("res://src/ui/death_prompt.gd")
 
 ## Matches the dying clip: 9 frames at 14 fps.
 const DURATION := 0.64
@@ -29,11 +26,8 @@ func physics_update(delta: float) -> StringName:
 		return &""
 	if not _announced and _elapsed >= DURATION:
 		_announced = true
-		var old_age := player.age.age >= player.age.death_age
-		if old_age or GameState.hearts <= 1:
-			var screen := GAME_OVER.new()
-			screen.player = player
-			player.add_child.call_deferred(screen)
-		else:
-			EventBus.player_died.emit.call_deferred(false)
+		var prompt := DEATH_PROMPT.new()
+		prompt.player = player
+		prompt.rewind_chosen.connect(func() -> void: _announced = false)
+		player.add_child.call_deferred(prompt)
 	return &""
