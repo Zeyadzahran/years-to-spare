@@ -38,8 +38,8 @@ always active, including during time-stop. Contact deals 25 damage; remaining
 inside causes another hit every second. The four-frame electricity animation
 loops at 16 FPS, including during time-stop. Jump over the visible electricity.
 The freight deck still stops on the world clock. Any death - a fall, the
-sparks, a blade - plays out the collapse and then leaves a second and a half
-in which `L` rewinds it away for 4 years and no heart; after that the heart
+sparks, a blade - plays out the collapse and then leaves one second in
+which `L` rewinds it away for 4 years and no heart; after that the heart
 is spent and the checkpoint reloads on its own, with nothing on screen. Only
 the last heart stops on Game Over. Supply chests heal 50 health, may hold a
 heart, open only when useful, and reset on retry like the existing healing

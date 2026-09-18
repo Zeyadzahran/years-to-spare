@@ -153,12 +153,16 @@ func afterwards() -> void:
 	var hearts := GameState.hearts
 	await place(Vector2(1700, 640))
 	var paused := false
+	var rest := Vector2.INF
 	for i in 200:
 		await frames(1)
 		if get_tree().paused:
 			paused = true
+		if player.is_down() and rest == Vector2.INF and i > 60:
+			rest = player.global_position
 		if _deaths > 0:
 			break
+	check(rest != Vector2.INF and player.global_position.is_equal_approx(rest), "He kept falling after the collapse: %s -> %s" % [rest, player.global_position])
 	EventBus.player_died.disconnect(_count_death)
 	check(not paused, "A later fall stopped the world again")
 	check(_deaths == 1, "A later fall did not commit as a plain death")

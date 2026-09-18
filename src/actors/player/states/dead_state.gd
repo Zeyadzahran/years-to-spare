@@ -13,7 +13,7 @@ const DURATION := 0.64
 ## How long after the collapse a rewind is still his to press. TimePowers
 ## polls the key on its own and lets Rewind through while he is down; this
 ## state only has to wait and then commit.
-const GRACE := 1.5
+const GRACE := 1.0
 
 var _elapsed := 0.0
 var _collapsed := false
@@ -27,9 +27,15 @@ func enter(_previous: StringName) -> void:
 
 func physics_update(delta: float) -> StringName:
 	_elapsed += delta
-	player.apply_gravity(delta)
-	player.velocity.x = move_toward(player.velocity.x, 0.0, Player.GROUND_FRICTION * delta)
-	player.move_and_slide()
+	# He falls with the collapse and no further: a death over the void would
+	# otherwise carry him, and the camera, down out of the level for as long
+	# as the window lasts.
+	if _collapsed:
+		player.velocity = Vector2.ZERO
+	else:
+		player.apply_gravity(delta)
+		player.velocity.x = move_toward(player.velocity.x, 0.0, Player.GROUND_FRICTION * delta)
+		player.move_and_slide()
 
 	# Held while a rewind is under way: it is about to reach back past this
 	# and stand him up, and the level must not reload out from under it.

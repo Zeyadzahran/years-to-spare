@@ -5,7 +5,7 @@ extends "res://tests/level_02/verify_boss_retries.gd"
 ## Over, where Enter restarts the level and Q leaves for the menu.
 
 const COLLAPSE_FRAMES := 40
-const GRACE_FRAMES := 90
+const GRACE_FRAMES := 60
 
 func press_key(key: Key) -> void:
 	var event := InputEventKey.new()

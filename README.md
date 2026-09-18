@@ -27,7 +27,7 @@ runs the last four seconds of the world - the boy, enemies, bullets and
 platforms - backward, and can pull him out of his own death. Slow-time input
 exists in the project, but its gameplay is not yet available.
 
-After the death animation there is a moment - a second and a half - in which
+After the death animation there is a moment - one second - in which
 **L** still rewinds when Rewind is ready, on any heart, with nothing on screen.
 When it passes, a spare heart is spent and the level reloads at the checkpoint
 on its own. On the last heart, or at 60, a **Game Over** screen offers
