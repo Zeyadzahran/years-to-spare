@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://bq8jt4mv6c03h" path="res://src/levels/level_01/hazards/ceiling_obstacle.tscn" id="10_eucyj"]
 [ext_resource type="PackedScene" uid="uid://b7qk3n5xw2ta4" path="res://src/levels/level_01/hazards/saw.tscn" id="11_4r0fx"]
 [ext_resource type="PackedScene" uid="uid://s4thn3454mp1" path="res://src/actors/player/player.tscn" id="12_r3o47"]
+[ext_resource type="PackedScene" uid="uid://cw23f5hkg22e8" path="res://src/world/pickups/heart_pickup.tscn" id="13_0id1s"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="16_buk32"]
 [ext_resource type="PackedScene" uid="uid://cf5roapb2wk7d" path="res://src/levels/level_01/hazards/spike_strip_small.tscn" id="17_spksm"]
 [ext_resource type="PackedScene" uid="uid://drt0b4rcdaxpq" path="res://src/actors/enemy/guard.tscn" id="18_1tr31"]
@@ -784,11 +785,57 @@ position = Vector2(8395, 553)
 [node name="Pickup3" parent="World/Pickups" unique_id=495002536 instance=ExtResource("20_pickup")]
 position = Vector2(9074, 558)
 
+[node name="Heart1150" parent="World/Pickups" unique_id=686619884 instance=ExtResource("13_0id1s")]
+position = Vector2(1150, 540)
+chance = 0.3
+
+[node name="Heart2600" parent="World/Pickups" unique_id=754105520 instance=ExtResource("13_0id1s")]
+position = Vector2(2600, 540)
+chance = 0.3
+
+[node name="Heart3550" parent="World/Pickups" unique_id=253978284 instance=ExtResource("13_0id1s")]
+position = Vector2(3550, 420)
+chance = 0.3
+
+[node name="Heart4850" parent="World/Pickups" unique_id=242484353 instance=ExtResource("13_0id1s")]
+position = Vector2(4850, 540)
+chance = 0.3
+
+[node name="Heart5450" parent="World/Pickups" unique_id=84490315 instance=ExtResource("13_0id1s")]
+position = Vector2(5450, 420)
+chance = 0.3
+
+[node name="Heart6900" parent="World/Pickups" unique_id=1903413510 instance=ExtResource("13_0id1s")]
+position = Vector2(6900, 420)
+chance = 0.3
+
+[node name="Heart7900" parent="World/Pickups" unique_id=455925747 instance=ExtResource("13_0id1s")]
+position = Vector2(7900, 540)
+chance = 0.3
+
+[node name="Heart8400" parent="World/Pickups" unique_id=1913045017 instance=ExtResource("13_0id1s")]
+position = Vector2(8400, 540)
+chance = 0.3
+
+[node name="Heart7500" parent="World/Pickups" unique_id=1546455405 instance=ExtResource("13_0id1s")]
+position = Vector2(7500, 540)
+chance = 0.3
+
+[node name="Heart10500" parent="World/Pickups" unique_id=774572754 instance=ExtResource("13_0id1s")]
+position = Vector2(10500, 300)
+chance = 0.3
+
+[node name="Heart11700" parent="World/Pickups" unique_id=467217044 instance=ExtResource("13_0id1s")]
+position = Vector2(11700, 180)
+chance = 0.3
+
 [node name="Hazards" type="Node2D" parent="World" unique_id=160053923]
 
 [node name="SpikeStripLarge" parent="World/Hazards" unique_id=75637107 instance=ExtResource("9_lscnh")]
 position = Vector2(8880, 455)
 rotation = -3.1415925
+damage = 25.0
+instant_death = false
 
 [node name="Saw3" parent="World/Hazards" unique_id=470332106 instance=ExtResource("11_4r0fx")]
 z_index = -1
@@ -873,9 +920,13 @@ rotation = 3.1415927
 
 [node name="SpikeStripSmall" parent="World/Hazards" unique_id=794019762 instance=ExtResource("17_spksm")]
 position = Vector2(11098, 243)
+damage = 25.0
+instant_death = false
 
 [node name="SpikeStripSmall3" parent="World/Hazards" unique_id=1735205700 instance=ExtResource("17_spksm")]
 position = Vector2(11429, 244)
+damage = 25.0
+instant_death = false
 
 [node name="SalvageYard" type="Node2D" parent="World" unique_id=2109772328]
 
