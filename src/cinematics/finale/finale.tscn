@@ -4,6 +4,7 @@
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="2_prstart"]
 [ext_resource type="AudioStream" uid="uid://bkhs3kvc6tn2j" path="res://assets/sounds/clock-sound.mp3" id="3_clock"]
 [ext_resource type="FontFile" uid="uid://dkfq35cacteag" path="res://assets/fonts/NotoSerif-Variable.ttf" id="4_serif"]
+[ext_resource type="AudioStream" uid="uid://dij7t64ao0s7b" path="res://assets/sounds/boy-finale-vo.mp3" id="5_vo"]
 
 [node name="Finale" type="Control" unique_id=1]
 layout_mode = 3
@@ -52,6 +53,44 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
+[node name="CinematicText" type="Control" parent="." unique_id=17]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 128.0
+offset_top = -142.0
+offset_right = -128.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Subtitle" type="RichTextLabel" parent="CinematicText" unique_id=18]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 14.0
+offset_right = -24.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0.965, 0.88, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.015, 0.02, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.78)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 6
+theme_override_fonts/normal_font = ExtResource("2_prstart")
+theme_override_font_sizes/normal_font_size = 21
+bbcode_enabled = true
+scroll_active = false
+autowrap_mode = 2
+
 [node name="EndSubtitle" type="Label" parent="." unique_id=8]
 layout_mode = 1
 anchors_preset = 12
@@ -91,9 +130,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Clock" type="AudioStreamPlayer" parent="." unique_id=9]
-bus = &"SFX"
 stream = ExtResource("3_clock")
 volume_db = -8.0
+bus = &"SFX"
+
+[node name="VoiceOver" type="AudioStreamPlayer" parent="." unique_id=19]
+stream = ExtResource("5_vo")
 
 [node name="Credits" type="CenterContainer" parent="." unique_id=11]
 layout_mode = 1
