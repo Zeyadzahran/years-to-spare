@@ -39,7 +39,7 @@ border_color = Color(1, 0.62, 0.18, 1)
 
 [node name="Guardian" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 1
+collision_mask = 3
 floor_snap_length = 18.0
 script = ExtResource("1_script")
 
@@ -48,8 +48,9 @@ position = Vector2(0, -75)
 shape = SubResource("CapsuleShape2D_body")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
+z_index = 10
+z_as_relative = false
 texture_filter = 1
-z_index = 8
 scale = Vector2(3.5, 3.5)
 sprite_frames = SubResource("SpriteFrames_preview")
 animation = &"idle"

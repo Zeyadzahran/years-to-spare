@@ -77,7 +77,8 @@ func healing_supplies() -> void:
 		player.global_position = chest.global_position
 		player.health.restore_to(100.0)
 		await frames(4)
-		check(not chest.opened, "Supply wasted at full health")
+		# The lid may open for a heart at full health; the healing stays put.
+		check(not chest.healed and player.health.current == 100.0, "Supply wasted at full health")
 		player.health.restore_to(40.0)
 		var saved_chest: Array = chest.rewind_capture()
 		var saved_player := player.rewind_capture()
@@ -89,11 +90,12 @@ func healing_supplies() -> void:
 		TimeService.mode = TimeService.Mode.REWINDING
 		chest.rewind_apply(saved_chest)
 		player.rewind_apply(saved_player)
-		check(not chest.opened and player.health.current == 40.0, "Rewind did not restore supply and health together")
+		check(not chest.healed and player.health.current == 40.0, "Rewind did not restore supply and health together")
 		TimeService.mode = TimeService.Mode.NORMAL
 		await frames(4)
-		check(chest.opened and player.health.current == 90.0, "Rewound supply could not be collected again")
-	check(GameState.hearts == hearts, "Supply changed remaining hearts")
+		check(chest.healed and player.health.current == 90.0, "Rewound supply could not be collected again")
+	# An arena chest may have rolled a heart this run and given it up.
+	check(GameState.hearts >= hearts and GameState.hearts <= hearts + supplies.size(), "Supply changed remaining hearts")
 	print("ROOM_FEEDBACK supplies: two real overlaps, full-health preservation, 50 HP, one use and rewind")
 
 func _ready() -> void:

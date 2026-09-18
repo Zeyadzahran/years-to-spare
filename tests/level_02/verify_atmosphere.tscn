@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dmd173appluan"]
+
+[ext_resource type="Script" uid="uid://i6ng0de1jgbx" path="res://tests/level_02/verify_atmosphere.gd" id="1_fu5m7"]
+
+[node name="VerifyAtmosphere" type="Node" unique_id=2014662430]
+script = ExtResource("1_fu5m7")

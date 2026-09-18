@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://cywqtrt021mqa"]
 
+[ext_resource type="PackedScene" uid="uid://cw23f5hkg22e8" path="res://src/world/pickups/heart_pickup.tscn" id="3_mwm5h"]
+[ext_resource type="AudioStream" uid="uid://dlrorgp210wxo" path="res://assets/sounds/chest-open.mp3" id="3_open_audio"]
 [ext_resource type="Script" uid="uid://dkk4ry77hehta" path="res://src/levels/level_02/objects/supply_chest.gd" id="29_sqa8i"]
 [ext_resource type="Texture2D" uid="uid://cqvk3663ifksb" path="res://src/levels/level_02/art/animated/Chest.png" id="30_t27ul"]
-[ext_resource type="AudioStream" path="res://assets/sounds/chest-open.mp3" id="3_open_audio"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lf48l"]
 resource_local_to_scene = true
@@ -24,8 +25,12 @@ texture = ExtResource("30_t27ul")
 offset = Vector2(0, -16)
 hframes = 4
 
-[node name="OpenAudio" type="AudioStreamPlayer2D" parent="."]
+[node name="Heart" parent="." unique_id=686619884 instance=ExtResource("3_mwm5h")]
+position = Vector2(0, -32)
+stowed = true
+chance = 0.5
+
+[node name="OpenAudio" type="AudioStreamPlayer2D" parent="." unique_id=783146216]
 position = Vector2(0, -32)
 stream = ExtResource("3_open_audio")
-volume_db = 0.0
 max_distance = 700.0

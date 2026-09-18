@@ -150,7 +150,7 @@ func _ready() -> void:
 	for prop in map.get_node("World/Decorations").get_children():
 		var gateway := prop.name == &"TransitionGateway" and prop.scene_file_path == OBJECTS + "industrial_ledge.tscn"
 		check(gateway or prop.scene_file_path.begins_with("res://src/levels/level_02/props/"), "Decoration is not a shared scene")
-	check(map.get_node("World/Checkpoints/L2MachineYard").position == Vector2(1691,652), "User's checkpoint placement changed")
+	check(map.get_node("World/Checkpoints/L2MachineYard").position == Vector2(1340,652), "User's checkpoint placement changed")
 	check(not map.has_node("World/Checkpoints/L2Entry"), "Removed opening checkpoint was restored")
 	check(map.get_node("World/Obstacles/CargoCrate").collision_size == Vector2(100,49), "Unsaved crate resize was lost")
 	check(map.get_node("World/Obstacles/CargoCrate").collision_offset == Vector2(5,0), "Unsaved crate offset was lost")

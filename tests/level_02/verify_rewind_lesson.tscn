@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bxmhtwy6t714f"]
+
+[ext_resource type="Script" uid="uid://da15fw7w52kyo" path="res://tests/level_02/verify_rewind_lesson.gd" id="1_0vsnl"]
+
+[node name="VerifyRewindLesson" type="Node" unique_id=731503661]
+script = ExtResource("1_0vsnl")

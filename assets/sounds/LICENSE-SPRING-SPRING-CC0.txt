@@ -1,0 +1,12 @@
+Heart pickup
+============
+
+heart-pickup.mp3  (sfx-1up.wav, loudness-levelled to -20 LUFS to sit with the fig and the chest, 0.1 s tail fade, encoded to MP3)
+From "Jay The Doggo - Sound Effects" by Spring Spring
+https://opengameart.org/content/jay-the-doggo-sound-effects
+
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Attribution is not required, but the source is recorded here so the project's
+audio provenance remains clear.

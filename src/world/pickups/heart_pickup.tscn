@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://cw23f5hkg22e8"]
+
+[ext_resource type="Script" uid="uid://7yh67rrcieiv" path="res://src/world/pickups/heart_pickup.gd" id="1_40avl"]
+[ext_resource type="Texture2D" uid="uid://bs26hyhhdmauh" path="res://assets/sprites/heart-full.png" id="2_2fixx"]
+[ext_resource type="AudioStream" uid="uid://dff7e8e1si1ej" path="res://assets/sounds/heart-pickup.mp3" id="3_kbr1l"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ni3mf"]
+radius = 18.0
+
+[sub_resource type="Animation" id="Animation_7iwwb"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0fp5b"]
+resource_name = "hover"
+length = 1.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -8), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p3nau"]
+_data = {
+&"RESET": SubResource("Animation_7iwwb"),
+&"hover": SubResource("Animation_0fp5b")
+}
+
+[node name="HeartPickup" type="Area2D" unique_id=686619884]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_40avl")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=501271559]
+texture_filter = 1
+scale = Vector2(1.6, 1.6)
+texture = ExtResource("2_2fixx")
+
+[node name="Shape" type="CollisionShape2D" parent="." unique_id=1454005779]
+shape = SubResource("CircleShape2D_ni3mf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=593262428]
+libraries/ = SubResource("AnimationLibrary_p3nau")
+autoplay = &"hover"
+
+[node name="PickupAudio" type="AudioStreamPlayer2D" parent="." unique_id=25974194]
+process_mode = 3
+stream = ExtResource("3_kbr1l")
+volume_db = -6.0

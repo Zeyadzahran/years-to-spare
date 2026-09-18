@@ -13,7 +13,7 @@ size = Vector2(80, 110)
 
 [node name="Robot" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 1
+collision_mask = 3
 floor_snap_length = 12.0
 script = ExtResource("1")
 
@@ -22,6 +22,8 @@ position = Vector2(0, -55)
 shape = SubResource("body")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
+z_index = 10
+z_as_relative = false
 texture_filter = 1
 scale = Vector2(1.75, 1.75)
 sprite_frames = ExtResource("3")
@@ -30,6 +32,8 @@ autoplay = "idle"
 offset = Vector2(0, -48)
 
 [node name="Charge" type="AnimatedSprite2D" parent="."]
+z_index = 10
+z_as_relative = false
 visible = false
 texture_filter = 1
 position = Vector2(10, -70)

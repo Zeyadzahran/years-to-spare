@@ -105,7 +105,7 @@ func _ready() -> void:
 	await frames(400)
 	level.get_node("Enemies").process_mode = Node.PROCESS_MODE_INHERIT
 	var guard := level.get_node("Enemies/YardGuard") as Enemy
-	player.position = guard.position + Vector2(-400.0, 0.0)
+	player.position = guard.position + Vector2(-250.0, 0.0)
 	player.velocity = Vector2.ZERO
 	await frames(240)
 	var guard_pos := guard.position

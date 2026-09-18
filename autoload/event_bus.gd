@@ -10,17 +10,26 @@ signal player_health_changed(current: float, maximum: float)
 ## costs the boy the ground he covered; running out of years is the end of him,
 ## and the level starts over from the top rather than from a checkpoint.
 signal player_died(of_old_age: bool)
+## The collapse has played out and he is down for good unless a rewind reaches
+## him: the window in which one still can is open from here.
+signal player_collapsed(player: Node2D)
 
 signal player_age_changed(age: float, death_age: float)
-## A heart lost or the count restored to full - GameState.hearts is the source
-## of truth, this is just what tells the HUD to redraw it.
-signal player_hearts_changed(current: int, max_hearts: int)
+## A heart lost, picked up or the count restored to full - GameState.hearts is
+## the source of truth, this is just what tells the HUD to redraw it. The second
+## value is the cap the count can stack to, not the three a run starts with.
+signal player_hearts_changed(current: int, heart_cap: int)
 
 signal enemy_died(enemy: Node2D, age_reward: float)
 ## A rewind reached back past a unit's death and it is standing again. The
 ## years its death paid out are not taken back - see TimePowers on what a
 ## rewind does and does not touch.
 signal enemy_revived(enemy: Node2D)
+
+## A heart on the ground has been picked up, and - if a rewind reaches back past
+## the moment - put back. The level records which, the same way it does bodies.
+signal heart_collected(pickup: Node2D)
+signal heart_restored(pickup: Node2D)
 
 signal ability_unlocked(ability_id: StringName)
 ## Pressed and paid for: the boy starts his flourish, the world still running.

@@ -34,6 +34,8 @@ position = Vector2(0, -50)
 shape = SubResource("RectangleShape2D_body")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=897708578]
+z_index = 10
+z_as_relative = false
 scale = Vector2(0.45, 0.45)
 sprite_frames = ExtResource("9_frames")
 animation = &"idle"
@@ -76,8 +78,8 @@ script = ExtResource("13_tlp74")
 script = ExtResource("14_ylekk")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2118849440]
-position = Vector2(0, -110)
-zoom = Vector2(1.6, 1.6)
+position = Vector2(0, -60)
+zoom = Vector2(1.25, 1.25)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 

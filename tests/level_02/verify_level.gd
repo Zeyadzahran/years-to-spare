@@ -59,6 +59,8 @@ func crossing(title: String, start: Vector2, takeoff_x: float, end_x: float, flo
 
 func _ready() -> void:
 	GameState.clear_run_progress()
+	# The street's lesson ledges are out, as they are for the rest of a run.
+	GameState.rewind_lesson_done = true
 	await spawn()
 	check(GameState.current_level()["id"] == &"phase_2", "Direct scene selected wrong phase")
 	check(level.get_node("Enemies").get_child_count() == 11, "Expected eleven enemies")
@@ -68,11 +70,11 @@ func _ready() -> void:
 		check(enemy.is_on_floor(), "Enemy has no footing: " + String(enemy.name))
 	level.get_node("Enemies").process_mode = Node.PROCESS_MODE_DISABLED
 	for age in [14.0, 60.0]:
-		await crossing("Street gap",Vector2(1300,640),1370,1635,640,age)
+		await crossing("Street gap",Vector2(1300,640),1585,1810,640,age)
 		await crossing("Roof approach",Vector2(2765,576),2842,3110,512,age)
 		await crossing("Courtyard drop",Vector2(6080,512),6165,6440,640,age)
 		await crossing("Exit gap",Vector2(7370,640),7450,7710,640,age)
-		await crossing("Cargo obstacle",Vector2(1640,640),1705,1905,640,age)
+		await crossing("Cargo obstacle",Vector2(1830,640),1900,2110,640,age)
 		await crossing("Street cache step",Vector2(850,640),875,975,494,age,true)
 		await crossing("Street cache",Vector2(1030,494),1090,1290,423,age,true)
 		await crossing("Roof cache step",Vector2(4080,512),4120,4230,369,age,true)

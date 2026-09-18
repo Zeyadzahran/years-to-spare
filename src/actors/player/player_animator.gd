@@ -142,10 +142,13 @@ func _tick_crouch() -> void:
 
 func _sync_form() -> void:
 	if player != null and player.age != null:
-		_wear(_frames_for(player.age.age))
+		_wear(frames_for(player.age.age))
 
 
-func _frames_for(age: float) -> SpriteFrames:
+## Which of the three sets an age falls into. Public so the HUD and the death
+## screen can draw the same face he is wearing without carrying their own copy
+## of the two age lines.
+func frames_for(age: float) -> SpriteFrames:
 	if age >= elder_age:
 		return elder_frames
 	if age >= adult_age:
@@ -174,7 +177,7 @@ func _wear(frames: SpriteFrames) -> void:
 
 
 func _on_age_changed(age: float, _death_age: float) -> void:
-	_wear(_frames_for(age))
+	_wear(frames_for(age))
 
 
 func _on_ability_changed(ability_id: StringName, active: bool) -> void:

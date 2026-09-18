@@ -1,5 +1,7 @@
 extends Node
 ## Exercise real chest overlaps and the player's health-to-HUD signal path.
+## Every chest also holds a heart: the lid opens for it at full health, but
+## the healing waits in the box until he is actually hurt.
 var failures := 0
 
 func check(ok: bool, message: String) -> void:
@@ -22,6 +24,7 @@ func _ready() -> void:
 	var map := preload("res://src/levels/level_02/level_02.tscn").instantiate()
 	var supplies := map.get_node("World/Supplies")
 	var initial_hearts := GameState.hearts
+	var chest_count := supplies.get_child_count()
 	for chest in supplies.get_children():
 		chest.owner = null
 		supplies.remove_child(chest)
@@ -29,7 +32,7 @@ func _ready() -> void:
 		player.global_position = chest.global_position
 		player.health.current = 100.0
 		await settle()
-		check(not chest.opened, "%s wasted at full health" % chest.name)
+		check(chest.opened and not chest.healed and player.health.current == 100.0, "%s wasted its healing at full health" % chest.name)
 		player.health.current = 40.0
 		await settle()
 		check(player.health.current == 90.0, "%s did not heal on contact" % chest.name)
@@ -39,9 +42,15 @@ func _ready() -> void:
 		player.health.current = 40.0
 		await settle()
 		check(player.health.current == 40.0, "%s healed twice" % chest.name)
+		var hearts_before := GameState.hearts
+		for i in 90:
+			await get_tree().physics_frame
+			if GameState.hearts > hearts_before:
+				break
+		check(GameState.hearts == hearts_before + 1, "%s heart was not taken once it landed" % chest.name)
 		chest.queue_free()
 		await get_tree().process_frame
-	check(GameState.hearts == initial_hearts, "Health chest unexpectedly changed lives")
+	check(GameState.hearts == mini(initial_hearts + chest_count, GameState.HEART_CAP), "Chests did not each give one heart, got %d" % GameState.hearts)
 	map.free()
 	hud.queue_free()
 	player.queue_free()
