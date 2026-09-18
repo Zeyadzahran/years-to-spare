@@ -9,8 +9,8 @@ of reusable scenes. No runtime generator rebuilds the layout.
 
 | Section | World X | What happens here |
 | --- | --- | --- |
-| Entry street | 0–1,408 | First patrol, stepped supply cache, short gap |
-| Machinery yard | 1,600–2,880 | Cargo obstacle, upper route, first electrical trap |
+| Entry street | 0–1,408 | First patrol, stepped supply cache, the hole that teaches Rewind |
+| Machinery yard | 1,920–2,880 | Cargo obstacle, upper route, first electrical trap |
 | Rooftops | 3,072–4,416 | Guards, raised cache, approach to freight crossing |
 | Freight crossing and landing | 4,416–6,208 | Moving deck, checkpoint, upper overlook, electrical trap |
 | East courtyard and exit | 6,400–8,960 | Crate and rooftop route, final gap, guards and exit |
@@ -19,7 +19,8 @@ of reusable scenes. No runtime generator rebuilds the layout.
 
 - `Background`: sky and four repeating parallax layers.
 - `World/Terrain/IndustrialTiles`: painted `TileMapLayer`, 64-pixel world cells.
-- `World/Platforms`: five static ledges and the freight shuttle.
+- `World/Platforms`: five static ledges, the two lesson ledges that slide out
+  of the street hole's walls, and the freight shuttle.
 - `World/Obstacles`: two solid cargo crates and the side boundaries.
 - `World/Decorations`: pipes, machinery, pylons and scattered debris.
 - `World/Checkpoints`: five uniquely named Level 2 checkpoints.
@@ -29,17 +30,20 @@ of reusable scenes. No runtime generator rebuilds the layout.
 - `World/Exit`: the completion gate and its Level 2 panel.
 - `Enemies`: ten Guard/Gunner instances and one stationary Robot.
 - `Entities/Player` and `HUD`: the shared player and interface.
-- `Tutorial`: one decorative Rewind sign floating over the entry street.
+- `Tutorial`: the decorative Rewind sign over the entry street, and
+  `RewindLesson`, the area in the street hole that gives the fall lesson.
 
 A/D move, Space jumps, J attacks, and K stops time. Electrical barriers are
 always active, including during time-stop. Contact deals 25 damage; remaining
 inside causes another hit every second. The four-frame electricity animation
 loops at 16 FPS, including during time-stop. Jump over the visible electricity.
-The freight deck still stops on the world clock. A fall the clock can catch
-triggers a rewind instead of dying (4 years, no heart lost); anything else,
-or a fall with Rewind on cooldown or unaffordable, costs a life and uses the
-normal retry system. Supply chests heal 50 health, open only when useful, and reset on retry,
-like the existing healing pickups. The gate completes the level without requiring
+The freight deck still stops on the world clock. Any death - a fall, the
+sparks, a blade - plays out the collapse and then leaves a second and a half
+in which `L` rewinds it away for 4 years and no heart; after that the heart
+is spent and the checkpoint reloads on its own, with nothing on screen. Only
+the last heart stops on Game Over. Supply chests heal 50 health, may hold a
+heart, open only when useful, and reset on retry like the existing healing
+pickups. The gate completes the level without requiring
 all enemies to be defeated.
 
 Keep enemy paths and checkpoint names stable during tuning: they identify saved
@@ -57,24 +61,29 @@ with Stop and Rewind already granted.
   in Rewind silver, all centred (`centered = true`: heading, key and text
   aligned to the card's middle, key on its own line). The StreetPatrol
   guard at `(797, 639)` is the classroom: trade a hit, press `L`, and the
-  wound, positions and spent moments rewind four seconds. The street gap
-  (`1370–1635`) and the `YardPulse` trap at `(2349, 644)` are unmarked
-  practice: miss the jump or walk into the sparks, press `L`, and it never
-  happened - even a lethal fall can be rewound out of during the collapse.
+  wound, positions and spent moments rewind four seconds.
+- The street hole (`1408–1920`, 512 px) cannot be jumped on a fresh run, not
+  from the street and not off the `StreetCache` ledge above it. The
+  checkpoint `L2MachineYard` sits on its near lip at `(1340, 652)`. The first
+  time he falls in and the collapse plays out, `Tutorial/RewindLesson` stops
+  the world and shows its `Card` (`REWIND`, `L`, `Undo your death`, `One
+  second after you fall. Then it is final.`) over him at the bottom of the
+  pit; Rewind's cooldown is forgiven so the press cannot be refused, and only
+  `L` gets through. Once the rewind has stood him back on the street, he and
+  the guards hold still while the camera looks over at the hole and
+  `World/Platforms/LessonLeft` (3 tiles) and `LessonRight` (2 tiles) slide out
+  of the walls from one tile down to `(1504, 640)` and `(1856, 640)`, leaving
+  the ordinary 192 px gap at `1600–1792`. It happens once a run
+  (`GameState.rewind_lesson_done`); a retry finds the ledges already out, and
+  the hole is then a pit like any other. The `YardPulse` trap at `(2349, 644)`
+  stays unmarked practice.
 
-The sign is a static world-space drawing with no collision, so it cannot
+The signs are static world-space drawings with no collision, so they cannot
 affect movement, physics checks or retry identities. The `centered` flag is
 opt-in; Level 1's cards keep their left-aligned look.
 
-Cheating death is automatic, not only manual: `FallReset` carries
-`cheat_fall = true`, so a lethal fall casts Rewind on the boy's behalf while
-one is ready - winding up as he keeps falling, then standing him back on
-solid ground four seconds back, billed 4 years with no heart lost. Support
-lives in `TimePowers.try_cast` (cast by id, refused while another power
-runs), `Player.try_cheat_death` (falls only, never combat, never phase 1),
-and the `Hazard.cheat_fall` opt-in (chip damage never catches, and contacts
-during the wind-up wait their turn instead of killing). Manual `L` presses
-during the fall or the collapse still work exactly as before.
+Nothing rewinds on the boy's behalf: a fall he does not press `L` for costs a
+heart like any other death.
 
 ## Robot encounter
 
@@ -198,6 +207,8 @@ the existing project; the phase-2 folder contains environment art.
 godot --headless --path . tests/level_02/verify_objects.tscn
 godot --headless --path . tests/level_02/verify_supplies.tscn
 godot --headless --path . --fixed-fps 60 tests/level_02/verify_level.tscn
+godot --headless --path . --fixed-fps 60 tests/level_02/verify_rewind_lesson.tscn
+godot --headless --path . --fixed-fps 60 tests/level_02/verify_death_choice.tscn
 godot --headless --path . --script tests/scene_contracts.gd -- --level-only
 godot --path . tools/level_02/capture_map.tscn
 ```
