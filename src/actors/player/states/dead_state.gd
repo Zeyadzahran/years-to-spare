@@ -18,24 +18,50 @@ const GRACE := 1.0
 var _elapsed := 0.0
 var _collapsed := false
 var _committed := false
+## A death in the air - a fall into the void - holds the camera where it was:
+## he keeps falling and drops out of the bottom of the frame, rather than the
+## view following him down to a body lying on nothing. The camera's own floor
+## is kept and put back, since the boss rooms set one of their own.
+var _camera_held := false
+var _camera_floor := 0
 
 func enter(_previous: StringName) -> void:
 	_elapsed = 0.0
 	_collapsed = false
 	_committed = false
+	if not player.is_on_floor():
+		_hold_camera()
+
+
+func exit() -> void:
+	_release_camera()
+
+
+func _hold_camera() -> void:
+	var camera := player.get_node_or_null(^"Camera2D") as Camera2D
+	if camera == null:
+		return
+	var viewport := camera.get_viewport()
+	var bottom := (viewport.get_canvas_transform().affine_inverse() * viewport.get_visible_rect().size).y
+	_camera_floor = camera.limit_bottom
+	camera.limit_bottom = mini(_camera_floor, roundi(bottom))
+	_camera_held = true
+
+
+func _release_camera() -> void:
+	if not _camera_held:
+		return
+	_camera_held = false
+	var camera := player.get_node_or_null(^"Camera2D") as Camera2D
+	if camera != null:
+		camera.limit_bottom = _camera_floor
 
 
 func physics_update(delta: float) -> StringName:
 	_elapsed += delta
-	# He falls with the collapse and no further: a death over the void would
-	# otherwise carry him, and the camera, down out of the level for as long
-	# as the window lasts.
-	if _collapsed:
-		player.velocity = Vector2.ZERO
-	else:
-		player.apply_gravity(delta)
-		player.velocity.x = move_toward(player.velocity.x, 0.0, Player.GROUND_FRICTION * delta)
-		player.move_and_slide()
+	player.apply_gravity(delta)
+	player.velocity.x = move_toward(player.velocity.x, 0.0, Player.GROUND_FRICTION * delta)
+	player.move_and_slide()
 
 	# Held while a rewind is under way: it is about to reach back past this
 	# and stand him up, and the level must not reload out from under it.

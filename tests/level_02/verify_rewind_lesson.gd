@@ -152,17 +152,24 @@ func afterwards() -> void:
 	EventBus.player_died.connect(_count_death)
 	var hearts := GameState.hearts
 	await place(Vector2(1700, 640))
+	var camera := player.get_node("Camera2D") as Camera2D
+	var floor_before := camera.limit_bottom
 	var paused := false
-	var rest := Vector2.INF
+	var view_bottom := INF
 	for i in 200:
 		await frames(1)
 		if get_tree().paused:
 			paused = true
-		if player.is_down() and rest == Vector2.INF and i > 60:
-			rest = player.global_position
+		if player.is_down() and view_bottom == INF and i > 60:
+			view_bottom = (get_viewport().get_canvas_transform().affine_inverse() * get_viewport().get_visible_rect().size).y
 		if _deaths > 0:
 			break
-	check(rest != Vector2.INF and player.global_position.is_equal_approx(rest), "He kept falling after the collapse: %s -> %s" % [rest, player.global_position])
+	# The camera stopped following: the view's floor stayed put while he fell
+	# out of it.
+	var view_bottom_now := (get_viewport().get_canvas_transform().affine_inverse() * get_viewport().get_visible_rect().size).y
+	check(view_bottom != INF and absf(view_bottom_now - view_bottom) < 2.0, "Camera followed him into the void: %s -> %s" % [view_bottom, view_bottom_now])
+	check(player.global_position.y > view_bottom_now + 40.0, "He did not fall out of the frame")
+	check(camera.limit_bottom < floor_before, "Camera floor was not held for the fall")
 	EventBus.player_died.disconnect(_count_death)
 	check(not paused, "A later fall stopped the world again")
 	check(_deaths == 1, "A later fall did not commit as a plain death")
