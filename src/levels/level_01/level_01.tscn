@@ -1955,7 +1955,7 @@ color = Color(0.01, 0.008, 0.008, 0)
 
 [node name="Player" parent="Entities" unique_id=1426104633 instance=ExtResource("12_r3o47")]
 z_index = 10
-position = Vector2(16709, 119)
+position = Vector2(183, 618)
 
 [node name="Enemies" type="Node2D" parent="." unique_id=261374960]
 
