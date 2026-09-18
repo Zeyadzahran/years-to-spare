@@ -45,6 +45,7 @@ script = ExtResource("2_health")
 max_health = 340.0
 
 [node name="HitAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("4_hit")
 volume_db = 10.0
 

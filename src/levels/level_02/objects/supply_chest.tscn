@@ -31,6 +31,7 @@ stowed = true
 chance = 0.5
 
 [node name="OpenAudio" type="AudioStreamPlayer2D" parent="." unique_id=783146216]
+bus = &"SFX"
 position = Vector2(0, -32)
 stream = ExtResource("3_open_audio")
 max_distance = 700.0

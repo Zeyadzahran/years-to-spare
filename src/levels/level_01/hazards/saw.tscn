@@ -24,5 +24,6 @@ position = Vector2(0, -97)
 shape = SubResource("Shape_Saw")
 
 [node name="SawAudio" type="AudioStreamPlayer2D" parent="." unique_id=203958126]
+bus = &"SFX"
 stream = ExtResource("3_0cfj7")
 volume_db = -8.0

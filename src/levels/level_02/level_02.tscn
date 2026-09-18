@@ -255,16 +255,19 @@ z_index = 6
 script = ExtResource("5_1ve68")
 
 [node name="RainBed" type="AudioStreamPlayer" parent="Ambience" unique_id=652836482]
+bus = &"Environment"
 stream = ExtResource("6_ch0ec")
-volume_db = -3.0
+volume_db = -9.0
 autoplay = true
 
 [node name="DayBed" type="AudioStreamPlayer" parent="Ambience" unique_id=1531155609]
+bus = &"Environment"
 stream = ExtResource("6_rdluj")
 volume_db = -3.0
 autoplay = true
 
 [node name="NightBed" type="AudioStreamPlayer" parent="Ambience" unique_id=450894185]
+bus = &"Environment"
 stream = ExtResource("7_nyull")
 volume_db = -3.0
 autoplay = true
@@ -646,6 +649,7 @@ position = Vector2(20000, 0)
 script = ExtResource("44_bossarena")
 
 [node name="DeathAudio" type="AudioStreamPlayer" parent="World/BossArena" unique_id=423578154]
+bus = &"SFX"
 stream = ExtResource("boss_death_sound")
 volume_db = -1.0
 
@@ -929,8 +933,11 @@ position = Vector2(9633, 364)
 collision_layer = 0
 
 [node name="DropAmbush" parent="Ambushes" unique_id=1947671317 instance=ExtResource("scene_objects_robot_ambush_trigger")]
-position = Vector2(9589, 622)
+position = Vector2(9589, 480)
 robot_path = NodePath("../DropRobot")
+
+[node name="Shape" parent="Ambushes/DropAmbush" index="0"]
+scale = Vector2(1, 2)
 
 [node name="CeilingRobot" parent="Ambushes" unique_id=1662467339 instance=ExtResource("robot_scene")]
 process_mode = 4
@@ -996,4 +1003,5 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [editable path="World/Platforms/CourtyardCollapse"]
+[editable path="Ambushes/DropAmbush"]
 [editable path="Entities/Player"]

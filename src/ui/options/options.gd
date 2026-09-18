@@ -2,7 +2,12 @@ extends Control
 
 @onready var volume_slider: HSlider = %VolumeSlider
 @onready var volume_value: Label = %VolumeValue
-@onready var music_check: CheckButton = %MusicCheck
+@onready var music_slider: HSlider = %MusicSlider
+@onready var music_value: Label = %MusicValue
+@onready var environment_slider: HSlider = %EnvironmentSlider
+@onready var environment_value: Label = %EnvironmentValue
+@onready var sfx_slider: HSlider = %SfxSlider
+@onready var sfx_value: Label = %SfxValue
 @onready var fullscreen_check: CheckButton = %FullscreenCheck
 @onready var back_button: Button = %BackButton
 @onready var main_menu_button: Button = %MainMenuButton
@@ -21,11 +26,11 @@ func _ready():
 	else:
 		# Back already leads to the menu when this is its own scene.
 		main_menu_button.hide()
-	volume_slider.value = SettingsManager.volume
-	music_check.button_pressed = SettingsManager.music
-	fullscreen_check.button_pressed = SettingsManager.fullscreen
-	_update_volume_label(SettingsManager.volume)
-	_update_music_label(SettingsManager.music)
+	_init_volume_control(volume_slider, volume_value, SettingsManager.volume)
+	_init_volume_control(music_slider, music_value, SettingsManager.music_volume)
+	_init_volume_control(environment_slider, environment_value, SettingsManager.environment_volume)
+	_init_volume_control(sfx_slider, sfx_value, SettingsManager.sfx_volume)
+	fullscreen_check.set_pressed_no_signal(SettingsManager.fullscreen)
 	_update_fullscreen_label(SettingsManager.fullscreen)
 	back_button.grab_focus()
 
@@ -50,16 +55,25 @@ func _on_main_menu_button_pressed():
 func _on_quit_button_pressed():
 	get_tree().quit()
 
-func _on_volume_slider_value_changed(value):
+func _on_volume_slider_value_changed(value: float) -> void:
 	SettingsManager.volume = value
-	SettingsManager.apply_volume()
-	_update_volume_label(value)
-	SettingsManager.save_settings()
+	_save_volume(volume_value, value)
 
-func _on_music_check_toggled(toggled_on):
-	SettingsManager.music = toggled_on
-	SettingsManager.apply_music()
-	_update_music_label(toggled_on)
+func _on_music_slider_value_changed(value: float) -> void:
+	SettingsManager.music_volume = value
+	_save_volume(music_value, value)
+
+func _on_environment_slider_value_changed(value: float) -> void:
+	SettingsManager.environment_volume = value
+	_save_volume(environment_value, value)
+
+func _on_sfx_slider_value_changed(value: float) -> void:
+	SettingsManager.sfx_volume = value
+	_save_volume(sfx_value, value)
+
+func _save_volume(label: Label, value: float) -> void:
+	label.text = "%d%%" % roundi(value)
+	SettingsManager.apply_audio()
 	SettingsManager.save_settings()
 
 func _on_fullscreen_check_toggled(toggled_on):
@@ -68,11 +82,9 @@ func _on_fullscreen_check_toggled(toggled_on):
 	_update_fullscreen_label(toggled_on)
 	SettingsManager.save_settings()
 
-func _update_volume_label(value):
-	volume_value.text = str(int(round(value)))
-
-func _update_music_label(enabled: bool):
-	music_check.text = "ON" if enabled else "OFF"
+func _init_volume_control(slider: HSlider, label: Label, value: float) -> void:
+	slider.set_value_no_signal(value)
+	label.text = "%d%%" % roundi(value)
 
 func _update_fullscreen_label(enabled: bool):
 	fullscreen_check.text = "ON" if enabled else "OFF"

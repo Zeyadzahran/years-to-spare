@@ -39,11 +39,13 @@ var _end_time := WALK_DURATION
 
 func _ready() -> void:
 	descent_audio = AudioStreamPlayer.new()
+	descent_audio.bus = SettingsManager.SFX_BUS
 	descent_audio.stream = preload("res://assets/sounds/cad_owner/platform_drop.wav")
 	descent_audio.volume_db = -3.0
 	descent_audio.pitch_scale = descent_audio.stream.get_length() / (FALL_END - FALL_START)
 	add_child(descent_audio)
 	impact_audio = AudioStreamPlayer2D.new()
+	impact_audio.bus = SettingsManager.SFX_BUS
 	impact_audio.stream = preload("res://assets/sounds/boss/impactMetal_heavy_001.ogg")
 	impact_audio.volume_db = -1.0
 	add_child(impact_audio)

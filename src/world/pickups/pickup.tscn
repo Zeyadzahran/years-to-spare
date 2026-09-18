@@ -64,6 +64,7 @@ libraries/ = SubResource("AnimationLibrary_pickup")
 autoplay = &"hover"
 
 [node name="PickupAudio" type="AudioStreamPlayer2D" parent="." unique_id=101479201]
+bus = &"SFX"
 process_mode = 3
 stream = ExtResource("3_ehqkw")
 volume_db = -6.0

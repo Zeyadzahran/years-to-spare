@@ -31,5 +31,6 @@ script = ExtResource("2_health")
 max_health = 70.0
 
 [node name="ShotAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("4_shot")
 volume_db = 4.0

@@ -1,48 +1,37 @@
 extends Node
 
 var volume: float = 80.0
+## Category sliders only attenuate the authored mix: 100% adds no gain.
+var music_volume: float = 100.0
+var environment_volume: float = 100.0
+var sfx_volume: float = 100.0
 ## Matches `window/size/mode` in project.godot, which starts the game fullscreen.
 var fullscreen: bool = true
-## Music only; sound effects and ambience stay on the master bus. Off mutes
-## the bus rather than stopping the player, so the track is still where it
-## would have been when it comes back on.
-var music: bool = true
-
-const SETTINGS_FILE = "user://settings.cfg"
-## Made here at startup rather than in the bus layout resource, so the layout
-## stays whatever the editor saved and nothing else has to know the bus exists.
+var settings_path := "user://settings.cfg"
 const MUSIC_BUS := &"Music"
+const ENVIRONMENT_BUS := &"Environment"
+const SFX_BUS := &"SFX"
 
 
 func _ready():
 	load_settings()
-	apply_volume()
-	apply_music()
+	apply_audio()
 	apply_fullscreen()
 
 
-## Pushes `volume` (0-100) onto the master bus. Call after changing it.
-func apply_volume():
-	AudioServer.set_bus_volume_db(
-		AudioServer.get_bus_index("Master"),
-		linear_to_db(volume / 100.0)
-	)
+## Buses preserve per-sound tuning and fades. Muting leaves playback running.
+func apply_audio() -> void:
+	_set_bus_volume(&"Master", volume)
+	_set_bus_volume(MUSIC_BUS, music_volume)
+	_set_bus_volume(ENVIRONMENT_BUS, environment_volume)
+	_set_bus_volume(SFX_BUS, sfx_volume)
 
 
-## Mutes or unmutes the music bus to match `music`. Call after changing it.
-func apply_music():
-	AudioServer.set_bus_mute(music_bus_index(), not music)
-
-
-## The bus MusicManager plays through, created on first ask.
-func music_bus_index() -> int:
-	var index := AudioServer.get_bus_index(MUSIC_BUS)
-	if index < 0:
-		index = AudioServer.bus_count
-		AudioServer.add_bus(index)
-		AudioServer.set_bus_name(index, MUSIC_BUS)
-		AudioServer.set_bus_send(index, &"Master")
-	return index
+func _set_bus_volume(bus: StringName, percent: float) -> void:
+	var index := AudioServer.get_bus_index(bus)
+	var gain := clampf(percent / 100.0, 0.0, 1.0)
+	AudioServer.set_bus_mute(index, is_zero_approx(gain))
+	AudioServer.set_bus_volume_db(index, linear_to_db(gain) if gain > 0.0 else 0.0)
 
 
 ## Puts the window into the mode `fullscreen` asks for. Call after changing it.
@@ -83,16 +72,22 @@ func save_settings():
 	var config = ConfigFile.new()
 
 	config.set_value("audio", "volume", volume)
-	config.set_value("audio", "music", music)
+	config.set_value("audio", "music_volume", music_volume)
+	config.set_value("audio", "environment_volume", environment_volume)
+	config.set_value("audio", "sfx_volume", sfx_volume)
 	config.set_value("display", "fullscreen", fullscreen)
 
-	config.save(SETTINGS_FILE)
+	config.save(settings_path)
 
 
 func load_settings():
 	var config = ConfigFile.new()
 
-	if config.load(SETTINGS_FILE) == OK:
-		volume = config.get_value("audio", "volume", 80.0)
-		music = config.get_value("audio", "music", true)
-		fullscreen = config.get_value("display", "fullscreen", true)
+	config.load(settings_path)
+	volume = clampf(config.get_value("audio", "volume", 80.0), 0.0, 100.0)
+	# Preserve the old music switch when upgrading an existing settings file.
+	var old_music_volume := 100.0 if config.get_value("audio", "music", true) else 0.0
+	music_volume = clampf(config.get_value("audio", "music_volume", old_music_volume), 0.0, 100.0)
+	environment_volume = clampf(config.get_value("audio", "environment_volume", 100.0), 0.0, 100.0)
+	sfx_volume = clampf(config.get_value("audio", "sfx_volume", 100.0), 0.0, 100.0)
+	fullscreen = config.get_value("display", "fullscreen", true)

@@ -30,5 +30,6 @@ offset = Vector2(0, -120)
 script = ExtResource("2_health")
 
 [node name="HitAudio" type="AudioStreamPlayer2D" parent="." unique_id=456567814]
+bus = &"SFX"
 stream = ExtResource("4_hit")
 volume_db = 8.0

@@ -98,6 +98,17 @@ func _sync_charge() -> void:
 		charge.frame = mini(7 + int(after_shot * 6.0), 12)
 
 
+## An ambush robot exists in the level before it activates. Keep that hidden,
+## disabled state alongside Enemy's combat history so rewind cannot wake it
+## early or leave a visible robot with its dormant collision layer.
+func rewind_capture() -> Array:
+	var saved := super()
+	saved.append([visible, process_mode])
+	return saved
+
+
 func rewind_apply(saved: Array) -> void:
 	super(saved)
+	visible = saved[16][0]
+	process_mode = saved[16][1]
 	_sync_charge()

@@ -25,4 +25,5 @@ position = Vector2(0, -70)
 shape = SubResource("Shape_Checkpoint")
 
 [node name="ActivateAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("3_activate")

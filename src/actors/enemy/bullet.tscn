@@ -19,5 +19,6 @@ texture = ExtResource("2_tex")
 shape = SubResource("RectangleShape2D_bullet")
 
 [node name="ImpactAudio" type="AudioStreamPlayer2D" parent="." unique_id=91099103]
+bus = &"SFX"
 stream = ExtResource("3_hit")
 volume_db = 2.0

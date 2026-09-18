@@ -46,18 +46,21 @@ script = ExtResource("2")
 max_health = 100.0
 
 [node name="ShotAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 position = Vector2(10, -70)
 stream = ExtResource("5_shot")
 volume_db = -4.0
 max_distance = 1000.0
 
 [node name="HurtAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 position = Vector2(0, -55)
 stream = ExtResource("6_hurt")
 volume_db = -6.0
 max_distance = 850.0
 
 [node name="DeathAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 process_mode = 1
 position = Vector2(0, -55)
 stream = ExtResource("7_death")

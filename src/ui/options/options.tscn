@@ -146,9 +146,9 @@ horizontal_alignment = 1
 layout_mode = 2
 
 [node name="Settings" type="VBoxContainer" parent="Center/Panel/Margin/Content" unique_id=1667841107]
-custom_minimum_size = Vector2(560, 0)
+custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
-theme_override_constants/separation = 22
+theme_override_constants/separation = 16
 
 [node name="VolumeRow" type="HBoxContainer" parent="Center/Panel/Margin/Content/Settings" unique_id=65660946]
 custom_minimum_size = Vector2(0, 48)
@@ -156,12 +156,12 @@ layout_mode = 2
 theme_override_constants/separation = 20
 
 [node name="VolumeLabel" type="Label" parent="Center/Panel/Margin/Content/Settings/VolumeRow" unique_id=1145645342]
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
 theme_override_fonts/font = ExtResource("1_c2u1v")
 theme_override_font_sizes/font_size = 18
-text = "VOLUME"
+text = "MASTER VOLUME"
 vertical_alignment = 1
 
 [node name="VolumeSlider" type="HSlider" parent="Center/Panel/Margin/Content/Settings/VolumeRow" unique_id=993751011]
@@ -182,17 +182,17 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.988235, 0.921569, 0.741176, 1)
 theme_override_fonts/font = ExtResource("1_c2u1v")
 theme_override_font_sizes/font_size = 16
-text = "80"
+text = "80%"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="MusicRow" type="HBoxContainer" parent="Center/Panel/Margin/Content/Settings" unique_id=1898862158]
+[node name="MusicRow" type="HBoxContainer" parent="Center/Panel/Margin/Content/Settings"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="MusicLabel" type="Label" parent="Center/Panel/Margin/Content/Settings/MusicRow" unique_id=1877560614]
-custom_minimum_size = Vector2(220, 0)
+[node name="MusicLabel" type="Label" parent="Center/Panel/Margin/Content/Settings/MusicRow"]
+custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
 theme_override_fonts/font = ExtResource("1_c2u1v")
@@ -200,17 +200,99 @@ theme_override_font_sizes/font_size = 18
 text = "MUSIC"
 vertical_alignment = 1
 
-[node name="MusicCheck" type="CheckButton" parent="Center/Panel/Margin/Content/Settings/MusicRow" unique_id=155545193]
+[node name="MusicSlider" type="HSlider" parent="Center/Panel/Margin/Content/Settings/MusicRow"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
-theme_override_colors/font_focus_color = Color(0.988235, 0.921569, 0.741176, 1)
-theme_override_colors/font_hover_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_slider_fill")
+value = 100.0
+
+[node name="MusicValue" type="Label" parent="Center/Panel/Margin/Content/Settings/MusicRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.988235, 0.921569, 0.741176, 1)
 theme_override_fonts/font = ExtResource("1_c2u1v")
 theme_override_font_sizes/font_size = 16
-text = "ON"
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="EnvironmentRow" type="HBoxContainer" parent="Center/Panel/Margin/Content/Settings"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="EnvironmentLabel" type="Label" parent="Center/Panel/Margin/Content/Settings/EnvironmentRow"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 18
+text = "ENVIRONMENT"
+vertical_alignment = 1
+
+[node name="EnvironmentSlider" type="HSlider" parent="Center/Panel/Margin/Content/Settings/EnvironmentRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_slider_fill")
+value = 100.0
+
+[node name="EnvironmentValue" type="Label" parent="Center/Panel/Margin/Content/Settings/EnvironmentRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 16
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SfxRow" type="HBoxContainer" parent="Center/Panel/Margin/Content/Settings"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="SfxLabel" type="Label" parent="Center/Panel/Margin/Content/Settings/SfxRow"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.858824, 0.843137, 0.8, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 18
+text = "SOUND EFFECTS"
+vertical_alignment = 1
+
+[node name="SfxSlider" type="HSlider" parent="Center/Panel/Margin/Content/Settings/SfxRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/slider = SubResource("StyleBoxFlat_slider_bg")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_slider_fill")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_slider_fill")
+value = 100.0
+
+[node name="SfxValue" type="Label" parent="Center/Panel/Margin/Content/Settings/SfxRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.988235, 0.921569, 0.741176, 1)
+theme_override_fonts/font = ExtResource("1_c2u1v")
+theme_override_font_sizes/font_size = 16
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="FullscreenRow" type="HBoxContainer" parent="Center/Panel/Margin/Content/Settings" unique_id=2112217656]
 custom_minimum_size = Vector2(0, 48)
@@ -298,7 +380,9 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_btn_focus")
 text = "QUIT"
 
 [connection signal="value_changed" from="Center/Panel/Margin/Content/Settings/VolumeRow/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
-[connection signal="toggled" from="Center/Panel/Margin/Content/Settings/MusicRow/MusicCheck" to="." method="_on_music_check_toggled"]
+[connection signal="value_changed" from="Center/Panel/Margin/Content/Settings/MusicRow/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="Center/Panel/Margin/Content/Settings/EnvironmentRow/EnvironmentSlider" to="." method="_on_environment_slider_value_changed"]
+[connection signal="value_changed" from="Center/Panel/Margin/Content/Settings/SfxRow/SfxSlider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="toggled" from="Center/Panel/Margin/Content/Settings/FullscreenRow/FullscreenCheck" to="." method="_on_fullscreen_check_toggled"]
 [connection signal="pressed" from="Center/Panel/Margin/Content/Buttons/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="Center/Panel/Margin/Content/Buttons/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
