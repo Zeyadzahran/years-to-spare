@@ -41,6 +41,8 @@ func _ready() -> void:
 	EventBus.player_died.connect(_on_player_died)
 	EventBus.enemy_died.connect(_on_enemy_died)
 	EventBus.enemy_revived.connect(_on_enemy_revived)
+	EventBus.heart_collected.connect(_on_heart_collected)
+	EventBus.heart_restored.connect(_on_heart_restored)
 	_remove_the_fallen()
 	_resume_run()
 	_start_music()
@@ -109,19 +111,27 @@ func _apply_debug_spawn(player: Node2D) -> void:
 				camera.reset_smoothing()
 
 
-## Units downed earlier in the run do not get up again for a retry. Done before
-## the first frame, so a body already recorded never ticks, swings or fires.
+## Units downed earlier in the run do not get up again for a retry, and hearts
+## already picked up are not lying there again either - nor are the hearts
+## this run's luck left out of their boxes. Done before the first frame, so a
+## body already recorded never ticks, swings or fires, and a heart that is
+## not there is never seen or recorded.
 func _remove_the_fallen() -> void:
 	for enemy in get_tree().get_nodes_in_group(&"enemy"):
 		if GameState.is_enemy_cleared(level_id, _tag(enemy)):
 			enemy.queue_free()
+	for heart in get_tree().get_nodes_in_group(&"heart_pickup"):
+		var tag := _tag(heart)
+		if GameState.is_heart_collected(level_id, tag) \
+				or not GameState.roll_heart(level_id, tag, heart.chance):
+			heart.queue_free()
 
 
-## How a unit is named across reloads. The path inside the level scene, which is
-## stable as long as nobody renames the node - the same contract a Checkpoint's
-## own name already relies on.
-func _tag(enemy: Node) -> String:
-	return String(get_path_to(enemy))
+## How a unit or a heart is named across reloads. The path inside the level
+## scene, which is stable as long as nobody renames the node - the same
+## contract a Checkpoint's own name already relies on.
+func _tag(node: Node) -> String:
+	return String(get_path_to(node))
 
 
 func complete() -> void:
@@ -143,6 +153,18 @@ func _on_enemy_died(enemy: Node2D, _age_reward: float) -> void:
 func _on_enemy_revived(enemy: Node2D) -> void:
 	if is_instance_valid(enemy) and is_ancestor_of(enemy):
 		GameState.revive_enemy(level_id, _tag(enemy))
+
+
+## Same shape as the bodies above: the level names the heart, so a retry knows
+## not to put it back.
+func _on_heart_collected(pickup: Node2D) -> void:
+	if is_instance_valid(pickup) and is_ancestor_of(pickup):
+		GameState.collect_heart(level_id, _tag(pickup))
+
+
+func _on_heart_restored(pickup: Node2D) -> void:
+	if is_instance_valid(pickup) and is_ancestor_of(pickup):
+		GameState.restore_heart(level_id, _tag(pickup))
 
 
 ## Health runs out and he tries again in the active final arena or from the

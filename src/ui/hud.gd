@@ -3,7 +3,10 @@ extends CanvasLayer
 ## being wired to it. The one exception is the player's TimePowers, held from
 ## `player_spawned`: the time line is a clock and has to be polled.
 
-@onready var hearts_row: HBoxContainer = %HeartsRow
+## His face and how many tries he has left, the way an arcade platformer shows
+## them: one portrait, one count, no row of icons to keep in step.
+@onready var portrait: TextureRect = %Portrait
+@onready var lives_value: Label = %LivesValue
 @onready var health_bar: StatBar = %Health
 @onready var health_value: Label = %HealthValue
 ## The years meter. Every power the boy casts spends from it, so it doubles as
@@ -14,8 +17,6 @@ extends CanvasLayer
 @onready var options_button: Button = %Options
 
 const OPTIONS_SCENE := preload("res://src/ui/options/options.tscn")
-const HEART_FULL := preload("res://assets/sprites/heart-full.png")
-const HEART_EMPTY := preload("res://assets/sprites/heart-empty.png")
 
 var _options_panel: Control = null
 ## Built rather than instanced: see src/ui/time_stop_overlay.gd. One screen
@@ -59,7 +60,7 @@ func _ready() -> void:
 	# Hearts live on GameState rather than the player, and GameState already
 	# has a real count by the time the HUD shows up - no spawn signal to wait
 	# on the way health and age get one.
-	_on_hearts_changed(GameState.hearts, GameState.MAX_HEARTS)
+	_on_hearts_changed(GameState.hearts, GameState.HEART_CAP)
 
 
 func _read_player(player: Node) -> void:
@@ -77,17 +78,10 @@ func _on_health_changed(current: float, maximum: float) -> void:
 	health_value.text = "%d" % roundi(current)
 
 
-## One icon per heart the run started with, lit up to however many are left.
-## `max_hearts` sizing the row rather than a fixed three, so it still reads
-## correctly if that number is ever tuned.
-func _on_hearts_changed(current: int, max_hearts: int) -> void:
-	var icons := hearts_row.get_children()
-	for i in icons.size():
-		var icon := icons[i] as TextureRect
-		if icon == null:
-			continue
-		icon.visible = i < max_hearts
-		icon.texture = HEART_FULL if i < current else HEART_EMPTY
+## The count next to his face. The cap is not shown: a "x3" that could grow is
+## the whole point of the hearts on the ground.
+func _on_hearts_changed(current: int, _heart_cap: int) -> void:
+	lives_value.text = "x%d" % current
 
 
 ## The clock plate reads as the boy's age, not as a stock of years: it starts at
@@ -97,6 +91,10 @@ func _on_age_changed(age: float, death_age: float) -> void:
 	var span := maxf(death_age - _start_age, 0.001)
 	power_line.set_value(age - _start_age, span)
 	power_value.text = "%d" % roundi(age)
+	# The face follows the same age lines his sprite does, asked of the sprite
+	# itself so there is exactly one place those lines are drawn.
+	if is_instance_valid(_player):
+		portrait.texture = PlayerPortrait.texture_for(_player.sprite.frames_for(age), _player.sprite)
 
 
 ## The press: the meter starts breathing while he winds up. The screen itself

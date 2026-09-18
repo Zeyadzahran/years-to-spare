@@ -5,8 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://p2hng7rqfrto" path="res://src/ui/stat_bar.tscn" id="3_bar"]
 [ext_resource type="Texture2D" uid="uid://c5qdvan58j5kd" path="res://assets/sprites/health-bar.png" id="4_hbar"]
 [ext_resource type="Texture2D" uid="uid://bsiugok2jqr24" path="res://assets/sprites/powers-bar.png" id="5_pbar"]
-[ext_resource type="Texture2D" uid="uid://yzje1byyqtje2" path="res://assets/sprites/heart-full.png" id="6_hfull"]
-[ext_resource type="Texture2D" uid="uid://mjfcqzsvc30js" path="res://assets/sprites/heart-empty.png" id="7_hempty"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
 content_margin_left = 12.0
@@ -60,35 +58,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/separation = 0
-
-[node name="HeartsRow" type="HBoxContainer" parent="Margin/Stats" unique_id=1347888946]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="Heart0" type="TextureRect" parent="Margin/Stats/HeartsRow"]
-custom_minimum_size = Vector2(38, 36)
-layout_mode = 2
-texture = ExtResource("6_hfull")
-expand_mode = 1
-stretch_mode = 5
-texture_filter = 1
-
-[node name="Heart1" type="TextureRect" parent="Margin/Stats/HeartsRow"]
-custom_minimum_size = Vector2(38, 36)
-layout_mode = 2
-texture = ExtResource("6_hfull")
-expand_mode = 1
-stretch_mode = 5
-texture_filter = 1
-
-[node name="Heart2" type="TextureRect" parent="Margin/Stats/HeartsRow"]
-custom_minimum_size = Vector2(38, 36)
-layout_mode = 2
-texture = ExtResource("6_hfull")
-expand_mode = 1
-stretch_mode = 5
-texture_filter = 1
 
 [node name="HealthRow" type="HBoxContainer" parent="Margin/Stats" unique_id=1347888947]
 layout_mode = 2
@@ -150,6 +119,29 @@ theme_override_constants/outline_size = 6
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 8
 text = "TIME"
+
+[node name="LivesRow" type="HBoxContainer" parent="Margin/Stats" unique_id=1650254305]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Portrait" type="TextureRect" parent="Margin/Stats/LivesRow" unique_id=1572540995]
+unique_name_in_owner = true
+texture_filter = 2
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LivesValue" type="Label" parent="Margin/Stats/LivesRow" unique_id=1311172904]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.941176, 0.858824, 0.839216, 1)
+theme_override_colors/font_outline_color = Color(0.0431373, 0.0392157, 0.0352941, 0.901961)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 14
+text = "x3"
+vertical_alignment = 1
 
 [node name="Options" type="Button" parent="Margin" unique_id=2119716478]
 unique_name_in_owner = true
