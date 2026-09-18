@@ -18,6 +18,8 @@ position = Vector2(0, -50)
 shape = SubResource("RectangleShape2D_gunner")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
+z_index = 10
+z_as_relative = false
 scale = Vector2(0.45, 0.45)
 sprite_frames = ExtResource("3_frames")
 animation = &"idle"
