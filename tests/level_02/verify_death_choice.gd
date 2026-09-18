@@ -38,7 +38,8 @@ func paused_rewind(hearts := 3, lethal_fall := false) -> void:
 	check(prompt.continue_button.text == continue_text, "Wrong remaining-heart option")
 	var history_time := TimeService._now
 	var dead_position := player.position
-	await frames(360)
+	await frames(150)
+	check(prompt.rewind_button.visible, "Rewind expired before three seconds")
 	check(get_tree().paused and TimeService._now == history_time, "Choice screen consumed rewind history")
 	check(player.position == dead_position and GameState.hearts == hearts, "Waiting moved player or spent a heart")
 	press_key(KEY_ESCAPE)
@@ -51,6 +52,43 @@ func paused_rewind(hearts := 3, lethal_fall := false) -> void:
 	check(GameState.hearts == hearts and level.reload_count == 0, "Rewind committed the death")
 	check(is_equal_approx(player.age.age, 18.0), "Death-screen Rewind charged the wrong age cost")
 	print("DEATH_CHOICE rewind preserves history, heart and live scene")
+
+func rewind_expires() -> void:
+	for hearts in [3, 1]:
+		await fresh(false)
+		GameState.hearts = hearts
+		player.global_position = Vector2(600,640)
+		await frames(240)
+		player.health.kill()
+		var prompt := await wait_for_prompt()
+		if prompt == null: return
+		prompt.rewind_button.grab_focus()
+		var history_time := TimeService._now
+		var age_before := player.age.age
+		await frames(174)
+		check(prompt.rewind_button.visible, "Rewind disappeared before its three-second window ended")
+		await frames(12)
+		check(not prompt.rewind_button.visible and prompt.rewind_button.disabled, "Rewind stayed available after three seconds")
+		check(prompt.continue_button.has_focus(), "Expired Rewind left focus on a hidden button")
+		press_key(KEY_L)
+		var event := InputEventJoypadButton.new()
+		event.button_index = JOY_BUTTON_Y
+		event.pressed = true
+		Input.parse_input_event(event)
+		event = event.duplicate()
+		event.pressed = false
+		Input.parse_input_event(event)
+		# A queued button activation must not get around the expired window.
+		prompt.rewind_button.pressed.emit()
+		await frames(30)
+		check(get_tree().paused and TimeService._now == history_time, "Expiry or late input resumed the world")
+		check(not player.powers.is_casting(GameState.ABILITY_REWIND), "Late input started Rewind")
+		check(GameState.hearts == hearts and player.age.age == age_before and level.reload_count == 0, "Expiry spent a heart, years, or reloaded automatically")
+		press_key(KEY_ENTER)
+		await frames(2)
+		check(not get_tree().paused and level.reload_count == 1, "Continue failed after Rewind expired")
+		check(GameState.hearts == (GameState.MAX_HEARTS if hearts == 1 else hearts - 1), "Continue after expiry spent the wrong number of hearts")
+	print("DEATH_CHOICE three-second expiry blocks keyboard, gamepad and queued button input; Continue still works")
 
 func unavailable_options() -> void:
 	for reason in ["cooldown", "old_age", "locked", "age_cost", "history"]:
@@ -123,6 +161,7 @@ func actual_checkpoint_reload() -> void:
 	print("DEATH_CHOICE real checkpoint reload resumes at saved position")
 
 func _ready() -> void:
+	await rewind_expires()
 	await paused_rewind()
 	await paused_rewind(1)
 	await paused_rewind(3, true)

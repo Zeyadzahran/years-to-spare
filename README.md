@@ -27,12 +27,12 @@ runs the last four seconds of the world - the boy, enemies, bullets and
 platforms - backward, and can pull him out of his own death. Slow-time input
 exists in the project, but its gameplay is not yet available.
 
-After the death animation, a paused **You Died** screen lets you press **L**
-to rewind when it is ready, including on your last heart. **Enter** continues
-using one heart, or restarts the level when no heart will remain or you died
-of old age. The screen explains when Rewind is unavailable; waiting here
-does not advance its cooldown or consume the recorded history. **Q** quits to
-the menu. Lethal falls never trigger Rewind automatically.
+After the death animation, a paused screen shows only the available buttons.
+**L** offers Rewind for three seconds when it is ready, including on your last
+heart, then disappears. **Enter** continues using one heart, or restarts the
+level when no heart will remain or you died of old age. **Q** quits to the menu.
+Waiting does not spend a heart, advance cooldowns, or consume recorded history.
+Lethal falls never trigger Rewind automatically.
 
 City of Time currently has a title screen only. It returns to Level 1; a playable
 second level has not been added yet.

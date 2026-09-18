@@ -1,15 +1,17 @@
 extends CanvasLayer
 ## Pausing the tree preserves the rewind buffer and cooldowns while choosing.
-## Only Continue commits the death through the existing level retry flow.
+## Rewind expires after three seconds; only Continue commits the death.
 
 signal rewind_chosen
 
+const REWIND_WINDOW := 3.0
 const MAIN_MENU_SCENE := "res://src/ui/main_menu/main_menu.tscn"
 const FONT := preload("res://assets/fonts/prstart.ttf")
 var player: Player
 var rewind_button: Button
 var continue_button: Button
 var quit_button: Button
+var _rewind_time_left := REWIND_WINDOW
 var _resolved := false
 var _owns_pause := false
 
@@ -40,55 +42,24 @@ func _build() -> void:
 	var rows := VBoxContainer.new()
 	rows.add_theme_constant_override("separation", 22)
 	center.add_child(rows)
-	_lives(rows)
-	_label(rows, "YOU DIED", 36, Color(1.0, 0.45, 0.35))
 	var restart := GameState.hearts <= 1 or player.age.age >= player.age.death_age
-	var consequence := "Continue uses 1 heart.  %d remaining." % (GameState.hearts - 1)
-	if restart:
-		consequence = "Restart the level with %d hearts." % GameState.MAX_HEARTS
-	_label(rows, consequence, 12, Color(0.84, 0.84, 0.88))
-	var reason := player.powers.death_rewind_block_reason()
 	rewind_button = _button(rows, "[L] REWIND", _choose_rewind)
-	rewind_button.visible = reason.is_empty()
-	if reason.is_empty():
-		_label(rows, "Keep your heart.  Rewind costs 4 years.", 10, Color(0.55, 0.83, 0.94))
-	else:
-		_label(rows, reason, 12, Color(0.68, 0.69, 0.75))
+	rewind_button.visible = player.powers.death_rewind_block_reason().is_empty()
 	var continue_text := "[ENTER] RESTART LEVEL" if restart else "[ENTER] CONTINUE"
 	continue_button = _button(rows, continue_text, _choose_continue)
 	quit_button = _button(rows, "[Q] QUIT TO MENU", _choose_quit)
 
 
-## Show the current lives: no heart is spent until Continue is chosen.
-func _lives(parent: Node) -> void:
-	var row := HBoxContainer.new()
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	row.add_theme_constant_override("separation", 10)
-	parent.add_child(row)
-	var face := TextureRect.new()
-	face.texture = PlayerPortrait.texture_for(player.sprite.sprite_frames, player.sprite)
-	face.custom_minimum_size = Vector2(44, 44)
-	face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	face.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	row.add_child(face)
-	var count := Label.new()
-	count.text = "x%d" % GameState.hearts
-	count.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	count.add_theme_font_override("font", FONT)
-	count.add_theme_font_size_override("font_size", 16)
-	count.add_theme_color_override("font_color", Color(0.94, 0.86, 0.84))
-	row.add_child(count)
-
-
-func _label(parent: Node, text: String, size: int, color: Color) -> void:
-	var label := Label.new()
-	label.text = text
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.add_theme_font_override("font", FONT)
-	label.add_theme_font_size_override("font_size", size)
-	label.add_theme_color_override("font_color", color)
-	parent.add_child(label)
+## This layer keeps processing while the world and its rewind history are paused.
+func _process(delta: float) -> void:
+	if _resolved or not _owns_pause or not rewind_button.visible:
+		return
+	_rewind_time_left = maxf(_rewind_time_left - delta, 0.0)
+	if is_zero_approx(_rewind_time_left):
+		if rewind_button.has_focus():
+			continue_button.grab_focus()
+		rewind_button.disabled = true
+		rewind_button.hide()
 
 
 func _button(parent: Node, text: String, callback: Callable) -> Button:
@@ -129,7 +100,9 @@ func _input(event: InputEvent) -> void:
 
 
 func _choose_rewind() -> void:
-	if _resolved or not player.powers.rewind_after_death():
+	if _resolved or _rewind_time_left <= 0.0 or not rewind_button.visible:
+		return
+	if not player.powers.rewind_after_death():
 		return
 	rewind_chosen.emit()
 	_close()
