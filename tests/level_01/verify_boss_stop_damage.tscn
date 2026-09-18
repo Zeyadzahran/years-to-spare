@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://drlafkjcve7r0"]
+
+[ext_resource type="Script" uid="uid://lcpriaxp03e0" path="res://tests/level_01/verify_boss_stop_damage.gd" id="1_b1fit"]
+
+[node name="VerifyBossStopDamage" type="Node" unique_id=587219719]
+script = ExtResource("1_b1fit")

@@ -46,6 +46,11 @@ const FIRST_STOMP_DELAY := 1.4
 const AWAKEN_DURATION := 2.1
 const NORMAL_DAMAGE_MULTIPLIER := 0.72
 const VULNERABLE_DAMAGE_MULTIPLIER := 1.65
+## A sword on stone that cannot flinch. At the normal rate two five-second
+## stops (six years) took the whole bar without a stomp ever landing; at this
+## rate a stop is worth about a quarter of it, so the window after the stomp
+## is the fast way through and the stop is the way out of trouble.
+const FROZEN_DAMAGE_MULTIPLIER := 0.4
 const IMPACT_SCENE := preload("res://src/levels/level_01/boss_impact_effect.tscn")
 
 const STEP_SOUNDS: Array[AudioStream] = [
@@ -456,8 +461,13 @@ func is_vulnerable() -> bool:
 
 
 func receive_player_hit(base_damage: float, source: Node) -> void:
-	var multiplier := VULNERABLE_DAMAGE_MULTIPLIER if _vulnerable \
-		else NORMAL_DAMAGE_MULTIPLIER
+	var multiplier := NORMAL_DAMAGE_MULTIPLIER
+	if TimeService.is_world_frozen():
+		# Frozen mid-window too: the window is what the stop would otherwise
+		# hold open for the whole five seconds.
+		multiplier = FROZEN_DAMAGE_MULTIPLIER
+	elif _vulnerable:
+		multiplier = VULNERABLE_DAMAGE_MULTIPLIER
 	var from := global_position + Vector2(float(-_facing) * 40.0, -80.0)
 	if source is Node2D:
 		from = source.global_position

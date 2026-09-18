@@ -110,7 +110,9 @@ The player begins at age 14 and dies of old age at 60. Casting time stop costs
 three years, freezes the world for five seconds, and then enters a three-second
 cooldown. A power he cannot pay for still takes the years he has left - he
 dies of it, and nothing is cast. Defeating an enemy restores one year, while
-figs restore health.
+figs restore health. The Guardian takes little from a sword while it is frozen
+(about a quarter of its bar per stop); the window after its stomp is the
+strong hit.
 
 A normal death returns the player to the latest checkpoint without restoring
 spent years or respawning defeated enemies. Losing the last heart stops on
