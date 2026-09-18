@@ -68,8 +68,10 @@ with Stop and Rewind already granted.
   time he falls in and the collapse plays out, `Tutorial/RewindLesson` stops
   the world and shows its `Card` (`REWIND`, `L`, `Undo your death`, `One
   second after you fall. Then it is final.`) over him at the bottom of the
-  pit; Rewind's cooldown is forgiven so the press cannot be refused, and only
-  `L` gets through. Once the rewind has stood him back on the street, he and
+  pit; Rewind's cooldown is forgiven so the press cannot be refused, only
+  `L` gets through, and the four years the rewind costs are handed back once
+  he is standing - the lesson does not age him. `Tutorial/Jump` at
+  `(1330, 470)` is the sign on the lip that asks him to try the gap. Once the rewind has stood him back on the street, he and
   the guards hold still while the camera looks over at the hole and
   `World/Platforms/LessonLeft` (3 tiles) and `LessonRight` (2 tiles) slide out
   of the walls from one tile down to `(1504, 640)` and `(1856, 640)`, leaving

@@ -974,6 +974,15 @@ footer = "4 sec back / costs 4 years"
 accent = Color(0.72, 0.82, 0.95, 1)
 centered = true
 
+[node name="Jump" type="Node2D" parent="Tutorial" unique_id=556926071]
+position = Vector2(1330, 470)
+script = ExtResource("guide_card")
+heading = "JUMP"
+keys = PackedStringArray("SPACE")
+actions = PackedStringArray("jump")
+instructions = PackedStringArray("Try the gap")
+centered = true
+
 [node name="RewindLesson" type="Area2D" parent="Tutorial" unique_id=1456150224]
 collision_layer = 0
 collision_mask = 2
@@ -992,7 +1001,7 @@ script = ExtResource("guide_card")
 heading = "REWIND"
 keys = PackedStringArray("L")
 actions = PackedStringArray("time_rewind")
-instructions = PackedStringArray("Undo your death")
+instructions = PackedStringArray("Undo your death", "This one costs no years")
 footer = "One second after you fall. Then it is final."
 card_width = 440.0
 accent = Color(0.72, 0.82, 0.95, 1)

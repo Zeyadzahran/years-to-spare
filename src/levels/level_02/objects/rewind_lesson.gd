@@ -3,10 +3,11 @@ extends Area2D
 ## which no jump clears on a fresh run. The first time he falls in and the
 ## collapse plays out, the world stops and the card under this node tells him
 ## the one thing he needs: press L, and press it soon. Rewind is made ready
-## whatever the guard before cost him, so the press cannot be refused. Once
-## he is standing again the two ledges slide out of the walls while he and
-## the street hold still, and the hole is a jump like any other. It happens
-## once a run; a retry finds the ledges already out.
+## whatever the guard before cost him, so the press cannot be refused, and
+## the years it costs are handed back - a lesson should not age him. Once he
+## is standing again the two ledges slide out of the walls while he and the
+## street hold still, and the hole is a jump like any other. It happens once
+## a run; a retry finds the ledges already out.
 ##
 ## Placed under Tutorial rather than Hazards: it hurts nothing, it only
 ## watches for him, and the card is its child so nothing has to be wired up.
@@ -109,6 +110,8 @@ func _on_ability_stopped(ability_id: StringName) -> void:
 func _show_the_way() -> void:
 	if not is_instance_valid(_player):
 		return
+	# The rewind he was told to make is on the house.
+	_player.age.restore(TimePowers.REWIND_COST)
 	var enemies := _level_node(^"Enemies")
 	if enemies != null:
 		enemies.process_mode = Node.PROCESS_MODE_DISABLED

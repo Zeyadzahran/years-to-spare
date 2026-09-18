@@ -88,6 +88,7 @@ func uncrossable() -> void:
 	GameState.clear_run_progress()
 	await fresh()
 	check(left().position.y > 640 and right().position.y > 640, "Ledges not tucked away on a fresh run")
+	check(level.get_node("Tutorial/Jump").visible, "No sign asks him to jump the hole")
 	check(not await jump_across(Vector2(1200, 640), 1395, 1925), "The street hole could be jumped from the ground")
 	await fresh()
 	check(not await jump_across(Vector2(1150, 423), 1360, 1925), "The street hole could be jumped from the cache ledge")
@@ -134,7 +135,7 @@ func the_lesson() -> void:
 	check(frozen and enemies_off, "He was not held still (with the guards) while the ledges moved")
 	check(player.process_mode == Node.PROCESS_MODE_INHERIT, "He was not handed back")
 	check(player.health.is_alive() and not player.is_down(), "Rewind did not revive him")
-	check(is_equal_approx(player.age.age, age + 4.0), "Rewind charged the wrong years: %s" % player.age.age)
+	check(is_equal_approx(player.age.age, age), "The lesson aged him: %s -> %s" % [age, player.age.age])
 	check(GameState.hearts == hearts, "The lesson spent a heart")
 	check(left().position.is_equal_approx(lesson().left_closed) and right().position.is_equal_approx(lesson().right_closed), "Ledges did not slide out: %s %s" % [left().position, right().position])
 	var camera := player.get_node("Camera2D") as Camera2D
