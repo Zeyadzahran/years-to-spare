@@ -1,4 +1,7 @@
 extends "res://tests/level_02/verify_boss_retries.gd"
+## Death flow: a spare heart costs the heart and reloads on its own, with no
+## screen in the way; the last heart (or old age) stops on Game Over, where
+## Enter restarts the level and Q leaves for the menu.
 
 func press_key(key: Key) -> void:
 	var event := InputEventKey.new()
@@ -10,73 +13,54 @@ func press_key(key: Key) -> void:
 	event.pressed = false
 	Input.parse_input_event(event)
 
-func wait_for_prompt() -> Node:
+func wait_for_screen() -> Node:
 	for i in 60:
 		await frames(1)
-		if player.has_node("DeathPrompt"):
-			return player.get_node("DeathPrompt")
-	check(false, "Death prompt did not appear")
+		if player.has_node("GameOver"):
+			return player.get_node("GameOver")
+	check(false, "Game Over screen did not appear")
 	return null
 
-func paused_rewind(hearts := 3) -> void:
-	await fresh(false)
-	GameState.hearts = hearts
-	player.global_position = Vector2(600,640)
-	await frames(240)
-	player.health.kill()
-	await frames(10)
-	check(not get_tree().paused, "Death skipped its collapse animation")
-	var prompt := await wait_for_prompt()
-	if prompt == null: return
-	check(prompt.rewind_button.visible, "Available Rewind was hidden")
-	var continue_text := "[ENTER] RESTART LEVEL" if hearts == 1 else "[ENTER] CONTINUE"
-	check(prompt.continue_button.text == continue_text, "Wrong remaining-heart option")
-	var history_time := TimeService._now
-	var dead_position := player.position
-	await frames(360)
-	check(get_tree().paused and TimeService._now == history_time, "Choice screen consumed rewind history")
-	check(player.position == dead_position and GameState.hearts == hearts, "Waiting moved player or spent a heart")
-	press_key(KEY_ESCAPE)
-	check(get_tree().paused and not is_instance_valid(level.get_node("HUD")._options_panel), "Escape opened a competing pause menu")
-	press_key(KEY_L)
-	await frames(1)
-	check(not get_tree().paused, "L failed to resume the paused game")
-	await frames(140)
-	check(player.health.is_alive() and not player.is_down(), "Death-screen Rewind did not revive player")
-	check(GameState.hearts == hearts and level.reload_count == 0, "Rewind committed the death")
-	check(is_equal_approx(player.age.age, 18.0), "Death-screen Rewind charged the wrong age cost")
-	print("DEATH_CHOICE rewind preserves history, heart and live scene")
+func spare_heart_is_silent() -> void:
+	for hearts in [3, 2]:
+		await fresh(false)
+		GameState.hearts = hearts
+		player.global_position = Vector2(600,640)
+		await frames(90)
+		player.health.kill()
+		for i in 60:
+			await frames(1)
+			if level.reload_count > 0:
+				break
+		check(level.reload_count == 1, "Death with %d hearts did not reload on its own" % hearts)
+		check(GameState.hearts == hearts - 1, "Death with %d hearts did not cost exactly one" % hearts)
+		check(not get_tree().paused and not player.has_node("GameOver"), "Death with %d hearts put a screen up" % hearts)
+	print("DEATH_CHOICE a spare heart is spent without a screen")
 
-func unavailable_options() -> void:
-	for reason in ["cooldown", "old_age", "locked", "age_cost", "history"]:
+func last_heart_stops() -> void:
+	for reason in ["hearts", "old_age"]:
 		await fresh(false)
 		player.global_position = Vector2(600,640)
 		await frames(90)
-		match reason:
-			"cooldown": player.powers._cooldowns[GameState.ABILITY_REWIND] = 5.0
-			"locked": GameState.unlocked.erase(GameState.ABILITY_REWIND)
-			"age_cost": player.age.set_to(56.0)
-			"history": TimeService.reset()
 		if reason == "old_age":
 			player.age.spend(60.0)
 		else:
+			GameState.hearts = 1
 			player.health.kill()
-		var prompt := await wait_for_prompt()
-		if prompt == null: return
-		check(not prompt.rewind_button.visible, "%s incorrectly offered Rewind" % reason)
-		var remaining := player.powers.cooldown_left(GameState.ABILITY_REWIND)
-		await frames(360)
-		check(player.powers.cooldown_left(GameState.ABILITY_REWIND) == remaining, "Paused choice cleared cooldown")
-		press_key(KEY_L)
-		await frames(1)
-		check(get_tree().paused, "Unavailable L dismissed the death screen")
-		var restart: bool = reason == "old_age"
-		check(prompt.continue_button.text == ("[ENTER] RESTART LEVEL" if restart else "[ENTER] CONTINUE"), "Wrong continuation for %s" % reason)
+		var screen := await wait_for_screen()
+		if screen == null: return
+		check(get_tree().paused, "Game Over did not pause for %s" % reason)
+		check(screen.restart_button.text == "[ENTER] RESTART LEVEL" and screen.quit_button.text == "[Q] QUIT TO MENU", "Wrong Game Over options for %s" % reason)
+		var reload_before: int = level.reload_count
+		await frames(120)
+		check(get_tree().paused and level.reload_count == reload_before, "Game Over resolved itself for %s" % reason)
+		press_key(KEY_ESCAPE)
+		check(get_tree().paused and not is_instance_valid(level.get_node("HUD")._options_panel), "Escape opened a competing pause menu")
 		press_key(KEY_ENTER)
 		await frames(2)
-		check(not get_tree().paused and level.reload_count == 1, "Enter did not continue for %s" % reason)
-		check(GameState.hearts == (3 if restart else 2), "Wrong hearts after %s" % reason)
-	print("DEATH_CHOICE cooldown, old age, unlock, age cost, missing history")
+		check(not get_tree().paused and level.reload_count == 1, "Enter did not restart for %s" % reason)
+		check(GameState.hearts == GameState.MAX_HEARTS and GameState.run_age < 0.0, "Restart did not reset the run for %s" % reason)
+	print("DEATH_CHOICE last heart and old age stop on Game Over; Enter restarts")
 
 func actual_checkpoint_reload() -> void:
 	level.queue_free()
@@ -90,21 +74,18 @@ func actual_checkpoint_reload() -> void:
 	player.age.set_to(20.0)
 	await frames(5)
 	player.health.kill()
-	await wait_for_prompt()
-	press_key(KEY_ENTER)
-	await frames(12)
+	await frames(60)
 	level = get_tree().current_scene as Level
 	player = level.get_node("Entities/Player")
 	check(not get_tree().paused and player.health.is_alive(), "Real scene reload stayed paused or dead")
 	check(GameState.hearts == 2 and is_equal_approx(player.age.age, 20.0), "Real reload lost age or heart count")
-	check(player.position.distance_to(Vector2(1691,640)) < 2.0, "Continue did not restore checkpoint")
+	check(player.position.distance_to(Vector2(1691,640)) < 2.0, "Reload did not restore checkpoint")
 	get_tree().current_scene = self
 	print("DEATH_CHOICE real checkpoint reload resumes at saved position")
 
 func _ready() -> void:
-	await paused_rewind()
-	await paused_rewind(1)
-	await unavailable_options()
+	await spare_heart_is_silent()
+	await last_heart_stops()
 	await actual_checkpoint_reload()
 	TimeService.reset()
 	level.queue_free()
