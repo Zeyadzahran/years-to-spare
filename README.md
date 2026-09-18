@@ -30,9 +30,11 @@ exists in the project, but its gameplay is not yet available.
 After the death animation there is a moment - one second - in which
 **L** still rewinds when Rewind is ready, on any heart, with nothing on screen.
 When it passes, a spare heart is spent and the level reloads at the checkpoint
-on its own. On the last heart, or at 60, a **Game Over** screen offers
-**Enter** to restart the level or **Q** to quit to the menu. Lethal falls never
-trigger Rewind automatically; the start of Level 2 teaches the press instead.
+on its own. On the last heart a **Game Over** screen offers **Enter** to
+restart the level or **Q** to quit to the menu. Reaching 60 is the end of him:
+no window, a **Time's Up** screen, and **Enter** starts the game over from
+Level 1 at fourteen. Lethal falls never trigger Rewind automatically; the
+start of Level 2 teaches the press instead.
 
 City of Time currently has a title screen only. It returns to Level 1; a playable
 second level has not been added yet.
@@ -106,12 +108,14 @@ The intro can be skipped by pressing any keyboard key.
 
 The player begins at age 14 and dies of old age at 60. Casting time stop costs
 three years, freezes the world for five seconds, and then enters a three-second
-cooldown. Defeating an enemy restores one year, while figs restore health.
+cooldown. A power he cannot pay for still takes the years he has left - he
+dies of it, and nothing is cast. Defeating an enemy restores one year, while
+figs restore health.
 
 A normal death returns the player to the latest checkpoint without restoring
-spent years or respawning defeated enemies. Losing the last heart or dying of
-old age stops on Game Over; restarting clears that run's progress and starts
-the level again.
+spent years or respawning defeated enemies. Losing the last heart stops on
+Game Over; restarting clears that run's progress and starts the level again.
+Dying of old age ends the whole game and starts it over from Level 1.
 
 ## Project structure
 

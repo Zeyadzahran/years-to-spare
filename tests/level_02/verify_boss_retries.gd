@@ -117,11 +117,24 @@ func restart_boundaries() -> void:
 	player.health.kill()
 	await confirm_death()
 	check(level.reload_count == 1 and GameState.hearts == 2, "Death outside the arena stopped using checkpoint reload")
+	# Old age ends the whole game, not the level: the screen offers a start
+	# from Level 1, which would replace this test scene - so it is only
+	# looked at here, then closed.
 	await fresh()
 	player.age.spend(player.age.death_age)
-	await confirm_death()
-	check(level.reload_count == 1 and GameState.hearts == GameState.MAX_HEARTS and GameState.run_age < 0.0, "Old age did not reset the run")
-	print("BOSS_RETRIES boundaries: ordinary checkpoint death and old age unchanged")
+	var screen: Node = null
+	for i in 120:
+		await frames(1)
+		if player.has_node("GameOver"):
+			screen = player.get_node("GameOver")
+			break
+	check(screen != null and get_tree().paused, "Old age did not stop on Game Over")
+	if screen != null:
+		check(screen.restart_button.text == "[ENTER] START OVER", "Old age did not offer a fresh start")
+		screen._close()
+		await frames(1)
+	check(level.reload_count == 0, "Old age reloaded the level instead of leaving it")
+	print("BOSS_RETRIES boundaries: ordinary checkpoint death reloads, old age ends the game")
 
 func _ready() -> void:
 	await retry_progress()

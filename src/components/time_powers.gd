@@ -200,12 +200,12 @@ func _try_cast(power: Power) -> void:
 		return
 	if age == null:
 		return
-	# Refused rather than allowed to kill him. Charging the last few years and
-	# ending the run inside his own power would read as the game cheating; the
-	# HUD says what he was short instead.
-	var affordable := age.death_age - age.age
-	if power.cost > affordable:
-		EventBus.ability_refused.emit(power.id, power.cost - affordable)
+	# A press he cannot pay for costs him what he has left and nothing
+	# happens: the years are the point of the game, and a man who spends the
+	# last of them on a trick he had no time for has spent his life. The clock
+	# stops at sixty and takes him with it.
+	if power.cost > age.death_age - age.age:
+		age.spend(power.cost)
 		return
 	# Charged on commitment rather than on arrival: he has decided, and the
 	# half second of flourish is not a window to change his mind in.

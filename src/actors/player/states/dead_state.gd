@@ -70,11 +70,13 @@ func physics_update(delta: float) -> StringName:
 	if not _collapsed and _elapsed >= DURATION:
 		_collapsed = true
 		EventBus.player_collapsed.emit(player)
-	if not _committed and _elapsed >= DURATION + GRACE:
+	# Out of years there is no window: nothing is left to rewind with.
+	var old_age := player.age.age >= player.age.death_age
+	var due := DURATION if old_age else DURATION + GRACE
+	if not _committed and _elapsed >= due:
 		_committed = true
 		# Deferred: the level's answer travels this machine to Idle, which
 		# must not happen from inside this state's own update.
-		var old_age := player.age.age >= player.age.death_age
 		if old_age or GameState.hearts <= 1:
 			var screen := GAME_OVER.new()
 			screen.player = player

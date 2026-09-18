@@ -3,9 +3,12 @@ extends CanvasLayer
 ## committed until he chooses - the tree is paused under this - and the choice
 ## is only ever restart or leave. A death that still leaves him a heart never
 ## comes here; it costs the heart and puts him back at the marker on its own.
+## Out of hearts, the level starts over. Out of years, the whole game does:
+## a life spent is spent, and he starts again young, at the beginning.
 
 const FONT := preload("res://assets/fonts/prstart.ttf")
 const MAIN_MENU_SCENE := "res://src/ui/main_menu/main_menu.tscn"
+const FIRST_LEVEL_SCENE := "res://src/ui/level_title/level_01_title.tscn"
 var player: Player
 var restart_button: Button
 var quit_button: Button
@@ -35,10 +38,15 @@ func _build() -> void:
 	rows.add_theme_constant_override("separation", 22)
 	center.add_child(rows)
 	_lives(rows)
-	_label(rows, "GAME OVER", 36, Color(1.0, 0.45, 0.35))
-	var reason := "Your time has run out." if _of_old_age() else "No hearts left."
-	_label(rows, "%s  The level starts over with %d." % [reason, GameState.MAX_HEARTS], 12, Color(0.84, 0.84, 0.88))
-	restart_button = _button(rows, "[ENTER] RESTART LEVEL", _choose_restart)
+	if _of_old_age():
+		_label(rows, "TIME'S UP", 36, Color(1.0, 0.45, 0.35))
+		_label(rows, "Sixty years, spent a few seconds at a time.", 12, Color(0.84, 0.84, 0.88))
+		_label(rows, "There was a life in there somewhere.", 12, Color(0.68, 0.69, 0.75))
+		restart_button = _button(rows, "[ENTER] START OVER", _choose_restart)
+	else:
+		_label(rows, "GAME OVER", 36, Color(1.0, 0.45, 0.35))
+		_label(rows, "No hearts left.  The level starts over with %d." % GameState.MAX_HEARTS, 12, Color(0.84, 0.84, 0.88))
+		restart_button = _button(rows, "[ENTER] RESTART LEVEL", _choose_restart)
 	quit_button = _button(rows, "[Q] QUIT TO MENU", _choose_quit)
 
 
@@ -113,14 +121,20 @@ func _of_old_age() -> bool:
 	return player.age.age >= player.age.death_age
 
 
-## Commits the death through the level, which spends the last heart, throws
-## the run's progress away and reloads from the top.
+## Out of hearts: commits the death through the level, which spends the last
+## heart, throws the run's progress away and reloads from the top. Out of
+## years: the run is thrown away here and the game begins again from Level 1,
+## fourteen years old.
 func _choose_restart() -> void:
 	if _resolved:
 		return
 	var old_age := _of_old_age()
 	_close()
-	EventBus.player_died.emit(old_age)
+	if old_age:
+		GameState.clear_run_progress()
+		get_tree().change_scene_to_file(FIRST_LEVEL_SCENE)
+	else:
+		EventBus.player_died.emit(false)
 
 
 ## Nothing is committed: PLAY on the menu clears the run - the pause menu's
