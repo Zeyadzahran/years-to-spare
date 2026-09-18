@@ -1,0 +1,28 @@
+Level 2 ambience beds
+=====================
+
+city_rain.mp3    3.ogg from "Rain (loopable)" below, whole take, seamed to loop
+city_day.mp3     ambient_01.ogg (a low machine hum) from the rubberduck pack
+city_night.mp3   crickets.mp3 (Wolfgang_) with noise_01.ogg from the rubberduck pack, low in the mix, as the mains buzzing
+
+From "Rain (loopable)" by Ylmir
+https://opengameart.org/content/rain-loopable
+(3.ogg - recorded at a window, 45 seconds)
+
+From "30 CC0 SFX loops" by rubberduck
+https://opengameart.org/content/30-cc0-sfx-loops
+(ambient_01.ogg, noise_01.ogg)
+
+From "Crickets Ambient Noise - loopable" by Wolfgang_, recorded by Ted Kerr
+https://opengameart.org/content/crickets-ambient-noise-loopable
+(crickets.mp3)
+
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Attribution is not required, but the source is recorded here so the project's
+audio provenance remains clear. The short loops were tiled to 30 seconds with
+short crossfades and the layers mixed to one mono bed per time of day; every
+file has its seam folded so it loops, then is loudness-levelled (see
+LOUDNESS.txt) and encoded to MP3. The same rubberduck pack is the source of the
+Level 1 boss voice.

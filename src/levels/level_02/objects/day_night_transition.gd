@@ -12,13 +12,33 @@ extends Area2D
 @export var day_fade_out: Array[NodePath] = []
 ## The Night-texture siblings added alongside them, faded in over the same span.
 @export var night_fade_in: Array[NodePath] = []
+## The city's daytime sound (AudioStreamPlayers), faded down with the daylight.
+@export var day_audio: Array[NodePath] = []
+## What replaces it after dark, faded up over the same span. Author these at
+## the volume they should play at once it is night; they are held silent
+## until then.
+@export var night_audio: Array[NodePath] = []
+
+## As quiet as a bed goes without stopping it - the same floor MusicManager
+## fades to. Stopping would lose the loop position and restart on the way in.
+const SILENT_DB := -40.0
 
 var _triggered := false
 var _transition: Tween
+## The volume each player was authored at, read before anything is silenced.
+var _authored_db: Dictionary[NodePath, float] = {}
 
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
+	for path in day_audio + night_audio:
+		var player := get_node_or_null(path) as AudioStreamPlayer
+		if player != null:
+			_authored_db[path] = player.volume_db
+	for path in night_audio:
+		var player := get_node_or_null(path) as AudioStreamPlayer
+		if player != null:
+			player.volume_db = SILENT_DB
 	# A respawn rebuilds the whole level from its authored Day state; the
 	# checkpoint that sent the boy back here is what says whether that is
 	# right. Restoring Night here is instant, not a replay of the crossing he
@@ -48,6 +68,14 @@ func _run_transition() -> void:
 		var node := get_node_or_null(path) as CanvasItem
 		if node != null:
 			_transition.tween_property(node, ^"modulate:a", 1.0, duration)
+	for path in day_audio:
+		var player := get_node_or_null(path) as AudioStreamPlayer
+		if player != null:
+			_transition.tween_property(player, ^"volume_db", SILENT_DB, duration)
+	for path in night_audio:
+		var player := get_node_or_null(path) as AudioStreamPlayer
+		if player != null:
+			_transition.tween_property(player, ^"volume_db", _authored_db.get(path, SILENT_DB), duration)
 
 
 ## The one-way boss gate calls this under its opaque fade. Keep the saved
@@ -68,6 +96,7 @@ func restore_daylight() -> void:
 		var node := get_node_or_null(path) as CanvasItem
 		if node != null:
 			node.modulate.a = 0.0
+	_set_audio(true)
 
 
 ## Same end state _run_transition() tweens to, applied on the spot instead of
@@ -87,3 +116,17 @@ func _apply_instant_night() -> void:
 		var node := get_node_or_null(path) as CanvasItem
 		if node != null:
 			node.modulate.a = 1.0
+	_set_audio(false)
+
+
+## Day or night sound, on the spot: the day beds at their authored volume and
+## the night ones silent, or the other way round.
+func _set_audio(daylight: bool) -> void:
+	for path in day_audio:
+		var player := get_node_or_null(path) as AudioStreamPlayer
+		if player != null:
+			player.volume_db = _authored_db.get(path, SILENT_DB) if daylight else SILENT_DB
+	for path in night_audio:
+		var player := get_node_or_null(path) as AudioStreamPlayer
+		if player != null:
+			player.volume_db = SILENT_DB if daylight else _authored_db.get(path, SILENT_DB)

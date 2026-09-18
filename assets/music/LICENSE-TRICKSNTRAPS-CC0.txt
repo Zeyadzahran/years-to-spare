@@ -1,0 +1,17 @@
+Level 2 music
+=============
+
+New_Factory.ogg
+"new_factory_129bpm" from "T & T Free Cyberpunk Pack 2" by tricksntraps
+https://opengameart.org/content/t-t-free-cyberpunk-pack-2
+
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Attribution is not required, but the source is recorded here so the project's
+audio provenance remains clear. The original runs 130 s and fades to silence
+over its last three seconds; it is cut on the bar line at 67 bars (124.65 s)
+with a 50 ms fold so the end runs straight into the start, brought down 1.4 dB
+so its peaks no longer clip, and re-encoded to Ogg Vorbis (q6). It loops at
+the file's end via the level script, like Desert_Mystic.ogg. The pack's other
+tracks were not used.

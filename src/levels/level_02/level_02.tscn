@@ -1,7 +1,13 @@
 [gd_scene format=4 uid="uid://df2wabnpxoehj"]
 
 [ext_resource type="Script" uid="uid://be5vpy5llau5q" path="res://src/levels/level.gd" id="1_g5px2"]
+[ext_resource type="AudioStream" uid="uid://cogdkir15avun" path="res://assets/music/New_Factory.ogg" id="2_5tomu"]
+[ext_resource type="Script" uid="uid://eda0mn232c1j" path="res://src/world/effects/rain_particles.gd" id="4_ch0ec"]
+[ext_resource type="Script" uid="uid://drpgtf3ro4dvk" path="res://src/world/effects/ember_particles.gd" id="5_1ve68"]
+[ext_resource type="AudioStream" uid="uid://dqshfay1om380" path="res://src/levels/level_02/audio/city_rain.mp3" id="6_ch0ec"]
+[ext_resource type="AudioStream" uid="uid://c3t1slebneq38" path="res://src/levels/level_02/audio/city_day.mp3" id="6_rdluj"]
 [ext_resource type="Texture2D" uid="uid://ldmdtdi2byqu" path="res://src/levels/level_02/art/terrain/Tileset.png" id="7_1y2jp"]
+[ext_resource type="AudioStream" uid="uid://l3h3jsoq4drm" path="res://src/levels/level_02/audio/city_night.mp3" id="7_nyull"]
 [ext_resource type="Texture2D" uid="uid://dwuoshh33w4nh" path="res://src/levels/level_02/art/decorations/27.png" id="13_rfgta"]
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="26_8osm8"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/checkpoint.tscn" id="27_txlfv"]
@@ -184,11 +190,11 @@ tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_bwi4v")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7e6n"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ch0ec"]
 resource_local_to_scene = true
 size = Vector2(224, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8bjyn"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ve68"]
 resource_local_to_scene = true
 size = Vector2(224, 18)
 
@@ -225,9 +231,37 @@ border_color = Color(1, 0.62, 0.18, 1)
 texture_filter = 1
 script = ExtResource("1_g5px2")
 level_id = &"phase_2"
+music = ExtResource("2_5tomu")
+music_volume_db = -13.0
 debug_keep_editor_spawn = true
 
 [node name="Background" parent="." unique_id=775539332 instance=ExtResource("scene_background")]
+
+[node name="Ambience" type="Node" parent="." unique_id=393230381]
+
+[node name="Rain" type="CPUParticles2D" parent="Ambience" unique_id=6669454]
+z_index = 6
+script = ExtResource("4_ch0ec")
+
+[node name="Embers" type="CPUParticles2D" parent="Ambience" unique_id=702045740]
+modulate = Color(1, 1, 1, 0)
+z_index = 6
+script = ExtResource("5_1ve68")
+
+[node name="RainBed" type="AudioStreamPlayer" parent="Ambience" unique_id=652836482]
+stream = ExtResource("6_ch0ec")
+volume_db = -3.0
+autoplay = true
+
+[node name="DayBed" type="AudioStreamPlayer" parent="Ambience" unique_id=1531155609]
+stream = ExtResource("6_rdluj")
+volume_db = -3.0
+autoplay = true
+
+[node name="NightBed" type="AudioStreamPlayer" parent="Ambience" unique_id=450894185]
+stream = ExtResource("7_nyull")
+volume_db = -3.0
+autoplay = true
 
 [node name="NightTint" type="CanvasModulate" parent="." unique_id=73111934]
 
@@ -237,7 +271,9 @@ collision_mask = 2
 script = ExtResource("script_day_night_transition")
 canvas_modulate_path = NodePath("../NightTint")
 day_fade_out = Array[NodePath]([NodePath("../Background/Sky/Gradient"), NodePath("../Background/CityLayer2/Silhouette"), NodePath("../Background/CityLayer3/Silhouette"), NodePath("../Background/CityLayer4/Silhouette"), NodePath("../Background/CityLayer5/Silhouette")])
-night_fade_in = Array[NodePath]([NodePath("../Background/Sky/NightGradient"), NodePath("../Background/CityLayer2/NightSilhouette"), NodePath("../Background/CityLayer3/NightSilhouette"), NodePath("../Background/CityLayer4/NightSilhouette"), NodePath("../Background/CityLayer5/NightSilhouette")])
+night_fade_in = Array[NodePath]([NodePath("../Background/Sky/NightGradient"), NodePath("../Background/CityLayer2/NightSilhouette"), NodePath("../Background/CityLayer3/NightSilhouette"), NodePath("../Background/CityLayer4/NightSilhouette"), NodePath("../Background/CityLayer5/NightSilhouette"), NodePath("../Ambience/Embers")])
+day_audio = Array[NodePath]([NodePath("../Ambience/DayBed")])
+night_audio = Array[NodePath]([NodePath("../Ambience/NightBed")])
 
 [node name="Shape" type="CollisionShape2D" parent="DayNightTransition" unique_id=37232550]
 position = Vector2(9150, 0)
@@ -291,10 +327,10 @@ scale = Vector2(1.0769231, 1.0769231)
 texture = ExtResource("collapse_floor_art")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse" index="1" unique_id=2101961067]
-shape = SubResource("RectangleShape2D_p7e6n")
+shape = SubResource("RectangleShape2D_ch0ec")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse/RiderZone" parent_id_path=PackedInt32Array(1699214882, 624621240) index="0" unique_id=314232447]
-shape = SubResource("RectangleShape2D_8bjyn")
+shape = SubResource("RectangleShape2D_1ve68")
 
 [node name="DropPerch" parent="World/Platforms" unique_id=1606402365 instance=ExtResource("scene_objects_industrial_ledge")]
 position = Vector2(9131, 458)
@@ -564,6 +600,8 @@ position = Vector2(7012, 421)
 [node name="ExitSupply" parent="World/Supplies" unique_id=1398371716 instance=ExtResource("scene_objects_supply_chest")]
 position = Vector2(11760, 640)
 
+[node name="Pickups" type="Node2D" parent="World" unique_id=270939907]
+
 [node name="Hazards" type="Node2D" parent="World" unique_id=88079325]
 
 [node name="YardPulse" parent="World/Hazards" unique_id=2107386462 instance=ExtResource("scene_objects_pulse_trap")]
@@ -586,7 +624,6 @@ collision_layer = 0
 collision_mask = 2
 script = ExtResource("34_4rpjk")
 damage = 1000.0
-cheat_fall = true
 
 [node name="Shape" type="CollisionShape2D" parent="World/Hazards/FallReset" unique_id=2053586965]
 position = Vector2(6380, 1060)
