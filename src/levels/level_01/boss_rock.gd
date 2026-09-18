@@ -381,6 +381,7 @@ func _play_detached(streams: Array[AudioStream], volume_db: float,
 	if streams.is_empty() or get_parent() == null:
 		return
 	var audio := AudioStreamPlayer2D.new()
+	audio.bus = SettingsManager.SFX_BUS
 	get_parent().add_child(audio)
 	audio.global_position = landing_position
 	audio.stream = streams[randi() % streams.size()]

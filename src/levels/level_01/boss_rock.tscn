@@ -24,4 +24,5 @@ region_rect = Rect2(509, 61, 90, 74)
 shape = SubResource("CircleShape2D_rock")
 
 [node name="ImpactAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("3_impact")

@@ -3,6 +3,10 @@
 [ext_resource type="Script" uid="uid://dvadu41mf5w8j" path="res://src/world/checkpoints/checkpoint.gd" id="1_checkpoint"]
 [ext_resource type="SpriteFrames" path="res://src/levels/level_02/checkpoint_frames.tres" id="2_frames"]
 [ext_resource type="AudioStream" path="res://assets/sounds/checkpoint.mp3" id="3_activate"]
+[ext_resource type="Shader" path="res://src/levels/level_02/checkpoint_glow.gdshader" id="4_glow"]
+
+[sub_resource type="ShaderMaterial" id="Material_Glow"]
+shader = ExtResource("4_glow")
 
 [sub_resource type="RectangleShape2D" id="Shape_Checkpoint"]
 size = Vector2(64, 140)
@@ -13,6 +17,7 @@ collision_mask = 2
 script = ExtResource("1_checkpoint")
 
 [node name="Marker" type="AnimatedSprite2D" parent="."]
+material = SubResource("Material_Glow")
 texture_filter = 1
 scale = Vector2(0.25, 0.25)
 sprite_frames = ExtResource("2_frames")
@@ -25,4 +30,5 @@ position = Vector2(0, -70)
 shape = SubResource("Shape_Checkpoint")
 
 [node name="ActivateAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("3_activate")

@@ -72,6 +72,7 @@ autoplay = "electricity"
 offset = Vector2(0, -24)
 
 [node name="ElectricAudio" type="AudioStreamPlayer2D" parent="." unique_id=902617356]
+bus = &"SFX"
 position = Vector2(16, -38)
 stream = ExtResource("4_electric_audio")
 max_distance = 700.0

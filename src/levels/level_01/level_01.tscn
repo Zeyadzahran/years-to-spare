@@ -58,11 +58,13 @@ music_volume_db = -12.0
 [node name="Ambience" type="Node" parent="." unique_id=1708576858]
 
 [node name="DesertWind" type="AudioStreamPlayer" parent="Ambience" unique_id=905748870]
+bus = &"Environment"
 stream = ExtResource("2_1vujb")
 volume_db = -5.0
 autoplay = true
 
 [node name="DesertAmbience" type="AudioStreamPlayer" parent="Ambience" unique_id=22267121]
+bus = &"Environment"
 stream = ExtResource("3_68m7i")
 volume_db = -3.0
 autoplay = true

@@ -18,10 +18,12 @@ scale = Vector2(0.15, 0.15)
 position = Vector2(0, -98)
 
 [node name="PortalAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("3_audio")
 volume_db = -4.0
 
 [node name="SpawnAudio" type="AudioStreamPlayer" parent="."]
+bus = &"SFX"
 stream = ExtResource("4_spawn")
 volume_db = -1.0
 max_polyphony = 2

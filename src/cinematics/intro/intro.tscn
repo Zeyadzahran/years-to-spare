@@ -118,5 +118,6 @@ visible = false
 text = "Years to Spare"
 
 [node name="VoiceOver" type="AudioStreamPlayer" parent="." unique_id=972531369]
+bus = &"SFX"
 stream = ExtResource("2_qb32b")
 volume_db = -3.0

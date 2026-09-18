@@ -105,8 +105,10 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Clock" type="AudioStreamPlayer" parent="." unique_id=1133705079]
+bus = &"SFX"
 stream = ExtResource("3_35jpc")
 autoplay = true
 
 [node name="PostTitleVoiceOver" type="AudioStreamPlayer" parent="." unique_id=1701016351]
+bus = &"SFX"
 stream = ExtResource("4_intro_level2")

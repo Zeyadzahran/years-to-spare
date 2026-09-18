@@ -84,20 +84,25 @@ position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
 [node name="SwordAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764939]
+bus = &"SFX"
 stream = ExtResource("15_ylekk")
 volume_db = -6.0
 
 [node name="RunAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764940]
+bus = &"SFX"
 stream = ExtResource("16_run")
 volume_db = 6.0
 
 [node name="TimeStopAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764941]
+bus = &"SFX"
 stream = ExtResource("17_stop")
 volume_db = -4.0
 
 [node name="HurtAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764942]
+bus = &"SFX"
 volume_db = -6.0
 
 [node name="JumpAudio" type="AudioStreamPlayer2D" parent="." unique_id=540764943]
+bus = &"SFX"
 stream = ExtResource("18_jump")
 volume_db = -6.0

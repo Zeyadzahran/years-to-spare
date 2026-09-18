@@ -798,16 +798,19 @@ func _build_ground_marks() -> void:
 
 func _build_voice() -> void:
 	_voice = AudioStreamPlayer2D.new()
+	_voice.bus = SettingsManager.SFX_BUS
 	_voice.name = &"VoiceAudio"
 	_voice.max_distance = 3200.0
 	_voice.attenuation = 0.6
 	add_child(_voice)
 	_voice_layer = AudioStreamPlayer2D.new()
+	_voice_layer.bus = SettingsManager.SFX_BUS
 	_voice_layer.name = &"RumbleAudio"
 	_voice_layer.max_distance = 3200.0
 	_voice_layer.attenuation = 0.5
 	add_child(_voice_layer)
 	_sub_audio = AudioStreamPlayer2D.new()
+	_sub_audio.bus = SettingsManager.SFX_BUS
 	_sub_audio.name = &"StompSubAudio"
 	_sub_audio.max_distance = 3200.0
 	_sub_audio.attenuation = 0.5

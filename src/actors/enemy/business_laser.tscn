@@ -34,6 +34,7 @@ scale = Vector2(0.55, 0.55)
 shape = SubResource("RectangleShape2D_laser")
 
 [node name="ImpactAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("3_hit")
 volume_db = -3.0
 

@@ -24,6 +24,7 @@ position = Vector2(-33.55, -59.5)
 shape = SubResource("Shape_ToxicPipe")
 
 [node name="FlowSound" type="AudioStreamPlayer2D" parent="." unique_id=571090612]
+bus = &"SFX"
 stream = ExtResource("3_71dki")
 volume_db = -20.0
 autoplay = true
