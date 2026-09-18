@@ -88,7 +88,9 @@ func uncrossable() -> void:
 	GameState.clear_run_progress()
 	await fresh()
 	check(left().position.y > 640 and right().position.y > 640, "Ledges not tucked away on a fresh run")
-	check(level.get_node("Tutorial/Jump").visible, "No sign asks him to jump the hole")
+	await place(Vector2(1300, 640))
+	await frames(60)
+	check(level.get_node("Tutorial/Dare").modulate.a > 0.9, "The dare did not show as he reached the hole")
 	check(not await jump_across(Vector2(1200, 640), 1395, 1925), "The street hole could be jumped from the ground")
 	await fresh()
 	check(not await jump_across(Vector2(1150, 423), 1360, 1925), "The street hole could be jumped from the cache ledge")
@@ -142,6 +144,7 @@ func the_lesson() -> void:
 	check(camera.offset.is_zero_approx(), "Camera did not look back: %s" % camera.offset)
 	check(level.get_node("Enemies").process_mode == Node.PROCESS_MODE_INHERIT, "Guards were not handed back")
 	check(await jump_across(Vector2(1300, 640), 1585, 1810), "The closed hole could not be jumped")
+	check(not level.get_node("Tutorial/Dare").visible, "The dare is still up after the lesson")
 	print("REWIND_LESSON first fall stops on the card, L revives, ledges slide out")
 
 func afterwards() -> void:

@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://df253iysytrqc" path="res://src/levels/level_02/boss_arena.gd" id="44_bossarena"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/business_boss.tscn" id="45_businessboss"]
 [ext_resource type="Script" uid="uid://ojiwgbdrkclk" path="res://src/levels/level_02/objects/rewind_lesson.gd" id="50_1ve68"]
+[ext_resource type="Script" uid="uid://rxucc2p12wvx" path="res://src/ui/tutorial/dare.gd" id="50_rdluj"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="61_lwmew"]
 [ext_resource type="AudioStream" uid="uid://7swm5qnofmyk" path="res://assets/sounds/cad_owner/death.wav" id="boss_death_sound"]
 [ext_resource type="Script" uid="uid://dl8wcshdpeoar" path="res://src/cinematics/cad_finale/cad_cinematic.gd" id="cad_cinematic"]
@@ -191,11 +192,11 @@ tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_bwi4v")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ve68"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nyull"]
 resource_local_to_scene = true
 size = Vector2(224, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rdluj"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3wgf"]
 resource_local_to_scene = true
 size = Vector2(224, 18)
 
@@ -331,10 +332,10 @@ scale = Vector2(1.0769231, 1.0769231)
 texture = ExtResource("collapse_floor_art")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse" index="1" unique_id=2101961067]
-shape = SubResource("RectangleShape2D_1ve68")
+shape = SubResource("RectangleShape2D_nyull")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse/RiderZone" parent_id_path=PackedInt32Array(1699214882, 624621240) index="0" unique_id=314232447]
-shape = SubResource("RectangleShape2D_rdluj")
+shape = SubResource("RectangleShape2D_a3wgf")
 
 [node name="DropPerch" parent="World/Platforms" unique_id=1606402365 instance=ExtResource("scene_objects_industrial_ledge")]
 position = Vector2(9131, 458)
@@ -974,14 +975,9 @@ footer = "4 sec back / costs 4 years"
 accent = Color(0.72, 0.82, 0.95, 1)
 centered = true
 
-[node name="Jump" type="Node2D" parent="Tutorial" unique_id=556926071]
-position = Vector2(1330, 470)
-script = ExtResource("guide_card")
-heading = "JUMP"
-keys = PackedStringArray("SPACE")
-actions = PackedStringArray("jump")
-instructions = PackedStringArray("Try the gap")
-centered = true
+[node name="Dare" type="Node2D" parent="Tutorial" unique_id=1780922162]
+position = Vector2(1664, 520)
+script = ExtResource("50_rdluj")
 
 [node name="RewindLesson" type="Area2D" parent="Tutorial" unique_id=1456150224]
 collision_layer = 0
