@@ -5,17 +5,17 @@ extends Area2D
 ## it gives is a life, not health, so it answers to GameState rather than to
 ## the body that walked in, and the level remembers it was taken: a retry puts
 ## him back at the marker with the heart still gone, so a stretch with a heart
-## on it cannot be died through for a free life each time.
+## on it cannot be died through for a free life each time. Whether it is
+## there at all on a given run is the level's PickupPlacer's call: a box may
+## be full one playthrough and empty the next, and a retry finds it as it was.
 
 ## Packed inside something - a supply chest - rather than lying in the open:
 ## unseen and untouchable until whatever holds it calls `release()`, then it
 ## springs out and hovers above it to be picked up.
 @export var stowed := false
-## How likely this heart is to exist at all on a given run. The level rolls
-## it once per run and removes the heart before the first frame if it lost,
-## so a box may be full one playthrough and empty the next - and a retry
-## within the run finds it the way it was.
-@export_range(0.0, 1.0, 0.05) var chance := 1.0
+## Placed by hand and always there. Everything else is a candidate the
+## level's PickupPlacer picks from, and may not be there on a given run.
+@export var fixed := false
 
 ## Where a released heart settles, relative to where it was stowed: clear of
 ## the chest lid and level with his chest, so walking up to the box takes it.

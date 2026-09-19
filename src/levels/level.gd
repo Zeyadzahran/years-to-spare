@@ -112,18 +112,19 @@ func _apply_debug_spawn(player: Node2D) -> void:
 
 
 ## Units downed earlier in the run do not get up again for a retry, and hearts
-## already picked up are not lying there again either - nor are the hearts
-## this run's luck left out of their boxes. Done before the first frame, so a
-## body already recorded never ticks, swings or fires, and a heart that is
-## not there is never seen or recorded.
+## already picked up are not lying there again either - nor are the figs and
+## hearts this run's placement left out (see PickupPlacer). Done before the
+## first frame, so a body already recorded never ticks, swings or fires, and
+## a pickup that is not there is never seen or recorded.
 func _remove_the_fallen() -> void:
 	for enemy in get_tree().get_nodes_in_group(&"enemy"):
 		if GameState.is_enemy_cleared(level_id, _tag(enemy)):
 			enemy.queue_free()
+	var placer := get_node_or_null(^"PickupPlacer") as PickupPlacer
+	if placer != null:
+		placer.place(self, level_id)
 	for heart in get_tree().get_nodes_in_group(&"heart_pickup"):
-		var tag := _tag(heart)
-		if GameState.is_heart_collected(level_id, tag) \
-				or not GameState.roll_heart(level_id, tag, heart.chance):
+		if GameState.is_heart_collected(level_id, _tag(heart)):
 			heart.queue_free()
 
 
@@ -183,6 +184,10 @@ func _on_player_died(of_old_age: bool) -> void:
 		if GameState.lose_heart() <= 0:
 			GameState.clear_run_progress()
 		else:
+			# The retry finds one more fig ahead of the marker than this try did.
+			var placer := get_node_or_null(^"PickupPlacer") as PickupPlacer
+			if placer != null:
+				placer.take_pity(level_id)
 			# An active final fight keeps its live actors and wave progress.
 			# Other deaths still use the existing checkpoint reload.
 			var arena := get_node_or_null(^"World/BossArena")

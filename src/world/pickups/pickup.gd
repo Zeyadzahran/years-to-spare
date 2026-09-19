@@ -9,9 +9,14 @@ extends Area2D
 
 ## A third of the bar, so three figs are a full heal from nothing.
 @export var heal_amount := 34.0
+## Placed by hand and always there - the reward at the end of an optional
+## climb, say. Everything else is a candidate the level's PickupPlacer picks
+## from, and may not be lying there on a given run.
+@export var fixed := false
 
 func _ready() -> void:
 	add_to_group(TimeService.REWINDABLE_GROUP)
+	add_to_group(&"fig_pickup")
 	EventBus.player_spawned.connect(_on_player_spawned)
 	EventBus.player_health_changed.connect(_on_player_health_changed)
 	# Covers both orderings: a player that spawns after this fig is already

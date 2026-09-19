@@ -70,11 +70,16 @@ var cleared_enemies: Dictionary[String, bool] = {}
 ## stretch with a heart on it cannot be died through for a free life each time.
 var collected_hearts: Dictionary[String, bool] = {}
 
-## Which boxes turned out to hold a heart this run, keyed the same way. Rolled
-## the first time a level asks and kept until the run is over, so a retry
-## finds the same boxes full and the same ones empty - and the next run
-## finds a different set.
-var heart_rolls: Dictionary[String, bool] = {}
+## Which of a level's candidate pickups - figs on the ground, hearts in their
+## boxes - exist this run, keyed the same way. A level's PickupPlacer decides
+## them all at once the first time the level loads in a run and they are kept
+## until the run is over, so a retry finds the same figs lying there and the
+## same boxes full - and the next run finds a different set.
+var pickup_rolls: Dictionary[String, bool] = {}
+
+## What that placement is drawn from. Drawn with the run, so the same seed
+## lays the same levels out again - and a test can ask for one.
+var run_seed := 0
 
 ## Whether the fall lesson at the start of Level 2 has been given this run. It
 ## shows once; a retry finds the street already the way the lesson left it.
@@ -144,13 +149,24 @@ func restore_heart(level_id: StringName, path: String) -> void:
 	collected_hearts.erase("%s|%s" % [level_id, path])
 
 
-## Whether a heart is in its box this run: rolled at `chance` the first time
-## it is asked about, the same answer every time after.
-func roll_heart(level_id: StringName, path: String, chance: float) -> bool:
-	var key := "%s|%s" % [level_id, path]
-	if not heart_rolls.has(key):
-		heart_rolls[key] = randf() < chance
-	return heart_rolls[key]
+## Whether a candidate pickup exists this run. Anything the placer never
+## decided is there - a level without a placer keeps everything it was
+## authored with.
+func is_pickup_placed(level_id: StringName, path: String) -> bool:
+	return pickup_rolls.get("%s|%s" % [level_id, path], true)
+
+
+func place_pickup(level_id: StringName, path: String, present: bool) -> void:
+	pickup_rolls["%s|%s" % [level_id, path]] = present
+
+
+## Whether this level's pickups have been decided this run already.
+func has_placement(level_id: StringName) -> bool:
+	var prefix := "%s|" % level_id
+	for key in pickup_rolls:
+		if key.begins_with(prefix):
+			return true
+	return false
 
 
 ## Throws away everything a retry would have carried: the marker, the years
@@ -165,7 +181,8 @@ func clear_run_progress() -> void:
 	run_age = -1.0
 	cleared_enemies.clear()
 	collected_hearts.clear()
-	heart_rolls.clear()
+	pickup_rolls.clear()
+	run_seed = randi()
 	rewind_lesson_done = false
 	hearts = MAX_HEARTS
 	EventBus.player_hearts_changed.emit(hearts, HEART_CAP)
