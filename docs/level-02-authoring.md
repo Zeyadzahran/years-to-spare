@@ -213,6 +213,7 @@ godot --headless --path . tests/level_02/verify_supplies.tscn
 godot --headless --path . --fixed-fps 60 tests/level_02/verify_level.tscn
 godot --headless --path . --fixed-fps 60 tests/level_02/verify_rewind_lesson.tscn
 godot --headless --path . --fixed-fps 60 tests/level_02/verify_death_choice.tscn
+godot --headless --path . --fixed-fps 60 tests/level_02/verify_boss_moves.tscn
 godot --headless --path . --script tests/scene_contracts.gd -- --level-only
 godot --path . tools/level_02/capture_map.tscn
 ```
@@ -245,6 +246,25 @@ artifacts and may predate the latest scene edits.
 now uses the reusable object scenes.
 It overwrites the saved scene and tileset when explicitly run with `--replace`;
 keep manual edits in the scene and do not regenerate it during normal editing.
+
+## The Owner's moves
+
+The boss (`src/actors/enemy/business_boss.gd`, 1200 HP, stationary) fights
+with the pistol and three telekinetic moves that are states of the Enemy
+machine. All three are drawn in code (`business_boss_fx.gd` and the hazards
+themselves) and obey the world clock and Rewind like a Bullet.
+
+| Move | When | What happens |
+| --- | --- | --- |
+| Repulse | every phase; a boy inside 150 px for 0.5 s, or three hits in a row | 0.35 s tell (fragments snap to his chest, a ring closes), then a burst: 15 damage and a launch of (760, -560) to anyone within 190 px. Cooldown 4 s, 2.5 s in phase three. Never interrupted by a hit. |
+| Surge | phase two alternates it with the laser; phase three sends one each way | 0.5 s tell, then a `BusinessSurge`: a knee-high ridge (hitbox 60x34) at 480 px/s along the floor, 20 damage, jumpable. Follows the floor and drops off platform edges. Gone past the room walls or after 3.8 s. |
+| Volley | phase three, after the surge | Three `BusinessShard`s rise around him (harmless for 0.8 s, on threads of light), then go one every 0.25 s at where the boy stands, 16 damage, on a 0.7 s arc. A shard still held when he leaves falls where it is. |
+
+The phase-three cycle is laser pair, surge, volley, then the reposition that
+already existed. Repulse is reactive and never part of the cycle. Hazards
+join the `business_hazard` group; a spent heart in the arena retires them
+with the bullets. `tests/level_02/verify_boss_moves.tscn` covers all three,
+their Rewind and the respawn.
 
 ## Finale
 

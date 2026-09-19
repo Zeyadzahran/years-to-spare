@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ckn31rhl6bhaq"]
+
+[ext_resource type="Script" uid="uid://besvlvrkvynmt" path="res://tests/level_02/verify_boss_moves.gd" id="1_x8j7y"]
+
+[node name="VerifyBossMoves" type="Node" unique_id=1821370177]
+script = ExtResource("1_x8j7y")
