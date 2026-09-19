@@ -28,7 +28,6 @@ hframes = 4
 [node name="Heart" parent="." unique_id=686619884 instance=ExtResource("3_mwm5h")]
 position = Vector2(0, -32)
 stowed = true
-chance = 0.5
 
 [node name="OpenAudio" type="AudioStreamPlayer2D" parent="." unique_id=783146216]
 position = Vector2(0, -32)

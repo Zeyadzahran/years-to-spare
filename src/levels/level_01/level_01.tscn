@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://djqbpdehfsnos" path="res://src/actors/enemy/gunner.tscn" id="19_bv8k8"]
 [ext_resource type="Texture2D" uid="uid://dlw6qxbday0fi" path="res://src/levels/level_01/art/terrain/tiles.png" id="19_seampatch"]
 [ext_resource type="PackedScene" uid="uid://qjopd3ftflm4" path="res://src/world/pickups/pickup.tscn" id="20_pickup"]
+[ext_resource type="Script" uid="uid://cx5mn6frx7vhj" path="res://src/world/pickups/pickup_placer.gd" id="36_26ae1"]
 [ext_resource type="Script" uid="uid://bml7u6pies1ij" path="res://src/levels/level_01/boss_arena.gd" id="boss_arena_script"]
 [ext_resource type="Texture2D" uid="uid://csp6eptuobfmv" path="res://assets/sprites/boss-background.png" id="boss_background"]
 [ext_resource type="PackedScene" path="res://src/actors/enemy/guardian.tscn" id="boss_guardian"]
@@ -787,47 +788,69 @@ position = Vector2(9074, 558)
 
 [node name="Heart1150" parent="World/Pickups" unique_id=686619884 instance=ExtResource("13_0id1s")]
 position = Vector2(1150, 540)
-chance = 0.3
 
 [node name="Heart2600" parent="World/Pickups" unique_id=754105520 instance=ExtResource("13_0id1s")]
 position = Vector2(2600, 540)
-chance = 0.3
 
 [node name="Heart3550" parent="World/Pickups" unique_id=253978284 instance=ExtResource("13_0id1s")]
 position = Vector2(3550, 420)
-chance = 0.3
 
 [node name="Heart4850" parent="World/Pickups" unique_id=242484353 instance=ExtResource("13_0id1s")]
 position = Vector2(4850, 540)
-chance = 0.3
 
 [node name="Heart5450" parent="World/Pickups" unique_id=84490315 instance=ExtResource("13_0id1s")]
 position = Vector2(5450, 420)
-chance = 0.3
 
 [node name="Heart6900" parent="World/Pickups" unique_id=1903413510 instance=ExtResource("13_0id1s")]
 position = Vector2(6900, 420)
-chance = 0.3
 
 [node name="Heart7900" parent="World/Pickups" unique_id=455925747 instance=ExtResource("13_0id1s")]
 position = Vector2(7900, 540)
-chance = 0.3
 
 [node name="Heart8400" parent="World/Pickups" unique_id=1913045017 instance=ExtResource("13_0id1s")]
 position = Vector2(8400, 540)
-chance = 0.3
 
 [node name="Heart7500" parent="World/Pickups" unique_id=1546455405 instance=ExtResource("13_0id1s")]
 position = Vector2(7500, 540)
-chance = 0.3
 
 [node name="Heart10500" parent="World/Pickups" unique_id=774572754 instance=ExtResource("13_0id1s")]
 position = Vector2(10500, 300)
-chance = 0.3
 
 [node name="Heart11700" parent="World/Pickups" unique_id=467217044 instance=ExtResource("13_0id1s")]
 position = Vector2(11700, 180)
-chance = 0.3
+
+[node name="Fig400" parent="World/Pickups" unique_id=2091986839 instance=ExtResource("20_pickup")]
+position = Vector2(400, 550)
+
+[node name="Fig2500" parent="World/Pickups" unique_id=385404779 instance=ExtResource("20_pickup")]
+position = Vector2(2500, 550)
+
+[node name="Fig3650" parent="World/Pickups" unique_id=1810934914 instance=ExtResource("20_pickup")]
+position = Vector2(3650, 430)
+
+[node name="Fig5450" parent="World/Pickups" unique_id=129061249 instance=ExtResource("20_pickup")]
+position = Vector2(5450, 430)
+
+[node name="Fig6850" parent="World/Pickups" unique_id=739955237 instance=ExtResource("20_pickup")]
+position = Vector2(6850, 430)
+
+[node name="Fig7800" parent="World/Pickups" unique_id=573319615 instance=ExtResource("20_pickup")]
+position = Vector2(7800, 550)
+
+[node name="Fig9500" parent="World/Pickups" unique_id=86752135 instance=ExtResource("20_pickup")]
+position = Vector2(9500, 430)
+
+[node name="Fig11750" parent="World/Pickups" unique_id=1434473627 instance=ExtResource("20_pickup")]
+position = Vector2(11750, 190)
+
+[node name="Fig13100" parent="World/Pickups" unique_id=1938637026 instance=ExtResource("20_pickup")]
+position = Vector2(13100, 190)
+
+[node name="Fig14500" parent="World/Pickups" unique_id=1305860199 instance=ExtResource("20_pickup")]
+position = Vector2(14500, -50)
+
+[node name="Fig14980" parent="World/Pickups" unique_id=1471430214 instance=ExtResource("20_pickup")]
+position = Vector2(14980, 70)
 
 [node name="Hazards" type="Node2D" parent="World" unique_id=160053923]
 
@@ -1042,9 +1065,11 @@ position = Vector2(13440, 179)
 
 [node name="HighLedgeFig" parent="World/SalvageYard/Pickups" unique_id=1831731925 instance=ExtResource("20_pickup")]
 position = Vector2(14200, -181)
+fixed = true
 
 [node name="ExitFig" parent="World/SalvageYard/Pickups" unique_id=1451689718 instance=ExtResource("20_pickup")]
 position = Vector2(16660, 59)
+fixed = true
 
 [node name="Gates" type="Node2D" parent="World/SalvageYard" unique_id=1331770119]
 
@@ -2080,3 +2105,7 @@ actions = PackedStringArray("time_stop")
 instructions = PackedStringArray("Stop time")
 footer = "5 sec / costs 3 years"
 accent = Color(0.45, 0.82, 0.87, 1)
+
+[node name="PickupPlacer" type="Node" parent="." unique_id=1433735153]
+script = ExtResource("36_26ae1")
+fig_count = 10

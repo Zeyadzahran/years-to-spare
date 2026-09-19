@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dwuoshh33w4nh" path="res://src/levels/level_02/art/decorations/27.png" id="13_rfgta"]
 [ext_resource type="FontFile" uid="uid://ch88yap8gjhin" path="res://assets/fonts/prstart.ttf" id="26_8osm8"]
 [ext_resource type="PackedScene" path="res://src/levels/level_02/checkpoint.tscn" id="27_txlfv"]
+[ext_resource type="PackedScene" uid="uid://qjopd3ftflm4" path="res://src/world/pickups/pickup.tscn" id="32_a3wgf"]
 [ext_resource type="Script" uid="uid://7q8rqbxmi4d" path="res://src/world/hazards/hazard.gd" id="34_4rpjk"]
 [ext_resource type="PackedScene" uid="uid://drt0b4rcdaxpq" path="res://src/actors/enemy/guard.tscn" id="38_fobyb"]
 [ext_resource type="Texture2D" uid="uid://caq43e7lkhfqp" path="res://src/levels/level_02/art/background/backgroundboss2.png" id="39_nyull"]
@@ -21,6 +22,7 @@
 [ext_resource type="PackedScene" path="res://src/actors/enemy/business_boss.tscn" id="45_businessboss"]
 [ext_resource type="Script" uid="uid://ojiwgbdrkclk" path="res://src/levels/level_02/objects/rewind_lesson.gd" id="50_1ve68"]
 [ext_resource type="Script" uid="uid://rxucc2p12wvx" path="res://src/ui/tutorial/dare.gd" id="50_rdluj"]
+[ext_resource type="Script" uid="uid://cx5mn6frx7vhj" path="res://src/world/pickups/pickup_placer.gd" id="54_5fbhj"]
 [ext_resource type="PackedScene" uid="uid://bv8j3me4a5f5i" path="res://src/ui/hud.tscn" id="61_lwmew"]
 [ext_resource type="AudioStream" uid="uid://7swm5qnofmyk" path="res://assets/sounds/cad_owner/death.wav" id="boss_death_sound"]
 [ext_resource type="Script" uid="uid://dl8wcshdpeoar" path="res://src/cinematics/cad_finale/cad_cinematic.gd" id="cad_cinematic"]
@@ -193,11 +195,11 @@ tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_bwi4v")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3wgf"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gei7k"]
 resource_local_to_scene = true
 size = Vector2(224, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5fbhj"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ewkoi"]
 resource_local_to_scene = true
 size = Vector2(224, 18)
 
@@ -333,10 +335,10 @@ scale = Vector2(1.0769231, 1.0769231)
 texture = ExtResource("collapse_floor_art")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse" index="1" unique_id=2101961067]
-shape = SubResource("RectangleShape2D_a3wgf")
+shape = SubResource("RectangleShape2D_gei7k")
 
 [node name="Shape" parent="World/Platforms/CourtyardCollapse/RiderZone" parent_id_path=PackedInt32Array(1699214882, 624621240) index="0" unique_id=314232447]
-shape = SubResource("RectangleShape2D_5fbhj")
+shape = SubResource("RectangleShape2D_ewkoi")
 
 [node name="DropPerch" parent="World/Platforms" unique_id=1606402365 instance=ExtResource("scene_objects_industrial_ledge")]
 position = Vector2(9131, 458)
@@ -604,6 +606,54 @@ position = Vector2(7012, 421)
 position = Vector2(11760, 640)
 
 [node name="Pickups" type="Node2D" parent="World" unique_id=270939907]
+
+[node name="Fig500" parent="World/Pickups" unique_id=1349153118 instance=ExtResource("32_a3wgf")]
+position = Vector2(500, 590)
+
+[node name="Fig1100" parent="World/Pickups" unique_id=317827920 instance=ExtResource("32_a3wgf")]
+position = Vector2(1100, 444)
+
+[node name="Fig2150" parent="World/Pickups" unique_id=1270325079 instance=ExtResource("32_a3wgf")]
+position = Vector2(2150, 590)
+
+[node name="Fig2650" parent="World/Pickups" unique_id=162020630 instance=ExtResource("32_a3wgf")]
+position = Vector2(2650, 590)
+
+[node name="Fig3350" parent="World/Pickups" unique_id=1362055946 instance=ExtResource("32_a3wgf")]
+position = Vector2(3350, 462)
+
+[node name="Fig4060" parent="World/Pickups" unique_id=1359424789 instance=ExtResource("32_a3wgf")]
+position = Vector2(4060, 242)
+
+[node name="Fig5050" parent="World/Pickups" unique_id=2098524495 instance=ExtResource("32_a3wgf")]
+position = Vector2(5050, 462)
+
+[node name="Fig5300" parent="World/Pickups" unique_id=1170546441 instance=ExtResource("32_a3wgf")]
+position = Vector2(5300, 462)
+
+[node name="Fig6050" parent="World/Pickups" unique_id=2009207715 instance=ExtResource("32_a3wgf")]
+position = Vector2(6050, 462)
+
+[node name="Fig7120" parent="World/Pickups" unique_id=636960372 instance=ExtResource("32_a3wgf")]
+position = Vector2(7120, 374)
+
+[node name="Fig7350" parent="World/Pickups" unique_id=1614397069 instance=ExtResource("32_a3wgf")]
+position = Vector2(7350, 590)
+
+[node name="Fig8300" parent="World/Pickups" unique_id=1480386730 instance=ExtResource("32_a3wgf")]
+position = Vector2(8300, 590)
+
+[node name="Fig8900" parent="World/Pickups" unique_id=994964925 instance=ExtResource("32_a3wgf")]
+position = Vector2(8900, 590)
+
+[node name="Fig9900" parent="World/Pickups" unique_id=2102437888 instance=ExtResource("32_a3wgf")]
+position = Vector2(9900, 590)
+
+[node name="Fig10300" parent="World/Pickups" unique_id=2023555870 instance=ExtResource("32_a3wgf")]
+position = Vector2(10300, 590)
+
+[node name="Fig11400" parent="World/Pickups" unique_id=1613374673 instance=ExtResource("32_a3wgf")]
+position = Vector2(11400, 590)
 
 [node name="Hazards" type="Node2D" parent="World" unique_id=88079325]
 
@@ -1022,6 +1072,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
+
+[node name="PickupPlacer" type="Node" parent="." unique_id=2077594885]
+script = ExtResource("54_5fbhj")
+heart_count = 2
 
 [editable path="World/Platforms/CourtyardCollapse"]
 [editable path="Entities/Player"]
