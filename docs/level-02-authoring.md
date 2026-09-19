@@ -251,20 +251,22 @@ keep manual edits in the scene and do not regenerate it during normal editing.
 
 The boss (`src/actors/enemy/business_boss.gd`, 1200 HP, stationary) fights
 with the pistol and three telekinetic moves that are states of the Enemy
-machine. All three are drawn in code (`business_boss_fx.gd` and the hazards
-themselves) and obey the world clock and Rewind like a Bullet.
+machine. All three come from his head - `business_boss_fx.gd` draws the aura
+there and flares it whenever something leaves it - and all three are drawn
+in code, by the effects node and by the hazards themselves, and obey the
+world clock and Rewind like a Bullet.
 
 | Move | When | What happens |
 | --- | --- | --- |
-| Repulse | every phase; a boy inside 150 px for 0.5 s, or three hits in a row | 0.35 s tell (fragments snap to his chest, a ring closes), then a burst: 15 damage and a launch of (760, -560) to anyone within 190 px. Cooldown 4 s, 2.5 s in phase three. Never interrupted by a hit. |
-| Surge | phase two alternates it with the laser; phase three sends one each way | 0.5 s tell, then a `BusinessSurge`: a knee-high ridge (hitbox 60x34) at 480 px/s along the floor, 20 damage, jumpable. Follows the floor and drops off platform edges. Gone past the room walls or after 3.8 s. |
-| Volley | phase three, after the surge | Three `BusinessShard`s rise around him (harmless for 0.8 s, on threads of light), then go one every 0.25 s at where the boy stands, 16 damage, on a 0.7 s arc. A shard still held when he leaves falls where it is. |
+| Repulse | every phase; a boy inside 150 px for 0.9 s (about two swings), or four hits in a row | 0.5 s tell (fragments snap to his chest, a ring closes), then a burst: 12 damage and a launch of (680, -520) to anyone still within 190 px - step out of the ring and it costs nothing. Cooldown 4.5 s, 3 s in phase three. Never interrupted by a hit. |
+| Pulse | phase two alternates it with the laser; phase three too, faster | 0.45 s tell, then a train of three `BusinessPulse` waves from his temple, 0.6 s apart (0.45 in phase three), 420 px/s, 15 damage. Each is a signal-shaped arc from the floor to 200 px up with one gap, low or high at random: a low gap (floor to 80) is crouched through, a high one (100 up) jumped through. A stop holds a train in the air; its gaps are still gaps. |
+| Volley | phase three, after the pulse | Three `BusinessShard`s are torn out of the floor (cracks, dust) and orbit his head on streams of motes, harmless, for 0.8 s; then they go one every 0.25 s at where the boy stands, 16 damage on a 0.7 s arc, a crack and a shake on landing. A shard still held when he leaves falls where it is. |
 
-The phase-three cycle is laser pair, surge, volley, then the reposition that
-already existed. Repulse is reactive and never part of the cycle. Hazards
-join the `business_hazard` group; a spent heart in the arena retires them
-with the bullets. `tests/level_02/verify_boss_moves.tscn` covers all three,
-their Rewind and the respawn.
+The phase-three cycle is laser pair, pulse train, volley, then the
+reposition that already existed. Repulse is reactive and never part of the
+cycle. Hazards join the `business_hazard` group; a spent heart in the arena
+retires them with the bullets. `tests/level_02/verify_boss_moves.tscn`
+covers all three, their Rewind and the respawn.
 
 ## Finale
 

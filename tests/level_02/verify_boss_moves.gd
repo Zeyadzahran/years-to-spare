@@ -1,5 +1,5 @@
 extends "res://tests/level_02/verify_boss_retries.gd"
-## The Manager's three telekinetic moves: Repulse, Surge and Volley, with the
+## The Manager's three telekinetic moves: Repulse, Pulse and Volley, with the
 ## world clock and Rewind. Run with --headless --fixed-fps 60.
 
 ## His hazards live under the current scene - this node - so a fresh fight
@@ -17,11 +17,18 @@ func park(offset_x: float) -> void:
 	player.global_position = floor_at(arena.to_local(boss.global_position).x + offset_x)
 	player.velocity = Vector2.ZERO
 
-## Live hazards of one kind: "BusinessSurge" or "BusinessShard".
+## Holds the boy still where he is, but still there to be hit: a disabled
+## body leaves the physics space unless told to stay.
+func hold_still(held: bool) -> void:
+	player.disable_mode = CollisionObject2D.DISABLE_MODE_KEEP_ACTIVE
+	player.process_mode = Node.PROCESS_MODE_DISABLED if held else Node.PROCESS_MODE_INHERIT
+
+
+## Live hazards of one kind: "BusinessPulse" or "BusinessShard".
 func hazards(kind: String) -> Array:
 	var found := []
 	for node in get_tree().get_nodes_in_group(&"business_hazard"):
-		var wanted: bool = node is BusinessSurge if kind == "BusinessSurge" else node is BusinessShard
+		var wanted: bool = node is BusinessPulse if kind == "BusinessPulse" else node is BusinessShard
 		if wanted and node.process_mode != Node.PROCESS_MODE_DISABLED:
 			found.append(node)
 	return found
@@ -71,74 +78,97 @@ func repulse_hits() -> void:
 	print("BOSS_MOVES repulse: three quick hits are answered at once")
 
 
-## A surge runs along the floor toward the boy, is jumped, stops with time,
-## and drops off a platform edge.
-func surge() -> void:
+## Sends one pulse train with the gaps forced, and returns its pulses once
+## `wanted_count` of them are out. Pulses already in the room are not his.
+func pulse_train(gaps: Array, wanted_count := BusinessBoss.PULSE_COUNT) -> Array:
+	var old := hazards("BusinessPulse")
+	boss._change_state(&"Pulse")
+	var sent := []
+	var forced := gaps.duplicate()
+	for i in 200:
+		await frames(1)
+		for pulse in hazards("BusinessPulse"):
+			if not sent.has(pulse) and not old.has(pulse):
+				sent.append(pulse)
+				if not forced.is_empty():
+					# Re-send it with the gap this case wants.
+					var wanted: BusinessPulse.Gap = forced.pop_front()
+					pulse.send(pulse.global_position, pulse.global_position.y, pulse.direction, wanted, pulse.left_bound, pulse.right_bound)
+		if sent.size() >= wanted_count:
+			break
+	return sent
+
+
+## Waves cross the room from his head in a train; a standing boy is hit,
+## a crouched one passes a low gap and a jumping one a high gap; a stop
+## holds the train.
+func pulse() -> void:
 	await fresh()
 	boss.set_combat_phase(2)
 	boss.attack_recovery = 99.0
-	park(-500.0)
-	boss._change_state(&"Surge")
-	for i in 60:
-		if not hazards("BusinessSurge").is_empty():
-			break
-		await frames(1)
-	var surges := hazards("BusinessSurge")
-	check(surges.size() == 1, "Phase two sent %d surges" % surges.size())
-	if surges.is_empty():
-		return
-	var wave: BusinessSurge = surges[0]
-	var x := wave.global_position.x
+	park(-560.0)
 	var before := player.health.current
-	await frames(10)
-	check(wave.global_position.x < x - 60.0, "The surge did not travel toward the boy")
-	check(absf(wave.global_position.y - boss.global_position.y) < 4.0, "The surge left the floor")
-	for i in 90:
-		if wave._spent:
+	var sent := await pulse_train([BusinessPulse.Gap.LOW, BusinessPulse.Gap.LOW, BusinessPulse.Gap.LOW])
+	check(sent.size() == BusinessBoss.PULSE_COUNT, "Phase two sent %d pulses" % sent.size())
+	if sent.is_empty():
+		return
+	var first: BusinessPulse = sent[0]
+	check(absf(first.global_position.y - boss.global_position.y) < 2.0 and first.direction < 0.0, "The pulse did not leave along the floor toward the boy")
+	for i in 120:
+		if first._spent:
 			break
 		await frames(1)
-	check(wave._spent and is_equal_approx(player.health.current, before - BusinessSurge.DAMAGE), "A standing boy was not hit for %s" % BusinessSurge.DAMAGE)
-	# Jumped: held above it, it passes underneath.
+	check(first._spent, "A standing boy was not hit by a low-gap pulse")
+	check(player.health.current <= before - BusinessPulse.DAMAGE, "The pulse did not cost %s" % BusinessPulse.DAMAGE)
+	# Crouched under a low gap: the train passes over him.
 	await fresh()
 	boss.set_combat_phase(2)
 	boss.attack_recovery = 99.0
-	park(-500.0)
-	player.global_position.y -= 120.0
-	player.process_mode = Node.PROCESS_MODE_DISABLED
+	park(-560.0)
+	player.set_crouched(true)
+	hold_still(true)
 	before = player.health.current
-	boss._change_state(&"Surge")
-	await frames(120)
-	check(is_equal_approx(player.health.current, before), "A jumped surge still hit him")
-	player.process_mode = Node.PROCESS_MODE_INHERIT
-	# Stopped time holds it where it is.
+	sent = await pulse_train([BusinessPulse.Gap.LOW, BusinessPulse.Gap.LOW, BusinessPulse.Gap.LOW])
+	await frames(150)
+	check(is_equal_approx(player.health.current, before), "A crouched boy was hit through a low gap")
+	# The same crouch under a high gap is hit: the gap has to be read.
+	before = player.health.current
+	sent = await pulse_train([BusinessPulse.Gap.HIGH, BusinessPulse.Gap.HIGH, BusinessPulse.Gap.HIGH])
+	await frames(150)
+	check(player.health.current < before, "A crouched boy passed a high gap")
+	hold_still(false)
+	player.set_crouched(false)
+	# Held in the air at a jump's height under a high gap: also clear.
 	await fresh()
 	boss.set_combat_phase(2)
 	boss.attack_recovery = 99.0
-	park(-500.0)
-	boss._change_state(&"Surge")
-	for i in 60:
-		if not hazards("BusinessSurge").is_empty():
-			break
-		await frames(1)
-	wave = hazards("BusinessSurge")[0]
-	await frames(5)
+	park(-560.0)
+	player.global_position.y -= 130.0
+	hold_still(true)
+	before = player.health.current
+	sent = await pulse_train([BusinessPulse.Gap.HIGH, BusinessPulse.Gap.HIGH, BusinessPulse.Gap.HIGH])
+	await frames(150)
+	check(is_equal_approx(player.health.current, before), "A jumping boy was hit through a high gap")
+	# And in the air under a low one: hit.
+	sent = await pulse_train([BusinessPulse.Gap.LOW, BusinessPulse.Gap.LOW, BusinessPulse.Gap.LOW])
+	await frames(150)
+	check(player.health.current < before, "A boy in the air passed a low gap")
+	hold_still(false)
+	# Stopped time holds the train where it is.
+	await fresh()
+	boss.set_combat_phase(2)
+	boss.attack_recovery = 99.0
+	park(-560.0)
+	sent = await pulse_train([])
+	var wave: BusinessPulse = sent[0]
 	TimeService.mode = TimeService.Mode.STOPPED
-	x = wave.global_position.x
+	var x := wave.global_position.x
 	await frames(20)
-	check(is_equal_approx(wave.global_position.x, x), "A stopped surge kept moving")
+	check(is_equal_approx(wave.global_position.x, x), "A stopped pulse kept moving")
 	TimeService.mode = TimeService.Mode.NORMAL
 	await frames(8)
-	check(wave.global_position.x < x - 20.0, "The surge did not resume with time: %.0f from %.0f" % [wave.global_position.x, x])
-	# Off a platform edge it falls to the floor and carries on.
-	var step: Node2D = arena.get_node("Platforms/StepThree")
-	var loose := BusinessSurge.new()
-	add_child(loose)
-	loose.launch(step.global_position + Vector2(0.0, -12.0), 1.0, boss.arena_left, boss.arena_right)
-	await frames(90)
-	check(loose.global_position.y > step.global_position.y + 150.0, "A surge off the platform edge did not fall: y %.0f vs %.0f" % [loose.global_position.y, step.global_position.y])
-	check(loose.global_position.x > step.global_position.x + 300.0, "The fallen surge stopped travelling")
-	loose.queue_free()
-	print("BOSS_MOVES surge: travels the floor, jumped over, held by a stop, falls off edges")
+	check(wave.global_position.x < x - 20.0, "The pulse did not resume with time")
+	print("BOSS_MOVES pulse: trains from his head, gaps read by crouch or jump, held by a stop")
 
 
 ## Phase three lifts three shards, holds them harmless, then throws them at
@@ -195,7 +225,7 @@ func volley() -> void:
 	print("BOSS_MOVES volley: three shards rise harmless, then land where he stood")
 
 
-## Rewind puts a spent surge back on the floor and held shards back in the air.
+## Rewind puts a spent pulse back in the air and held shards back in the hold.
 func rewind() -> void:
 	await fresh()
 	boss.set_combat_phase(3)
@@ -219,22 +249,18 @@ func rewind() -> void:
 	boss.set_combat_phase(2)
 	boss.attack_recovery = 99.0
 	park(-300.0)
-	boss._change_state(&"Surge")
-	for i in 60:
-		if not hazards("BusinessSurge").is_empty():
-			break
-		await frames(1)
-	var wave: BusinessSurge = hazards("BusinessSurge")[0]
+	var sent := await pulse_train([BusinessPulse.Gap.LOW], 1)
+	var wave: BusinessPulse = sent[0]
 	var born: float = TimeService._now
 	for i in 90:
 		if wave._spent:
 			break
 		await frames(1)
-	check(wave._spent, "Setup: surge never landed")
+	check(wave._spent, "Setup: pulse never landed")
 	# Back to a moment shortly after it was sent, at the rewind's 2.5x.
 	await rewind_ticks(ceili((TimeService._now - born - 0.15) * 60.0 / TimeService.REWIND_SPEED))
-	check(is_instance_valid(wave) and not wave._spent and wave.visible and wave.process_mode != Node.PROCESS_MODE_DISABLED, "Rewind did not put the surge back on the floor")
-	print("BOSS_MOVES rewind: shards return to the hold, a spent surge to the floor")
+	check(is_instance_valid(wave) and not wave._spent and wave.visible and wave.process_mode != Node.PROCESS_MODE_DISABLED, "Rewind did not put the pulse back in the air")
+	print("BOSS_MOVES rewind: shards return to the hold, a spent pulse to the air")
 
 
 ## A spent heart clears the room of his hazards before the boy is put back.
@@ -242,23 +268,19 @@ func respawn() -> void:
 	await fresh()
 	boss.set_combat_phase(2)
 	boss.attack_recovery = 99.0
-	park(-500.0)
-	boss._change_state(&"Surge")
-	for i in 60:
-		if not hazards("BusinessSurge").is_empty():
-			break
-		await frames(1)
-	var wave: BusinessSurge = hazards("BusinessSurge")[0]
+	park(-560.0)
+	var sent := await pulse_train([])
+	var wave: BusinessPulse = sent[0]
 	player.health.kill(boss)
 	await confirm_death()
-	check(not is_instance_valid(wave) or wave.process_mode == Node.PROCESS_MODE_DISABLED, "A surge survived the respawn")
+	check(not is_instance_valid(wave) or wave.process_mode == Node.PROCESS_MODE_DISABLED, "A pulse survived the respawn")
 	print("BOSS_MOVES respawn: hazards are cleared with the spent heart")
 
 
 func _ready() -> void:
 	await repulse_close()
 	await repulse_hits()
-	await surge()
+	await pulse()
 	await volley()
 	await rewind()
 	await respawn()
