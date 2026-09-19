@@ -71,6 +71,10 @@ var facing := 1
 
 ## Which side the last hit came from, so Hurt knocks him the right way.
 var hurt_from := 1
+## A velocity the next Hurt uses instead of its own fixed recoil, then clears.
+## Set by whatever dealt the blow, just before it does - a shove that has to
+## carry him clear of something, not a knock back a step.
+var launch := Vector2.ZERO
 
 var _coyote_left := 0.0
 var _jump_buffered := 0.0

@@ -17,12 +17,60 @@ func _draw() -> void:
 		var dissolved := progress if boss.phase == BusinessBoss.Phase.DISAPPEARING else 1.0 - progress
 		gold.a *= 1.0 - smoothstep(0.0, 0.5, dissolved)
 	# Orbiting fragments make his control of the room visible between shots.
+	# A Repulse pulls them in to his chest over the tell; a Pulse and a Volley
+	# draw them up to his head, where the rest comes from.
+	var pull := 0.0
+	var rise := 0.0
+	var fighting := boss.phase == BusinessBoss.Phase.FIGHTING
+	var minding := fighting and boss.state in [&"Repulse", &"Pulse", &"Volley"]
+	if fighting and boss.state == &"Repulse":
+		pull = clampf(boss._state_elapsed / BusinessBoss.REPULSE_TELL, 0.0, 1.0)
+	elif fighting and boss.state == &"Pulse":
+		rise = clampf(boss._state_elapsed / BusinessBoss.PULSE_TELL, 0.0, 1.0)
+	elif fighting and boss.state == &"Volley":
+		rise = clampf(boss._state_elapsed / BusinessBoss.VOLLEY_RISE, 0.0, 1.0)
+	var radius := lerpf(46.0, 8.0, pull) * (1.0 - rise * 0.5)
+	var height := lerpf(54.0, 6.0, pull) * (1.0 - rise * 0.7)
+	var centre_y := lerpf(-62.0, -100.0, rise)
 	for i in 6:
-		var angle := clock * 0.85 + i * TAU / 6.0
-		var point := Vector2(cos(angle) * 46.0, -62.0 + sin(angle) * 54.0)
+		var angle := clock * (0.85 + pull * 6.0 + rise * 3.0) + i * TAU / 6.0
+		var point := Vector2(cos(angle) * radius, centre_y + sin(angle) * height)
 		draw_set_transform(point, angle, Vector2.ONE)
 		draw_rect(Rect2(-1, -3, 2, 6), gold)
 	draw_set_transform(Vector2.ZERO)
+	if pull > 0.0:
+		# The tell: a ring closing on his chest, brightening as it does.
+		draw_arc(Vector2(0.0, -62.0), lerpf(90.0, 12.0, pull), 0.0, TAU, 32, Color(1.0, 0.8, 0.35, 0.35 + pull * 0.6), 2.0 + pull * 2.5)
+		draw_arc(Vector2(0.0, -62.0), lerpf(60.0, 6.0, pull), 0.0, TAU, 32, Color(0.5, 0.9, 1.0, 0.25 + pull * 0.5), 1.5)
+	# The mind: two thin rings turning about his temple whenever any of it is
+	# in use, and a flare each time something leaves it.
+	var temple := Vector2(boss.facing * 6.0, -100.0)
+	var since_flare := clock - boss._flare_at
+	var flare := 1.0 - clampf(since_flare / BusinessBoss.FLARE_DURATION, 0.0, 1.0)
+	if minding or flare > 0.0:
+		var strength := (1.0 if minding else 0.0) * 0.8 + flare * 0.6
+		for i in 2:
+			var spin := clock * (2.2 + i * 1.3) * (1.0 if i == 0 else -1.0)
+			var ring_radius := 14.0 + i * 8.0 + flare * 10.0
+			draw_set_transform(temple, spin, Vector2(1.0, 0.45 + i * 0.25))
+			draw_arc(Vector2.ZERO, ring_radius, 0.0, TAU, 28, Color(1.0, 0.8, 0.4, strength * (0.9 - i * 0.3)), 1.6)
+			draw_arc(Vector2.ZERO, ring_radius, 0.3, 2.4, 20, Color(0.55, 0.92, 1.0, strength * 0.7), 1.0)
+		draw_set_transform(Vector2.ZERO)
+		draw_circle(temple, 4.0 + flare * 6.0, Color(1.0, 0.95, 0.8, 0.35 + flare * 0.6))
+		if flare > 0.0:
+			draw_arc(temple, 8.0 + (1.0 - flare) * 46.0, 0.0, TAU, 32, Color(0.6, 0.95, 1.0, flare * 0.8), 2.5)
+	# The burst: two rings and a spray of ticks out to REPULSE_RADIUS, gone in
+	# a third of a second. Sampled off the clocks, so a rewind draws it back.
+	var since_burst := clock - boss._burst_at
+	if since_burst >= 0.0 and since_burst < 0.32:
+		var progress := since_burst / 0.32
+		var fade := 1.0 - progress
+		var reach := BusinessBoss.REPULSE_RADIUS * progress
+		draw_arc(Vector2(0.0, -50.0), reach, 0.0, TAU, 48, Color(1.0, 0.75, 0.3, fade), 4.0)
+		draw_arc(Vector2(0.0, -50.0), reach * 0.7, 0.0, TAU, 48, Color(0.5, 0.9, 1.0, fade * 0.8), 2.0)
+		for i in 12:
+			var out := Vector2.from_angle(i * TAU / 12.0 + progress * 0.4)
+			draw_line(Vector2(0.0, -50.0) + out * reach * 0.8, Vector2(0.0, -50.0) + out * (reach + 18.0), Color(1.0, 0.85, 0.5, fade), 2.0)
 	# Teleport fragments are now drawn in the animated sheet itself.
 	if boss.phase == BusinessBoss.Phase.DYING:
 		var progress := clampf(boss._phase_elapsed / BusinessBoss.TRANSITION_DURATION, 0.0, 1.0)

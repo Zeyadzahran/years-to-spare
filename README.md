@@ -13,7 +13,11 @@ Still in development. The current project has two connected levels:
 - **Garbage Eden:** cross a salvage yard, learn to stop time, fight the Guardian,
   and rescue your sister.
 - **City of Time:** learn to rewind, face guards and beam-firing robots, and
-  fight the CAD owner and his reinforcements to reach your parents.
+  fight the CAD owner and his reinforcements to reach your parents. He fights
+  with his mind as much as his pistol: stay at his hip and he throws you
+  clear, from phase two he sends waves with a gap to crouch or jump through,
+  and in the last phase he tears shards out of the floor and hurls them
+  where you stand.
 
 Both levels include moving platforms, traps, checkpoints, and in-game guides.
 The story continues through cutscenes to a final ending and credits. City of

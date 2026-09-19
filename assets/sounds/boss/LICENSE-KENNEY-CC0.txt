@@ -4,6 +4,11 @@ Boss encounter audio
 Selected sounds from:
 - Kenney Impact Sounds: https://kenney.nl/assets/impact-sounds
 - Kenney RPG Audio: https://kenney.nl/assets/rpg-audio
+- Kenney Sci-Fi Sounds: https://kenney.nl/assets/sci-fi-sounds
+  (lowFrequency_explosion_001, forceField_000 and forceField_002 - the
+  Manager's repulse, his hold on the shards and each pulse he sends;
+  shard_throw.ogg is the first half second of thrusterFire_000 with a fade,
+  for a shard thrown)
 
 Created by Kenney (www.kenney.nl)
 License: Creative Commons CC0 1.0 Universal

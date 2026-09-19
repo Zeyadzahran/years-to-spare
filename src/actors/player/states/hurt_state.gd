@@ -10,7 +10,11 @@ var _elapsed := 0.0
 
 func enter(_previous: StringName) -> void:
 	_elapsed = 0.0
-	player.velocity = Vector2(-player.hurt_from * KNOCKBACK, -180.0)
+	if player.launch != Vector2.ZERO:
+		player.velocity = player.launch
+		player.launch = Vector2.ZERO
+	else:
+		player.velocity = Vector2(-player.hurt_from * KNOCKBACK, -180.0)
 
 
 func physics_update(delta: float) -> StringName:
