@@ -162,7 +162,11 @@ func _fade_to_black() -> void:
 	while _finished == false and !_skip and voice_over.playing:
 		_sync_subtitles()
 		await get_tree().create_timer(0.1).timeout
-	await closing.finished
+	# Playback resets when the voice ends, so its last cue may never expire.
+	# Retire the narration before the separate closing line appears.
+	subtitle.hide()
+	if closing.is_running():
+		await closing.finished
 
 
 ## The quiet beat on black before the title: one low line, held long enough
@@ -212,7 +216,7 @@ func _show_credits() -> void:
 ## Looks up the current narration line from the voice-over's playback position
 ## and shows or hides it in step with the speech.
 func _sync_subtitles() -> void:
-	if _finished or _skip or not is_instance_valid(subtitle):
+	if _finished or _skip or not voice_over.playing or not is_instance_valid(subtitle):
 		return
 	var position := voice_over.get_playback_position()
 	var next := _current_cue + 1
@@ -246,6 +250,7 @@ func _show_end_title() -> void:
 	_on_end_card = true
 	clock.stop()
 	voice_over.stop()
+	subtitle.hide()
 	enter_hint.hide()
 	if _skip:
 		MusicManager.stop_music(1.0)
