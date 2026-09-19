@@ -85,6 +85,8 @@ func _ready() -> void:
 	add_to_group(TimeService.REWINDABLE_GROUP)
 	_build_intro_subtitles()
 	chamber.boss = boss
+	boss.arena_left = global_position.x + ROOM_LEFT
+	boss.arena_right = global_position.x + ROOM_RIGHT
 	cinematic.walk_finished.connect(_finish_walk)
 	boss.health.changed.connect(_on_boss_health_changed)
 	boss.defeated.connect(_on_boss_defeated)
@@ -118,7 +120,7 @@ func respawn_player(actor: Player) -> bool:
 	# Old rounds must not hit the new spawn. Committing the spent heart also
 	# clears history, so Rewind cannot return to the already-paid death.
 	for projectile in get_tree().get_nodes_in_group(TimeService.REWINDABLE_GROUP):
-		if projectile is Bullet:
+		if projectile is Bullet or projectile.is_in_group(&"business_hazard"):
 			TimeService.retire(projectile)
 	actor.respawn_at(destination)
 	actor.facing = 1 if destination.x < global_position.x + ROOM_RIGHT * 0.5 else -1

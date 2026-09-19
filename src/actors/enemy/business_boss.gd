@@ -2,6 +2,22 @@ class_name BusinessBoss
 extends Gunner
 ## Combat uses Enemy's clock. Transitions use one separate, rewindable phase;
 ## no animation callback can bring back a boss whose phase has since changed.
+##
+## The pistol is the least of him. What he actually does is move the room
+## with his mind, and the fight is built around three of those moves on top
+## of the Enemy machine (`Repulse`, `Surge`, `Volley` are states of it):
+##
+##   - Repulse: a boy who stands at his hip, or lands three quick hits, is
+##     thrown clear - the fragments snap to his chest, then a ring bursts.
+##     Every phase. The reason to hit and step back rather than mash.
+##   - Surge, from phase two: a ridge of floor and torn ledger pages shoved
+##     along the ground toward the boy. Jump it. Phase three sends one each
+##     way.
+##   - Volley, phase three: three shards of the floor rise and hang around
+##     him, then go one by one at wherever the boy is standing.
+##
+## Every one of them is drawn in code by CombatEffects and the hazards
+## themselves, so the sheet stays as it was shipped.
 
 enum Phase { DORMANT, FIGHTING, DISAPPEARING, WAITING, APPEARING, RECOVERING, DYING, DEFEATED }
 
@@ -20,6 +36,27 @@ const TRANSITION_DURATION := 8.0 / 12.0
 const ARRIVAL_RECOVERY := 0.65
 
 const BURST_GAP := 0.24
+
+## A boy this close for this long, or this many hits in a row, is thrown.
+const REPULSE_RANGE := 150.0
+const REPULSE_HEIGHT := 120.0
+const REPULSE_CLOSE_TIME := 0.5
+const REPULSE_HITS := 3
+const REPULSE_TELL := 0.35
+const REPULSE_SETTLE := 0.3
+const REPULSE_RADIUS := 190.0
+const REPULSE_DAMAGE := 15.0
+const REPULSE_LAUNCH := Vector2(760.0, -560.0)
+const REPULSE_COOLDOWN := 4.0
+const REPULSE_COOLDOWN_FINAL := 2.5
+const SURGE_TELL := 0.5
+const SURGE_SETTLE := 0.35
+const VOLLEY_RISE := 0.8
+const VOLLEY_GAP := 0.25
+const VOLLEY_SETTLE := 0.3
+const VOLLEY_OFFSETS := [-150.0, -90.0, 120.0]
+const REPULSE_SOUND := preload("res://assets/sounds/boss/lowFrequency_explosion_001.ogg")
+const LIFT_SOUND := preload("res://assets/sounds/boss/forceField_000.ogg")
 const HIT_FX_DURATION := 0.22
 const ARRIVAL_FX_DURATION := 0.32
 # Atlas margins share a foot anchor at (150, 320) on a 360 x 340 canvas.
@@ -38,6 +75,25 @@ var _shots_fired := 0
 var _visual_time := 0.0
 var _hit_fx_left := 0.0
 var _arrival_fx_left := 0.0
+
+## Where the room ends, in world space; the arena sets these. Surges die past
+## them.
+var arena_left := -INF
+var arena_right := INF
+## How long the boy has been standing inside REPULSE_RANGE.
+var _close_time := 0.0
+var _hits_since_repulse := 0
+var _repulse_cooldown := 0.0
+## Whether this Repulse has burst yet; the burst itself is one moment.
+var _burst_done := false
+## When it did, on the visual clock, so CombatEffects can draw the ring.
+var _burst_at := -10.0
+## Which of the phase's moves comes next.
+var _move_index := 0
+var _shards: Array[BusinessShard] = []
+var _thrown := 0
+var _repulse_audio: AudioStreamPlayer2D
+var _lift_audio: AudioStreamPlayer2D
 
 @onready var charge_audio: AudioStreamPlayer2D = $ChargeAudio
 @onready var teleport_audio: AudioStreamPlayer2D = $TeleportAudio
@@ -67,10 +123,24 @@ func _init() -> void:
 	attack_animation = &"shoot"
 
 func _ready() -> void:
+	_repulse_audio = _make_audio(REPULSE_SOUND, 2.0, 1.0)
+	_lift_audio = _make_audio(LIFT_SOUND, -6.0, 0.8)
 	super._ready()
 	health.max_health = BOSS_HEALTH
 	health.current = BOSS_HEALTH
 	_sync_transition_visuals()
+
+
+## Added before Enemy._ready collects the audio children, so a stop pauses
+## these with the rest of him.
+func _make_audio(stream: AudioStream, volume_db: float, pitch: float) -> AudioStreamPlayer2D:
+	var player := AudioStreamPlayer2D.new()
+	player.stream = stream
+	player.volume_db = volume_db
+	player.pitch_scale = pitch
+	player.max_distance = 2400.0
+	add_child(player)
+	return player
 
 func activate() -> void:
 	if phase == Phase.DORMANT:
@@ -85,6 +155,7 @@ func _physics_process(delta: float) -> void:
 	_hit_fx_left = maxf(_hit_fx_left - scaled, 0.0)
 	_arrival_fx_left = maxf(_arrival_fx_left - scaled, 0.0)
 	if phase == Phase.FIGHTING:
+		_watch_the_boy(scaled)
 		super._physics_process(delta)
 		_sync_transition_visuals()
 		return
@@ -112,6 +183,122 @@ func _physics_process(delta: float) -> void:
 				defeated.emit()
 				TimeService.retire(self)
 	_sync_transition_visuals()
+
+## A boy at his hip is a boy he throws. Counted on the world clock, so a
+## stop does not run it down while he cannot act.
+func _watch_the_boy(scaled: float) -> void:
+	_repulse_cooldown = maxf(_repulse_cooldown - scaled, 0.0)
+	if is_zero_approx(scaled):
+		return
+	if not is_instance_valid(target) or target.is_down():
+		_close_time = 0.0
+		return
+	var to := target.global_position - global_position
+	if absf(to.x) <= REPULSE_RANGE and absf(to.y) <= REPULSE_HEIGHT:
+		_close_time += scaled
+	else:
+		_close_time = 0.0
+	if state not in [&"Idle", &"Chase", &"Recover", &"Hurt"] or _repulse_cooldown > 0.0:
+		return
+	if _close_time >= REPULSE_CLOSE_TIME or _hits_since_repulse >= REPULSE_HITS:
+		_change_state(&"Repulse")
+
+
+## The three moves are states of the Enemy machine; anything else is its.
+func _tick(delta: float) -> void:
+	match state:
+		&"Repulse":
+			_state_elapsed += delta
+			_tick_repulse()
+		&"Surge":
+			_state_elapsed += delta
+			_tick_surge()
+		&"Volley":
+			_state_elapsed += delta
+			_tick_volley()
+		_:
+			super._tick(delta)
+
+
+func _tick_repulse() -> void:
+	velocity.x = 0.0
+	if not _burst_done and _state_elapsed >= REPULSE_TELL:
+		_burst_done = true
+		_burst_at = _visual_time
+		_close_time = 0.0
+		_hits_since_repulse = 0
+		_repulse_cooldown = REPULSE_COOLDOWN_FINAL if combat_phase == 3 else REPULSE_COOLDOWN
+		_repulse_audio.play()
+		major_impact.emit(7.0)
+		if is_instance_valid(target) and not target.is_down() \
+				and global_position.distance_to(target.global_position + Vector2(0.0, -50.0)) <= REPULSE_RADIUS:
+			var side := 1.0 if target.global_position.x >= global_position.x else -1.0
+			target.launch = Vector2(side * REPULSE_LAUNCH.x, REPULSE_LAUNCH.y)
+			target.health.take_damage(REPULSE_DAMAGE, self)
+	if _state_elapsed >= REPULSE_TELL + REPULSE_SETTLE:
+		_change_state(&"Recover")
+
+
+func _tick_surge() -> void:
+	velocity.x = 0.0
+	if not _attack_fired and _state_elapsed >= SURGE_TELL:
+		_attack_fired = true
+		if is_instance_valid(target):
+			_face_target_mid_attack()
+		_send_surge(facing)
+		if combat_phase == 3:
+			_send_surge(-facing)
+		major_impact.emit(4.0)
+	if _state_elapsed >= SURGE_TELL + SURGE_SETTLE:
+		_change_state(&"Recover")
+
+
+func _send_surge(direction: int) -> void:
+	var surge := BusinessSurge.new()
+	get_tree().current_scene.add_child(surge)
+	surge.launch(global_position + Vector2(direction * 30.0, 0.0), direction, arena_left, arena_right)
+
+
+func _tick_volley() -> void:
+	velocity.x = 0.0
+	if _shards.is_empty():
+		_lift_audio.play()
+		for offset in VOLLEY_OFFSETS:
+			var shard := BusinessShard.new()
+			get_tree().current_scene.add_child(shard)
+			shard.lift(global_position + Vector2(offset, 0.0))
+			_shards.append(shard)
+	var due := VOLLEY_RISE + _thrown * VOLLEY_GAP
+	while _thrown < _shards.size() and _state_elapsed >= due:
+		var shard := _shards[_thrown]
+		_thrown += 1
+		due += VOLLEY_GAP
+		if is_instance_valid(shard) and is_instance_valid(target):
+			_face_target_mid_attack()
+			shard.throw(target.global_position + Vector2(0.0, -30.0))
+	if _thrown >= _shards.size() and _state_elapsed >= due + VOLLEY_SETTLE - VOLLEY_GAP:
+		_change_state(&"Recover")
+
+
+## Shards still hanging when he leaves the fight - or the fight leaves him -
+## fall where they are.
+func _drop_shards() -> void:
+	for shard in _shards:
+		if is_instance_valid(shard):
+			shard.drop()
+	_shards.clear()
+	_thrown = 0
+
+
+## What the machine's "attack now" turns into this phase. The laser is the
+## Enemy state; the others are his. Repulse is never chosen here - it answers
+## the boy, not the clock.
+func _pick_attack() -> StringName:
+	var cycle: Array = [[&"Attack"], [&"Attack", &"Surge"], [&"Attack", &"Surge", &"Volley"]][combat_phase - 1]
+	var next: StringName = cycle[_move_index % cycle.size()]
+	_move_index += 1
+	return next
+
 
 ## Keep the encounter stationary; walking poses are available for future staging.
 func _tick_chase(_delta: float) -> void:
@@ -146,8 +333,18 @@ func _attack_clip() -> StringName:
 func _change_state(next: StringName) -> void:
 	if state == next:
 		return
+	if next == &"Attack" and phase == Phase.FIGHTING:
+		next = _pick_attack()
+	if state == &"Volley":
+		_drop_shards()
 	super._change_state(next)
 	charge_audio.stop()
+	_burst_done = false
+	if next in [&"Surge", &"Volley"]:
+		if is_instance_valid(target):
+			_face_target_mid_attack()
+		charge_audio.pitch_scale = charge_audio.stream.get_length() / (SURGE_TELL if next == &"Surge" else VOLLEY_RISE)
+		charge_audio.play()
 	if next == &"Attack":
 		_shots_fired = 0
 		if is_instance_valid(target):
@@ -199,6 +396,7 @@ func _on_damaged(_amount: float, source: Node) -> void:
 	_hit_fx_left = HIT_FX_DURATION
 	if is_instance_valid(source):
 		_hurt_from = 1 if source.global_position.x > global_position.x else -1
+	_hits_since_repulse += 1
 	# Flinch without resetting a burst or shortening the promised recovery.
 	if state in [&"Idle", &"Chase"]:
 		_change_state(&"Hurt")
@@ -250,6 +448,8 @@ func _arrival_position() -> Vector2:
 func _enter_phase(next: Phase) -> void:
 	phase = next
 	charge_audio.stop()
+	_drop_shards()
+	_close_time = 0.0
 	_phase_elapsed = 0.0
 	velocity = Vector2.ZERO
 	_state_elapsed = 0.0
@@ -319,6 +519,21 @@ func _sync_combat_pose() -> void:
 			&"Hurt":
 				clip = &"hurt"
 				frame = mini(int(_state_elapsed / hurt_duration * 4.0), 3)
+			&"Repulse":
+				# Hand to the chest while he gathers it, then the flinch of
+				# letting it go.
+				if _state_elapsed < REPULSE_TELL:
+					clip = &"recover"
+					frame = 4
+				else:
+					clip = &"hurt"
+					frame = 1
+			&"Surge":
+				clip = &"charge"
+				frame = mini(int(_state_elapsed / SURGE_TELL * 6.0), 5)
+			&"Volley":
+				clip = &"charge"
+				frame = mini(int(_state_elapsed / VOLLEY_RISE * 6.0), 5)
 	elif phase in [Phase.DISAPPEARING, Phase.APPEARING]:
 		clip = &"teleport"
 		var last := sprite.sprite_frames.get_frame_count(clip) - 1
@@ -362,11 +577,22 @@ func rewind_capture() -> Array:
 	var saved := super()
 	saved.append([phase, _phase_elapsed, _after_disappear, _arrival_platform, _arrival_offset, _arrival_fallback,
 		combat_phase, _shots_fired, _visual_time, _hit_fx_left, _arrival_fx_left])
+	saved.append([_close_time, _hits_since_repulse, _repulse_cooldown, _burst_done, _burst_at,
+		_move_index, _shards.duplicate(), _thrown])
 	return saved
 
 func rewind_apply(saved: Array) -> void:
 	super(saved)
-	var transition: Array = saved[-1]
+	var moves: Array = saved[-1]
+	_close_time = moves[0]
+	_hits_since_repulse = moves[1]
+	_repulse_cooldown = moves[2]
+	_burst_done = moves[3]
+	_burst_at = moves[4]
+	_move_index = moves[5]
+	_shards.assign(moves[6])
+	_thrown = moves[7]
+	var transition: Array = saved[-2]
 	phase = transition[0]
 	_phase_elapsed = transition[1]
 	_after_disappear = transition[2]
