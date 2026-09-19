@@ -18,11 +18,31 @@ There is no separate extension or decoration layout to synchronize.
   enemies, pickups, exit gate, and decorations in their own groups.
 - `Entities/Player`, `Enemies`, `HUD`, and `Tutorial`: player, opening enemies,
   interface, and instructions.
+- `PickupPlacer`: which of the fig and heart candidates a run shows (below).
 
 Keep the SalvageYard parent at the origin. Its object positions are world-space
 coordinates, which makes it easy to compare both terrain sections in one scene.
 The fixed middle platform is `Platforms/TransferRest`; the two fast decks are
 `TransferIn` and `TransferOut`. Five overlapping lethal strips cover the floor.
+
+## Pickup candidates
+
+The figs under `World/Pickups` and `World/SalvageYard/Pickups` and the hearts
+beside them are candidates, not placements: `PickupPlacer` under the root
+picks `fig_count` figs (10 of 19) and `heart_count` hearts (3 of 11) when a
+run first loads the level, from the run's seed. Every stretch between two
+checkpoints that has a fig candidate gets one; the rest is random, never two
+figs within `fig_spacing` nor two hearts within `heart_spacing` or in one
+stretch. A retry finds the same set; each death sent back to a checkpoint
+adds the nearest left-out fig ahead of it.
+
+To add a candidate, drop a `pickup.tscn` or `heart_pickup.tscn` instance in a
+`Pickups` group a little above a floor (`tests/verify_pickup_placement.tscn`
+drops a probe from every fig and fails if it does not land). A fig that must
+be there on every run - `HighLedgeFig`, the reward for the optional climb,
+and `ExitFig` - has `fixed` ticked in the Inspector and is not a candidate.
+Node names are the run's memory of what was chosen: renaming one makes it a
+new candidate on the next load.
 
 ## Files and reusable objects
 

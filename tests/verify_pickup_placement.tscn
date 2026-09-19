@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dkg14bvdyqwcx"]
+
+[ext_resource type="Script" uid="uid://w84a5x7higpd" path="res://tests/verify_pickup_placement.gd" id="1_oxiej"]
+
+[node name="VerifyPickupPlacement" type="Node" unique_id=527314793]
+script = ExtResource("1_oxiej")

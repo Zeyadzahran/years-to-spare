@@ -18,7 +18,10 @@ The project is an in-development prototype with a playable first level,
 - A compact salvage yard: shuttle ride, freight lift, and two-deck transfer
 - A fast, timed transfer above a spike pit and an optional healing ledge
 - Checkpoints that preserve age and defeated enemies between retries
-- Hazards, moving traps, and healing fig pickups
+- Hazards and moving traps
+- Healing figs and spare hearts placed procedurally per run from authored
+  candidates: seeded, spaced, never a dry stretch between checkpoints, and a
+  fig added near a checkpoint for every death there
 - The existing final chamber, reshaped into a compact two-torch boss arena with the Guardian encounter and sister rescue ending
 - Intro, main menu, HUD, music, sound effects, and persistent settings
 
@@ -119,6 +122,24 @@ spent years or respawning defeated enemies. Losing the last heart stops on
 Game Over; restarting clears that run's progress and starts the level again.
 Dying of old age ends the whole game and starts it over from Level 1.
 
+## Pickup placement
+
+Neither level is generated: the layout is authored. What lies on it is not.
+Each level carries more fig and heart candidates than it shows, and a
+`PickupPlacer` under the level root decides which exist when a run first
+enters the level, from the run's seed:
+
+- figs: every stretch between two checkpoints that has a candidate gets one,
+  then random ones fill the budget, never two close together;
+- hearts: a gamble - random ones up to the budget, at most one per stretch;
+- a retry finds everything where it was; a new run (PLAY, Game Over, old
+  age) draws a new seed;
+- a death that sends him back to a checkpoint adds one more fig ahead of
+  it, the nearest left out, and the next death adds the next.
+
+Figs marked `fixed` in the Inspector are not candidates: the reward at the
+top of Level 1's healing ledge is there on every run.
+
 ## Project structure
 
 ```text
@@ -143,7 +164,7 @@ src/
   ui/                    HUD, options, credits, main menu, and configurable level titles
   world/
     checkpoints/         Checkpoint scene, script, and marker animation
-    pickups/             Healing pickup scene and script
+    pickups/             Fig and heart pickups, and the per-run placer
     platforms/           Static, moving, falling, and blinking decks
     exits/               Exit gate and completion screen
     hazards/             Shared hazard behavior

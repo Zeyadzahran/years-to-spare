@@ -25,6 +25,7 @@ of reusable scenes. No runtime generator rebuilds the layout.
 - `World/Decorations`: pipes, machinery, pylons and scattered debris.
 - `World/Checkpoints`: five uniquely named Level 2 checkpoints.
 - `World/Supplies`: five healing chests, including three elevated caches.
+- `World/Pickups`: sixteen fig candidates, two or three per section.
 - `World/Hazards`: four electrical barriers and the fall-reset area.
 - `World/Wayfinding`: in-world instructions and district signs.
 - `World/Exit`: the completion gate and its Level 2 panel.
@@ -45,6 +46,14 @@ the last heart stops on Game Over. Supply chests heal 50 health, may hold a
 heart, open only when useful, and reset on retry like the existing healing
 pickups. The gate completes the level without requiring
 all enemies to be defeated.
+
+Which figs lie on the route and which chests hold a heart is decided per run
+by `PickupPlacer` under the root: 8 of the 16 fig candidates - at least one
+in every stretch between checkpoints - and 2 of the 7 chest hearts (the five
+here and the two in the arena), from the run's seed, kept across retries, and
+one more fig ahead of the checkpoint for each death sent back to it. See
+"Pickup candidates" in [level-authoring.md](level-authoring.md) for how to
+add a candidate; `tests/verify_pickup_placement.tscn` checks both levels.
 
 Keep enemy paths and checkpoint names stable during tuning: they identify saved
 retry progress. The shared lifecycle now selects the scene's phase before using
@@ -213,6 +222,7 @@ godot --headless --path . tests/level_02/verify_supplies.tscn
 godot --headless --path . --fixed-fps 60 tests/level_02/verify_level.tscn
 godot --headless --path . --fixed-fps 60 tests/level_02/verify_rewind_lesson.tscn
 godot --headless --path . --fixed-fps 60 tests/level_02/verify_death_choice.tscn
+godot --headless --path . --fixed-fps 60 tests/verify_pickup_placement.tscn
 godot --headless --path . --script tests/scene_contracts.gd -- --level-only
 godot --path . tools/level_02/capture_map.tscn
 ```

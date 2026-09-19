@@ -40,6 +40,7 @@ func fresh() -> void:
 	var heart := HEART.instantiate()
 	heart.name = "StreetHeart"
 	heart.position = Vector2(600, 640)
+	heart.fixed = true
 	level.get_node("World/Pickups").add_child(heart)
 	heart.owner = level
 	add_child(level)
@@ -199,7 +200,7 @@ func _ready() -> void:
 ## it springs out, lands within reach, and a retry does not put it back.
 func chest_hearts() -> void:
 	GameState.clear_run_progress()
-	GameState.heart_rolls["phase_2|World/Supplies/YardSupply/Heart"] = true
+	GameState.pickup_rolls["phase_2|World/Supplies/YardSupply/Heart"] = true
 	await fresh()
 	var chest: Node = level.get_node("World/Supplies/YardSupply")
 	var stowed: Node = chest.get_node("Heart")
@@ -234,7 +235,7 @@ func chest_hearts() -> void:
 	# At the cap the lid stays shut unless he needs health; a rewind past the
 	# opening stows the heart again.
 	GameState.clear_run_progress()
-	GameState.heart_rolls["phase_2|World/Supplies/YardSupply/Heart"] = true
+	GameState.pickup_rolls["phase_2|World/Supplies/YardSupply/Heart"] = true
 	GameState.hearts = GameState.HEART_CAP
 	await fresh()
 	chest = level.get_node("World/Supplies/YardSupply")
@@ -256,14 +257,14 @@ func chest_hearts() -> void:
 	print("HEARTS chests hold a heart: open, spring, land, taken, gone on retry, stowed on rewind")
 
 
-## Which chests hold a heart is luck, rolled once per run: a retry finds the
-## same boxes full, a new run rolls again.
+## Which chests hold a heart is luck, decided once per run: a retry finds the
+## same boxes full, a new run decides again.
 func chest_luck() -> void:
 	GameState.clear_run_progress()
 	var chests := ["StreetCache", "YardSupply", "RoofCache", "CourtyardCache", "ExitSupply"]
 	var luck := [true, false, true, false, false]
 	for i in chests.size():
-		GameState.heart_rolls["phase_2|World/Supplies/%s/Heart" % chests[i]] = luck[i]
+		GameState.pickup_rolls["phase_2|World/Supplies/%s/Heart" % chests[i]] = luck[i]
 	for attempt in 2:
 		await fresh()
 		await frames(2)
@@ -271,18 +272,24 @@ func chest_luck() -> void:
 			var has: bool = level.get_node("World/Supplies/%s" % chests[i]).get_node_or_null("Heart") != null
 			check(has == luck[i], "%s heart presence %s did not match the roll on attempt %d" % [chests[i], has, attempt])
 		GameState.set_checkpoint(&"L2MachineYard", Vector2(1340, 652), player.age.age)
-	# A run that has not rolled yet rolls at the box's own chance and keeps it.
+	# A run that has not been decided yet is laid out by the placer: a budget
+	# of hearts among every candidate, kept for the run.
 	GameState.clear_run_progress()
-	check(GameState.heart_rolls.is_empty(), "A new run kept the old luck")
-	var chance: float = load("res://src/levels/level_02/objects/supply_chest.tscn").instantiate().get_node("Heart").chance
-	check(chance > 0.0 and chance < 1.0, "Chest hearts are not a gamble: chance %s" % chance)
+	check(GameState.pickup_rolls.is_empty(), "A new run kept the old luck")
 	await fresh()
 	await frames(2)
-	# Every heart in the level rolls - these five, the two arena chests and the
-	# loose one this fixture plants.
-	check(GameState.heart_rolls.size() >= chests.size(), "Level did not roll every chest, rolled %d" % GameState.heart_rolls.size())
-	var rolled := GameState.heart_rolls.duplicate()
+	var placer: PickupPlacer = level.get_node("PickupPlacer")
+	var shown := 0
+	for heart in get_tree().get_nodes_in_group(&"heart_pickup"):
+		if level.is_ancestor_of(heart) and not heart.fixed:
+			shown += 1
+	check(placer.heart_count > 0 and placer.heart_count < chests.size(), "Chest hearts are not a gamble: budget %d of %d chests" % [placer.heart_count, chests.size()])
+	check(shown == placer.heart_count, "Level showed %d hearts against a budget of %d" % [shown, placer.heart_count])
+	# Every heart in the level is decided - these five, the two arena chests
+	# and the loose one this fixture plants.
+	check(GameState.pickup_rolls.size() >= chests.size(), "Level did not decide every chest, decided %d" % GameState.pickup_rolls.size())
+	var rolled := GameState.pickup_rolls.duplicate()
 	for i in chests.size():
 		var has: bool = level.get_node("World/Supplies/%s" % chests[i]).get_node_or_null("Heart") != null
 		check(has == rolled["phase_2|World/Supplies/%s/Heart" % chests[i]], "%s did not follow its roll" % chests[i])
-	print("HEARTS chest luck is rolled once per run and holds across retries")
+	print("HEARTS chest luck is decided once per run and holds across retries")
