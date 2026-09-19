@@ -2079,6 +2079,6 @@ script = ExtResource("guide_card")
 heading = "STOP TIME"
 keys = PackedStringArray("K")
 actions = PackedStringArray("time_stop")
-instructions = PackedStringArray("Stop time")
+instructions = PackedStringArray("Stop time", "Press again to resume")
 footer = "5 sec / costs 3 years"
 accent = Color(0.45, 0.82, 0.87, 1)

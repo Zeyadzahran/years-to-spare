@@ -3,9 +3,9 @@ extends PlayerState
 func physics_update(delta: float) -> StringName:
 	player.apply_gravity(delta)
 	player.apply_horizontal(delta)
-	player.move_and_slide()
+	player.move_with_enemy_slide()
 
-	if player.can_jump() or not player.is_on_floor():
+	if player.can_jump() or not player.is_grounded():
 		return &"Air"
 	if player.wants_attack():
 		return &"Attack"

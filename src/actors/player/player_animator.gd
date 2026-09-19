@@ -241,7 +241,7 @@ func _on_state_changed(from: StringName, to: StringName) -> void:
 	var clip := _clip_for(to)
 	# Touching down plays the landing frames first, then hands over to the
 	# ground state's own clip. Leaving Air for an air swing is not a landing.
-	if from == &"Air" and player.is_on_floor() and to != &"Hurt" and to != &"Dead":
+	if from == &"Air" and player.is_grounded() and to != &"Hurt" and to != &"Dead":
 		_after_landing = clip
 		_play(LAND_CLIP)
 		return

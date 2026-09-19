@@ -134,6 +134,8 @@ func _process(_delta: float) -> void:
 	if _powers.active != null:
 		var rewinding := _powers.active.id == GameState.ABILITY_REWIND
 		time_label.text = ("TIME  REWINDING %.1f" if rewinding else "TIME  STOPPED %.1f") % _powers.time_left
+		if _powers.active.id == GameState.ABILITY_STOP:
+			time_label.text += "  [K] RESUME"
 		var screen := _screen_for(_powers.active.id)
 		screen.set_remaining(_powers.time_left)
 		screen.set_focus(_focus_uv())

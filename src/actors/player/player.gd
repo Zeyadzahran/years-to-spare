@@ -24,6 +24,7 @@ const AIR_FRICTION := 768.0
 const COYOTE_TIME := 0.125
 const JUMP_BUFFER := 0.15
 const ATTACK_BUFFER := 0.15
+const ENEMY_SLIDE_SPEED := 300.0
 
 ## Safely below every authored playable surface. Unlike a placed death volume,
 ## This follows the player across the normal level and the isolated boss arena.
@@ -75,6 +76,7 @@ var _coyote_left := 0.0
 var _jump_buffered := 0.0
 var _attack_buffered := 0.0
 var _attack_hit_done := false
+var _enemy_slide_direction := 0.0
 var _standing_size: Vector2
 var _standing_offset: float
 ## Built rather than instanced: see src/actors/player/sword_effects.gd.
@@ -111,7 +113,7 @@ func _physics_process(delta: float) -> void:
 		die_instantly(null)
 		return
 	input_dir = Input.get_axis(&"move_left", &"move_right")
-	_coyote_left = COYOTE_TIME if is_on_floor() else maxf(_coyote_left - delta, 0.0)
+	_coyote_left = COYOTE_TIME if is_grounded() else maxf(_coyote_left - delta, 0.0)
 	_jump_buffered = maxf(_jump_buffered - delta, 0.0)
 	if Input.is_action_just_pressed(&"jump"):
 		_jump_buffered = JUMP_BUFFER
@@ -122,6 +124,54 @@ func _physics_process(delta: float) -> void:
 
 func apply_gravity(delta: float) -> void:
 	velocity.y += gravity * delta
+
+
+## Enemy bodies block the sides, but their heads never grant footing or jumps.
+func is_grounded() -> bool:
+	if not is_on_floor():
+		return false
+	for index in get_slide_collision_count():
+		var contact := get_slide_collision(index)
+		if contact.get_normal().dot(up_direction) >= cos(floor_max_angle):
+			var body := contact.get_collider() as Node
+			if body == null or not body.is_in_group(&"enemy"):
+				return true
+	return false
+
+
+func _enemy_underfoot() -> Node2D:
+	if is_grounded():
+		return null
+	for index in get_slide_collision_count():
+		var contact := get_slide_collision(index)
+		var body := contact.get_collider() as Node2D
+		if body != null and body.is_in_group(&"enemy") \
+				and contact.get_normal().dot(up_direction) >= cos(floor_max_angle):
+			return body
+	return null
+
+
+## Slide off the nearest side, including while time is stopped. Sweep the
+## motion so a nearby wall cannot be crossed; try the other side if blocked.
+func move_with_enemy_slide() -> void:
+	if _enemy_underfoot() != null:
+		velocity.x = 0.0
+	move_and_slide()
+	var enemy := _enemy_underfoot()
+	if enemy == null:
+		_enemy_slide_direction = 0.0
+		return
+	_coyote_left = 0.0
+	if is_zero_approx(_enemy_slide_direction):
+		_enemy_slide_direction = signf(global_position.x - enemy.global_position.x)
+		if is_zero_approx(_enemy_slide_direction):
+			_enemy_slide_direction = float(facing)
+	var motion := Vector2(_enemy_slide_direction * ENEMY_SLIDE_SPEED * get_physics_process_delta_time(), 0.0)
+	if test_move(global_transform, motion):
+		_enemy_slide_direction = -_enemy_slide_direction
+		motion.x = -motion.x
+	move_and_collide(motion)
+	velocity.x = signf(motion.x) * ENEMY_SLIDE_SPEED
 
 
 ## Top speed for the age he is at. `frailty` runs 0 at fourteen and 1 at sixty,
@@ -135,7 +185,7 @@ func top_speed() -> float:
 ## `speed_scale` is how much of that the state allows. Only the target is
 ## scaled: however slowly he is going, stopping should feel the same.
 func apply_horizontal(delta: float, speed_scale := 1.0) -> void:
-	var grounded := is_on_floor()
+	var grounded := is_grounded()
 	var rate := (GROUND_ACCEL if grounded else AIR_ACCEL) if not is_zero_approx(input_dir) \
 		else (GROUND_FRICTION if grounded else AIR_FRICTION)
 	velocity.x = move_toward(velocity.x, input_dir * top_speed() * speed_scale, rate * delta)
@@ -245,6 +295,7 @@ func respawn_at(destination: Vector2) -> void:
 	_attack_buffered = 0.0
 	_attack_hit_done = false
 	_rewound_crouched = false
+	_enemy_slide_direction = 0.0
 	set_crouched(false)
 	clear_combat_effects()
 	health.restore_to(health.max_health)
@@ -299,7 +350,7 @@ func rewind_capture() -> Array:
 	return [
 		global_position, velocity, facing, hurt_from, states.current_name,
 		health.current, sprite.animation, sprite.frame, sprite.frame_progress,
-		is_crouched(),
+		is_crouched(), _enemy_slide_direction,
 	]
 
 
@@ -313,6 +364,7 @@ func rewind_apply(state: Array) -> void:
 		sprite.animation = state[6]
 		sprite.set_frame_and_progress(state[7], state[8])
 	_rewound_crouched = state[9]
+	_enemy_slide_direction = state[10]
 	set_crouched(_rewound_crouched)
 
 
@@ -340,6 +392,6 @@ func rewind_ended() -> void:
 	var next: StringName = &"Idle"
 	if _rewound_crouched:
 		next = &"Crouch"
-	elif not is_on_floor():
+	elif not is_grounded():
 		next = &"Air"
 	states.travel(next)

@@ -29,7 +29,7 @@ func enter(_previous: StringName) -> void:
 	_elapsed = 0.0
 	_collapsed = false
 	_committed = false
-	if not player.is_on_floor():
+	if not player.is_grounded():
 		_hold_camera()
 
 
@@ -61,7 +61,7 @@ func physics_update(delta: float) -> StringName:
 	_elapsed += delta
 	player.apply_gravity(delta)
 	player.velocity.x = move_toward(player.velocity.x, 0.0, Player.GROUND_FRICTION * delta)
-	player.move_and_slide()
+	player.move_with_enemy_slide()
 
 	# Held while a rewind is under way: it is about to reach back past this
 	# and stand him up, and the level must not reload out from under it.

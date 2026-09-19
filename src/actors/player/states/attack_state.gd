@@ -24,15 +24,15 @@ func physics_update(delta: float) -> StringName:
 		_hit_done = true
 		player.perform_attack_hit()
 	player.apply_gravity(delta)
-	if player.is_on_floor():
+	if player.is_grounded():
 		player.velocity.x = move_toward(player.velocity.x, 0.0, Player.GROUND_FRICTION * delta)
 	else:
 		# An air swing keeps the arc; stopping him dead mid-jump feels awful.
 		player.apply_horizontal(delta)
-	player.move_and_slide()
+	player.move_with_enemy_slide()
 
 	if _elapsed < DURATION:
 		return &""
-	if not player.is_on_floor():
+	if not player.is_grounded():
 		return &"Air"
 	return &"Move" if not is_zero_approx(player.input_dir) else &"Idle"
