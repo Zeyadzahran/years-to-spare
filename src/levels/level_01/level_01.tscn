@@ -2055,6 +2055,8 @@ heading = "FIGHT BACK"
 keys = PackedStringArray("J")
 actions = PackedStringArray("attack")
 instructions = PackedStringArray("Attack")
+footer = "Kill enemies. Take their years."
+card_width = 320.0
 
 [node name="Heal2" type="Node2D" parent="Tutorial" unique_id=1987466871]
 position = Vector2(1200, 335)
